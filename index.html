@@ -1,633 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
+    <!-- End Google Tag Manager -->
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Carambola Golf Club | Robert Trent Jones Sr. Championship Course</title>
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- SEO Meta Tags -->
+    <title>Carambola Golf Club | Robert Trent Jones Sr. Championship Course | St. Croix, VI</title>
+    <meta name="description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands. Book your tee time today.">
+    <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course, golf vacation, tropical golf">
+    <meta name="author" content="Carambola Golf Club">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carambola.golf/">
+    <meta property="og:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
+    <meta property="og:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
+    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-hole-1.jpg">
+    <meta property="og:site_name" content="Carambola Golf Club">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carambola.golf/">
+    <meta property="twitter:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
+    <meta property="twitter:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
+    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-hole-1.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://carambola.golf/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    
+    <!-- Preconnect for faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-navy: #1e3a5f;
-            --secondary-navy: #2c5282;
-            --accent-gold: #d4af37;
-            --light-gold: #f4e7c1;
-            --text-dark: #2d3748;
-            --text-light: #ffffff;
-            --bg-light: #f7fafc;
-            --bg-cream: #fefcf7;
-            --shadow-soft: rgba(30, 58, 95, 0.1);
-            --shadow-medium: rgba(30, 58, 95, 0.2);
-        }
-
-        body {
-            font-family: 'Georgia', 'Times New Roman', serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--bg-cream);
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(30, 58, 95, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 0.8rem 0;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid var(--accent-gold);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--accent-gold);
-            text-decoration: none;
-            font-family: 'Georgia', serif;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 0.95rem;
-            transition: color 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-gold);
-        }
-
-        .mobile-menu {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 90vh;
-            background: linear-gradient(rgba(30, 58, 95, 0.4), rgba(30, 58, 95, 0.4)),
-                        url('/images/carambola-golf-hole-1.jpg') center/cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: var(--text-light);
-            margin-top: 80px;
-        }
-
-        .hero-content {
-            max-width: 900px;
-            padding: 0 2rem;
-        }
-
-        .hero-tagline {
-            font-size: 1.2rem;
-            color: var(--accent-gold);
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-weight: 300;
-        }
-
-        .hero h1 {
-            font-size: clamp(3rem, 6vw, 5rem);
-            margin-bottom: 1.5rem;
-            font-weight: 400;
-            line-height: 1.2;
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-            margin-bottom: 2rem;
-            font-style: italic;
-            opacity: 0.9;
-        }
-
-        .hero-description {
-            font-size: 1.1rem;
-            margin-bottom: 3rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 0.95;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: var(--accent-gold);
-            color: var(--primary-navy);
-            padding: 1rem 2.5rem;
-            text-decoration: none;
-            border-radius: 3px;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border: 2px solid var(--accent-gold);
-        }
-
-        .cta-button:hover {
-            background: transparent;
-            color: var(--accent-gold);
-        }
-
-        /* Heritage Section */
-        .heritage {
-            padding: 6rem 0;
-            background: var(--primary-navy);
-            color: var(--text-light);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .heritage-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .heritage h2 {
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            margin-bottom: 2rem;
-            color: var(--accent-gold);
-            font-weight: 400;
-        }
-
-        .heritage p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-            opacity: 0.95;
-        }
-
-        /* Course Features */
-        .features {
-            padding: 6rem 0;
-            background: var(--bg-light);
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: clamp(2.5rem, 4vw, 3rem);
-            margin-bottom: 1rem;
-            color: var(--primary-navy);
-            font-weight: 400;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 4rem;
-            font-style: italic;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 3rem 2.5rem;
-            text-align: center;
-            box-shadow: 0 8px 25px var(--shadow-soft);
-            transition: all 0.3s ease;
-            border-top: 3px solid var(--accent-gold);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px var(--shadow-medium);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            color: var(--primary-navy);
-            margin-bottom: 1.5rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-navy);
-            font-weight: 400;
-        }
-
-        .feature-card p {
-            color: #666;
-            line-height: 1.7;
-        }
-
-        /* Course Stats */
-        .course-stats {
-            padding: 6rem 0;
-            background: var(--bg-cream);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-top: 3rem;
-        }
-
-        .stat-card {
-            text-align: center;
-            background: white;
-            padding: 2.5rem 2rem;
-            box-shadow: 0 8px 25px var(--shadow-soft);
-            border: 1px solid var(--light-gold);
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            color: var(--primary-navy);
-            font-weight: bold;
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.9rem;
-        }
-
-        .stat-description {
-            color: #888;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            line-height: 1.4;
-        }
-
-        /* Hole Gallery */
-        .hole-gallery {
-            padding: 6rem 0;
-            background: var(--bg-light);
-        }
-
-        .gallery-intro {
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto 4rem;
-        }
-
-        .gallery-intro p {
-            font-size: 1.1rem;
-            color: #666;
-            line-height: 1.7;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .hole-card {
-            background: white;
-            overflow: hidden;
-            box-shadow: 0 8px 25px var(--shadow-soft);
-            transition: all 0.3s ease;
-            border: 1px solid #e2e8f0;
-        }
-
-        .hole-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px var(--shadow-medium);
-        }
-
-        .hole-image {
-            width: 100%;
-            height: 200px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .hole-number {
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            background: var(--accent-gold);
-            color: var(--primary-navy);
-            width: 50px;
-            height: 50px;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
-        }
-
-        .hole-info {
-            padding: 2rem;
-        }
-
-        .hole-info h4 {
-            color: var(--primary-navy);
-            margin-bottom: 0.8rem;
-            font-size: 1.3rem;
-            font-weight: 400;
-        }
-
-        .hole-description {
-            color: #666;
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .hole-stats {
-            display: flex;
-            justify-content: space-between;
-            padding-top: 1rem;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .hole-stat {
-            text-align: center;
-        }
-
-        .hole-stat-value {
-            font-weight: bold;
-            color: var(--primary-navy);
-            font-size: 1.1rem;
-            display: block;
-        }
-
-        .hole-stat-label {
-            font-size: 0.8rem;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 6rem 0;
-            background: var(--primary-navy);
-            color: var(--text-light);
-        }
-
-        .testimonial-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .testimonial-quote {
-            font-size: 1.4rem;
-            font-style: italic;
-            margin-bottom: 2rem;
-            line-height: 1.7;
-            color: var(--light-gold);
-        }
-
-        .testimonial-author {
-            font-size: 1.1rem;
-            color: var(--accent-gold);
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 6rem 0;
-            background: var(--bg-cream);
-        }
-
-        .contact-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 4rem;
-        }
-
-        .contact-info h3 {
-            color: var(--primary-navy);
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-            font-weight: 400;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 1.2rem;
-            padding: 1rem;
-            background: white;
-            box-shadow: 0 3px 10px var(--shadow-soft);
-        }
-
-        .contact-item i {
-            color: var(--accent-gold);
-            margin-right: 1rem;
-            width: 20px;
-            font-size: 1.1rem;
-            margin-top: 2px;
-        }
-
-        .contact-item-content {
-            flex: 1;
-        }
-
-        .contact-item-title {
-            font-weight: 600;
-            color: var(--primary-navy);
-            margin-bottom: 0.2rem;
-        }
-
-        .contact-item-details {
-            color: #666;
-            font-size: 0.95rem;
-        }
-
-        /* Course Notices */
-        .course-notices {
-            background: var(--light-gold);
-            padding: 3rem 0;
-            border-top: 2px solid var(--accent-gold);
-            border-bottom: 2px solid var(--accent-gold);
-        }
-
-        .notices-title {
-            text-align: center;
-            color: var(--primary-navy);
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            font-weight: 400;
-        }
-
-        .notices-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .notice-item {
-            text-align: center;
-            color: var(--primary-navy);
-            font-size: 0.95rem;
-            padding: 1rem;
-        }
-
-        .notice-item i {
-            color: var(--primary-navy);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--primary-navy);
-            color: var(--text-light);
-            text-align: center;
-            padding: 3rem 0;
-        }
-
-        .footer-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .footer-logo {
-            font-size: 2rem;
-            color: var(--accent-gold);
-            margin-bottom: 1rem;
-            font-weight: 400;
-        }
-
-        .footer p {
-            opacity: 0.9;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .mobile-menu {
-                display: block;
+    
+    <!-- Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "GolfCourse",
+        "name": "Carambola Golf Club",
+        "description": "Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands",
+        "url": "https://carambola.golf",
+        "telephone": "+18053387681",
+        "email": "jaspervdz@me.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Estate River, Kingshill",
+            "addressLocality": "St. Croix",
+            "addressRegion": "VI",
+            "postalCode": "00850",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "17.7537",
+            "longitude": "-64.8059"
+        },
+        "openingHours": "Mo-Su 06:00-18:00",
+        "priceRange": "$$$$",
+        "amenityFeature": [
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Pro Shop",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification", 
+                "name": "Driving Range",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Putting Green", 
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Golf Lessons",
+                "value": true
             }
-
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--primary-navy);
-                flex-direction: column;
-                padding: 2rem;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .features-grid,
-            .stats-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .contact-content {
-                grid-template-columns: 1fr;
-            }
-
-            .gallery-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .notices-grid {
-                grid-template-columns: 1fr;
-            }
+        ],
+        "sportsActivityLocation": {
+            "@type": "SportsActivityLocation",
+            "name": "18-Hole Championship Golf Course"
         }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 1rem;
-            }
-
-            .hero-content {
-                padding: 0 1rem;
-            }
-
-            .features-grid {
-                gap: 1.5rem;
-            }
-        }
-
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-
-        /* Loading animation */
-        .hole-image {
-            background-color: #f7fafc;
-        }
-
-        /* Subtle animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-    </style>
+    }
+    </script>
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Under Construction Modal -->
+    <div id="constructionModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-golf-ball modal-icon"></i>
+                <h2>Website Under Construction</h2>
+            </div>
+            <div class="modal-body">
+                <p>We're putting the finishing touches on our new website, just like perfecting your golf swing!</p>
+                <p><strong>For tee times and information, please reach out to:</strong></p>
+                <div class="contact-highlight">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a>
+                </div>
+                <div class="contact-highlight">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+18053387681">+1 805 338.7681 (Jasper)</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeModal" class="modal-close-btn">
+                    <i class="fas fa-times"></i> Continue to Website
+                </button>
+            </div>
+            <div class="golf-decoration">
+                <i class="fas fa-golf-ball"></i>
+                <i class="fas fa-golf-ball"></i>
+                <i class="fas fa-golf-ball"></i>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -639,7 +149,7 @@
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <button class="mobile-menu">
+            <button class="mobile-menu" aria-label="Toggle mobile menu">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -654,7 +164,7 @@
             <div class="hero-description">
                 Experience championship golf in tropical paradise. Every hole showcases Jones' legendary design philosophy while incorporating St. Croix's natural beauty and challenging trade winds.
             </div>
-            <a href="#contact" class="cta-button">Book Tee Time</a>
+            <button class="cta-button book-tee-time">Book Tee Time</button>
         </div>
     </section>
 
@@ -675,27 +185,27 @@
             <h2 class="section-title">Championship Golf in Paradise</h2>
             <div class="section-subtitle">Where legendary design meets tropical beauty</div>
             <div class="features-grid">
-                <div class="feature-card">
+                <article class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-drafting-compass"></i>
                     </div>
                     <h3>Robert Trent Jones Sr. Design</h3>
                     <p>Experience the work of golf's most celebrated architect. Jones' strategic design philosophy creates challenging yet fair golf that rewards precision and punishes wayward shots, all while incorporating the natural beauty of St. Croix.</p>
-                </div>
-                <div class="feature-card">
+                </article>
+                <article class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-mountain"></i>
                     </div>
                     <h3>Spectacular Island Setting</h3>
                     <p>Rolling fairways wind through tropical landscape with stunning Caribbean Sea views. The course's elevation changes and natural contours create dramatic vistas and memorable golf experiences on every hole.</p>
-                </div>
-                <div class="feature-card">
+                </article>
+                <article class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-flag"></i>
                     </div>
                     <h3>Championship Conditions</h3>
                     <p>Pristine greens and immaculately maintained fairways ensure optimal playing conditions year-round. Our dedicated grounds crew maintains the course to championship standards, worthy of Jones' legendary design.</p>
-                </div>
+                </article>
             </div>
         </div>
     </section>
@@ -737,7 +247,7 @@
                 <p>Robert Trent Jones Sr. crafted each hole with meticulous attention to strategy, beauty, and challenge. From dramatic elevation changes to strategic water hazards, every hole tells its own story while contributing to an unforgettable round of championship golf.</p>
             </div>
             <div class="gallery-grid">
-                <div class="hole-card">
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-1.jpg')">
                         <div class="hole-number">1</div>
                     </div>
@@ -759,8 +269,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-2.jpg')">
                         <div class="hole-number">2</div>
                     </div>
@@ -782,8 +292,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-3.jpg')">
                         <div class="hole-number">3</div>
                     </div>
@@ -805,8 +315,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-4.jpg')">
                         <div class="hole-number">4</div>
                     </div>
@@ -828,8 +338,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-5.jpg')">
                         <div class="hole-number">5</div>
                     </div>
@@ -851,8 +361,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-6.jpg')">
                         <div class="hole-number">6</div>
                     </div>
@@ -874,8 +384,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-7.jpg')">
                         <div class="hole-number">7</div>
                     </div>
@@ -897,8 +407,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-8.jpg')">
                         <div class="hole-number">8</div>
                     </div>
@@ -920,8 +430,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-9.jpg')">
                         <div class="hole-number">9</div>
                     </div>
@@ -943,8 +453,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-10.jpg')">
                         <div class="hole-number">10</div>
                     </div>
@@ -966,8 +476,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-11.jpg')">
                         <div class="hole-number">11</div>
                     </div>
@@ -989,8 +499,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-12.jpg')">
                         <div class="hole-number">12</div>
                     </div>
@@ -1012,8 +522,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-13.jpg')">
                         <div class="hole-number">13</div>
                     </div>
@@ -1035,8 +545,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-14.jpg')">
                         <div class="hole-number">14</div>
                     </div>
@@ -1058,8 +568,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-15.jpg')">
                         <div class="hole-number">15</div>
                     </div>
@@ -1081,8 +591,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-16.jpg')">
                         <div class="hole-number">16</div>
                     </div>
@@ -1104,8 +614,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-17.jpg')">
                         <div class="hole-number">17</div>
                     </div>
@@ -1127,8 +637,8 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="hole-card">
+                </article>
+                <article class="hole-card">
                     <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-18.jpg')">
                         <div class="hole-number">18</div>
                     </div>
@@ -1150,7 +660,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </article>
             </div>
         </div>
     </section>
@@ -1207,14 +717,18 @@
                         <i class="fas fa-phone"></i>
                         <div class="contact-item-content">
                             <div class="contact-item-title">Golf Shop</div>
-                            <div class="contact-item-details">(340) 778-5638</div>
+                            <div class="contact-item-details">
+                                <a href="tel:+18053387681">+1 805 338.7681 (Jasper)</a>
+                            </div>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
                         <div class="contact-item-content">
                             <div class="contact-item-title">Email</div>
-                            <div class="contact-item-details">teetimes@carambola.golf</div>
+                            <div class="contact-item-details">
+                                <a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a>
+                            </div>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -1288,81 +802,252 @@
     </footer>
 
     <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.classList.toggle('active');
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    const navHeight = document.querySelector('.navbar').offsetHeight;
-                    const targetPosition = target.offsetTop - navHeight;
-                    window.scrollTo({
-                        top: targetPosition,
-                        behavior: 'smooth'
+        // Carambola Golf Club JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Modal functionality
+            const modal = document.getElementById('constructionModal');
+            const closeModalBtn = document.getElementById('closeModal');
+            const bookTeeTimeButtons = document.querySelectorAll('.book-tee-time, .cta-button');
+            
+            // Check if this is the first visit
+            function showModalOnFirstVisit() {
+                const hasVisited = localStorage.getItem('carambola-visited');
+                if (!hasVisited) {
+                    showModal();
+                    localStorage.setItem('carambola-visited', 'true');
+                }
+            }
+            
+            // Show modal function
+            function showModal() {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+                
+                // Google Analytics event (if GTM is loaded)
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'modal_shown', {
+                        'event_category': 'engagement',
+                        'event_label': 'construction_modal'
                     });
                 }
-            });
-        });
-
-        // Navbar background on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.background = 'rgba(30, 58, 95, 0.98)';
-            } else {
-                navbar.style.background = 'rgba(30, 58, 95, 0.95)';
             }
-        });
-
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -30px 0px'
-        };
-
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
+            
+            // Hide modal function
+            function hideModal() {
+                modal.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scrolling
+                
+                // Google Analytics event (if GTM is loaded)
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'modal_closed', {
+                        'event_category': 'engagement',
+                        'event_label': 'construction_modal'
+                    });
+                }
+            }
+            
+            // Close modal when clicking close button
+            closeModalBtn.addEventListener('click', hideModal);
+            
+            // Close modal when clicking outside of it
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    hideModal();
                 }
             });
-        }, observerOptions);
-
-        // Observe cards for animation
-        document.querySelectorAll('.feature-card, .hole-card, .stat-card').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Counter animation for stats
-        const statsObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const stat = entry.target.querySelector('.stat-number');
-                    const finalValue = parseInt(stat.textContent.replace(',', ''));
-                    let currentValue = 0;
-                    const increment = finalValue / 60;
+            
+            // Close modal with escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    hideModal();
+                }
+            });
+            
+            // Show modal when clicking any "Book Tee Time" button
+            bookTeeTimeButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showModal();
                     
-                    const timer = setInterval(() => {
-                        currentValue += increment;
-                        if (currentValue >= finalValue) {
-                            stat.textContent = finalValue.toLocaleString();
-                            clearInterval(timer);
-                        } else {
-                            stat.textContent = Math.floor(currentValue).toLocaleString();
-                        }
-                    }, 25);
+                    // Google Analytics event for CTA clicks
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'cta_click', {
+                            'event_category': 'engagement',
+                            'event_label': 'book_tee_time'
+                        });
+                    }
+                });
+            });
+            
+            // Show modal on first visit (with a small delay for better UX)
+            setTimeout(showModalOnFirstVisit, 1000);
+            
+            // Mobile menu functionality
+            const mobileMenuBtn = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+                
+                // Toggle aria-expanded for accessibility
+                const isExpanded = navLinks.classList.contains('active');
+                mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
+                
+                // Change icon
+                const icon = mobileMenuBtn.querySelector('i');
+                if (isExpanded) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
                 }
             });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('.stat-card').forEach(stat => {
-            statsObserver.observe(stat);
+            
+            // Close mobile menu when clicking on a link
+            navLinks.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    navLinks.classList.remove('active');
+                    mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                    const icon = mobileMenuBtn.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        const navHeight = document.querySelector('.navbar').offsetHeight;
+                        const targetPosition = target.offsetTop - navHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Google Analytics event for navigation
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'navigation_click', {
+                                'event_category': 'engagement',
+                                'event_label': this.getAttribute('href')
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // Enhanced navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.style.background = 'rgba(30, 58, 95, 0.98)';
+                } else {
+                    navbar.style.background = 'rgba(30, 58, 95, 0.95)';
+                }
+            });
+            
+            // Intersection Observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -30px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe cards for animation with staggered delays
+            document.querySelectorAll('.feature-card, .hole-card, .stat-card').forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(el);
+            });
+            
+            // Counter animation for stats
+            const statsObserver = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const stat = entry.target.querySelector('.stat-number');
+                        const finalValue = parseInt(stat.textContent.replace(',', ''));
+                        let currentValue = 0;
+                        const increment = finalValue / 60;
+                        
+                        const timer = setInterval(() => {
+                            currentValue += increment;
+                            if (currentValue >= finalValue) {
+                                stat.textContent = finalValue.toLocaleString();
+                                clearInterval(timer);
+                            } else {
+                                stat.textContent = Math.floor(currentValue).toLocaleString();
+                            }
+                        }, 25);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.querySelectorAll('.stat-card').forEach(stat => {
+                statsObserver.observe(stat);
+            });
+            
+            // Contact form submission tracking (if forms are added later)
+            document.addEventListener('submit', function(e) {
+                if (e.target.matches('form')) {
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'form_submit', {
+                            'event_category': 'engagement',
+                            'event_label': e.target.id || 'contact_form'
+                        });
+                    }
+                }
+            });
+            
+            // Track external link clicks
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('a[href^="http"]') || e.target.matches('a[href^="mailto"]') || e.target.matches('a[href^="tel"]')) {
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'external_link_click', {
+                            'event_category': 'engagement',
+                            'event_label': e.target.href
+                        });
+                    }
+                }
+            });
+            
+            // Enhanced hole card interactions
+            document.querySelectorAll('.hole-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+                
+                // Add click tracking for hole cards
+                card.addEventListener('click', function() {
+                    const holeNumber = this.querySelector('.hole-number').textContent;
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'hole_card_click', {
+                            'event_category': 'engagement',
+                            'event_label': `hole_${holeNumber}`
+                        });
+                    }
+                });
+            });
+            
+            // Console message for developers
+            console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
+            console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
+            
         });
     </script>
 </body>
