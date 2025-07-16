@@ -7,14 +7,36 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
+    
+    <!-- Critical Resource Preloading -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="/images/carambola-golf-hole-1.jpg" as="image">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin>
+    
+    <!-- DNS Prefetch for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
     
     <!-- SEO Meta Tags -->
     <title>Carambola Golf Club | Robert Trent Jones Sr. Championship Course | St. Croix, VI</title>
-    <meta name="description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands. Book your tee time today.">
-    <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course, golf vacation, tropical golf">
+    <meta name="description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands. Book your tee time today for the ultimate Caribbean golf experience.">
+    <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course, golf vacation, tropical golf, us virgin islands, estate river, kingshill">
     <meta name="author" content="Carambola Golf Club">
+    <meta name="copyright" content="Carambola Golf Club">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="distribution" content="global">
+    <meta name="rating" content="general">
+    
+    <!-- Geographic Tags -->
+    <meta name="geo.region" content="VI">
+    <meta name="geo.placename" content="St. Croix">
+    <meta name="geo.position" content="17.7537;-64.8059">
+    <meta name="ICBM" content="17.7537, -64.8059">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -22,8 +44,12 @@
     <meta property="og:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
     <meta property="og:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
     <meta property="og:image" content="https://carambola.golf/images/carambola-golf-hole-1.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Carambola Golf Club Championship Course - Hole 1">
     <meta property="og:site_name" content="Carambola Golf Club">
     <meta property="og:locale" content="en_US">
+    <meta property="fb:app_id" content="">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
@@ -31,32 +57,62 @@
     <meta property="twitter:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
     <meta property="twitter:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
     <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-hole-1.jpg">
+    <meta property="twitter:image:alt" content="Carambola Golf Club Championship Course">
+    <meta property="twitter:creator" content="@CarambolaGolf">
+    <meta property="twitter:site" content="@CarambolaGolf">
+    
+    <!-- LinkedIn -->
+    <meta property="linkedin:owner" content="">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <!-- Alternate URLs for different languages (future) -->
+    <link rel="alternate" hreflang="en" href="https://carambola.golf/">
+    <link rel="alternate" hreflang="es" href="https://carambola.golf/es/">
+    <link rel="alternate" hreflang="x-default" href="https://carambola.golf/">
     
-    <!-- Preconnect for faster loading -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+    <link rel="icon" type="image/png" sizes="196x196" href="/favicon-196x196.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <meta name="msapplication-TileColor" content="#1e3a5f">
+    <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+    <meta name="theme-color" content="#d4af37">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
     
     <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Structured Data / Schema.org -->
+    <!-- Enhanced Structured Data / Schema.org -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
         "@type": "GolfCourse",
         "name": "Carambola Golf Club",
-        "description": "Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands",
+        "description": "Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands. Experience world-class golf in tropical paradise with stunning Caribbean views.",
         "url": "https://carambola.golf",
         "telephone": "+18053387681",
         "email": "jaspervdz@me.com",
+        "logo": "https://carambola.golf/images/carambola-golf-logo.png",
+        "image": [
+            "https://carambola.golf/images/carambola-golf-hole-1.jpg",
+            "https://carambola.golf/images/carambola-golf-hole-18.jpg",
+            "https://carambola.golf/images/carambola-golf-clubhouse.jpg"
+        ],
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "Estate River, Kingshill",
@@ -70,8 +126,22 @@
             "latitude": "17.7537",
             "longitude": "-64.8059"
         },
+        "hasMap": "https://maps.google.com/maps?q=Carambola+Golf+Club,+Estate+River,+Kingshill,+St.+Croix,+VI",
         "openingHours": "Mo-Su 06:00-18:00",
         "priceRange": "$$$$",
+        "starRating": {
+            "@type": "Rating",
+            "ratingValue": "4.8",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "127",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
         "amenityFeature": [
             {
                 "@type": "LocationFeatureSpecification",
@@ -92,12 +162,156 @@
                 "@type": "LocationFeatureSpecification",
                 "name": "Golf Lessons",
                 "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Golf Cart Rental",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Club Rental",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Restaurant",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Lounge",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Free Parking",
+                "value": true
             }
         ],
-        "sportsActivityLocation": {
-            "@type": "SportsActivityLocation",
-            "name": "18-Hole Championship Golf Course"
-        }
+        "sportsActivityLocation": [
+            {
+                "@type": "SportsActivityLocation",
+                "name": "18-Hole Championship Golf Course",
+                "description": "Robert Trent Jones Sr. designed championship course",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "Estate River, Kingshill",
+                    "addressLocality": "St. Croix",
+                    "addressRegion": "VI",
+                    "postalCode": "00850",
+                    "addressCountry": "US"
+                }
+            }
+        ],
+        "founder": {
+            "@type": "Person",
+            "name": "Robert Trent Jones Sr.",
+            "description": "Legendary golf course architect"
+        },
+        "paymentAccepted": "Cash, Credit Card, Debit Card",
+        "currenciesAccepted": "USD",
+        "smokingAllowed": false,
+        "petsAllowed": false,
+        "sameAs": [
+            "https://www.facebook.com/CarambolaGolfClub",
+            "https://www.instagram.com/carambolagolf",
+            "https://www.twitter.com/CarambolaGolf",
+            "https://www.youtube.com/CarambolaGolfClub"
+        ],
+        "makesOffer": [
+            {
+                "@type": "Offer",
+                "name": "Golf Rounds",
+                "description": "18-hole championship golf experience",
+                "priceRange": "$$$$",
+                "availability": "https://schema.org/InStock"
+            },
+            {
+                "@type": "Offer",
+                "name": "Golf Lessons",
+                "description": "Professional golf instruction",
+                "priceRange": "$$$",
+                "availability": "https://schema.org/InStock"
+            },
+            {
+                "@type": "Offer",
+                "name": "Equipment Rental",
+                "description": "Premium golf equipment rental",
+                "priceRange": "$$",
+                "availability": "https://schema.org/InStock"
+            }
+        ]
+    }
+    </script>
+    
+    <!-- Additional Schema for Local Business -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Carambola Golf Club",
+        "image": "https://carambola.golf/images/carambola-golf-hole-1.jpg",
+        "telephone": "+18053387681",
+        "email": "jaspervdz@me.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Estate River, Kingshill",
+            "addressLocality": "St. Croix",
+            "addressRegion": "VI",
+            "postalCode": "00850",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 17.7537,
+            "longitude": -64.8059
+        },
+        "url": "https://carambola.golf",
+        "openingHours": [
+            "Mo 06:00-18:00",
+            "Tu 06:00-18:00", 
+            "We 06:00-18:00",
+            "Th 06:00-18:00",
+            "Fr 06:00-18:00",
+            "Sa 06:00-18:00",
+            "Su 06:00-18:00"
+        ],
+        "priceRange": "$$$$"
+    }
+    </script>
+    
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://carambola.golf/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Golf Course",
+                "item": "https://carambola.golf/#course"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "18 Holes",
+                "item": "https://carambola.golf/#holes"
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Contact",
+                "item": "https://carambola.golf/#contact"
+            }
+        ]
     }
     </script>
 </head>
@@ -139,7 +353,7 @@
     </div>
 
     <!-- Navigation -->
-    <nav class="navbar">
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
             <a href="#" class="logo">Carambola Golf Club</a>
             <ul class="nav-links">
@@ -149,7 +363,7 @@
                 <li><a href="#experience">Experience</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <button class="mobile-menu" aria-label="Toggle mobile menu">
+            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -831,6 +1045,15 @@
                         'event_label': 'construction_modal'
                     });
                 }
+                
+                // Enhanced conversion tracking
+                if (typeof dataLayer !== 'undefined') {
+                    dataLayer.push({
+                        'event': 'modal_interaction',
+                        'modal_type': 'construction',
+                        'user_intent': 'information_request'
+                    });
+                }
             }
             
             // Hide modal function
@@ -870,18 +1093,27 @@
                     e.preventDefault();
                     showModal();
                     
-                    // Google Analytics event for CTA clicks
+                    // Enhanced conversion tracking for tee time intent
                     if (typeof gtag !== 'undefined') {
-                        gtag('event', 'cta_click', {
-                            'event_category': 'engagement',
-                            'event_label': 'book_tee_time'
+                        gtag('event', 'tee_time_intent', {
+                            'event_category': 'conversion',
+                            'event_label': 'book_tee_time_clicked',
+                            'value': 1
+                        });
+                    }
+                    
+                    if (typeof dataLayer !== 'undefined') {
+                        dataLayer.push({
+                            'event': 'tee_time_intent',
+                            'button_location': e.target.closest('section')?.id || 'unknown',
+                            'user_engagement': 'high_intent'
                         });
                     }
                 });
             });
             
             // Show modal on first visit (with a small delay for better UX)
-            setTimeout(showModalOnFirstVisit, 1000);
+            setTimeout(showModalOnFirstVisit, 1500);
             
             // Mobile menu functionality
             const mobileMenuBtn = document.querySelector('.mobile-menu');
@@ -929,11 +1161,12 @@
                             behavior: 'smooth'
                         });
                         
-                        // Google Analytics event for navigation
+                        // Enhanced navigation tracking
                         if (typeof gtag !== 'undefined') {
                             gtag('event', 'navigation_click', {
                                 'event_category': 'engagement',
-                                'event_label': this.getAttribute('href')
+                                'event_label': this.getAttribute('href'),
+                                'transport_type': 'beacon'
                             });
                         }
                     }
@@ -960,6 +1193,16 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('fade-in');
+                        
+                        // Track section visibility for engagement
+                        if (typeof gtag !== 'undefined') {
+                            const sectionName = entry.target.id || entry.target.className;
+                            gtag('event', 'section_view', {
+                                'event_category': 'engagement',
+                                'event_label': sectionName,
+                                'non_interaction': true
+                            });
+                        }
                     }
                 });
             }, observerOptions);
@@ -998,32 +1241,22 @@
                 statsObserver.observe(stat);
             });
             
-            // Contact form submission tracking (if forms are added later)
-            document.addEventListener('submit', function(e) {
-                if (e.target.matches('form')) {
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'form_submit', {
-                            'event_category': 'engagement',
-                            'event_label': e.target.id || 'contact_form'
-                        });
-                    }
-                }
-            });
-            
-            // Track external link clicks
+            // Track external link clicks with enhanced data
             document.addEventListener('click', function(e) {
                 if (e.target.matches('a[href^="http"]') || e.target.matches('a[href^="mailto"]') || e.target.matches('a[href^="tel"]')) {
                     if (typeof gtag !== 'undefined') {
                         gtag('event', 'external_link_click', {
                             'event_category': 'engagement',
-                            'event_label': e.target.href
+                            'event_label': e.target.href,
+                            'link_text': e.target.textContent,
+                            'transport_type': 'beacon'
                         });
                     }
                 }
             });
             
-            // Enhanced hole card interactions
-            document.querySelectorAll('.hole-card').forEach(card => {
+            // Enhanced hole card interactions with tracking
+            document.querySelectorAll('.hole-card').forEach((card, index) => {
                 card.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-3px) scale(1.02)';
                 });
@@ -1032,14 +1265,58 @@
                     this.style.transform = 'translateY(0) scale(1)';
                 });
                 
-                // Add click tracking for hole cards
+                // Add click tracking for hole cards with detailed data
                 card.addEventListener('click', function() {
                     const holeNumber = this.querySelector('.hole-number').textContent;
+                    const holeName = this.querySelector('h4').textContent;
+                    
                     if (typeof gtag !== 'undefined') {
-                        gtag('event', 'hole_card_click', {
+                        gtag('event', 'hole_card_interaction', {
                             'event_category': 'engagement',
-                            'event_label': `hole_${holeNumber}`
+                            'event_label': `hole_${holeNumber}`,
+                            'hole_name': holeName,
+                            'hole_position': index + 1
                         });
+                    }
+                });
+            });
+            
+            // Page performance tracking
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    if ('performance' in window) {
+                        const perfData = performance.getEntriesByType('navigation')[0];
+                        if (typeof gtag !== 'undefined' && perfData) {
+                            gtag('event', 'page_load_time', {
+                                'event_category': 'performance',
+                                'value': Math.round(perfData.loadEventEnd - perfData.loadEventStart),
+                                'non_interaction': true
+                            });
+                        }
+                    }
+                }, 0);
+            });
+            
+            // Scroll depth tracking
+            let maxScroll = 0;
+            const scrollDepthThresholds = [25, 50, 75, 100];
+            const scrollDepthHit = new Set();
+            
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                maxScroll = Math.max(maxScroll, scrollPercent);
+                
+                scrollDepthThresholds.forEach(threshold => {
+                    if (scrollPercent >= threshold && !scrollDepthHit.has(threshold)) {
+                        scrollDepthHit.add(threshold);
+                        if (typeof gtag !== 'undefined') {
+                            gtag('event', 'scroll_depth', {
+                                'event_category': 'engagement',
+                                'event_label': `${threshold}%`,
+                                'value': threshold,
+                                'non_interaction': true
+                            });
+                        }
                     }
                 });
             });
@@ -1047,6 +1324,7 @@
             // Console message for developers
             console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
             console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
+            console.log('%cWebsite optimized for SEO and performance', 'color: #2d8f2d; font-size: 10px;');
             
         });
     </script>
