@@ -1,4 +1,4 @@
-// Carambola Golf Club JavaScript
+// Carambola Golf Club JavaScript - Multi-page Version
 document.addEventListener('DOMContentLoaded', function() {
     
     // Modal functionality
@@ -17,54 +17,65 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show modal function
     function showModal() {
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-        
-        // Google Analytics event (if GTM is loaded)
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'modal_shown', {
-                'event_category': 'engagement',
-                'event_label': 'construction_modal'
-            });
-        }
-        
-        // Enhanced conversion tracking
-        if (typeof dataLayer !== 'undefined') {
-            dataLayer.push({
-                'event': 'modal_interaction',
-                'modal_type': 'construction',
-                'user_intent': 'information_request'
-            });
+        if (modal) {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            
+            // Google Analytics event (if GTM is loaded)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'modal_shown', {
+                    'event_category': 'engagement',
+                    'event_label': 'construction_modal',
+                    'page_location': window.location.pathname
+                });
+            }
+            
+            // Enhanced conversion tracking
+            if (typeof dataLayer !== 'undefined') {
+                dataLayer.push({
+                    'event': 'modal_interaction',
+                    'modal_type': 'construction',
+                    'user_intent': 'information_request',
+                    'page_path': window.location.pathname
+                });
+            }
         }
     }
     
     // Hide modal function
     function hideModal() {
-        modal.classList.remove('show');
-        document.body.style.overflow = ''; // Restore scrolling
-        
-        // Google Analytics event (if GTM is loaded)
-        if (typeof gtag !== 'undefined') {
-            gtag('event', 'modal_closed', {
-                'event_category': 'engagement',
-                'event_label': 'construction_modal'
-            });
+        if (modal) {
+            modal.classList.remove('show');
+            document.body.style.overflow = ''; // Restore scrolling
+            
+            // Google Analytics event (if GTM is loaded)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'modal_closed', {
+                    'event_category': 'engagement',
+                    'event_label': 'construction_modal',
+                    'page_location': window.location.pathname
+                });
+            }
         }
     }
     
     // Close modal when clicking close button
-    closeModalBtn.addEventListener('click', hideModal);
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', hideModal);
+    }
     
     // Close modal when clicking outside of it
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) {
-            hideModal();
-        }
-    });
+    if (modal) {
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                hideModal();
+            }
+        });
+    }
     
     // Close modal with escape key
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('show')) {
+        if (e.key === 'Escape' && modal && modal.classList.contains('show')) {
             hideModal();
         }
     });
@@ -80,7 +91,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 gtag('event', 'tee_time_intent', {
                     'event_category': 'conversion',
                     'event_label': 'book_tee_time_clicked',
-                    'value': 1
+                    'value': 1,
+                    'page_location': window.location.pathname
                 });
             }
             
@@ -88,7 +100,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 dataLayer.push({
                     'event': 'tee_time_intent',
                     'button_location': e.target.closest('section')?.id || 'unknown',
-                    'user_engagement': 'high_intent'
+                    'user_engagement': 'high_intent',
+                    'page_path': window.location.pathname
                 });
             }
         });
@@ -101,42 +114,69 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileMenuBtn = document.querySelector('.mobile-menu');
     const navLinks = document.querySelector('.nav-links');
     
-    mobileMenuBtn.addEventListener('click', function() {
-        navLinks.classList.toggle('active');
-        
-        // Toggle aria-expanded for accessibility
-        const isExpanded = navLinks.classList.contains('active');
-        mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
-        
-        // Change icon
-        const icon = mobileMenuBtn.querySelector('i');
-        if (isExpanded) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
-        } else {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
-    });
-    
-    // Close mobile menu when clicking on a link
-    navLinks.addEventListener('click', function(e) {
-        if (e.target.tagName === 'A') {
-            navLinks.classList.remove('active');
-            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            
+            // Toggle aria-expanded for accessibility
+            const isExpanded = navLinks.classList.contains('active');
+            mobileMenuBtn.setAttribute('aria-expanded', isExpanded);
+            
+            // Change icon
             const icon = mobileMenuBtn.querySelector('i');
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
-    });
+            if (icon) {
+                if (isExpanded) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+        
+        // Close mobile menu when clicking on a link
+        navLinks.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A') {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                const icon = mobileMenuBtn.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+        });
+    }
     
-    // Smooth scrolling for navigation links
+    // Set active navigation state based on current page
+    function setActiveNavigation() {
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-links a');
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            const linkPath = new URL(link.href).pathname;
+            
+            if (currentPath === linkPath || 
+                (currentPath === '/' && linkPath === '/') ||
+                (currentPath.includes(linkPath) && linkPath !== '/')) {
+                link.classList.add('active');
+            }
+        });
+    }
+    
+    // Set active navigation on page load
+    setActiveNavigation();
+    
+    // Smooth scrolling for anchor links (same page)
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
-                const navHeight = document.querySelector('.navbar').offsetHeight;
+                const navbar = document.querySelector('.navbar');
+                const navHeight = navbar ? navbar.offsetHeight : 0;
                 const targetPosition = target.offsetTop - navHeight;
                 window.scrollTo({
                     top: targetPosition,
@@ -148,7 +188,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     gtag('event', 'navigation_click', {
                         'event_category': 'engagement',
                         'event_label': this.getAttribute('href'),
-                        'transport_type': 'beacon'
+                        'transport_type': 'beacon',
+                        'page_location': window.location.pathname
                     });
                 }
             }
@@ -156,14 +197,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Enhanced navbar scroll effect
-    window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(30, 58, 95, 0.98)';
-        } else {
-            navbar.style.background = 'rgba(30, 58, 95, 0.95)';
-        }
-    });
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.style.background = 'rgba(30, 58, 95, 0.98)';
+            } else {
+                navbar.style.background = 'rgba(30, 58, 95, 0.95)';
+            }
+        });
+    }
     
     // Intersection Observer for animations
     const observerOptions = {
@@ -182,7 +225,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     gtag('event', 'section_view', {
                         'event_category': 'engagement',
                         'event_label': sectionName,
-                        'non_interaction': true
+                        'non_interaction': true,
+                        'page_location': window.location.pathname
                     });
                 }
             }
@@ -190,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }, observerOptions);
     
     // Observe cards for animation with staggered delays
-    document.querySelectorAll('.feature-card, .hole-card, .stat-card').forEach((el, index) => {
+    document.querySelectorAll('.feature-card, .hole-card, .stat-card, .quick-link-card, .value-card, .booking-card').forEach((el, index) => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
@@ -202,19 +246,22 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const stat = entry.target.querySelector('.stat-number');
-                const finalValue = parseInt(stat.textContent.replace(',', ''));
-                let currentValue = 0;
-                const increment = finalValue / 60;
-                
-                const timer = setInterval(() => {
-                    currentValue += increment;
-                    if (currentValue >= finalValue) {
-                        stat.textContent = finalValue.toLocaleString();
-                        clearInterval(timer);
-                    } else {
-                        stat.textContent = Math.floor(currentValue).toLocaleString();
-                    }
-                }, 25);
+                if (stat && !stat.hasAttribute('data-counted')) {
+                    stat.setAttribute('data-counted', 'true');
+                    const finalValue = parseInt(stat.textContent.replace(/,/g, ''));
+                    let currentValue = 0;
+                    const increment = finalValue / 60;
+                    
+                    const timer = setInterval(() => {
+                        currentValue += increment;
+                        if (currentValue >= finalValue) {
+                            stat.textContent = finalValue.toLocaleString();
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(currentValue).toLocaleString();
+                        }
+                    }, 25);
+                }
             }
         });
     }, { threshold: 0.5 });
@@ -239,14 +286,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Add active class to clicked tab and corresponding container
                 this.classList.add('active');
-                document.getElementById(targetTab).classList.add('active');
+                const targetContainer = document.getElementById(targetTab);
+                if (targetContainer) {
+                    targetContainer.classList.add('active');
+                }
                 
                 // Analytics tracking
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'pricing_tab_click', {
                         'event_category': 'engagement',
                         'event_label': targetTab,
-                        'section': 'pricing'
+                        'section': 'pricing',
+                        'page_location': window.location.pathname
                     });
                 }
             });
@@ -266,14 +317,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Add active class to clicked tab and corresponding section
                 this.classList.add('active');
-                document.getElementById(targetTab).classList.add('active');
+                const targetSection = document.getElementById(targetTab);
+                if (targetSection) {
+                    targetSection.classList.add('active');
+                }
                 
                 // Analytics tracking
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'experience_tab_click', {
                         'event_category': 'engagement',
                         'event_label': targetTab,
-                        'section': 'experience'
+                        'section': 'experience',
+                        'page_location': window.location.pathname
                     });
                 }
             });
@@ -291,7 +346,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     'event_category': 'engagement',
                     'event_label': e.target.href,
                     'link_text': e.target.textContent,
-                    'transport_type': 'beacon'
+                    'transport_type': 'beacon',
+                    'page_location': window.location.pathname
                 });
             }
         }
@@ -309,15 +365,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add click tracking for hole cards with detailed data
         card.addEventListener('click', function() {
-            const holeNumber = this.querySelector('.hole-number').textContent;
-            const holeName = this.querySelector('h4').textContent;
+            const holeNumberEl = this.querySelector('.hole-number');
+            const holeNameEl = this.querySelector('h4');
+            const holeNumber = holeNumberEl ? holeNumberEl.textContent : 'unknown';
+            const holeName = holeNameEl ? holeNameEl.textContent : 'unknown';
             
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'hole_card_interaction', {
                     'event_category': 'engagement',
                     'event_label': `hole_${holeNumber}`,
                     'hole_name': holeName,
-                    'hole_position': index + 1
+                    'hole_position': index + 1,
+                    'page_location': window.location.pathname
                 });
             }
         });
@@ -335,15 +394,44 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add click tracking for experience cards
         card.addEventListener('click', function() {
-            const experienceName = this.querySelector('h3').textContent;
-            const experienceCategory = this.querySelector('.experience-category').textContent;
+            const experienceNameEl = this.querySelector('h3');
+            const experienceCategoryEl = this.querySelector('.experience-category');
+            const experienceName = experienceNameEl ? experienceNameEl.textContent : 'unknown';
+            const experienceCategory = experienceCategoryEl ? experienceCategoryEl.textContent : 'unknown';
             
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'experience_card_interaction', {
                     'event_category': 'engagement',
                     'event_label': experienceName,
                     'experience_category': experienceCategory,
-                    'card_position': index + 1
+                    'card_position': index + 1,
+                    'page_location': window.location.pathname
+                });
+            }
+        });
+    });
+    
+    // Quick link card interactions
+    document.querySelectorAll('.quick-link-card').forEach((card, index) => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+        
+        // Add click tracking for quick link cards
+        card.addEventListener('click', function() {
+            const cardNameEl = this.querySelector('h3');
+            const cardName = cardNameEl ? cardNameEl.textContent : 'unknown';
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'quick_link_interaction', {
+                    'event_category': 'navigation',
+                    'event_label': cardName,
+                    'card_position': index + 1,
+                    'page_location': window.location.pathname
                 });
             }
         });
@@ -358,7 +446,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     gtag('event', 'page_load_time', {
                         'event_category': 'performance',
                         'value': Math.round(perfData.loadEventEnd - perfData.loadEventStart),
-                        'non_interaction': true
+                        'non_interaction': true,
+                        'page_location': window.location.pathname
                     });
                 }
             }
@@ -382,9 +471,61 @@ document.addEventListener('DOMContentLoaded', function() {
                         'event_category': 'engagement',
                         'event_label': `${threshold}%`,
                         'value': threshold,
-                        'non_interaction': true
+                        'non_interaction': true,
+                        'page_location': window.location.pathname
                     });
                 }
+            }
+        });
+    });
+    
+    // Page view tracking for multi-page setup
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'page_view', {
+            'page_title': document.title,
+            'page_location': window.location.href,
+            'page_path': window.location.pathname
+        });
+    }
+    
+    // Track page-specific interactions
+    const currentPage = window.location.pathname;
+    
+    // Contact form interactions (if any forms are added later)
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'form_submit', {
+                    'event_category': 'engagement',
+                    'event_label': 'contact_form',
+                    'page_location': window.location.pathname
+                });
+            }
+        });
+    });
+    
+    // Track phone number clicks
+    document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+        link.addEventListener('click', function() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'phone_click', {
+                    'event_category': 'contact',
+                    'event_label': this.href,
+                    'page_location': window.location.pathname
+                });
+            }
+        });
+    });
+    
+    // Track email clicks
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.addEventListener('click', function() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'email_click', {
+                    'event_category': 'contact',
+                    'event_label': this.href,
+                    'page_location': window.location.pathname
+                });
             }
         });
     });
@@ -415,19 +556,34 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Apply focus trapping to modal
-    const modalContent = modal.querySelector('.modal-content');
-    trapFocus(modalContent);
+    const modalContent = modal?.querySelector('.modal-content');
+    if (modalContent) {
+        trapFocus(modalContent);
+    }
+    
+    // Enhanced error handling for missing elements
+    function safelyAddEventListener(selector, event, handler) {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+            if (element) {
+                element.addEventListener(event, handler);
+            }
+        });
+    }
     
     // Console message for developers
     console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
+    console.log('%cMulti-page website optimized for golf and St. Croix tourism', 'color: #1e3a5f; font-size: 12px;');
     console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
     console.log('%cWebsite optimized for SEO and performance', 'color: #2d8f2d; font-size: 10px;');
     
 });
 
 // Additional utility functions
-function updateModalContent(title, message, email = 'jaspervdz@me.com', phone = '+1 805 338.7681') {
+function updateModalContent(title, message, email = 'info@carambola.golf', phone = '+1-340-778-5638') {
     const modal = document.getElementById('constructionModal');
+    if (!modal) return;
+    
     const titleElement = modal.querySelector('.modal-header h2');
     const messageElement = modal.querySelector('.modal-body p');
     const emailElement = modal.querySelector('[href^="mailto:"]');
@@ -440,7 +596,7 @@ function updateModalContent(title, message, email = 'jaspervdz@me.com', phone = 
         emailElement.textContent = email;
     }
     if (phoneElement) {
-        phoneElement.href = `tel:${phone.replace(/\s/g, '')}`;
+        phoneElement.href = `tel:${phone.replace(/[\s\-()]/g, '')}`;
         phoneElement.textContent = phone;
     }
 }
@@ -448,12 +604,60 @@ function updateModalContent(title, message, email = 'jaspervdz@me.com', phone = 
 // Function to manually show modal (for testing or other purposes)
 function showConstructionModal() {
     const modal = document.getElementById('constructionModal');
-    modal.classList.add('show');
-    document.body.style.overflow = 'hidden';
+    if (modal) {
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 // Function to reset first visit flag (for testing)
 function resetFirstVisit() {
     localStorage.removeItem('carambola-visited');
     console.log('First visit flag reset. Refresh page to see modal again.');
+}
+
+// Function to track custom events (for future use)
+function trackCustomEvent(category, action, label, value = null) {
+    if (typeof gtag !== 'undefined') {
+        const eventData = {
+            'event_category': category,
+            'event_label': label,
+            'page_location': window.location.pathname
+        };
+        
+        if (value !== null) {
+            eventData.value = value;
+        }
+        
+        gtag('event', action, eventData);
+    }
+}
+
+// Function to handle dynamic content loading (for future enhancements)
+function handleDynamicContent() {
+    // Re-initialize observers and event listeners for dynamically loaded content
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    // Observe new cards
+    document.querySelectorAll('.feature-card:not([data-observed]), .hole-card:not([data-observed])').forEach(el => {
+        el.setAttribute('data-observed', 'true');
+        observer.observe(el);
+    });
+}
+
+// Export functions for potential module usage
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        updateModalContent,
+        showConstructionModal,
+        resetFirstVisit,
+        trackCustomEvent,
+        handleDynamicContent
+    };
 }
