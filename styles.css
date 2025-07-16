@@ -228,10 +228,23 @@ body {
     transition: color 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    padding: 0.5rem 0;
+    position: relative;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.active {
     color: var(--accent-gold);
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-gold);
 }
 
 .mobile-menu {
@@ -307,11 +320,77 @@ body {
     letter-spacing: 1px;
     border: 2px solid var(--accent-gold);
     cursor: pointer;
+    margin: 0.5rem;
 }
 
 .cta-button:hover {
     background: transparent;
     color: var(--accent-gold);
+}
+
+.cta-button.primary {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+}
+
+.cta-button.secondary {
+    background: transparent;
+    color: var(--accent-gold);
+    border: 2px solid var(--accent-gold);
+}
+
+.cta-button.secondary:hover {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+}
+
+/* Page Hero Sections */
+.page-hero {
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-light);
+    margin-top: 80px;
+    position: relative;
+}
+
+.course-hero {
+    background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
+                url('/images/carambola-golf-hole-12.jpg') center/cover;
+}
+
+.pricing-hero {
+    background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
+                url('/images/carambola-golf-hole-18.jpg') center/cover;
+}
+
+.stcroix-hero {
+    background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
+                url('/images/carambola-attraction-buck-island.jpg') center/cover;
+}
+
+.contact-hero {
+    background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
+                url('/images/carambola-golf-hole-1.jpg') center/cover;
+}
+
+.page-hero-content {
+    max-width: 800px;
+    padding: 0 2rem;
+}
+
+.page-hero h1 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.page-hero p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    font-style: italic;
 }
 
 /* Heritage Section */
@@ -449,6 +528,92 @@ body {
     font-size: 0.85rem;
     margin-top: 0.5rem;
     line-height: 1.4;
+}
+
+/* Quick Links Section */
+.quick-links {
+    padding: 6rem 0;
+    background: var(--bg-light);
+}
+
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.quick-link-card {
+    background: white;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    transition: all 0.3s ease;
+    border-top: 3px solid var(--accent-gold);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.quick-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+
+.quick-link-icon {
+    font-size: 3rem;
+    color: var(--primary-navy);
+    margin-bottom: 1.5rem;
+}
+
+.quick-link-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-navy);
+    font-weight: 400;
+}
+
+.quick-link-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
+/* Overview Sections */
+.course-overview,
+.pricing-overview,
+.stcroix-overview,
+.contact-overview {
+    padding: 4rem 0;
+    background: var(--bg-cream);
+}
+
+.course-overview-content,
+.pricing-overview-content,
+.stcroix-overview-content,
+.contact-overview-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.course-overview h2,
+.pricing-overview h2,
+.stcroix-overview h2,
+.contact-overview h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: var(--primary-navy);
+    font-weight: 400;
+}
+
+.course-overview p,
+.pricing-overview p,
+.stcroix-overview p,
+.contact-overview p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    color: #666;
 }
 
 /* Hole Gallery */
@@ -765,6 +930,49 @@ body {
     font-size: 1.2rem;
 }
 
+/* Value Proposition */
+.value-proposition {
+    padding: 6rem 0;
+    background: var(--bg-light);
+}
+
+.value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.value-card {
+    background: white;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    transition: all 0.3s ease;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+
+.value-icon {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    margin-bottom: 1.5rem;
+}
+
+.value-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--primary-navy);
+}
+
+.value-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
 /* Experience Section */
 .experience {
     padding: 6rem 0;
@@ -877,6 +1085,15 @@ body {
     font-weight: 400;
 }
 
+.experience-info h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.experience-info h3 a:hover {
+    color: var(--accent-gold);
+}
+
 .experience-rating {
     margin-bottom: 1rem;
 }
@@ -913,6 +1130,140 @@ body {
     color: var(--accent-gold);
     margin-right: 0.5rem;
     width: 16px;
+}
+
+.experience-detail a {
+    color: var(--primary-navy);
+    text-decoration: none;
+}
+
+.experience-detail a:hover {
+    color: var(--accent-gold);
+}
+
+/* Booking Information */
+.booking-info {
+    padding: 6rem 0;
+    background: var(--bg-light);
+}
+
+.booking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.booking-card {
+    background: white;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    transition: all 0.3s ease;
+    border-top: 3px solid var(--accent-gold);
+}
+
+.booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+
+.booking-icon {
+    font-size: 3rem;
+    color: var(--primary-navy);
+    margin-bottom: 1.5rem;
+}
+
+.booking-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-navy);
+    font-weight: 400;
+}
+
+.booking-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
+.booking-card a {
+    color: var(--primary-navy);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.booking-card a:hover {
+    color: var(--accent-gold);
+}
+
+/* Map Section */
+.map-section {
+    padding: 6rem 0;
+    background: var(--bg-cream);
+}
+
+.map-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    margin-top: 3rem;
+    align-items: start;
+}
+
+.map-info h3 {
+    color: var(--primary-navy);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.map-info h4 {
+    color: var(--primary-navy);
+    margin-bottom: 1rem;
+    margin-top: 1.5rem;
+}
+
+.directions ol {
+    margin-left: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.directions li {
+    margin-bottom: 0.5rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.map-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.map-link {
+    display: inline-flex;
+    align-items: center;
+    color: var(--primary-navy);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--accent-gold);
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.map-link:hover {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+}
+
+.map-link i {
+    margin-right: 0.5rem;
+}
+
+.map-embed {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px var(--shadow-soft);
 }
 
 /* Testimonials */
@@ -1039,6 +1390,42 @@ body {
     color: var(--accent-gold);
 }
 
+/* CTA Sections */
+.course-cta,
+.pricing-cta,
+.island-cta,
+.contact-cta {
+    padding: 6rem 0;
+    background: var(--primary-navy);
+    color: var(--text-light);
+}
+
+.cta-content {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.cta-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--accent-gold);
+    font-weight: 400;
+}
+
+.cta-content p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
 /* Footer */
 .footer {
     background: var(--primary-navy);
@@ -1063,6 +1450,22 @@ body {
 .footer p {
     opacity: 0.9;
     margin-bottom: 0.5rem;
+}
+
+.footer-contact {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    font-size: 0.9rem;
+}
+
+.footer-contact a {
+    color: var(--accent-gold);
+    text-decoration: none;
+}
+
+.footer-contact a:hover {
+    text-decoration: underline;
 }
 
 /* Animations */
@@ -1104,7 +1507,10 @@ body {
     }
 
     .features-grid,
-    .stats-grid {
+    .stats-grid,
+    .quick-links-grid,
+    .value-grid,
+    .booking-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
@@ -1113,7 +1519,8 @@ body {
         grid-template-columns: 1fr;
     }
 
-    .gallery-grid {
+    .gallery-grid,
+    .experience-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1132,6 +1539,20 @@ body {
 
     .modal-body p {
         font-size: 1rem;
+    }
+
+    .page-hero {
+        height: 50vh;
+    }
+
+    .map-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
     }
 
     /* Pricing responsive */
@@ -1195,11 +1616,6 @@ body {
         border-bottom-color: var(--accent-gold);
     }
 
-    .experience-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-
     .experience-details {
         flex-direction: column;
         gap: 0.5rem;
@@ -1211,11 +1627,13 @@ body {
         padding: 0 1rem;
     }
 
-    .hero-content {
+    .hero-content,
+    .page-hero-content {
         padding: 0 1rem;
     }
 
-    .features-grid {
+    .features-grid,
+    .quick-links-grid {
         gap: 1.5rem;
     }
 
@@ -1262,7 +1680,8 @@ html {
         display: none;
     }
     
-    .hero {
+    .hero,
+    .page-hero {
         height: auto;
         padding: 2rem 0;
     }
