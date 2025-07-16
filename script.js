@@ -27,6 +27,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 'event_label': 'construction_modal'
             });
         }
+        
+        // Enhanced conversion tracking
+        if (typeof dataLayer !== 'undefined') {
+            dataLayer.push({
+                'event': 'modal_interaction',
+                'modal_type': 'construction',
+                'user_intent': 'information_request'
+            });
+        }
     }
     
     // Hide modal function
@@ -66,18 +75,27 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             showModal();
             
-            // Google Analytics event for CTA clicks
+            // Enhanced conversion tracking for tee time intent
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'cta_click', {
-                    'event_category': 'engagement',
-                    'event_label': 'book_tee_time'
+                gtag('event', 'tee_time_intent', {
+                    'event_category': 'conversion',
+                    'event_label': 'book_tee_time_clicked',
+                    'value': 1
+                });
+            }
+            
+            if (typeof dataLayer !== 'undefined') {
+                dataLayer.push({
+                    'event': 'tee_time_intent',
+                    'button_location': e.target.closest('section')?.id || 'unknown',
+                    'user_engagement': 'high_intent'
                 });
             }
         });
     });
     
     // Show modal on first visit (with a small delay for better UX)
-    setTimeout(showModalOnFirstVisit, 1000);
+    setTimeout(showModalOnFirstVisit, 1500);
     
     // Mobile menu functionality
     const mobileMenuBtn = document.querySelector('.mobile-menu');
@@ -125,11 +143,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     behavior: 'smooth'
                 });
                 
-                // Google Analytics event for navigation
+                // Enhanced navigation tracking
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'navigation_click', {
                         'event_category': 'engagement',
-                        'event_label': this.getAttribute('href')
+                        'event_label': this.getAttribute('href'),
+                        'transport_type': 'beacon'
                     });
                 }
             }
@@ -156,6 +175,16 @@ document.addEventListener('DOMContentLoaded', function() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('fade-in');
+                
+                // Track section visibility for engagement
+                if (typeof gtag !== 'undefined') {
+                    const sectionName = entry.target.id || entry.target.className;
+                    gtag('event', 'section_view', {
+                        'event_category': 'engagement',
+                        'event_label': sectionName,
+                        'non_interaction': true
+                    });
+                }
             }
         });
     }, observerOptions);
@@ -194,32 +223,82 @@ document.addEventListener('DOMContentLoaded', function() {
         statsObserver.observe(stat);
     });
     
-    // Contact form submission tracking (if forms are added later)
-    document.addEventListener('submit', function(e) {
-        if (e.target.matches('form')) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'form_submit', {
-                    'event_category': 'engagement',
-                    'event_label': e.target.id || 'contact_form'
-                });
-            }
-        }
-    });
+    // Pricing and Experience tabs functionality
+    function initializeTabs() {
+        // Pricing tabs
+        const pricingTabs = document.querySelectorAll('.pricing-tab');
+        const pricingContainers = document.querySelectorAll('.pricing-table-container');
+        
+        pricingTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetTab = this.dataset.tab;
+                
+                // Remove active class from all tabs and containers
+                pricingTabs.forEach(t => t.classList.remove('active'));
+                pricingContainers.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding container
+                this.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+                
+                // Analytics tracking
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'pricing_tab_click', {
+                        'event_category': 'engagement',
+                        'event_label': targetTab,
+                        'section': 'pricing'
+                    });
+                }
+            });
+        });
+        
+        // Experience tabs
+        const experienceTabs = document.querySelectorAll('.experience-tab');
+        const experienceSections = document.querySelectorAll('.experience-section');
+        
+        experienceTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                const targetTab = this.dataset.tab;
+                
+                // Remove active class from all tabs and sections
+                experienceTabs.forEach(t => t.classList.remove('active'));
+                experienceSections.forEach(s => s.classList.remove('active'));
+                
+                // Add active class to clicked tab and corresponding section
+                this.classList.add('active');
+                document.getElementById(targetTab).classList.add('active');
+                
+                // Analytics tracking
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'experience_tab_click', {
+                        'event_category': 'engagement',
+                        'event_label': targetTab,
+                        'section': 'experience'
+                    });
+                }
+            });
+        });
+    }
     
-    // Track external link clicks
+    // Initialize tabs
+    initializeTabs();
+    
+    // Track external link clicks with enhanced data
     document.addEventListener('click', function(e) {
         if (e.target.matches('a[href^="http"]') || e.target.matches('a[href^="mailto"]') || e.target.matches('a[href^="tel"]')) {
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'external_link_click', {
                     'event_category': 'engagement',
-                    'event_label': e.target.href
+                    'event_label': e.target.href,
+                    'link_text': e.target.textContent,
+                    'transport_type': 'beacon'
                 });
             }
         }
     });
     
-    // Enhanced hole card interactions
-    document.querySelectorAll('.hole-card').forEach(card => {
+    // Enhanced hole card interactions with tracking
+    document.querySelectorAll('.hole-card').forEach((card, index) => {
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-3px) scale(1.02)';
         });
@@ -228,50 +307,87 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.transform = 'translateY(0) scale(1)';
         });
         
-        // Add click tracking for hole cards
+        // Add click tracking for hole cards with detailed data
         card.addEventListener('click', function() {
             const holeNumber = this.querySelector('.hole-number').textContent;
+            const holeName = this.querySelector('h4').textContent;
+            
             if (typeof gtag !== 'undefined') {
-                gtag('event', 'hole_card_click', {
+                gtag('event', 'hole_card_interaction', {
                     'event_category': 'engagement',
-                    'event_label': `hole_${holeNumber}`
+                    'event_label': `hole_${holeNumber}`,
+                    'hole_name': holeName,
+                    'hole_position': index + 1
                 });
             }
         });
     });
     
-    // Lazy loading for images (if needed)
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.classList.remove('loading');
-                        imageObserver.unobserve(img);
-                    }
-                }
-            });
+    // Experience card interactions
+    document.querySelectorAll('.experience-card').forEach((card, index) => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px) scale(1.02)';
         });
         
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            imageObserver.observe(img);
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
         });
-    }
-    
-    // Service Worker registration for PWA capabilities (optional)
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js')
-                .then(function(registration) {
-                    console.log('ServiceWorker registration successful');
-                })
-                .catch(function(error) {
-                    console.log('ServiceWorker registration failed');
+        
+        // Add click tracking for experience cards
+        card.addEventListener('click', function() {
+            const experienceName = this.querySelector('h3').textContent;
+            const experienceCategory = this.querySelector('.experience-category').textContent;
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'experience_card_interaction', {
+                    'event_category': 'engagement',
+                    'event_label': experienceName,
+                    'experience_category': experienceCategory,
+                    'card_position': index + 1
                 });
+            }
         });
-    }
+    });
+    
+    // Page performance tracking
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            if ('performance' in window) {
+                const perfData = performance.getEntriesByType('navigation')[0];
+                if (typeof gtag !== 'undefined' && perfData) {
+                    gtag('event', 'page_load_time', {
+                        'event_category': 'performance',
+                        'value': Math.round(perfData.loadEventEnd - perfData.loadEventStart),
+                        'non_interaction': true
+                    });
+                }
+            }
+        }, 0);
+    });
+    
+    // Scroll depth tracking
+    let maxScroll = 0;
+    const scrollDepthThresholds = [25, 50, 75, 100];
+    const scrollDepthHit = new Set();
+    
+    window.addEventListener('scroll', function() {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        maxScroll = Math.max(maxScroll, scrollPercent);
+        
+        scrollDepthThresholds.forEach(threshold => {
+            if (scrollPercent >= threshold && !scrollDepthHit.has(threshold)) {
+                scrollDepthHit.add(threshold);
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'scroll_depth', {
+                        'event_category': 'engagement',
+                        'event_label': `${threshold}%`,
+                        'value': threshold,
+                        'non_interaction': true
+                    });
+                }
+            }
+        });
+    });
     
     // Accessibility improvements
     function trapFocus(element) {
@@ -302,28 +418,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalContent = modal.querySelector('.modal-content');
     trapFocus(modalContent);
     
-    // Performance monitoring
-    function logPerformance() {
-        if ('performance' in window) {
-            window.addEventListener('load', function() {
-                setTimeout(function() {
-                    const perfData = performance.getEntriesByType('navigation')[0];
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'page_load_time', {
-                            'event_category': 'performance',
-                            'value': Math.round(perfData.loadEventEnd - perfData.loadEventStart)
-                        });
-                    }
-                }, 0);
-            });
-        }
-    }
-    
-    logPerformance();
-    
     // Console message for developers
     console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
     console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%cWebsite optimized for SEO and performance', 'color: #2d8f2d; font-size: 10px;');
     
 });
 
