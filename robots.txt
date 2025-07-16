@@ -1,0 +1,26 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://carambola.golf/sitemap.xml
+
+# Allow all search engines to crawl images
+User-agent: *
+Allow: /images/
+
+# Block access to any admin or private areas (if you add them later)
+# Disallow: /admin/
+# Disallow: /private/
+
+# Allow common crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Crawl delay (optional - be friendly to servers)
+Crawl-delay: 1
