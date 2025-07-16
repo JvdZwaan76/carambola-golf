@@ -259,7 +259,7 @@ body {
 /* Hero Section */
 .hero {
     height: 90vh;
-    background: linear-gradient(rgba(30, 58, 95, 0.4), rgba(30, 58, 95, 0.4)),
+    background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
                 url('/images/carambola-golf-hole-1.jpg') center/cover;
     display: flex;
     align-items: center;
@@ -267,6 +267,7 @@ body {
     text-align: center;
     color: var(--text-light);
     margin-top: 80px;
+    padding-top: 2rem;
 }
 
 .hero-content {
@@ -280,7 +281,12 @@ body {
     margin-bottom: 1rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    font-weight: 300;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    background: rgba(30, 58, 95, 0.8);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    display: inline-block;
 }
 
 .hero h1 {
@@ -346,13 +352,14 @@ body {
 
 /* Page Hero Sections */
 .page-hero {
-    height: 60vh;
+    min-height: 60vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: var(--text-light);
     margin-top: 80px;
+    padding: 4rem 2rem 2rem;
     position: relative;
 }
 
@@ -1395,35 +1402,39 @@ body {
 .pricing-cta,
 .island-cta,
 .contact-cta {
-    padding: 6rem 0;
+    padding: 6rem 2rem;
     background: var(--primary-navy);
     color: var(--text-light);
+    margin: 0 auto;
 }
 
 .cta-content {
     text-align: center;
     max-width: 700px;
     margin: 0 auto;
+    padding: 2rem;
 }
 
 .cta-content h2 {
     font-size: 2.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     color: var(--accent-gold);
     font-weight: 400;
 }
 
 .cta-content p {
     font-size: 1.1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
     opacity: 0.9;
+    line-height: 1.7;
 }
 
 .cta-buttons {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 1.5rem;
     flex-wrap: wrap;
+    margin-top: 2rem;
 }
 
 /* Footer */
@@ -1460,11 +1471,12 @@ body {
 }
 
 .footer-contact a {
-    color: var(--accent-gold);
+    color: var(--text-light);
     text-decoration: none;
 }
 
 .footer-contact a:hover {
+    color: var(--accent-gold);
     text-decoration: underline;
 }
 
@@ -1506,6 +1518,98 @@ body {
         display: flex;
     }
 
+    /* Hero Section Mobile Fixes */
+    .hero {
+        height: auto;
+        min-height: 80vh;
+        margin-top: 100px;
+        padding: 3rem 1rem 2rem;
+    }
+
+    .hero-content {
+        padding: 2rem 1rem;
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.4rem);
+        margin-bottom: 1.5rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-description {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Page Hero Mobile Fixes */
+    .page-hero {
+        min-height: 50vh;
+        margin-top: 100px;
+        padding: 3rem 1rem 2rem;
+    }
+
+    .page-hero-content {
+        padding: 2rem 1rem;
+    }
+
+    .page-hero h1 {
+        font-size: clamp(2rem, 7vw, 3rem);
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .page-hero p {
+        font-size: 1.1rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    /* CTA Mobile Fixes */
+    .course-cta,
+    .pricing-cta,
+    .island-cta,
+    .contact-cta {
+        padding: 4rem 1rem;
+    }
+
+    .cta-content {
+        padding: 1rem;
+    }
+
+    .cta-content h2 {
+        font-size: clamp(1.8rem, 6vw, 2.2rem);
+        margin-bottom: 1rem;
+    }
+
+    .cta-content p {
+        margin-bottom: 2rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .cta-button {
+        width: 100%;
+        max-width: 300px;
+        padding: 1.2rem 2rem;
+        font-size: 1rem;
+    }
+
     .features-grid,
     .stats-grid,
     .quick-links-grid,
@@ -1541,18 +1645,9 @@ body {
         font-size: 1rem;
     }
 
-    .page-hero {
-        height: 50vh;
-    }
-
     .map-container {
         grid-template-columns: 1fr;
         gap: 2rem;
-    }
-
-    .cta-buttons {
-        flex-direction: column;
-        align-items: center;
     }
 
     /* Pricing responsive */
@@ -1629,7 +1724,22 @@ body {
 
     .hero-content,
     .page-hero-content {
-        padding: 0 1rem;
+        padding: 1rem;
+    }
+
+    .hero {
+        margin-top: 90px;
+        padding: 2rem 0.5rem 1rem;
+    }
+
+    .page-hero {
+        margin-top: 90px;
+        padding: 2rem 0.5rem 1rem;
+    }
+
+    .hero-tagline {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
     }
 
     .features-grid,
@@ -1639,10 +1749,24 @@ body {
 
     .modal-content {
         padding: 1.5rem;
+        margin: 0.5rem;
     }
 
     .golf-decoration {
         bottom: -10px;
+    }
+
+    .cta-content {
+        padding: 0.5rem;
+    }
+
+    .cta-content h2 {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        padding: 0 1rem;
     }
 }
 

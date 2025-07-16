@@ -196,14 +196,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Enhanced navbar scroll effect
+    // Enhanced navbar scroll effect with performance optimization
     const navbar = document.querySelector('.navbar');
     if (navbar) {
-        window.addEventListener('scroll', function() {
+        let ticking = false;
+        
+        function updateNavbar() {
             if (window.scrollY > 50) {
                 navbar.style.background = 'rgba(30, 58, 95, 0.98)';
+                navbar.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
             } else {
                 navbar.style.background = 'rgba(30, 58, 95, 0.95)';
+                navbar.style.boxShadow = 'none';
+            }
+            ticking = false;
+        }
+        
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                requestAnimationFrame(updateNavbar);
+                ticking = true;
             }
         });
     }
@@ -454,12 +466,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 0);
     });
     
-    // Scroll depth tracking
+    // Scroll depth tracking with performance optimization
     let maxScroll = 0;
     const scrollDepthThresholds = [25, 50, 75, 100];
     const scrollDepthHit = new Set();
+    let scrollTicking = false;
     
-    window.addEventListener('scroll', function() {
+    function updateScrollDepth() {
         const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
         maxScroll = Math.max(maxScroll, scrollPercent);
         
@@ -477,6 +490,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+        scrollTicking = false;
+    }
+
+    window.addEventListener('scroll', function() {
+        if (!scrollTicking) {
+            requestAnimationFrame(updateScrollDepth);
+            scrollTicking = true;
+        }
+    });
+    
+    // Mobile-specific optimizations
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
+    
+    // Optimize animations for mobile
+    if (isMobile()) {
+        // Reduce animation complexity on mobile
+        document.body.classList.add('mobile-optimized');
+    }
+    
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(function() {
+            // Recalculate hero heights after orientation change
+            const heroes = document.querySelectorAll('.hero, .page-hero');
+            heroes.forEach(hero => {
+                hero.style.height = 'auto';
+                hero.style.minHeight = isMobile() ? '80vh' : '90vh';
+            });
+        }, 100);
     });
     
     // Page view tracking for multi-page setup

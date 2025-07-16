@@ -4,23 +4,53 @@ Allow: /
 # Sitemap location
 Sitemap: https://carambola.golf/sitemap.xml
 
-# Allow all search engines to crawl images
+# Allow all search engines to crawl pages and images
 User-agent: *
+Allow: /
 Allow: /images/
+Allow: /course.html
+Allow: /pricing.html
+Allow: /st-croix.html
+Allow: /contact.html
 
-# Block access to any admin or private areas (if you add them later)
+# Block access to any admin or private areas (if added later)
 # Disallow: /admin/
 # Disallow: /private/
 
-# Allow common crawlers
+# Allow specific crawlers with enhanced permissions
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Slurp
 Allow: /
-
-# Crawl delay (optional - be friendly to servers)
 Crawl-delay: 1
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Block problematic bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# General crawl delay for politeness
+Crawl-delay: 1
+
+# Host declaration
+Host: carambola.golf
