@@ -10,9 +10,18 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1e3a5f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Carambola Golf">
+    <meta name="msapplication-TileColor" content="#1e3a5f">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
     <!-- Critical Resource Preloading -->
     <link rel="preload" href="styles.css" as="style">
-    <link rel="preload" href="/images/carambola-golf-hole-1.jpg" as="image">
+    <link rel="preload" href="/images/carambola-golf-hole-1.webp" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
     <!-- DNS Prefetch for Performance -->
@@ -40,10 +49,6 @@
     <meta name="msapplication-tooltip" content="Championship Golf in Paradise">
     <meta name="msapplication-starturl" content="/">
     
-    <!-- Preconnect to external domains for performance -->
-    <link rel="preconnect" href="https://www.google-analytics.com">
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    
     <!-- Geographic Tags -->
     <meta name="geo.region" content="VI">
     <meta name="geo.placename" content="St. Croix">
@@ -55,7 +60,7 @@
     <meta property="og:url" content="https://carambola.golf/">
     <meta property="og:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
     <meta property="og:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
-    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-hole-1.jpg">
+    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-hole-1.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Carambola Golf Club Championship Course - Hole 1">
@@ -67,7 +72,7 @@
     <meta property="twitter:url" content="https://carambola.golf/">
     <meta property="twitter:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
     <meta property="twitter:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
-    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-hole-1.jpg">
+    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-hole-1.webp">
     <meta property="twitter:image:alt" content="Carambola Golf Club Championship Course">
     
     <!-- Canonical URL -->
@@ -78,7 +83,8 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <meta name="theme-color" content="#d4af37">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     
     <!-- External CSS -->
     <link rel="stylesheet" href="styles.css">
@@ -96,10 +102,10 @@
         "email": "info@carambola.golf",
         "logo": "https://carambola.golf/images/carambola-golf-logo.png",
         "image": [
-            "https://carambola.golf/images/carambola-golf-hole-1.jpg",
-            "https://carambola.golf/images/carambola-golf-hole-12.jpg",
-            "https://carambola.golf/images/carambola-golf-hole-18.jpg",
-            "https://carambola.golf/images/carambola-golf-clubhouse.jpg"
+            "https://carambola.golf/images/carambola-golf-hole-1.webp",
+            "https://carambola.golf/images/carambola-golf-hole-12.webp",
+            "https://carambola.golf/images/carambola-golf-hole-18.webp",
+            "https://carambola.golf/images/carambola-golf-clubhouse.webp"
         ],
         "address": {
             "@type": "PostalAddress",
@@ -268,6 +274,24 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <div class="golf-loader">
+                <div class="golf-ball"></div>
+                <div class="golf-hole"></div>
+                <div class="golf-flag"></div>
+            </div>
+            <div class="loading-text">
+                <h2>Carambola Golf Club</h2>
+                <p>Loading championship golf experience...</p>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Under Construction Modal -->
     <div id="constructionModal" class="modal-overlay">
         <div class="modal-content">
@@ -319,6 +343,11 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <picture>
+            <source srcset="/images/carambola-golf-hole-1.webp" type="image/webp">
+            <source srcset="/images/carambola-golf-hole-1.jpg" type="image/jpeg">
+            <img src="/images/carambola-golf-hole-1.jpg" alt="Carambola Golf Club Championship Course" class="hero-bg" loading="eager">
+        </picture>
         <div class="hero-content">
             <div class="hero-tagline">Play the Caribbean's Premier Golf Course</div>
             <h1>Carambola Golf Club</h1>
@@ -547,6 +576,13 @@
         </div>
     </footer>
 
+    <!-- Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi"></i>
+        <span>You're offline. Some features may be limited.</span>
+    </div>
+
+    <!-- Scripts -->
     <script src="script.js"></script>
 </body>
 </html>

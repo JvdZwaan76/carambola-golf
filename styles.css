@@ -16,13 +16,205 @@
     --bg-cream: #fefcf7;
     --shadow-soft: rgba(30, 58, 95, 0.1);
     --shadow-medium: rgba(30, 58, 95, 0.2);
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
 }
 
+/* Performance optimizations */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-navy) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+    color: var(--text-light);
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.golf-loader {
+    position: relative;
+    width: 120px;
+    height: 80px;
+    margin: 0 auto 2rem;
+}
+
+.golf-ball {
+    width: 20px;
+    height: 20px;
+    background: var(--text-light);
+    border-radius: 50%;
+    position: absolute;
+    top: 30px;
+    animation: golfBallRoll 2s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.golf-hole {
+    width: 30px;
+    height: 30px;
+    background: #000;
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    top: 25px;
+    border: 3px solid var(--accent-gold);
+}
+
+.golf-flag {
+    width: 2px;
+    height: 40px;
+    background: var(--accent-gold);
+    position: absolute;
+    right: 15px;
+    top: 5px;
+}
+
+.golf-flag::after {
+    content: '';
+    width: 20px;
+    height: 15px;
+    background: var(--accent-gold);
+    position: absolute;
+    top: 0;
+    right: 0;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+@keyframes golfBallRoll {
+    0% {
+        left: 0;
+        transform: rotate(0deg);
+    }
+    50% {
+        left: 70px;
+        transform: rotate(180deg);
+    }
+    100% {
+        left: 70px;
+        transform: rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.loading-text h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-gold);
+    font-weight: 400;
+}
+
+.loading-text p {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-bottom: 2rem;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.loading-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+    border-radius: 2px;
+    animation: loadingProgress 3s ease-in-out infinite;
+}
+
+@keyframes loadingProgress {
+    0% {
+        width: 0%;
+        transform: translateX(-100%);
+    }
+    50% {
+        width: 100%;
+        transform: translateX(0%);
+    }
+    100% {
+        width: 100%;
+        transform: translateX(100%);
+    }
+}
+
+/* Body optimizations */
 body {
     font-family: 'Georgia', 'Times New Roman', serif;
     line-height: 1.6;
     color: var(--text-dark);
     background-color: var(--bg-cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Performance optimizations for images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* Enhanced hero with picture element */
+.hero {
+    height: 90vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-light);
+    margin-top: 80px;
+    padding-top: 2rem;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 0 2rem;
 }
 
 /* Modal Styles */
@@ -39,7 +231,8 @@ body {
     z-index: 10000;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
+    backdrop-filter: blur(5px);
 }
 
 .modal-overlay.show {
@@ -58,7 +251,7 @@ body {
     border: 3px solid var(--accent-gold);
     position: relative;
     transform: scale(0.7);
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-medium);
 }
 
 .modal-overlay.show .modal-content {
@@ -140,7 +333,7 @@ body {
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     text-transform: uppercase;
     letter-spacing: 1px;
 }
@@ -193,7 +386,7 @@ body {
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 0.8rem 0;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     border-bottom: 1px solid var(--accent-gold);
 }
 
@@ -225,7 +418,7 @@ body {
     text-decoration: none;
     font-weight: 400;
     font-size: 0.95rem;
-    transition: color 0.3s ease;
+    transition: color var(--transition-medium);
     text-transform: uppercase;
     letter-spacing: 0.5px;
     padding: 0.5rem 0;
@@ -254,25 +447,6 @@ body {
     color: var(--text-light);
     font-size: 1.5rem;
     cursor: pointer;
-}
-
-/* Hero Section */
-.hero {
-    height: 90vh;
-    background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
-                url('/images/carambola-golf-hole-1.jpg') center/cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: var(--text-light);
-    margin-top: 80px;
-    padding-top: 2rem;
-}
-
-.hero-content {
-    max-width: 900px;
-    padding: 0 2rem;
 }
 
 .hero-tagline {
@@ -321,17 +495,20 @@ body {
     border-radius: 3px;
     font-weight: 600;
     font-size: 1rem;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     text-transform: uppercase;
     letter-spacing: 1px;
     border: 2px solid var(--accent-gold);
     cursor: pointer;
     margin: 0.5rem;
+    transform: translateY(0);
 }
 
 .cta-button:hover {
     background: transparent;
     color: var(--accent-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
 }
 
 .cta-button.primary {
@@ -361,26 +538,27 @@ body {
     margin-top: 80px;
     padding: 4rem 2rem 2rem;
     position: relative;
+    overflow: hidden;
 }
 
 .course-hero {
     background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
-                url('/images/carambola-golf-hole-12.jpg') center/cover;
+                url('/images/carambola-golf-hole-12.webp') center/cover;
 }
 
 .pricing-hero {
     background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
-                url('/images/carambola-golf-hole-18.jpg') center/cover;
+                url('/images/carambola-golf-hole-18.webp') center/cover;
 }
 
 .stcroix-hero {
     background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
-                url('/images/carambola-attraction-buck-island.jpg') center/cover;
+                url('/images/carambola-attraction-buck-island.webp') center/cover;
 }
 
 .contact-hero {
     background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
-                url('/images/carambola-golf-hole-1.jpg') center/cover;
+                url('/images/carambola-golf-hole-1.webp') center/cover;
 }
 
 .page-hero-content {
@@ -467,8 +645,10 @@ body {
     padding: 3rem 2.5rem;
     text-align: center;
     box-shadow: 0 8px 25px var(--shadow-soft);
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     border-top: 3px solid var(--accent-gold);
+    transform: translateY(0);
+    will-change: transform;
 }
 
 .feature-card:hover {
@@ -513,6 +693,13 @@ body {
     padding: 2.5rem 2rem;
     box-shadow: 0 8px 25px var(--shadow-soft);
     border: 1px solid var(--light-gold);
+    transition: transform var(--transition-medium);
+    transform: translateY(0);
+    will-change: transform;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
 }
 
 .stat-number {
@@ -555,11 +742,13 @@ body {
     padding: 3rem 2rem;
     text-align: center;
     box-shadow: 0 8px 25px var(--shadow-soft);
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     border-top: 3px solid var(--accent-gold);
     text-decoration: none;
     color: inherit;
     display: block;
+    transform: translateY(0);
+    will-change: transform;
 }
 
 .quick-link-card:hover {
@@ -652,8 +841,10 @@ body {
     background: white;
     overflow: hidden;
     box-shadow: 0 8px 25px var(--shadow-soft);
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     border: 1px solid #e2e8f0;
+    transform: translateY(0);
+    will-change: transform;
 }
 
 .hole-card:hover {
@@ -752,7 +943,7 @@ body {
     color: #666;
     cursor: pointer;
     border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -815,7 +1006,7 @@ body {
     align-items: center;
     padding: 1.5rem 2rem;
     border-bottom: 1px solid #e2e8f0;
-    transition: background-color 0.3s ease;
+    transition: background-color var(--transition-fast);
 }
 
 .pricing-row:hover {
@@ -955,7 +1146,9 @@ body {
     padding: 3rem 2rem;
     text-align: center;
     box-shadow: 0 8px 25px var(--shadow-soft);
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
+    transform: translateY(0);
+    will-change: transform;
 }
 
 .value-card:hover {
@@ -1014,7 +1207,7 @@ body {
     color: #666;
     cursor: pointer;
     border-bottom: 3px solid transparent;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
@@ -1048,9 +1241,11 @@ body {
     background: white;
     overflow: hidden;
     box-shadow: 0 8px 25px var(--shadow-soft);
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+    transform: translateY(0);
+    will-change: transform;
 }
 
 .experience-card:hover {
@@ -1166,8 +1361,10 @@ body {
     padding: 3rem 2rem;
     text-align: center;
     box-shadow: 0 8px 25px var(--shadow-soft);
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
     border-top: 3px solid var(--accent-gold);
+    transform: translateY(0);
+    will-change: transform;
 }
 
 .booking-card:hover {
@@ -1255,7 +1452,7 @@ body {
     padding: 0.75rem 1rem;
     border: 2px solid var(--accent-gold);
     border-radius: 5px;
-    transition: all 0.3s ease;
+    transition: all var(--transition-medium);
 }
 
 .map-link:hover {
@@ -1363,6 +1560,11 @@ body {
     padding: 1rem;
     background: white;
     box-shadow: 0 3px 10px var(--shadow-soft);
+    transition: transform var(--transition-fast);
+}
+
+.contact-item:hover {
+    transform: translateY(-2px);
 }
 
 .contact-item i {
@@ -1480,6 +1682,37 @@ body {
     text-decoration: underline;
 }
 
+/* Offline Indicator */
+.offline-indicator {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff6b6b;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    z-index: 1001;
+    font-size: 0.9rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    animation: slideDown 0.3s ease;
+}
+
+.offline-indicator i {
+    margin-right: 0.5rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
@@ -1494,6 +1727,17 @@ body {
 
 .fade-in {
     animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Performance optimizations */
+.feature-card,
+.stat-card,
+.quick-link-card,
+.value-card,
+.booking-card,
+.hole-card,
+.experience-card {
+    contain: layout style paint;
 }
 
 /* Responsive Design */
@@ -1715,6 +1959,24 @@ body {
         flex-direction: column;
         gap: 0.5rem;
     }
+
+    /* Preloader mobile optimizations */
+    .preloader-content {
+        padding: 1rem;
+    }
+
+    .golf-loader {
+        width: 100px;
+        height: 60px;
+    }
+
+    .loading-text h2 {
+        font-size: 1.5rem;
+    }
+
+    .loading-text p {
+        font-size: 0.9rem;
+    }
 }
 
 @media (max-width: 480px) {
@@ -1768,6 +2030,23 @@ body {
         font-size: clamp(1.8rem, 5vw, 2.5rem);
         padding: 0 1rem;
     }
+
+    .preloader-content {
+        padding: 0.5rem;
+    }
+
+    .golf-loader {
+        width: 80px;
+        height: 50px;
+    }
+
+    .loading-text h2 {
+        font-size: 1.3rem;
+    }
+
+    .loading-text p {
+        font-size: 0.8rem;
+    }
 }
 
 /* Smooth scrolling */
@@ -1800,6 +2079,7 @@ html {
 @media print {
     .navbar,
     .modal-overlay,
+    .preloader,
     .cta-button {
         display: none;
     }
@@ -1813,5 +2093,28 @@ html {
     body {
         font-size: 12pt;
         line-height: 1.4;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .preloader {
+        transition: none;
+    }
+    
+    .golf-ball,
+    .loading-progress,
+    .modal-icon,
+    .golf-decoration i {
+        animation: none;
     }
 }

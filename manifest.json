@@ -1,0 +1,134 @@
+{
+    "name": "Carambola Golf Club",
+    "short_name": "Carambola Golf",
+    "description": "Championship golf designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands. Experience world-class golf in tropical paradise.",
+    "start_url": "/",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "theme_color": "#1e3a5f",
+    "background_color": "#fefcf7",
+    "lang": "en-US",
+    "dir": "ltr",
+    "categories": ["sports", "travel", "lifestyle", "entertainment"],
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/apple-touch-icon.png",
+            "sizes": "180x180",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/favicon-32x32.png",
+            "sizes": "32x32",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/favicon-16x16.png",
+            "sizes": "16x16",
+            "type": "image/png",
+            "purpose": "any"
+        }
+    ],
+    "screenshots": [
+        {
+            "src": "/images/carambola-golf-hole-1.webp",
+            "sizes": "1200x800",
+            "type": "image/webp",
+            "label": "Championship golf course designed by Robert Trent Jones Sr."
+        },
+        {
+            "src": "/images/carambola-golf-hole-12.webp",
+            "sizes": "1200x800",
+            "type": "image/webp",
+            "label": "Signature hole with spectacular Caribbean views"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Book Tee Time",
+            "short_name": "Book",
+            "description": "Book your championship golf experience",
+            "url": "/contact.html",
+            "icons": [
+                {
+                    "src": "/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "View Course",
+            "short_name": "Course",
+            "description": "Explore all 18 championship holes",
+            "url": "/course.html",
+            "icons": [
+                {
+                    "src": "/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Pricing",
+            "short_name": "Rates",
+            "description": "View golf rates and membership packages",
+            "url": "/pricing.html",
+            "icons": [
+                {
+                    "src": "/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "St. Croix Guide",
+            "short_name": "Island",
+            "description": "Discover dining and attractions in St. Croix",
+            "url": "/st-croix.html",
+            "icons": [
+                {
+                    "src": "/android-chrome-192x192.png",
+                    "sizes": "192x192",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ],
+    "related_applications": [],
+    "prefer_related_applications": false,
+    "protocol_handlers": [
+        {
+            "protocol": "tel",
+            "url": "/contact.html?phone=%s"
+        },
+        {
+            "protocol": "mailto",
+            "url": "/contact.html?email=%s"
+        }
+    ],
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "launch_handler": {
+        "client_mode": "navigate-existing"
+    },
+    "handle_links": "preferred",
+    "capture_links": "existing-client-navigate"
+}
