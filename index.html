@@ -5,6 +5,127 @@
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJ3H2GJ4SS', {
+            // Enhanced measurement settings for granular data
+            enhanced_measurement: true,
+            scroll_threshold: 90,
+            send_page_view: true,
+            // Custom parameters for golf course analytics
+            custom_map: {
+                'golf_course_section': 'custom_parameter_1',
+                'user_intent': 'custom_parameter_2',
+                'booking_stage': 'custom_parameter_3'
+            }
+        });
+
+        // Enhanced Analytics Tracking Functions
+        function trackGolfEvent(action, section, details = {}) {
+            gtag('event', action, {
+                event_category: 'Golf Course Interaction',
+                event_label: section,
+                golf_course_section: section,
+                ...details
+            });
+        }
+
+        function trackBookingIntent(stage, method = '') {
+            gtag('event', 'booking_intent', {
+                event_category: 'Booking Funnel',
+                event_label: stage,
+                booking_stage: stage,
+                contact_method: method,
+                value: stage === 'tee_time_request' ? 115 : 0
+            });
+        }
+
+        function trackUserEngagement(action, element) {
+            gtag('event', action, {
+                event_category: 'User Engagement',
+                event_label: element,
+                engagement_time_msec: Date.now()
+            });
+        }
+
+        function trackScrollDepth() {
+            let maxScroll = 0;
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                    maxScroll = scrollPercent;
+                    gtag('event', 'scroll', {
+                        event_category: 'User Engagement',
+                        event_label: scrollPercent + '%',
+                        value: scrollPercent
+                    });
+                }
+            });
+        }
+
+        // Initialize enhanced tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            trackScrollDepth();
+            
+            // Track CTA button clicks
+            document.querySelectorAll('.cta-button, .book-tee-time').forEach(button => {
+                button.addEventListener('click', function() {
+                    trackBookingIntent('cta_click', 'website_button');
+                });
+            });
+
+            // Track phone number clicks
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackBookingIntent('phone_click', 'direct_call');
+                });
+            });
+
+            // Track email clicks
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackBookingIntent('email_click', 'direct_email');
+                });
+            });
+
+            // Track navigation clicks
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackUserEngagement('navigation_click', this.textContent.trim());
+                });
+            });
+
+            // Track feature card interactions
+            document.querySelectorAll('.feature-card, .quick-link-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h3')?.textContent || 'Unknown Feature';
+                    trackGolfEvent('feature_interaction', title);
+                });
+            });
+
+            // Track modal interactions
+            const modal = document.getElementById('constructionModal');
+            if (modal) {
+                // Track modal shows
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.target.classList.contains('show')) {
+                            gtag('event', 'modal_view', {
+                                event_category: 'User Engagement',
+                                event_label: 'booking_modal'
+                            });
+                        }
+                    });
+                });
+                observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+            }
+        });
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">

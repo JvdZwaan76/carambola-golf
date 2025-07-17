@@ -5,6 +5,303 @@
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJ3H2GJ4SS', {
+            enhanced_measurement: true,
+            scroll_threshold: 90,
+            send_page_view: true,
+            page_title: 'Golf Pricing & Membership Packages | Carambola Golf Club',
+            page_location: window.location.href,
+            content_group1: 'Pricing Information',
+            custom_map: {
+                'pricing_category': 'custom_parameter_1',
+                'price_point': 'custom_parameter_2',
+                'membership_type': 'custom_parameter_3'
+            }
+        });
+
+        // Pricing page specific tracking
+        function trackPricingInteraction(category, item, price = 0) {
+            gtag('event', 'pricing_interaction', {
+                event_category: 'Pricing Engagement',
+                event_label: item,
+                pricing_category: category,
+                price_point: price,
+                value: price,
+                currency: 'USD'
+            });
+        }
+
+        function trackMembershipInterest(type, price) {
+            gtag('event', 'membership_interest', {
+                event_category: 'Membership',
+                event_label: type,
+                membership_type: type,
+                value: price,
+                currency: 'USD'
+            });
+        }
+
+        function trackBookingIntent(stage, source = '', value = 0) {
+            gtag('event', 'booking_intent', {
+                event_category: 'Booking Funnel',
+                event_label: stage,
+                booking_stage: stage,
+                source_page: 'pricing',
+                trigger_source: source,
+                value: value,
+                currency: 'USD'
+            });
+        }
+
+        function trackPriceComparison(items) {
+            gtag('event', 'price_comparison', {
+                event_category: 'Shopping Behavior',
+                event_label: items.join(' vs '),
+                compared_items: items.length,
+                pricing_category: 'comparison'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track pricing tab interactions
+            document.querySelectorAll('.pricing-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    gtag('event', 'pricing_tab_click', {
+                        event_category: 'Navigation',
+                        event_label: tabName,
+                        pricing_category: tabName
+                    });
+                });
+            });
+
+            // Track pricing row interactions with detailed data
+            document.querySelectorAll('.pricing-row').forEach(row => {
+                const name = row.querySelector('.pricing-name')?.textContent || 'Unknown';
+                const priceElement = row.querySelector('.pricing-cost');
+                const price = priceElement ? parseInt(priceElement.textContent) : 0;
+                const category = row.closest('.pricing-table-container')?.id || 'unknown';
+                
+                // Track hover for interest measurement
+                row.addEventListener('mouseenter', function() {
+                    trackPricingInteraction(category, name, price);
+                });
+
+                // Track clicks for serious interest
+                row.addEventListener('click', function() {
+                    if (this.classList.contains('featured')) {
+                        gtag('event', 'featured_pricing_click', {
+                            event_category: 'Premium Interest',
+                            event_label: name,
+                            value: price,
+                            currency: 'USD'
+                        });
+                    }
+
+                    // Track as potential booking intent
+                    trackBookingIntent('pricing_item_click', name, price);
+                    
+                    // Track membership interest specifically
+                    if (category === 'membership') {
+                        trackMembershipInterest(name, price);
+                    }
+                });
+            });
+
+            // Track package card interactions
+            document.querySelectorAll('.package-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h4')?.textContent || 'Unknown Package';
+                    const prices = Array.from(this.querySelectorAll('.package-price')).map(p => 
+                        parseInt(p.textContent.replace('$', ''))
+                    );
+                    const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+                    
+                    gtag('event', 'package_interest', {
+                        event_category: 'Package Deals',
+                        event_label: title,
+                        value: avgPrice,
+                        currency: 'USD',
+                        pricing_category: 'packages'
+                    });
+                });
+            });
+
+            // Track value proposition engagement
+            document.querySelectorAll('.value-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h3')?.textContent || 'Unknown Value';
+                    gtag('event', 'value_proposition_click', {
+                        event_category: 'Value Interest',
+                        event_label: title.toLowerCase().replace(/\s+/g, '_'),
+                        pricing_category: 'value_props'
+                    });
+                });
+            });
+
+            // Track CTA button performance from pricing page
+            document.querySelectorAll('.cta-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const buttonText = this.textContent.trim();
+                    trackBookingIntent('pricing_cta_click', buttonText, 115);
+                    
+                    // Track as high-value conversion
+                    gtag('event', 'conversion', {
+                        send_to: 'G-YJ3H2GJ4SS/pricing-interest',
+                        value: 115,
+                        currency: 'USD'
+                    });
+                });
+            });
+
+            // Track phone/email clicks from pricing page
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackBookingIntent('pricing_phone_click', 'phone_contact', 115);
+                    gtag('event', 'conversion', {
+                        send_to: 'G-YJ3H2GJ4SS/phone-contact',
+                        value: 115,
+                        currency: 'USD'
+                    });
+                });
+            });
+
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackBookingIntent('pricing_email_click', 'email_contact', 115);
+                });
+            });
+
+            // Track price comparison behavior
+            let viewedPrices = new Set();
+            let priceInteractions = [];
+            
+            document.querySelectorAll('.pricing-row').forEach(row => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const name = entry.target.querySelector('.pricing-name')?.textContent || 'Unknown';
+                            const price = entry.target.querySelector('.pricing-cost')?.textContent || '0';
+                            
+                            viewedPrices.add(name);
+                            priceInteractions.push({
+                                name,
+                                price: parseInt(price),
+                                timestamp: Date.now()
+                            });
+                            
+                            // Track comparison behavior after viewing 3+ items
+                            if (viewedPrices.size >= 3) {
+                                const recentItems = priceInteractions
+                                    .filter(item => Date.now() - item.timestamp < 30000) // last 30 seconds
+                                    .map(item => item.name);
+                                
+                                if (recentItems.length >= 3) {
+                                    trackPriceComparison(recentItems.slice(-3));
+                                }
+                            }
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(row);
+            });
+
+            // Track section engagement time
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionName = entry.target.id || entry.target.className.split(' ')[0];
+                        const startTime = Date.now();
+                        
+                        const exitObserver = new IntersectionObserver((exitEntries) => {
+                            exitEntries.forEach(exitEntry => {
+                                if (!exitEntry.isIntersecting) {
+                                    const timeSpent = Date.now() - startTime;
+                                    if (timeSpent > 5000) { // Only track if spent more than 5 seconds
+                                        gtag('event', 'pricing_section_engagement', {
+                                            event_category: 'Content Engagement',
+                                            event_label: sectionName,
+                                            value: Math.round(timeSpent / 1000),
+                                            metric_type: 'time_seconds'
+                                        });
+                                    }
+                                    exitObserver.disconnect();
+                                }
+                            });
+                        }, { threshold: 0.1 });
+                        
+                        exitObserver.observe(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+
+            // Observe key pricing sections
+            document.querySelectorAll('.pricing, .value-proposition').forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+            // Track most popular pricing items
+            let priceClickCounts = {};
+            document.addEventListener('click', function(e) {
+                const pricingRow = e.target.closest('.pricing-row');
+                if (pricingRow) {
+                    const name = pricingRow.querySelector('.pricing-name')?.textContent || 'Unknown';
+                    priceClickCounts[name] = (priceClickCounts[name] || 0) + 1;
+                    
+                    // Send popular pricing data every 5 clicks
+                    const totalClicks = Object.values(priceClickCounts).reduce((a, b) => a + b, 0);
+                    if (totalClicks % 5 === 0) {
+                        const mostPopular = Object.keys(priceClickCounts).reduce((a, b) => 
+                            priceClickCounts[a] > priceClickCounts[b] ? a : b
+                        );
+                        
+                        gtag('event', 'popular_pricing_tracking', {
+                            event_category: 'User Preference',
+                            event_label: mostPopular,
+                            value: priceClickCounts[mostPopular],
+                            pricing_category: 'popularity'
+                        });
+                    }
+                }
+            });
+
+            // Track scroll depth specifically for pricing content
+            let maxScroll = 0;
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                    maxScroll = scrollPercent;
+                    gtag('event', 'scroll', {
+                        event_category: 'Page Engagement',
+                        event_label: 'Pricing Page - ' + scrollPercent + '%',
+                        value: scrollPercent,
+                        page_section: 'pricing'
+                    });
+                }
+            });
+
+            // Track pricing page exit intent
+            let hasLeftPricing = false;
+            document.addEventListener('mouseleave', function(e) {
+                if (e.clientY <= 0 && !hasLeftPricing) {
+                    hasLeftPricing = true;
+                    gtag('event', 'pricing_exit_intent', {
+                        event_category: 'User Behavior',
+                        event_label: 'mouse_leave',
+                        pricing_category: 'exit_intent'
+                    });
+                }
+            });
+        });
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">

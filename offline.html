@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline - Carambola Golf Club</title>
+    <meta name="theme-color" content="#1e3a5f">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    
+    <!-- Google tag (gtag.js) - Only loads when online -->
+    <script>
+        // Only load GA4 when online
+        if (navigator.onLine) {
+            const script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS';
+            document.head.appendChild(script);
+            
+            script.onload = function() {
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-YJ3H2GJ4SS', {
+                    enhanced_measurement: true,
+                    page_title: 'Offline - Carambola Golf Club',
+                    page_location: window.location.href,
+                    content_group1: 'Offline Experience',
+                    custom_map: {
+                        'offline_action': 'custom_parameter_1',
+                        'connection_status': 'custom_parameter_2',
+                        'offline_duration': 'custom_parameter_3'
+                    }
+                });
+
+                // Offline-specific tracking
+                function trackOfflineEvent(action, details = {}) {
+                    gtag('event', action, {
+                        event_category: 'Offline Experience',
+                        event_label: action,
+                        offline_action: action,
+                        connection_status: navigator.onLine ? 'online' : 'offline',
+                        ...details
+                    });
+                }
+
+                // Track offline page view
+                trackOfflineEvent('offline_page_view');
+
+                // Track attempts to reconnect
+                document.addEventListener('click', function(e) {
+                    if (e.target.closest('#checkConnection, .retry-button')) {
+                        trackOfflineEvent('reconnection_attempt');
+                    }
+                });
+
+                // Track offline navigation attempts
+                document.querySelectorAll('.page-list a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        trackOfflineEvent('offline_navigation', {
+                            destination: this.getAttribute('href')
+                        });
+                    });
+                });
+
+                // Track connection restoration
+                window.addEventListener('online', function() {
+                    trackOfflineEvent('connection_restored');
+                });
+
+                // Track offline duration
+                const offlineStartTime = Date.now();
+                window.addEventListener('online', function() {
+                    const offlineDuration = Date.now() - offlineStartTime;
+                    gtag('event', 'offline_duration', {
+                        event_category: 'Offline Experience',
+                        event_label: 'total_offline_time',
+                        value: Math.round(offlineDuration / 1000), // seconds
+                        offline_duration: Math.round(offlineDuration / 1000)
+                    });
+                });
+            };
+        }
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2c5282 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .offline-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .offline-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            color: #d4af37;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #d4af37;
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .offline-message {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .offline-message h2 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .offline-message p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .cached-pages {
+            text-align: left;
+            margin-top: 2rem;
+        }
+
+        .cached-pages h3 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .page-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .page-list li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 3px solid #d4af37;
+        }
+
+        .page-list a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+        }
+
+        .page-list a:hover {
+            color: #d4af37;
+        }
+
+        .retry-button {
+            background: #d4af37;
+            color: #1e3a5f;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 1rem;
+        }
+
+        .retry-button:hover {
+            background: #f4e7c1;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .connection-status {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .connection-status.offline {
+            background: rgba(255, 107, 107, 0.2);
+            border: 1px solid #ff6b6b;
+        }
+
+        .connection-status.online {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid #4caf50;
+        }
+
+        .golf-animation {
+            margin: 2rem auto;
+            width: 100px;
+            height: 50px;
+            position: relative;
+        }
+
+        .golf-ball {
+            width: 15px;
+            height: 15px;
+            background: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            animation: golfRoll 3s ease-in-out infinite;
+        }
+
+        @keyframes golfRoll {
+            0% {
+                left: 0;
+                transform: translateY(-50%) rotate(0deg);
+            }
+            50% {
+                left: 85px;
+                transform: translateY(-50%) rotate(180deg);
+            }
+            100% {
+                left: 0;
+                transform: translateY(-50%) rotate(360deg);
+            }
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .contact-info h3 {
+            color: #d4af37;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0.5rem 0;
+            gap: 0.5rem;
+        }
+
+        .contact-item a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-item a:hover {
+            color: #d4af37;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .offline-icon {
+                font-size: 3rem;
+            }
+            
+            .page-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .offline-message {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="offline-icon">⛳</div>
+        <h1>You're Offline</h1>
+        <p class="subtitle">No internet connection detected</p>
+        
+        <div class="offline-message">
+            <h2>Don't worry, you can still browse cached pages!</h2>
+            <p>While you're offline, you can still access previously visited pages from Carambola Golf Club. Once your connection is restored, you'll have access to all features again.</p>
+            
+            <div class="golf-animation">
+                <div class="golf-ball"></div>
+            </div>
+        </div>
+
+        <div class="cached-pages">
+            <h3>Available Offline Pages</h3>
+            <ul class="page-list">
+                <li><a href="/">🏠 Home</a></li>
+                <li><a href="/course.html">⛳ The Course</a></li>
+                <li><a href="/pricing.html">💰 Pricing</a></li>
+                <li><a href="/st-croix.html">🏝️ Experience St. Croix</a></li>
+                <li><a href="/contact.html">📞 Contact</a></li>
+            </ul>
+        </div>
+
+        <button class="retry-button" id="checkConnection" onclick="checkConnection()">
+            🔄 Check Connection
+        </button>
+
+        <div id="connectionStatus" class="connection-status offline">
+            ❌ You're currently offline
+        </div>
+
+        <div class="contact-info">
+            <h3>Contact Information</h3>
+            <div class="contact-item">
+                📞 <a href="tel:+13407785638">+1-340-778-5638</a>
+            </div>
+            <div class="contact-item">
+                ✉️ <a href="mailto:info@carambola.golf">info@carambola.golf</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check connection status
+        function updateConnectionStatus() {
+            const statusEl = document.getElementById('connectionStatus');
+            if (navigator.onLine) {
+                statusEl.className = 'connection-status online';
+                statusEl.innerHTML = '✅ Connection restored!';
+                
+                // Track connection restored (if GA4 is available)
+                if (window.gtag) {
+                    gtag('event', 'connection_restored', {
+                        event_category: 'Offline Experience',
+                        event_label: 'connection_restored_from_offline_page'
+                    });
+                }
+                
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                statusEl.className = 'connection-status offline';
+                statusEl.innerHTML = '❌ You\'re currently offline';
+            }
+        }
+
+        function checkConnection() {
+            updateConnectionStatus();
+            
+            // Try to fetch a small resource to verify connectivity
+            if (navigator.onLine) {
+                fetch('/favicon.ico', { 
+                    mode: 'no-cors',
+                    cache: 'no-cache'
+                }).then(() => {
+                    window.location.reload();
+                }).catch(() => {
+                    const statusEl = document.getElementById('connectionStatus');
+                    statusEl.className = 'connection-status offline';
+                    statusEl.innerHTML = '❌ Still having connection issues';
+                });
+            }
+        }
+
+        // Listen for connection changes
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+
+        // Initial status check
+        updateConnectionStatus();
+
+        // Periodic connection check
+        setInterval(() => {
+            if (navigator.onLine) {
+                checkConnection();
+            }
+        }, 5000);
+
+        // Service Worker messaging
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.addEventListener('message', event => {
+                if (event.data && event.data.type === 'CACHE_UPDATED') {
+                    const statusEl = document.getElementById('connectionStatus');
+                    statusEl.className = 'connection-status online';
+                    statusEl.innerHTML = '✅ Content updated! Refreshing...';
+                    setTimeout(() => window.location.reload(), 1000);
+                }
+            });
+        }
+
+        // Track offline page interactions (when GA4 loads)
+        document.addEventListener('click', function(e) {
+            if (window.gtag) {
+                const link = e.target.closest('a');
+                if (link && link.href.includes('/')) {
+                    gtag('event', 'offline_page_navigation', {
+                        event_category: 'Offline Experience',
+                        event_label: link.href,
+                        destination_page: link.href
+                    });
+                }
+            }
+        });
+
+        console.log('🏌️ Carambola Golf Club - Offline Mode');
+        console.log('📱 This page works offline thanks to service workers');
+    </script>
+</body>
+</html>

@@ -5,6 +5,361 @@
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJ3H2GJ4SS', {
+            enhanced_measurement: true,
+            scroll_threshold: 90,
+            send_page_view: true,
+            page_title: 'Experience St. Croix | Dining, Attractions & Activities',
+            page_location: window.location.href,
+            content_group1: 'Tourism Information',
+            custom_map: {
+                'attraction_category': 'custom_parameter_1',
+                'activity_type': 'custom_parameter_2',
+                'tourism_interest': 'custom_parameter_3'
+            }
+        });
+
+        // St. Croix page specific tracking
+        function trackAttractionInterest(category, name, rating = 5) {
+            gtag('event', 'attraction_interest', {
+                event_category: 'Tourism Engagement',
+                event_label: name,
+                attraction_category: category,
+                rating: rating,
+                tourism_interest: category
+            });
+        }
+
+        function trackExternalLink(destination, category) {
+            gtag('event', 'external_link_click', {
+                event_category: 'External Navigation',
+                event_label: destination,
+                attraction_category: category,
+                destination_url: destination
+            });
+        }
+
+        function trackVacationIntent(stage, activity = '') {
+            gtag('event', 'vacation_intent', {
+                event_category: 'Vacation Planning',
+                event_label: stage,
+                activity_type: activity,
+                tourism_interest: 'vacation_planning',
+                value: stage === 'golf_vacation_interest' ? 500 : 0
+            });
+        }
+
+        function trackTabEngagement(tabName) {
+            gtag('event', 'tourism_tab_click', {
+                event_category: 'Content Navigation',
+                event_label: tabName,
+                attraction_category: tabName,
+                tourism_interest: tabName
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track experience tab interactions
+            document.querySelectorAll('.experience-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    trackTabEngagement(tabName);
+                });
+            });
+
+            // Track experience card interactions with detailed data
+            document.querySelectorAll('.experience-card').forEach(card => {
+                const name = card.querySelector('h3')?.textContent || 'Unknown Attraction';
+                const category = card.querySelector('.experience-category')?.textContent || 'General';
+                const rating = card.querySelectorAll('.fa-star').length;
+                const website = card.querySelector('a[href*="http"]')?.href;
+                
+                // Track hover for interest measurement
+                card.addEventListener('mouseenter', function() {
+                    trackAttractionInterest(category.toLowerCase(), name, rating);
+                });
+
+                // Track clicks for serious interest
+                card.addEventListener('click', function() {
+                    gtag('event', 'attraction_click', {
+                        event_category: 'Attraction Engagement',
+                        event_label: name,
+                        attraction_category: category.toLowerCase(),
+                        rating: rating,
+                        has_website: !!website
+                    });
+
+                    // Track as vacation planning interest
+                    trackVacationIntent('attraction_interest', name);
+                });
+
+                // Track external website clicks
+                const externalLinks = card.querySelectorAll('a[href*="http"]');
+                externalLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const destination = this.href;
+                        trackExternalLink(destination, category.toLowerCase());
+                        
+                        // Track as high-value engagement
+                        gtag('event', 'tourism_website_visit', {
+                            event_category: 'External Engagement',
+                            event_label: name,
+                            destination_url: destination,
+                            attraction_category: category.toLowerCase()
+                        });
+                        
+                        // Open link after tracking
+                        setTimeout(() => {
+                            window.open(destination, '_blank');
+                        }, 100);
+                    });
+                });
+            });
+
+            // Track CTA interactions for golf vacation packages
+            document.querySelectorAll('.cta-button, .book-tee-time').forEach(button => {
+                button.addEventListener('click', function() {
+                    const buttonText = this.textContent.trim();
+                    trackVacationIntent('golf_vacation_interest', 'golf_and_tourism');
+                    
+                    // Track as high-value conversion
+                    gtag('event', 'conversion', {
+                        send_to: 'G-YJ3H2GJ4SS/vacation-package',
+                        value: 500,
+                        currency: 'USD'
+                    });
+                });
+            });
+
+            // Track phone/email clicks from tourism page
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackVacationIntent('tourism_phone_contact', 'golf_vacation');
+                    gtag('event', 'conversion', {
+                        send_to: 'G-YJ3H2GJ4SS/phone-contact',
+                        value: 500,
+                        currency: 'USD'
+                    });
+                });
+            });
+
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackVacationIntent('tourism_email_contact', 'golf_vacation');
+                });
+            });
+
+            // Track most popular attractions
+            let attractionViews = {};
+            document.querySelectorAll('.experience-card').forEach(card => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const name = entry.target.querySelector('h3')?.textContent || 'Unknown';
+                            const category = entry.target.querySelector('.experience-category')?.textContent || 'General';
+                            
+                            attractionViews[name] = (attractionViews[name] || 0) + 1;
+                            
+                            // Track view
+                            gtag('event', 'attraction_view', {
+                                event_category: 'Content Engagement',
+                                event_label: name,
+                                attraction_category: category.toLowerCase(),
+                                view_count: attractionViews[name]
+                            });
+                        }
+                    });
+                }, { threshold: 0.6 });
+                
+                observer.observe(card);
+            });
+
+            // Track section engagement and preferences
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.id;
+                        const sectionName = sectionId || 'unknown_section';
+                        
+                        gtag('event', 'tourism_section_view', {
+                            event_category: 'Content Engagement',
+                            event_label: sectionName,
+                            attraction_category: sectionName
+                        });
+                        
+                        // Track time spent in section
+                        const startTime = Date.now();
+                        const exitObserver = new IntersectionObserver((exitEntries) => {
+                            exitEntries.forEach(exitEntry => {
+                                if (!exitEntry.isIntersecting) {
+                                    const timeSpent = Date.now() - startTime;
+                                    if (timeSpent > 3000) { // Only track if spent more than 3 seconds
+                                        gtag('event', 'tourism_section_engagement', {
+                                            event_category: 'Content Engagement',
+                                            event_label: sectionName,
+                                            value: Math.round(timeSpent / 1000),
+                                            metric_type: 'time_seconds'
+                                        });
+                                    }
+                                    exitObserver.disconnect();
+                                }
+                            });
+                        }, { threshold: 0.1 });
+                        
+                        exitObserver.observe(entry.target);
+                    }
+                });
+            }, { threshold: 0.4 });
+
+            // Observe key sections
+            document.querySelectorAll('.experience-section, .stcroix-overview').forEach(section => {
+                sectionObserver.observe(section);
+            });
+
+            // Track user preferences based on tab usage
+            let tabUsage = {};
+            document.addEventListener('click', function(e) {
+                const tab = e.target.closest('.experience-tab');
+                if (tab) {
+                    const tabName = tab.getAttribute('data-tab');
+                    tabUsage[tabName] = (tabUsage[tabName] || 0) + 1;
+                    
+                    // Send preference data every 3 tab clicks
+                    const totalClicks = Object.values(tabUsage).reduce((a, b) => a + b, 0);
+                    if (totalClicks % 3 === 0) {
+                        const mostUsed = Object.keys(tabUsage).reduce((a, b) => 
+                            tabUsage[a] > tabUsage[b] ? a : b
+                        );
+                        
+                        gtag('event', 'tourism_preference_tracking', {
+                            event_category: 'User Preference',
+                            event_label: mostUsed,
+                            value: tabUsage[mostUsed],
+                            tourism_interest: mostUsed
+                        });
+                    }
+                }
+            });
+
+            // Track vacation planning funnel
+            let vacationSteps = [];
+            
+            // Track different steps in vacation planning
+            document.querySelectorAll('.experience-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const category = this.querySelector('.experience-category')?.textContent || 'General';
+                    vacationSteps.push(category);
+                    
+                    // Track comprehensive vacation planning after 3+ activities viewed
+                    if (vacationSteps.length >= 3) {
+                        const uniqueCategories = [...new Set(vacationSteps)];
+                        if (uniqueCategories.length >= 2) {
+                            gtag('event', 'comprehensive_vacation_planning', {
+                                event_category: 'Vacation Planning',
+                                event_label: uniqueCategories.join(' + '),
+                                activity_types: uniqueCategories.length,
+                                tourism_interest: 'comprehensive_planning'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Track scroll behavior for tourism content
+            let maxScroll = 0;
+            let sectionsReached = new Set();
+            
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                
+                // Track scroll milestones
+                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                    maxScroll = scrollPercent;
+                    gtag('event', 'scroll', {
+                        event_category: 'Page Engagement',
+                        event_label: 'Tourism Page - ' + scrollPercent + '%',
+                        value: scrollPercent,
+                        page_section: 'tourism'
+                    });
+                }
+                
+                // Track when users reach different attraction sections
+                const sections = ['dining', 'attractions', 'activities'];
+                sections.forEach(section => {
+                    const element = document.getElementById(section);
+                    if (element && !sectionsReached.has(section)) {
+                        const sectionTop = element.offsetTop;
+                        const scrollPosition = window.scrollY + window.innerHeight;
+                        
+                        if (scrollPosition > sectionTop + 200) {
+                            sectionsReached.add(section);
+                            gtag('event', 'tourism_section_reached', {
+                                event_category: 'Content Discovery',
+                                event_label: section,
+                                attraction_category: section
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Track exit intent for vacation planning
+            let hasShownExitIntent = false;
+            document.addEventListener('mouseleave', function(e) {
+                if (e.clientY <= 0 && !hasShownExitIntent) {
+                    hasShownExitIntent = true;
+                    gtag('event', 'vacation_exit_intent', {
+                        event_category: 'User Behavior',
+                        event_label: 'mouse_leave',
+                        tourism_interest: 'exit_intent'
+                    });
+                }
+            });
+
+            // Track restaurant vs activity preferences
+            const restaurantCards = document.querySelectorAll('#dining .experience-card');
+            const activityCards = document.querySelectorAll('#activities .experience-card, #attractions .experience-card');
+            
+            let restaurantClicks = 0;
+            let activityClicks = 0;
+            
+            restaurantCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    restaurantClicks++;
+                    checkPreference();
+                });
+            });
+            
+            activityCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    activityClicks++;
+                    checkPreference();
+                });
+            });
+            
+            function checkPreference() {
+                const totalClicks = restaurantClicks + activityClicks;
+                if (totalClicks >= 5) {
+                    const preference = restaurantClicks > activityClicks ? 'dining_focused' : 'activity_focused';
+                    gtag('event', 'vacation_preference_identified', {
+                        event_category: 'User Preference',
+                        event_label: preference,
+                        restaurant_clicks: restaurantClicks,
+                        activity_clicks: activityClicks,
+                        tourism_interest: preference
+                    });
+                }
+            }
+        });
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
