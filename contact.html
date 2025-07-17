@@ -5,6 +5,190 @@
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJ3H2GJ4SS', {
+            enhanced_measurement: true,
+            scroll_threshold: 90,
+            send_page_view: true,
+            page_title: 'Contact & Tee Times | Carambola Golf Club',
+            page_location: window.location.href,
+            content_group1: 'Contact Page',
+            custom_map: {
+                'golf_course_section': 'custom_parameter_1',
+                'contact_method': 'custom_parameter_2',
+                'booking_stage': 'custom_parameter_3'
+            }
+        });
+
+        // Contact page specific tracking
+        function trackContactEvent(action, method, details = {}) {
+            gtag('event', action, {
+                event_category: 'Contact Interaction',
+                event_label: method,
+                contact_method: method,
+                page_section: 'contact',
+                ...details
+            });
+        }
+
+        function trackBookingIntent(stage, method = '') {
+            gtag('event', 'booking_intent', {
+                event_category: 'Booking Funnel',
+                event_label: stage,
+                booking_stage: stage,
+                contact_method: method,
+                value: stage === 'direct_contact' ? 115 : 0,
+                currency: 'USD'
+            });
+        }
+
+        function trackMapInteraction(action) {
+            gtag('event', 'map_interaction', {
+                event_category: 'Location Services',
+                event_label: action,
+                golf_course_section: 'location'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track phone number clicks with enhanced data
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    const phoneNumber = this.href.replace('tel:', '');
+                    trackContactEvent('phone_click', 'direct_call', {
+                        phone_number: phoneNumber
+                    });
+                    trackBookingIntent('direct_contact', 'phone');
+                    
+                    // Track high-value conversion
+                    gtag('event', 'conversion', {
+                        send_to: 'G-YJ3H2GJ4SS/phone-contact',
+                        value: 115,
+                        currency: 'USD'
+                    });
+                });
+            });
+
+            // Track email clicks
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    const email = this.href.replace('mailto:', '');
+                    trackContactEvent('email_click', 'direct_email', {
+                        email_address: email
+                    });
+                    trackBookingIntent('direct_contact', 'email');
+                });
+            });
+
+            // Track external map links
+            document.querySelectorAll('a[href*="maps.google.com"], a[href*="waze.com"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    const service = this.href.includes('waze') ? 'waze' : 'google_maps';
+                    trackMapInteraction(service);
+                    gtag('event', 'external_link_click', {
+                        event_category: 'Navigation',
+                        event_label: service,
+                        destination_url: this.href
+                    });
+                });
+            });
+
+            // Track contact item interactions
+            document.querySelectorAll('.contact-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    const title = this.querySelector('.contact-item-title')?.textContent || 'Unknown';
+                    gtag('event', 'contact_item_hover', {
+                        event_category: 'User Engagement',
+                        event_label: title.toLowerCase().replace(/\s+/g, '_')
+                    });
+                });
+            });
+
+            // Track booking information section engagement
+            document.querySelectorAll('.booking-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h3')?.textContent || 'Unknown Service';
+                    gtag('event', 'booking_service_interest', {
+                        event_category: 'Service Interest',
+                        event_label: title.toLowerCase().replace(/\s+/g, '_'),
+                        golf_course_section: 'booking_services'
+                    });
+                });
+            });
+
+            // Track CTA button performance
+            document.querySelectorAll('.cta-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const buttonText = this.textContent.trim();
+                    gtag('event', 'cta_click', {
+                        event_category: 'Call to Action',
+                        event_label: buttonText.toLowerCase().replace(/\s+/g, '_'),
+                        button_location: 'contact_page'
+                    });
+                });
+            });
+
+            // Track scroll depth for contact page
+            let maxScroll = 0;
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                    maxScroll = scrollPercent;
+                    gtag('event', 'scroll', {
+                        event_category: 'Page Engagement',
+                        event_label: 'Contact Page - ' + scrollPercent + '%',
+                        value: scrollPercent,
+                        page_section: 'contact'
+                    });
+                }
+            });
+
+            // Track time spent on important sections
+            const observerOptions = {
+                threshold: 0.5,
+                rootMargin: '0px'
+            };
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionName = entry.target.id || entry.target.className.split(' ')[0];
+                        const startTime = Date.now();
+                        
+                        const exitObserver = new IntersectionObserver((exitEntries) => {
+                            exitEntries.forEach(exitEntry => {
+                                if (!exitEntry.isIntersecting) {
+                                    const timeSpent = Date.now() - startTime;
+                                    if (timeSpent > 3000) { // Only track if spent more than 3 seconds
+                                        gtag('event', 'section_engagement', {
+                                            event_category: 'Content Engagement',
+                                            event_label: sectionName,
+                                            value: Math.round(timeSpent / 1000),
+                                            metric_type: 'time_seconds'
+                                        });
+                                    }
+                                    exitObserver.disconnect();
+                                }
+                            });
+                        }, observerOptions);
+                        
+                        exitObserver.observe(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe key sections
+            document.querySelectorAll('.contact, .booking-info, .map-section').forEach(section => {
+                sectionObserver.observe(section);
+            });
+        });
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
