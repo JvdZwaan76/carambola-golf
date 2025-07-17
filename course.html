@@ -5,6 +5,225 @@
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
     
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJ3H2GJ4SS', {
+            enhanced_measurement: true,
+            scroll_threshold: 90,
+            send_page_view: true,
+            page_title: '18-Hole Championship Course | Carambola Golf Club',
+            page_location: window.location.href,
+            content_group1: 'Course Information',
+            custom_map: {
+                'golf_hole_number': 'custom_parameter_1',
+                'course_section': 'custom_parameter_2',
+                'design_feature': 'custom_parameter_3'
+            }
+        });
+
+        // Course page specific tracking
+        function trackHoleEngagement(holeNumber, action, details = {}) {
+            gtag('event', action, {
+                event_category: 'Hole Engagement',
+                event_label: `Hole ${holeNumber}`,
+                golf_hole_number: holeNumber,
+                course_section: 'hole_gallery',
+                ...details
+            });
+        }
+
+        function trackCourseFeature(feature, action) {
+            gtag('event', action, {
+                event_category: 'Course Features',
+                event_label: feature,
+                design_feature: feature,
+                course_section: 'features'
+            });
+        }
+
+        function trackBookingIntent(stage, source = '') {
+            gtag('event', 'booking_intent', {
+                event_category: 'Booking Funnel',
+                event_label: stage,
+                booking_stage: stage,
+                source_page: 'course',
+                trigger_source: source,
+                value: 115,
+                currency: 'USD'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track hole card interactions with detailed analytics
+            document.querySelectorAll('.hole-card').forEach(card => {
+                const holeNumber = card.querySelector('.hole-number')?.textContent || '0';
+                const holeName = card.querySelector('h4')?.textContent || 'Unknown Hole';
+                
+                // Track hover events for interest measurement
+                card.addEventListener('mouseenter', function() {
+                    trackHoleEngagement(holeNumber, 'hole_hover', {
+                        hole_name: holeName
+                    });
+                });
+
+                // Track click events for detailed engagement
+                card.addEventListener('click', function() {
+                    const par = this.querySelector('.hole-stat-value')?.textContent || 'Unknown';
+                    const yards = this.querySelectorAll('.hole-stat-value')[1]?.textContent || 'Unknown';
+                    const handicap = this.querySelectorAll('.hole-stat-value')[2]?.textContent || 'Unknown';
+                    
+                    trackHoleEngagement(holeNumber, 'hole_click', {
+                        hole_name: holeName,
+                        par: par,
+                        yards: yards,
+                        handicap: handicap
+                    });
+
+                    // Track as potential booking interest for signature holes
+                    if (['12', '17', '18'].includes(holeNumber)) {
+                        trackBookingIntent('signature_hole_interest', `hole_${holeNumber}`);
+                    }
+                });
+
+                // Track time spent viewing each hole
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const startTime = Date.now();
+                            const exitObserver = new IntersectionObserver((exitEntries) => {
+                                exitEntries.forEach(exitEntry => {
+                                    if (!exitEntry.isIntersecting) {
+                                        const timeSpent = Date.now() - startTime;
+                                        if (timeSpent > 2000) { // Only track if spent more than 2 seconds
+                                            trackHoleEngagement(holeNumber, 'hole_view_time', {
+                                                hole_name: holeName,
+                                                view_time_seconds: Math.round(timeSpent / 1000)
+                                            });
+                                        }
+                                        exitObserver.disconnect();
+                                    }
+                                });
+                            }, { threshold: 0.1 });
+                            exitObserver.observe(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(card);
+            });
+
+            // Track course overview engagement
+            document.querySelectorAll('.course-overview, .heritage').forEach(section => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            gtag('event', 'course_info_view', {
+                                event_category: 'Content Engagement',
+                                event_label: 'course_overview',
+                                course_section: 'overview'
+                            });
+                        }
+                    });
+                }, { threshold: 0.5 });
+                observer.observe(section);
+            });
+
+            // Track CTA interactions from course page
+            document.querySelectorAll('.cta-button, .book-tee-time').forEach(button => {
+                button.addEventListener('click', function() {
+                    trackBookingIntent('course_cta_click', 'course_page_cta');
+                    
+                    // Track as conversion event
+                    gtag('event', 'conversion', {
+                        send_to: 'G-YJ3H2GJ4SS/course-interest',
+                        value: 115,
+                        currency: 'USD'
+                    });
+                });
+            });
+
+            // Track scroll milestones for course gallery
+            let galleryScrolled = false;
+            window.addEventListener('scroll', function() {
+                const gallery = document.querySelector('.hole-gallery');
+                if (gallery && !galleryScrolled) {
+                    const galleryTop = gallery.offsetTop;
+                    const scrollPosition = window.scrollY + window.innerHeight;
+                    
+                    if (scrollPosition > galleryTop + 200) {
+                        galleryScrolled = true;
+                        gtag('event', 'hole_gallery_reached', {
+                            event_category: 'Page Navigation',
+                            event_label: 'hole_gallery_section',
+                            course_section: 'hole_gallery'
+                        });
+                    }
+                }
+            });
+
+            // Track most popular holes based on engagement
+            let holeInteractions = {};
+            document.addEventListener('click', function(e) {
+                const holeCard = e.target.closest('.hole-card');
+                if (holeCard) {
+                    const holeNumber = holeCard.querySelector('.hole-number')?.textContent || '0';
+                    holeInteractions[holeNumber] = (holeInteractions[holeNumber] || 0) + 1;
+                    
+                    // Send popular hole data every 5 interactions
+                    const totalInteractions = Object.values(holeInteractions).reduce((a, b) => a + b, 0);
+                    if (totalInteractions % 5 === 0) {
+                        const mostPopular = Object.keys(holeInteractions).reduce((a, b) => 
+                            holeInteractions[a] > holeInteractions[b] ? a : b
+                        );
+                        
+                        gtag('event', 'popular_hole_tracking', {
+                            event_category: 'User Preference',
+                            event_label: `hole_${mostPopular}`,
+                            value: holeInteractions[mostPopular],
+                            golf_hole_number: mostPopular
+                        });
+                    }
+                }
+            });
+
+            // Track Robert Trent Jones Sr. mentions and design feature interest
+            document.querySelectorAll('*').forEach(element => {
+                if (element.textContent.includes('Robert Trent Jones') || 
+                    element.textContent.includes('Jones') && element.textContent.includes('design')) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                gtag('event', 'architect_mention_view', {
+                                    event_category: 'Design Interest',
+                                    event_label: 'robert_trent_jones_mention',
+                                    design_feature: 'architect_credit'
+                                });
+                            }
+                        });
+                    }, { threshold: 0.8 });
+                    observer.observe(element);
+                }
+            });
+
+            // Track phone/email clicks from course page
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackBookingIntent('course_phone_click', 'course_page');
+                });
+            });
+
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackBookingIntent('course_email_click', 'course_page');
+                });
+            });
+        });
+    </script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
