@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
+    <!-- End Google Tag Manager -->
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJ3H2GJ4SS', {
+            enhanced_measurement: true,
+            scroll_threshold: 90,
+            send_page_view: true,
+            page_title: 'Luxury Golf Accommodations | Carambola Golf Club',
+            page_location: window.location.href,
+            content_group1: 'Accommodations Information',
+            custom_map: {
+                'accommodation_type': 'custom_parameter_1',
+                'property_category': 'custom_parameter_2',
+                'booking_intent': 'custom_parameter_3'
+            }
+        });
+
+        // Accommodations page specific tracking
+        function trackAccommodationInterest(property, category, priceRange = '') {
+            gtag('event', 'accommodation_interest', {
+                event_category: 'Accommodation Engagement',
+                event_label: property,
+                accommodation_type: category,
+                property_category: category,
+                price_range: priceRange,
+                booking_intent: 'accommodation_interest'
+            });
+        }
+
+        function trackPropertyClick(property, category, website = '') {
+            gtag('event', 'property_click', {
+                event_category: 'Accommodation Selection',
+                event_label: property,
+                accommodation_type: category,
+                property_website: website,
+                booking_intent: 'property_selection'
+            });
+        }
+
+        function trackVacationPackageIntent(stage, source = '') {
+            gtag('event', 'vacation_package_intent', {
+                event_category: 'Golf Vacation',
+                event_label: stage,
+                booking_intent: stage,
+                source_page: 'accommodations',
+                trigger_source: source,
+                value: stage === 'complete_package_interest' ? 750 : 0,
+                currency: 'USD'
+            });
+        }
+
+        function trackExternalBookingClick(property, platform) {
+            gtag('event', 'external_booking_click', {
+                event_category: 'Booking Conversion',
+                event_label: property,
+                booking_platform: platform,
+                booking_intent: 'external_booking',
+                value: 750,
+                currency: 'USD'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track accommodation card interactions with detailed analytics
+            document.querySelectorAll('.accommodation-card').forEach((card, index) => {
+                const propertyName = card.querySelector('h3')?.textContent || 'Unknown Property';
+                const category = card.querySelector('.accommodation-category')?.textContent || 'Unknown';
+                const priceRange = card.querySelector('.accommodation-price')?.textContent || '';
+                const website = card.querySelector('a[href*="http"]')?.href || '';
+                
+                // Track hover for interest measurement
+                card.addEventListener('mouseenter', function() {
+                    trackAccommodationInterest(propertyName, category, priceRange);
+                });
+
+                // Track clicks for serious interest
+                card.addEventListener('click', function() {
+                    trackPropertyClick(propertyName, category, website);
+                    
+                    // Track as vacation package interest
+                    trackVacationPackageIntent('accommodation_click', propertyName);
+                });
+
+                // Track time spent viewing each property
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const startTime = Date.now();
+                            const exitObserver = new IntersectionObserver((exitEntries) => {
+                                exitEntries.forEach(exitEntry => {
+                                    if (!exitEntry.isIntersecting) {
+                                        const timeSpent = Date.now() - startTime;
+                                        if (timeSpent > 3000) { // Only track if spent more than 3 seconds
+                                            gtag('event', 'accommodation_view_time', {
+                                                event_category: 'Content Engagement',
+                                                event_label: propertyName,
+                                                accommodation_type: category,
+                                                view_time_seconds: Math.round(timeSpent / 1000)
+                                            });
+                                        }
+                                        exitObserver.disconnect();
+                                    }
+                                });
+                            }, { threshold: 0.1 });
+                            exitObserver.observe(entry.target);
+                        }
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(card);
+
+                // Track external website clicks
+                const externalLinks = card.querySelectorAll('a[href*="http"]');
+                externalLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const destination = this.href;
+                        const platform = this.textContent.toLowerCase().includes('book') ? 'direct_booking' : 'website_visit';
+                        
+                        trackExternalBookingClick(propertyName, platform);
+                        
+                        // Track as high-value engagement
+                        gtag('event', 'accommodation_booking_intent', {
+                            event_category: 'High Value Engagement',
+                            event_label: propertyName,
+                            destination_url: destination,
+                            accommodation_type: category,
+                            value: 750,
+                            currency: 'USD'
+                        });
+                        
+                        // Open link after tracking
+                        setTimeout(() => {
+                            window.open(destination, '_blank', 'noopener,noreferrer');
+                        }, 100);
+                    });
+                });
+            });
+
+            // Track accommodation type preferences
+            document.querySelectorAll('.accommodation-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabName = this.getAttribute('data-tab');
+                    gtag('event', 'accommodation_category_click', {
+                        event_category: 'Content Navigation',
+                        event_label: tabName,
+                        accommodation_type: tabName,
+                        property_category: tabName
+                    });
+                });
+            });
+
+            // Track CTA interactions for golf vacation packages
+            document.querySelectorAll('.cta-button, .book-package').forEach(button => {
+                button.addEventListener('click', function() {
+                    const buttonText = this.textContent.trim();
+                    trackVacationPackageIntent('complete_package_interest', buttonText);
+                    
+                    // Track as high-value conversion
+                    gtag('event', 'conversion', {
+                        send_to: 'G-YJ3H2GJ4SS/golf-vacation-package',
+                        value: 750,
+                        currency: 'USD'
+                    });
+                });
+            });
+
+            // Track phone/email clicks from accommodations page
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackVacationPackageIntent('accommodation_phone_contact', 'phone_booking');
+                    gtag('event', 'conversion', {
+                        send_to: 'G-YJ3H2GJ4SS/phone-contact',
+                        value: 750,
+                        currency: 'USD'
+                    });
+                });
+            });
+
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackVacationPackageIntent('accommodation_email_contact', 'email_inquiry');
+                });
+            });
+
+            // Track most popular accommodations
+            let accommodationViews = {};
+            document.querySelectorAll('.accommodation-card').forEach(card => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const name = entry.target.querySelector('h3')?.textContent || 'Unknown';
+                            const category = entry.target.querySelector('.accommodation-category')?.textContent || 'Unknown';
+                            
+                            accommodationViews[name] = (accommodationViews[name] || 0) + 1;
+                            
+                            // Track view
+                            gtag('event', 'accommodation_view', {
+                                event_category: 'Content Engagement',
+                                event_label: name,
+                                accommodation_type: category,
+                                view_count: accommodationViews[name]
+                            });
+                        }
+                    });
+                }, { threshold: 0.6 });
+                
+                observer.observe(card);
+            });
+
+            // Track scroll depth for accommodations content
+            let maxScroll = 0;
+            let sectionsReached = new Set();
+            
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                
+                // Track scroll milestones
+                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                    maxScroll = scrollPercent;
+                    gtag('event', 'scroll', {
+                        event_category: 'Page Engagement',
+                        event_label: 'Accommodations Page - ' + scrollPercent + '%',
+                        value: scrollPercent,
+                        page_section: 'accommodations'
+                    });
+                }
+                
+                // Track when users reach different accommodation sections
+                const sections = ['luxury-resorts', 'boutique-hotels', 'golf-resorts'];
+                sections.forEach(section => {
+                    const element = document.getElementById(section);
+                    if (element && !sectionsReached.has(section)) {
+                        const sectionTop = element.offsetTop;
+                        const scrollPosition = window.scrollY + window.innerHeight;
+                        
+                        if (scrollPosition > sectionTop + 200) {
+                            sectionsReached.add(section);
+                            gtag('event', 'accommodation_section_reached', {
+                                event_category: 'Content Discovery',
+                                event_label: section,
+                                accommodation_type: section
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Track user preferences based on accommodation interactions
+            let accommodationInteractions = {};
+            document.addEventListener('click', function(e) {
+                const accommodationCard = e.target.closest('.accommodation-card');
+                if (accommodationCard) {
+                    const category = accommodationCard.querySelector('.accommodation-category')?.textContent || 'Unknown';
+                    accommodationInteractions[category] = (accommodationInteractions[category] || 0) + 1;
+                    
+                    // Send preference data every 3 interactions
+                    const totalInteractions = Object.values(accommodationInteractions).reduce((a, b) => a + b, 0);
+                    if (totalInteractions % 3 === 0) {
+                        const mostPreferred = Object.keys(accommodationInteractions).reduce((a, b) => 
+                            accommodationInteractions[a] > accommodationInteractions[b] ? a : b
+                        );
+                        
+                        gtag('event', 'accommodation_preference_tracking', {
+                            event_category: 'User Preference',
+                            event_label: mostPreferred,
+                            value: accommodationInteractions[mostPreferred],
+                            accommodation_type: mostPreferred
+                        });
+                    }
+                }
+            });
+
+            // Track exit intent for vacation planning
+            let hasShownExitIntent = false;
+            document.addEventListener('mouseleave', function(e) {
+                if (e.clientY <= 0 && !hasShownExitIntent) {
+                    hasShownExitIntent = true;
+                    gtag('event', 'accommodation_exit_intent', {
+                        event_category: 'User Behavior',
+                        event_label: 'mouse_leave',
+                        booking_intent: 'exit_intent'
+                    });
+                }
+            });
+        });
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    
+    <!-- SEO Meta Tags -->
+    <title>Luxury Golf Accommodations | St. Croix Resort Hotels | Carambola Golf Packages</title>
+    <meta name="description" content="Discover luxury accommodations and resort hotels perfect for your Carambola Golf Club vacation. From beachfront resorts to boutique hotels, find the perfect lodging for your championship golf experience in St. Croix.">
+    <meta name="keywords" content="carambola golf accommodations, st croix luxury hotels, golf vacation packages, carambola beach resort, st croix resort hotels, golf and spa resorts, caribbean luxury lodging, virgin islands golf packages">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Luxury Golf Accommodations | Carambola Golf Club">
+    <meta property="og:description" content="Discover luxury accommodations and resort hotels perfect for your Carambola Golf Club vacation in St. Croix.">
+    <meta property="og:image" content="https://carambola.golf/images/carambola-accommodation-oceanfront-resort.jpg">
+    <meta property="og:url" content="https://carambola.golf/accommodations.html">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://carambola.golf/accommodations.html">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    
+    <!-- Schema for Accommodations -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "AccommodationPage",
+        "name": "Carambola Golf Club Luxury Accommodations",
+        "description": "Luxury resort hotels and accommodations perfect for golf vacations at Carambola Golf Club in St. Croix, US Virgin Islands.",
+        "url": "https://carambola.golf/accommodations.html",
+        "mainEntity": {
+            "@type": "LodgingBusiness",
+            "name": "St. Croix Golf Resort Accommodations",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "St. Croix",
+                "addressRegion": "VI",
+                "addressCountry": "US"
+            },
+            "telephone": "+13407785638",
+            "email": "info@carambola.golf"
+        }
+    }
+    </script>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+
+    <!-- Under Construction Modal -->
+    <div id="constructionModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-golf-ball modal-icon"></i>
+                <h2>Plan Your Golf Getaway!</h2>
+            </div>
+            <div class="modal-body">
+                <p>Ready to book the perfect golf vacation? Championship golf plus luxury accommodations!</p>
+                <p><strong>Call our Pro Shop to plan your stay:</strong></p>
+                <div class="contact-highlight">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+13407785638">+1-340-778-5638</a>
+                </div>
+                <div class="contact-highlight">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@carambola.golf">info@carambola.golf</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeModal" class="modal-close-btn">
+                    <i class="fas fa-times"></i> Continue to Accommodations
+                </button>
+            </div>
+            <div class="golf-decoration">
+                <i class="fas fa-golf-ball"></i>
+                <i class="fas fa-golf-ball"></i>
+                <i class="fas fa-golf-ball"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="/" class="logo">Carambola Golf Club</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/course.html">The Course</a></li>
+                <li><a href="/pricing.html">Pricing</a></li>
+                <li><a href="/accommodations.html" class="active">Accommodations</a></li>
+                <li><a href="/st-croix.html">Experience St. Croix</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Accommodations Header -->
+    <section class="page-hero accommodations-hero">
+        <div class="page-hero-content">
+            <h1>Luxury Golf Accommodations</h1>
+            <p>Premium lodging options for the ultimate championship golf vacation</p>
+        </div>
+    </section>
+
+    <!-- Accommodations Overview -->
+    <section class="accommodations-overview">
+        <div class="container">
+            <div class="accommodations-overview-content">
+                <h2>Your Perfect Golf Getaway</h2>
+                <p>Complement your championship golf experience at Carambola with luxury accommodations that match the caliber of Robert Trent Jones Sr.'s masterpiece. From oceanfront resorts with world-class spas to intimate boutique hotels steeped in Caribbean charm, St. Croix offers sophisticated lodging options for the discerning golf traveler.</p>
+                <p>Whether you prefer the convenience of staying at our on-property resort, the elegance of a historic plantation hotel, or the exclusivity of a beachfront sanctuary, each accommodation provides the perfect retreat after a day on our championship course. Wake up to Caribbean sunrises, enjoy gourmet dining, and experience the legendary hospitality that makes St. Croix a premier golf destination.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accommodations Section -->
+    <section id="accommodations" class="accommodations">
+        <div class="container">
+            <h2 class="section-title">Where Luxury Meets Paradise</h2>
+            <div class="section-subtitle">Premium accommodations for championship golf experiences</div>
+            
+            <div class="accommodations-tabs">
+                <button class="accommodation-tab active" data-tab="luxury-resorts">Luxury Resorts</button>
+                <button class="accommodation-tab" data-tab="boutique-hotels">Boutique Hotels</button>
+                <button class="accommodation-tab" data-tab="golf-resorts">Golf Resorts</button>
+            </div>
+
+            <div class="accommodations-content">
+                <!-- Luxury Resorts -->
+                <div class="accommodations-section active" id="luxury-resorts">
+                    <div class="accommodations-grid">
+                        <article class="accommodation-card featured">
+                            <div class="accommodation-image" style="background-image: url('/images/carambola-accommodation-renaissance-resort.webp')">
+                                <div class="accommodation-category">Luxury Resort</div>
+                                <div class="accommodation-badge">Recommended</div>
+                            </div>
+                            <div class="accommodation-info">
+                                <h3><a href="https://www.marriott.com/hotels/travel/stxrn-renaissance-st-croix-carambola-beach-resort-and-spa/" target="_blank" rel="noopener">Renaissance St. Croix Carambola Beach Resort</a></h3>
+                                <div class="accommodation-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="accommodation-price">$$$$ Premium</div>
+                                <p>Nestled on 1,000 pristine acres adjacent to our championship golf course, this luxury resort offers the ultimate convenience for serious golfers. Spacious suites feature private balconies with stunning ocean or golf course views, while the world-class spa provides the perfect post-round relaxation. Multiple dining venues, including oceanfront restaurants, ensure exceptional culinary experiences throughout your stay.</p>
+                                <div class="accommodation-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-golf-ball"></i>
+                                        <span>On-Site Golf Course Access</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-spa"></i>
+                                        <span>Full-Service Spa</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-swimming-pool"></i>
+                                        <span>Oceanfront Pool</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-utensils"></i>
+                                        <span>Multiple Restaurants</span>
+                                    </div>
+                                </div>
+                                <div class="accommodation-actions">
+                                    <a href="https://www.marriott.com/hotels/travel/stxrn-renaissance-st-croix-carambola-beach-resort-and-spa/" target="_blank" rel="noopener" class="action-button primary">Book Direct</a>
+                                    <a href="tel:+13407785638" class="action-button secondary">Call Golf Pro Shop</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="accommodation-card">
+                            <div class="accommodation-image" style="background-image: url('/images/carambola-accommodation-carambola-beach.webp')">
+                                <div class="accommodation-category">Golf Resort</div>
+                            </div>
+                            <div class="accommodation-info">
+                                <h3><a href="https://www.carambolabeach.com" target="_blank" rel="noopener">Carambola Beach Resort</a></h3>
+                                <div class="accommodation-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="accommodation-price">$$$$ Premium</div>
+                                <p>The ultimate golfer's paradise, located directly on our championship course property. Wake up steps away from the first tee and enjoy exclusive access to our Robert Trent Jones Sr. designed masterpiece. Elegant villas and suites blend Caribbean luxury with golf course convenience, while personalized service ensures every detail of your golf vacation is perfectly orchestrated.</p>
+                                <div class="accommodation-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-golf-ball"></i>
+                                        <span>On-Course Location</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-concierge-bell"></i>
+                                        <span>Golf Concierge Service</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>Complimentary Golf Cart Transport</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-utensils"></i>
+                                        <span>Clubhouse Dining Access</span>
+                                    </div>
+                                </div>
+                                <div class="accommodation-actions">
+                                    <a href="https://www.carambolabeach.com" target="_blank" rel="noopener" class="action-button primary">Visit Website</a>
+                                    <a href="tel:+13407785638" class="action-button secondary">Golf Package Inquiry</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="accommodation-card">
+                            <div class="accommodation-image" style="background-image: url('/images/carambola-accommodation-sandcastle-beach.webp')">
+                                <div class="accommodation-category">Beachfront Resort</div>
+                            </div>
+                            <div class="accommodation-info">
+                                <h3><a href="https://www.sandcastleonthebeach.com" target="_blank" rel="noopener">Sandcastle on the Beach</a></h3>
+                                <div class="accommodation-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="accommodation-price">$$$ Upscale</div>
+                                <p>An intimate beachfront sanctuary offering personalized luxury just minutes from Carambola Golf Club. Spacious suites and villas feature private beaches, infinity pools, and stunning Caribbean views. The resort's boutique atmosphere ensures attentive service while providing easy access to championship golf and island adventures.</p>
+                                <div class="accommodation-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-umbrella-beach"></i>
+                                        <span>Private Beach Access</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-swimming-pool"></i>
+                                        <span>Infinity Pool</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>Complimentary Transportation</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-wifi"></i>
+                                        <span>High-Speed WiFi</span>
+                                    </div>
+                                </div>
+                                <div class="accommodation-actions">
+                                    <a href="https://www.sandcastleonthebeach.com" target="_blank" rel="noopener" class="action-button primary">Book Now</a>
+                                    <a href="tel:+13407785638" class="action-button secondary">Golf Package Info</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Boutique Hotels -->
+                <div class="accommodations-section" id="boutique-hotels">
+                    <div class="accommodations-grid">
+                        <article class="accommodation-card">
+                            <div class="accommodation-image" style="background-image: url('/images/carambola-accommodation-sugar-mill.webp')">
+                                <div class="accommodation-category">Historic Boutique</div>
+                            </div>
+                            <div class="accommodation-info">
+                                <h3><a href="https://www.sugarmillhotel.com" target="_blank" rel="noopener">Sugar Mill Boutique Hotel</a></h3>
+                                <div class="accommodation-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="accommodation-price">$$$ Upscale</div>
+                                <p>A beautifully restored 18th-century sugar plantation transformed into an elegant boutique hotel. Each suite tells a story of Caribbean history while providing modern luxury amenities. The property's intimate atmosphere and personalized service create an exclusive retreat perfect for discerning golf travelers seeking authentic island elegance.</p>
+                                <div class="accommodation-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-landmark"></i>
+                                        <span>Historic Architecture</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-leaf"></i>
+                                        <span>Tropical Gardens</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-utensils"></i>
+                                        <span>Gourmet Restaurant</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-concierge-bell"></i>
+                                        <span>Personal Concierge</span>
+                                    </div>
+                                </div>
+                                <div class="accommodation-actions">
+                                    <a href="https://www.sugarmillhotel.com" target="_blank" rel="noopener" class="action-button primary">Reserve Now</a>
+                                    <a href="tel:+13407785638" class="action-button secondary">Golf Package Rates</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="accommodation-card">
+                            <div class="accommodation-image" style="background-image: url('/images/carambola-accommodation-historic-inn.webp')">
+                                <div class="accommodation-category">Historic Inn</div>
+                            </div>
+                            <div class="accommodation-info">
+                                <h3><a href="https://www.hotelcaravelle.com" target="_blank" rel="noopener">Hotel Caravelle</a></h3>
+                                <div class="accommodation-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <div class="accommodation-price">$$ Moderate</div>
+                                <p>A charming downtown Christiansted institution offering authentic Caribbean hospitality in the heart of the historic district. Newly renovated rooms blend modern comfort with colonial character, while the waterfront location provides easy access to dining, shopping, and cultural attractions. An excellent value for golfers seeking central location and island charm.</p>
+                                <div class="accommodation-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Historic Downtown Location</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-water"></i>
+                                        <span>Waterfront Views</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-walking"></i>
+                                        <span>Walking Distance to Attractions</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-car"></i>
+                                        <span>Complimentary Parking</span>
+                                    </div>
+                                </div>
+                                <div class="accommodation-actions">
+                                    <a href="https://www.hotelcaravelle.com" target="_blank" rel="noopener" class="action-button primary">Book Direct</a>
+                                    <a href="tel:+13407785638" class="action-button secondary">Golf Transportation</a>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="accommodation-card">
+                            <div class="accommodation-image" style="background-image: url('/images/carambola-accommodation-rainbow-beach.webp')">
+                                <div class="accommodation-category">Beach Club</div>
+                            </div>
+                            <div class="accommodation-info">
+                                <h3><a href="https://www.rainbowbeachclub.com" target="_blank" rel="noopener">Rainbow Beach Club</a></h3>
+                                <div class="accommodation-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <div class="accommodation-price">$$ Moderate</div>
+                                <p>A relaxed beachfront retreat offering comfortable accommodations with stunning sunset views. The casual atmosphere and friendly service create a welcoming environment for golf groups and couples alike. Enjoy beachside dining, water sports, and easy access to both Carambola Golf Club and Frederiksted's historic attractions.</p>
+                                <div class="accommodation-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-umbrella-beach"></i>
+                                        <span>Beachfront Location</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-sunset"></i>
+                                        <span>Sunset Views</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-swimming-pool"></i>
+                                        <span>Beachside Pool</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-fish"></i>
+                                        <span>Water Sports Activities</span>
+                                    </div>
+                                </div>
+                                <div class="accommodation-actions">
+                                    <a href="https://www.rainbowbeachclub.com" target="_blank" rel="noopener" class="action-button primary">Check Availability</a>
+                                    <a href="tel:+13407785638" class="action-button secondary">Golf Group Rates</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+
+                <!-- Golf Resorts -->
+                <div class="accommodations-section" id="golf-resorts">
+                    <div class="accommodations-grid">
+                        <article class="accommodation-card featured">
+                            <div class="accommodation-image" style="background-image: url('/images/carambola-accommodation-buccaneer-golf-resort.webp')">
+                                <div class="accommodation-category">Golf & Beach Resort</div>
+                                <div class="accommodation-badge">Golf Package Available</div>
+                            </div>
+                            <div class="accommodation-info">
+                                <h3><a href="https://www.thebuccaneer.com" target="_blank" rel="noopener">The Buccaneer Beach & Golf Resort</a></h3>
+                                <div class="accommodation-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="accommodation-price">$$$$ Premium</div>
+                                <p>A legendary golf destination featuring its own championship course plus privileged access to Carambola Golf Club. This 340-acre oceanfront resort combines luxury accommodations with world-class golf amenities, including a renowned Golf Academy and exclusive multi-course packages. The perfect choice for serious golfers seeking variety and excellence.</p>
+                                <div class="accommodation-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-golf-ball"></i>
+                                        <span>18-Hole Championship Course</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-graduation-cap"></i>
+                                        <span>PGA Golf Academy</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-umbrella-beach"></i>
+                                        <span>Private Beaches</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-spa"></i>
+                                        <span>Spa & Fitness Center</span>
+                                    </div>
+                                </div>
+                                <div class="accommodation-actions">
+                                    <a href="https://www.thebuccaneer.com" target="_blank" rel="noopener" class="action-button primary">Golf Packages</a>
+                                    <a href="tel:+13407785638" class="action-button secondary">Multi-Course Package</a>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Golf Package Benefits -->
+    <section class="package-benefits">
+        <div class="container">
+            <h2 class="section-title">Golf Vacation Package Benefits</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-golf-ball"></i>
+                    </div>
+                    <h3>Championship Golf Access</h3>
+                    <p>Guaranteed tee times at Carambola Golf Club's Robert Trent Jones Sr. designed championship course, with preferred booking and special rates for accommodation guests.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shuttle-van"></i>
+                    </div>
+                    <h3>Golf Transportation</h3>
+                    <p>Complimentary transportation between select accommodations and the golf course, ensuring convenient access to championship golf without rental car requirements.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-concierge-bell"></i>
+                    </div>
+                    <h3>Golf Concierge Service</h3>
+                    <p>Personalized golf vacation planning including tee time coordination, equipment rental arrangements, and recommendations for post-round dining and activities.</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <h3>Package Savings</h3>
+                    <p>Exclusive rates and bundled savings when combining accommodations with golf rounds, equipment rentals, and dining options at participating properties.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Accommodation CTA -->
+    <section class="accommodation-cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Book Your Championship Golf Vacation</h2>
+                <p>Combine luxury accommodations with world-class golf for the ultimate St. Croix getaway.</p>
+                <div class="cta-buttons">
+                    <a href="tel:+13407785638" class="cta-button primary">
+                        <i class="fas fa-phone"></i> Plan Golf Package
+                    </a>
+                    <a href="mailto:info@carambola.golf" class="cta-button secondary">
+                        <i class="fas fa-envelope"></i> Custom Packages
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Carambola Golf Club</div>
+            <p>&copy; 2025 Carambola Golf Club. All rights reserved.</p>
+            <p>Estate River, Kingshill | St. Croix, VI 00850</p>
+            <p>Designed by Robert Trent Jones Sr.</p>
+            <div class="footer-contact">
+                <p>For inquiries regarding this website please contact:</p>
+                <p><a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a> | <a href="tel:+18053387680">+1-805-338-7680</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

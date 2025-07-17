@@ -10,6 +10,7 @@ Allow: /
 Allow: /images/
 Allow: /course.html
 Allow: /pricing.html
+Allow: /accommodations.html
 Allow: /st-croix.html
 Allow: /contact.html
 
