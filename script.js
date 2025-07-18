@@ -1,4 +1,4 @@
-// Carambola Golf Club JavaScript - Enhanced Performance Version
+// Carambola Golf Club JavaScript - Enhanced Performance Version with Video Hero and Carousel
 (function() {
     'use strict';
 
@@ -131,6 +131,292 @@
             </div>
         `;
         document.body.appendChild(notification);
+    }
+
+    // Enhanced Video Hero Manager
+    class VideoHeroManager {
+        constructor() {
+            this.video = document.querySelector('.hero-video');
+            this.fallbackImage = document.querySelector('.hero-fallback-image');
+            this.init();
+        }
+
+        init() {
+            if (!this.video) return;
+
+            // Handle video loading
+            this.video.addEventListener('loadeddata', this.handleVideoLoaded.bind(this));
+            this.video.addEventListener('error', this.handleVideoError.bind(this));
+            this.video.addEventListener('canplay', this.handleVideoCanPlay.bind(this));
+
+            // Intersection Observer for performance
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        this.loadVideo();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            observer.observe(this.video);
+
+            // Preload video on fast connections
+            if (navigator.connection && navigator.connection.effectiveType === '4g') {
+                this.video.preload = 'auto';
+            }
+        }
+
+        loadVideo() {
+            if (this.video.readyState >= 2) {
+                this.handleVideoCanPlay();
+            } else {
+                this.video.load();
+            }
+        }
+
+        handleVideoLoaded() {
+            this.video.setAttribute('data-loaded', 'true');
+            performanceMetrics.mark('video_loaded');
+        }
+
+        handleVideoCanPlay() {
+            this.video.style.opacity = '1';
+            if (this.fallbackImage) {
+                this.fallbackImage.style.opacity = '0';
+            }
+            
+            // Track successful video load
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'hero_video_loaded', {
+                    'event_category': 'media',
+                    'event_label': 'success',
+                    'non_interaction': true
+                });
+            }
+        }
+
+        handleVideoError(event) {
+            console.warn('Video failed to load:', event);
+            this.video.setAttribute('data-error', 'true');
+            this.video.style.opacity = '0';
+            
+            if (this.fallbackImage) {
+                this.fallbackImage.style.opacity = '1';
+            }
+
+            // Track video error
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'hero_video_error', {
+                    'event_category': 'media',
+                    'event_label': 'fallback_image_shown',
+                    'non_interaction': true
+                });
+            }
+        }
+    }
+
+    // Course Hero Carousel Manager
+    class CarouselManager {
+        constructor() {
+            this.carousel = document.querySelector('.course-hero-carousel');
+            this.slides = document.querySelectorAll('.carousel-slide');
+            this.prevBtn = document.querySelector('.carousel-btn.prev');
+            this.nextBtn = document.querySelector('.carousel-btn.next');
+            this.dots = document.querySelectorAll('.carousel-dot');
+            this.progressBar = document.querySelector('.carousel-progress-bar');
+            
+            this.currentSlide = 0;
+            this.totalSlides = this.slides.length;
+            this.autoplayDelay = 6000;
+            this.autoplayTimer = null;
+            this.isPlaying = true;
+            this.progressTimer = null;
+
+            this.init();
+        }
+
+        init() {
+            if (!this.carousel || this.totalSlides === 0) return;
+
+            this.setupEventListeners();
+            this.startAutoplay();
+            this.updateProgressBar();
+
+            // Pause autoplay when user interacts
+            this.carousel.addEventListener('mouseenter', () => this.pauseAutoplay());
+            this.carousel.addEventListener('mouseleave', () => this.resumeAutoplay());
+
+            // Track carousel initialization
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'carousel_initialized', {
+                    'event_category': 'hero_carousel',
+                    'event_label': 'course_page',
+                    'slide_count': this.totalSlides
+                });
+            }
+        }
+
+        setupEventListeners() {
+            // Navigation buttons
+            if (this.prevBtn) {
+                this.prevBtn.addEventListener('click', () => {
+                    this.previousSlide();
+                    this.trackCarouselInteraction('prev_button');
+                });
+            }
+
+            if (this.nextBtn) {
+                this.nextBtn.addEventListener('click', () => {
+                    this.nextSlide();
+                    this.trackCarouselInteraction('next_button');
+                });
+            }
+
+            // Dots navigation
+            this.dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    this.goToSlide(index);
+                    this.trackCarouselInteraction('dot_navigation');
+                });
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (this.carousel && this.isInViewport(this.carousel)) {
+                    if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        this.previousSlide();
+                        this.trackCarouselInteraction('keyboard_prev');
+                    } else if (e.key === 'ArrowRight') {
+                        e.preventDefault();
+                        this.nextSlide();
+                        this.trackCarouselInteraction('keyboard_next');
+                    }
+                }
+            });
+
+            // Touch/swipe support
+            this.setupTouchEvents();
+        }
+
+        setupTouchEvents() {
+            let startX = 0;
+            let endX = 0;
+            let startY = 0;
+            let endY = 0;
+
+            this.carousel.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, passiveIfSupported);
+
+            this.carousel.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                endY = e.changedTouches[0].clientY;
+                
+                const deltaX = startX - endX;
+                const deltaY = startY - endY;
+                
+                // Only trigger if horizontal swipe is more significant than vertical
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+                    if (deltaX > 0) {
+                        this.nextSlide();
+                        this.trackCarouselInteraction('swipe_left');
+                    } else {
+                        this.previousSlide();
+                        this.trackCarouselInteraction('swipe_right');
+                    }
+                }
+            }, passiveIfSupported);
+        }
+
+        goToSlide(index) {
+            if (index < 0 || index >= this.totalSlides || index === this.currentSlide) return;
+
+            // Remove active class from current slide and dot
+            this.slides[this.currentSlide].classList.remove('active');
+            this.dots[this.currentSlide]?.classList.remove('active');
+
+            // Update current slide
+            this.currentSlide = index;
+
+            // Add active class to new slide and dot
+            this.slides[this.currentSlide].classList.add('active');
+            this.dots[this.currentSlide]?.classList.add('active');
+
+            this.updateProgressBar();
+            this.restartAutoplay();
+        }
+
+        nextSlide() {
+            const nextIndex = (this.currentSlide + 1) % this.totalSlides;
+            this.goToSlide(nextIndex);
+        }
+
+        previousSlide() {
+            const prevIndex = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+            this.goToSlide(prevIndex);
+        }
+
+        startAutoplay() {
+            if (!this.isPlaying) return;
+            
+            this.autoplayTimer = setInterval(() => {
+                this.nextSlide();
+            }, this.autoplayDelay);
+        }
+
+        pauseAutoplay() {
+            this.isPlaying = false;
+            if (this.autoplayTimer) {
+                clearInterval(this.autoplayTimer);
+                this.autoplayTimer = null;
+            }
+            if (this.progressTimer) {
+                clearTimeout(this.progressTimer);
+                this.progressTimer = null;
+            }
+        }
+
+        resumeAutoplay() {
+            this.isPlaying = true;
+            this.startAutoplay();
+            this.updateProgressBar();
+        }
+
+        restartAutoplay() {
+            this.pauseAutoplay();
+            this.resumeAutoplay();
+        }
+
+        updateProgressBar() {
+            if (!this.progressBar) return;
+
+            this.progressBar.style.width = '0%';
+            
+            if (this.progressTimer) {
+                clearTimeout(this.progressTimer);
+            }
+
+            if (this.isPlaying) {
+                this.progressTimer = setTimeout(() => {
+                    this.progressBar.style.transition = `width ${this.autoplayDelay}ms linear`;
+                    this.progressBar.style.width = '100%';
+                }, 50);
+            }
+        }
+
+        isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return rect.top >= 0 && rect.top <= window.innerHeight;
+        }
+
+        trackCarouselInteraction(action) {
+            if (typeof trackCarouselInteraction !== 'undefined') {
+                trackCarouselInteraction(this.currentSlide, action);
+            }
+        }
     }
 
     // Enhanced preloader with progress tracking
@@ -1042,6 +1328,7 @@
         preloader.addStep(); // Fonts
         preloader.addStep(); // Analytics
         preloader.addStep(); // Initial animations
+        preloader.addStep(); // Video/Carousel
         
         try {
             // Register service worker
@@ -1070,12 +1357,23 @@
             new CardInteractionManager();
             new OfflineManager();
             
+            // Initialize video hero for home page
+            if (document.querySelector('.hero-video')) {
+                new VideoHeroManager();
+            }
+            
+            // Initialize carousel for course page
+            if (document.querySelector('.course-hero-carousel')) {
+                new CarouselManager();
+            }
+            
             // Setup additional functionality
             setupSmoothScrolling();
             setupExternalLinkTracking();
             setupFormHandling();
             setupErrorHandling();
             
+            preloader.completeStep();
             preloader.completeStep();
             performanceMetrics.mark('init_complete');
             
@@ -1087,10 +1385,14 @@
 
     // Handle orientation change
     window.addEventListener('orientationchange', debounce(() => {
-        const heroes = document.querySelectorAll('.hero, .page-hero');
+        const heroes = document.querySelectorAll('.hero, .page-hero, .course-hero-carousel');
         heroes.forEach(hero => {
             hero.style.height = 'auto';
-            hero.style.minHeight = window.innerWidth <= 768 ? '80vh' : '90vh';
+            if (hero.classList.contains('course-hero-carousel')) {
+                hero.style.minHeight = window.innerWidth <= 768 ? '70vh' : '80vh';
+            } else {
+                hero.style.minHeight = window.innerWidth <= 768 ? '80vh' : '90vh';
+            }
         });
     }, 100));
 
@@ -1107,7 +1409,7 @@
 
     // Console branding
     console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
-    console.log('%cEnhanced website with PWA features and performance optimizations', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%cEnhanced website with PWA features, video hero, and carousel', 'color: #1e3a5f; font-size: 12px;');
     console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
