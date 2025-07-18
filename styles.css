@@ -566,6 +566,32 @@ img {
                 url('/images/carambola-accommodation-oceanfront-resort.webp') center/cover;
 }
 
+/* Legal pages hero styling - elegant gradient without needing background images */
+.legal-hero {
+    background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-navy) 100%);
+    min-height: 40vh;
+    position: relative;
+}
+
+.legal-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 30%, rgba(212, 175, 55, 0.05) 50%, transparent 70%);
+    z-index: 1;
+}
+
+.legal-hero .page-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
 .page-hero-content {
     max-width: 800px;
     padding: 0 2rem;
@@ -2196,6 +2222,11 @@ img {
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     }
 
+    /* Legal hero mobile adjustments */
+    .legal-hero {
+        min-height: 35vh;
+    }
+
     /* CTA Mobile Fixes */
     .course-cta,
     .pricing-cta,
@@ -2372,6 +2403,10 @@ img {
     .page-hero {
         margin-top: 90px;
         padding: 2rem 0.5rem 1rem;
+    }
+
+    .legal-hero {
+        min-height: 30vh;
     }
 
     .hero-tagline {
