@@ -579,7 +579,7 @@
 
         observeElements() {
             // Observe cards for animation with staggered delays
-            document.querySelectorAll('.feature-card, .hole-card, .stat-card, .quick-link-card, .value-card, .booking-card').forEach((el, index) => {
+            document.querySelectorAll('.feature-card, .hole-card, .stat-card, .quick-link-card, .value-card, .booking-card, .accommodation-card, .benefit-card, .experience-card').forEach((el, index) => {
                 el.style.opacity = '0';
                 el.style.transform = 'translateY(30px)';
                 el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
@@ -622,6 +622,7 @@
         init() {
             this.setupPricingTabs();
             this.setupExperienceTabs();
+            this.setupAccommodationTabs();
         }
 
         setupPricingTabs() {
@@ -675,6 +676,35 @@
                             'event_category': 'engagement',
                             'event_label': targetTab,
                             'section': 'experience',
+                            'page_location': window.location.pathname
+                        });
+                    }
+                });
+            });
+        }
+
+        setupAccommodationTabs() {
+            const accommodationTabs = document.querySelectorAll('.accommodation-tab');
+            const accommodationSections = document.querySelectorAll('.accommodations-section');
+            
+            accommodationTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetTab = tab.dataset.tab;
+                    
+                    accommodationTabs.forEach(t => t.classList.remove('active'));
+                    accommodationSections.forEach(s => s.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    const targetSection = document.getElementById(targetTab);
+                    if (targetSection) {
+                        targetSection.classList.add('active');
+                    }
+                    
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'accommodation_tab_click', {
+                            'event_category': 'engagement',
+                            'event_label': targetTab,
+                            'section': 'accommodations',
                             'page_location': window.location.pathname
                         });
                     }
@@ -794,6 +824,7 @@
             this.setupHoleCards();
             this.setupExperienceCards();
             this.setupQuickLinkCards();
+            this.setupAccommodationCards();
         }
 
         setupHoleCards() {
@@ -857,6 +888,27 @@
             });
         }
 
+        setupAccommodationCards() {
+            document.querySelectorAll('.accommodation-card').forEach((card, index) => {
+                this.addHoverEffects(card);
+                
+                card.addEventListener('click', () => {
+                    const accommodationName = card.querySelector('h3')?.textContent || 'unknown';
+                    const accommodationCategory = card.querySelector('.accommodation-category')?.textContent || 'unknown';
+                    
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'accommodation_card_interaction', {
+                            'event_category': 'engagement',
+                            'event_label': accommodationName,
+                            'accommodation_category': accommodationCategory,
+                            'card_position': index + 1,
+                            'page_location': window.location.pathname
+                        });
+                    }
+                });
+            });
+        }
+
         addHoverEffects(card) {
             card.addEventListener('mouseenter', () => {
                 if (card.classList.contains('hole-card')) {
@@ -901,6 +953,82 @@
         });
     }
 
+    // External link tracking
+    function setupExternalLinkTracking() {
+        document.querySelectorAll('a[href*="http"]').forEach(link => {
+            if (!link.href.includes(window.location.hostname)) {
+                link.addEventListener('click', function() {
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'external_link_click', {
+                            'event_category': 'external_navigation',
+                            'event_label': this.href,
+                            'link_domain': new URL(this.href).hostname
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+    // Enhanced form validation and tracking
+    function setupFormHandling() {
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                // Basic form validation
+                const requiredFields = this.querySelectorAll('[required]');
+                let isValid = true;
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('error');
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    return;
+                }
+                
+                // Track successful form submission
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'form_submit', {
+                        'event_category': 'conversion',
+                        'event_label': 'contact_form',
+                        'value': 1
+                    });
+                }
+            });
+        });
+    }
+
+    // Error handling and reporting
+    function setupErrorHandling() {
+        window.addEventListener('error', function(e) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'javascript_error', {
+                    'event_category': 'error',
+                    'event_label': e.message,
+                    'value': 1,
+                    'non_interaction': true
+                });
+            }
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'promise_rejection', {
+                    'event_category': 'error',
+                    'event_label': e.reason.toString(),
+                    'value': 1,
+                    'non_interaction': true
+                });
+            }
+        });
+    }
+
     // Main initialization
     document.addEventListener('DOMContentLoaded', async function() {
         performanceMetrics.mark('dom_ready');
@@ -942,8 +1070,11 @@
             new CardInteractionManager();
             new OfflineManager();
             
-            // Setup smooth scrolling
+            // Setup additional functionality
             setupSmoothScrolling();
+            setupExternalLinkTracking();
+            setupFormHandling();
+            setupErrorHandling();
             
             preloader.completeStep();
             performanceMetrics.mark('init_complete');
@@ -962,6 +1093,17 @@
             hero.style.minHeight = window.innerWidth <= 768 ? '80vh' : '90vh';
         });
     }, 100));
+
+    // Handle window resize
+    window.addEventListener('resize', debounce(() => {
+        // Recalculate any layout-dependent elements
+        const modals = document.querySelectorAll('.modal-overlay');
+        modals.forEach(modal => {
+            if (modal.classList.contains('show')) {
+                modal.style.height = window.innerHeight + 'px';
+            }
+        });
+    }, 250));
 
     // Console branding
     console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
