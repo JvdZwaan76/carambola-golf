@@ -561,6 +561,11 @@ img {
                 url('/images/carambola-golf-hole-1.webp') center/cover;
 }
 
+.accommodations-hero {
+    background: linear-gradient(rgba(30, 58, 95, 0.5), rgba(30, 58, 95, 0.5)),
+                url('/images/carambola-accommodation-oceanfront-resort.webp') center/cover;
+}
+
 .page-hero-content {
     max-width: 800px;
     padding: 0 2rem;
@@ -778,7 +783,8 @@ img {
 .course-overview,
 .pricing-overview,
 .stcroix-overview,
-.contact-overview {
+.contact-overview,
+.accommodations-overview {
     padding: 4rem 0;
     background: var(--bg-cream);
 }
@@ -786,7 +792,8 @@ img {
 .course-overview-content,
 .pricing-overview-content,
 .stcroix-overview-content,
-.contact-overview-content {
+.contact-overview-content,
+.accommodations-overview-content {
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
@@ -795,7 +802,8 @@ img {
 .course-overview h2,
 .pricing-overview h2,
 .stcroix-overview h2,
-.contact-overview h2 {
+.contact-overview h2,
+.accommodations-overview h2 {
     font-size: 2.5rem;
     margin-bottom: 2rem;
     color: var(--primary-navy);
@@ -805,11 +813,284 @@ img {
 .course-overview p,
 .pricing-overview p,
 .stcroix-overview p,
-.contact-overview p {
+.contact-overview p,
+.accommodations-overview p {
     font-size: 1.1rem;
     line-height: 1.8;
     margin-bottom: 1.5rem;
     color: #666;
+}
+
+/* Accommodations Section */
+.accommodations {
+    padding: 6rem 0;
+    background: var(--bg-light);
+}
+
+.accommodations-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.accommodation-tab {
+    background: none;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all var(--transition-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.accommodation-tab.active {
+    color: var(--primary-navy);
+    border-bottom-color: var(--accent-gold);
+}
+
+.accommodation-tab:hover {
+    color: var(--primary-navy);
+}
+
+.accommodations-content {
+    position: relative;
+}
+
+.accommodations-section {
+    display: none;
+    animation: fadeInUp 0.5s ease;
+}
+
+.accommodations-section.active {
+    display: block;
+}
+
+.accommodations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.accommodation-card {
+    background: white;
+    overflow: hidden;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    transition: all var(--transition-medium);
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    transform: translateY(0);
+    will-change: transform;
+}
+
+.accommodation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+
+.accommodation-card.featured {
+    border: 2px solid var(--accent-gold);
+}
+
+.accommodation-image {
+    width: 100%;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-color: #f7fafc;
+}
+
+.accommodation-category {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.accommodation-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--primary-navy);
+    color: var(--text-light);
+    padding: 0.5rem 1rem;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.accommodation-info {
+    padding: 2rem;
+}
+
+.accommodation-info h3 {
+    color: var(--primary-navy);
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+}
+
+.accommodation-info h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.accommodation-info h3 a:hover {
+    color: var(--accent-gold);
+}
+
+.accommodation-rating {
+    margin-bottom: 0.5rem;
+}
+
+.accommodation-rating i {
+    color: var(--accent-gold);
+    font-size: 0.9rem;
+    margin-right: 0.1rem;
+}
+
+.accommodation-price {
+    font-weight: 600;
+    color: var(--primary-navy);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.accommodation-info p {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.accommodation-features {
+    margin-bottom: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.feature-item i {
+    color: var(--accent-gold);
+    margin-right: 0.5rem;
+    width: 16px;
+}
+
+.accommodation-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.action-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: all var(--transition-medium);
+    flex: 1;
+    min-width: 120px;
+}
+
+.action-button.primary {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    border: 2px solid var(--accent-gold);
+}
+
+.action-button.primary:hover {
+    background: var(--primary-navy);
+    color: var(--accent-gold);
+}
+
+.action-button.secondary {
+    background: transparent;
+    color: var(--primary-navy);
+    border: 2px solid var(--primary-navy);
+}
+
+.action-button.secondary:hover {
+    background: var(--primary-navy);
+    color: var(--text-light);
+}
+
+/* Package Benefits */
+.package-benefits {
+    padding: 6rem 0;
+    background: var(--bg-cream);
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.benefit-card {
+    background: white;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    transition: all var(--transition-medium);
+    border-top: 3px solid var(--accent-gold);
+    transform: translateY(0);
+    will-change: transform;
+}
+
+.benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+
+.benefit-icon {
+    font-size: 3rem;
+    color: var(--primary-navy);
+    margin-bottom: 1.5rem;
+}
+
+.benefit-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-navy);
+    font-weight: 400;
+}
+
+.benefit-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
+/* Accommodation CTA */
+.accommodation-cta {
+    padding: 6rem 2rem;
+    background: var(--primary-navy);
+    color: var(--text-light);
+    margin: 0 auto;
 }
 
 /* Hole Gallery */
@@ -1603,7 +1884,8 @@ img {
 .course-cta,
 .pricing-cta,
 .island-cta,
-.contact-cta {
+.contact-cta,
+.accommodation-cta {
     padding: 6rem 2rem;
     background: var(--primary-navy);
     color: var(--text-light);
@@ -1644,11 +1926,11 @@ img {
     background: var(--primary-navy);
     color: var(--text-light);
     text-align: center;
-    padding: 3rem 0;
+    padding: 4rem 0 2rem;
 }
 
 .footer-content {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -1665,10 +1947,52 @@ img {
     margin-bottom: 0.5rem;
 }
 
+.footer-links {
+    margin: 2rem 0;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.footer-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-section h4 {
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: var(--text-light);
+    text-decoration: none;
+    opacity: 0.9;
+    transition: all var(--transition-medium);
+    font-size: 0.95rem;
+}
+
+.footer-section a:hover {
+    color: var(--accent-gold);
+    opacity: 1;
+}
+
 .footer-contact {
     margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(212, 175, 55, 0.3);
     font-size: 0.9rem;
 }
 
@@ -1713,6 +2037,56 @@ img {
     }
 }
 
+/* Update notification */
+.update-notification {
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 1001;
+    animation: slideInRight 0.3s ease;
+}
+
+.update-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.update-btn {
+    background: var(--primary-navy);
+    color: var(--text-light);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.dismiss-btn {
+    background: none;
+    border: none;
+    color: var(--primary-navy);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
 /* Animations */
 @keyframes fadeInUp {
     from {
@@ -1736,7 +2110,9 @@ img {
 .value-card,
 .booking-card,
 .hole-card,
-.experience-card {
+.experience-card,
+.accommodation-card,
+.benefit-card {
     contain: layout style paint;
 }
 
@@ -1824,7 +2200,8 @@ img {
     .course-cta,
     .pricing-cta,
     .island-cta,
-    .contact-cta {
+    .contact-cta,
+    .accommodation-cta {
         padding: 4rem 1rem;
     }
 
@@ -1858,7 +2235,8 @@ img {
     .stats-grid,
     .quick-links-grid,
     .value-grid,
-    .booking-grid {
+    .booking-grid,
+    .benefits-grid {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
@@ -1868,7 +2246,8 @@ img {
     }
 
     .gallery-grid,
-    .experience-grid {
+    .experience-grid,
+    .accommodations-grid {
         grid-template-columns: 1fr;
     }
 
@@ -1894,22 +2273,34 @@ img {
         gap: 2rem;
     }
 
+    /* Footer responsive */
+    .footer-links-grid {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+
     /* Pricing responsive */
-    .pricing-tabs {
+    .pricing-tabs,
+    .accommodations-tabs,
+    .experience-tabs {
         flex-direction: column;
         gap: 0.5rem;
         border-bottom: none;
         margin-bottom: 2rem;
     }
 
-    .pricing-tab {
+    .pricing-tab,
+    .accommodation-tab,
+    .experience-tab {
         padding: 0.8rem 1rem;
         border: 1px solid #e2e8f0;
         border-radius: 5px;
         border-bottom: 3px solid transparent;
     }
 
-    .pricing-tab.active {
+    .pricing-tab.active,
+    .accommodation-tab.active,
+    .experience-tab.active {
         border-color: var(--accent-gold);
         border-bottom-color: var(--accent-gold);
     }
@@ -1935,29 +2326,13 @@ img {
         grid-template-columns: 1fr;
     }
 
-    /* Experience responsive */
-    .experience-tabs {
-        flex-direction: column;
-        gap: 0.5rem;
-        border-bottom: none;
-        margin-bottom: 2rem;
-    }
-
-    .experience-tab {
-        padding: 0.8rem 1rem;
-        border: 1px solid #e2e8f0;
-        border-radius: 5px;
-        border-bottom: 3px solid transparent;
-    }
-
-    .experience-tab.active {
-        border-color: var(--accent-gold);
-        border-bottom-color: var(--accent-gold);
-    }
-
     .experience-details {
         flex-direction: column;
         gap: 0.5rem;
+    }
+
+    .accommodation-actions {
+        flex-direction: column;
     }
 
     /* Preloader mobile optimizations */
@@ -2047,6 +2422,12 @@ img {
     .loading-text p {
         font-size: 0.8rem;
     }
+
+    .update-notification {
+        right: 10px;
+        left: 10px;
+        right: 10px;
+    }
 }
 
 /* Smooth scrolling */
@@ -2070,7 +2451,8 @@ html {
 /* Focus styles for accessibility */
 .cta-button:focus,
 .modal-close-btn:focus,
-.nav-links a:focus {
+.nav-links a:focus,
+.action-button:focus {
     outline: 2px solid var(--accent-gold);
     outline-offset: 2px;
 }
@@ -2080,7 +2462,9 @@ html {
     .navbar,
     .modal-overlay,
     .preloader,
-    .cta-button {
+    .cta-button,
+    .update-notification,
+    .offline-indicator {
         display: none;
     }
     
@@ -2093,6 +2477,359 @@ html {
     body {
         font-size: 12pt;
         line-height: 1.4;
+    }
+}
+
+/* Legal Pages Styles */
+.legal-content {
+    padding: 6rem 0;
+    background: var(--bg-cream);
+}
+
+.legal-document {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 4rem;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    border-radius: 8px;
+    border-top: 4px solid var(--accent-gold);
+}
+
+.legal-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--light-gold);
+}
+
+.legal-header p {
+    margin: 0.5rem 0;
+    color: #666;
+    font-weight: 600;
+}
+
+.legal-document h2 {
+    color: var(--primary-navy);
+    font-size: 1.8rem;
+    margin: 3rem 0 1.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 400;
+}
+
+.legal-document h3 {
+    color: var(--primary-navy);
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem 0;
+    font-weight: 500;
+}
+
+.legal-document p {
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.legal-document ul {
+    margin: 1rem 0 2rem 2rem;
+}
+
+.legal-document li {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 0.8rem;
+}
+
+.legal-document li strong {
+    color: var(--primary-navy);
+    font-weight: 600;
+}
+
+.contact-info {
+    background: var(--light-gold);
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-gold);
+    margin: 2rem 0;
+}
+
+.contact-info p {
+    margin: 0.5rem 0;
+    color: var(--primary-navy);
+}
+
+.contact-info a {
+    color: var(--primary-navy);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-info a:hover {
+    color: var(--accent-gold);
+    text-decoration: underline;
+}
+
+.legal-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--light-gold);
+    font-style: italic;
+    color: #666;
+}
+
+.legal-footer p {
+    margin-bottom: 1rem;
+}
+
+/* Site Map Specific Styles */
+.sitemap-intro {
+    background: var(--light-gold);
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-gold);
+    margin-bottom: 3rem;
+}
+
+.sitemap-intro p {
+    margin: 0;
+    color: var(--primary-navy);
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.sitemap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+.sitemap-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px var(--shadow-soft);
+    border-top: 3px solid var(--accent-gold);
+}
+
+.sitemap-section h2 {
+    color: var(--primary-navy);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sitemap-section h2 i {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+}
+
+.sitemap-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sitemap-links li {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sitemap-links li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.sitemap-links a {
+    color: var(--primary-navy);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.sitemap-links a:hover {
+    color: var(--accent-gold);
+}
+
+.sitemap-links p {
+    margin: 0.5rem 0 0 0;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.sitemap-features {
+    background: var(--bg-light);
+    padding: 3rem;
+    border-radius: 8px;
+    margin: 3rem 0;
+}
+
+.sitemap-features h2 {
+    text-align: center;
+    color: var(--primary-navy);
+    margin-bottom: 2rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.feature-highlight {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+.feature-highlight h3 {
+    color: var(--primary-navy);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.feature-highlight h3 i {
+    color: var(--accent-gold);
+}
+
+.feature-highlight p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.sitemap-stats {
+    background: var(--primary-navy);
+    color: white;
+    padding: 3rem;
+    border-radius: 8px;
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.sitemap-stats h2 {
+    color: var(--accent-gold);
+    margin-bottom: 2rem;
+}
+
+.sitemap-stats .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item .stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+}
+
+.stat-item .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sitemap-footer {
+    background: var(--light-gold);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 3rem;
+}
+
+.sitemap-footer h2 {
+    color: var(--primary-navy);
+    margin-bottom: 1rem;
+}
+
+.last-updated {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--accent-gold);
+}
+
+.last-updated p {
+    margin: 0.5rem 0;
+    color: var(--primary-navy);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Legal Pages Mobile Responsive */
+@media (max-width: 768px) {
+    .legal-document {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .legal-document h2 {
+        font-size: 1.5rem;
+    }
+    
+    .legal-document h3 {
+        font-size: 1.2rem;
+    }
+    
+    .sitemap-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sitemap-stats .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .contact-info {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .legal-document {
+        padding: 1.5rem;
+        margin: 0.5rem;
+    }
+    
+    .legal-document h2 {
+        font-size: 1.3rem;
+    }
+    
+    .sitemap-section {
+        padding: 1.5rem;
+    }
+    
+    .sitemap-features,
+    .sitemap-stats,
+    .sitemap-footer {
+        padding: 2rem 1rem;
+    }
+    
+    .stat-item .stat-number {
+        font-size: 2rem;
     }
 }
 
