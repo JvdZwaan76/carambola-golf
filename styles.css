@@ -185,7 +185,7 @@ img {
     z-index: -1;
 }
 
-/* Enhanced hero with picture element */
+/* Enhanced hero with video */
 .hero {
     height: 90vh;
     position: relative;
@@ -197,6 +197,21 @@ img {
     margin-top: 80px;
     padding-top: 2rem;
     overflow: hidden;
+}
+
+.hero-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+/* Fallback styling for when video is not available */
+.hero-video + .hero-bg {
+    z-index: -1;
 }
 
 .hero::before {
@@ -215,6 +230,154 @@ img {
     z-index: 2;
     max-width: 900px;
     padding: 0 2rem;
+}
+
+/* Weather Widget Styles */
+.weather-widget {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, #f8fffe 0%, #e8f5f3 100%);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.weather-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(30, 58, 95, 0.1);
+    border: 2px solid var(--light-gold);
+    max-width: 600px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+}
+
+.weather-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.weather-icon {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    animation: weatherPulse 3s ease-in-out infinite;
+}
+
+@keyframes weatherPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+.weather-location h3 {
+    color: var(--primary-navy);
+    font-size: 1.5rem;
+    margin-bottom: 0.2rem;
+    font-weight: 500;
+}
+
+.weather-location p {
+    color: #666;
+    font-size: 0.95rem;
+    margin: 0;
+    font-style: italic;
+}
+
+.weather-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.weather-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.temperature {
+    text-align: left;
+}
+
+.temperature #current-temp {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: var(--primary-navy);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.temp-range {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.temp-range #high-temp {
+    color: var(--primary-navy);
+    font-weight: 600;
+}
+
+.temp-range #low-temp {
+    color: #888;
+}
+
+.weather-details {
+    text-align: right;
+    flex: 1;
+}
+
+.weather-condition {
+    font-size: 1.2rem;
+    color: var(--primary-navy);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.weather-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.weather-stats .stat {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.weather-stats .stat i {
+    color: var(--accent-gold);
+    width: 16px;
+    text-align: center;
+}
+
+.weather-notice {
+    background: var(--light-gold);
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--primary-navy);
+    font-weight: 500;
+    border-left: 4px solid var(--accent-gold);
+}
+
+.weather-notice i {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
 }
 
 /* Modal Styles */
@@ -2142,6 +2305,354 @@ img {
     contain: layout style paint;
 }
 
+/* Legal Pages Styles */
+.legal-content {
+    padding: 6rem 0;
+    background: var(--bg-cream);
+}
+
+.legal-document {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 4rem;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    border-radius: 8px;
+    border-top: 4px solid var(--accent-gold);
+}
+
+.legal-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--light-gold);
+}
+
+.legal-header p {
+    margin: 0.5rem 0;
+    color: #666;
+    font-weight: 600;
+}
+
+.legal-document h2 {
+    color: var(--primary-navy);
+    font-size: 1.8rem;
+    margin: 3rem 0 1.5rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    font-weight: 400;
+}
+
+.legal-document h3 {
+    color: var(--primary-navy);
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem 0;
+    font-weight: 500;
+}
+
+.legal-document p {
+    color: #555;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+.legal-document ul {
+    margin: 1rem 0 2rem 2rem;
+}
+
+.legal-document li {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 0.8rem;
+}
+
+.legal-document li strong {
+    color: var(--primary-navy);
+    font-weight: 600;
+}
+
+.contact-info {
+    background: var(--light-gold);
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-gold);
+    margin: 2rem 0;
+}
+
+.contact-info p {
+    margin: 0.5rem 0;
+    color: var(--primary-navy);
+}
+
+.contact-info a {
+    color: var(--primary-navy);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-info a:hover {
+    color: var(--accent-gold);
+    text-decoration: underline;
+}
+
+.legal-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--light-gold);
+    font-style: italic;
+    color: #666;
+}
+
+.legal-footer p {
+    margin-bottom: 1rem;
+}
+
+/* Site Map Specific Styles */
+.sitemap-intro {
+    background: var(--light-gold);
+    padding: 2rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-gold);
+    margin-bottom: 3rem;
+}
+
+.sitemap-intro p {
+    margin: 0;
+    color: var(--primary-navy);
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+.sitemap-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+.sitemap-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px var(--shadow-soft);
+    border-top: 3px solid var(--accent-gold);
+}
+
+.sitemap-section h2 {
+    color: var(--primary-navy);
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sitemap-section h2 i {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+}
+
+.sitemap-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sitemap-links li {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.sitemap-links li:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.sitemap-links a {
+    color: var(--primary-navy);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.sitemap-links a:hover {
+    color: var(--accent-gold);
+}
+
+.sitemap-links p {
+    margin: 0.5rem 0 0 0;
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.sitemap-features {
+    background: var(--bg-light);
+    padding: 3rem;
+    border-radius: 8px;
+    margin: 3rem 0;
+}
+
+.sitemap-features h2 {
+    text-align: center;
+    color: var(--primary-navy);
+    margin-bottom: 2rem;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.feature-highlight {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+.feature-highlight h3 {
+    color: var(--primary-navy);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.feature-highlight h3 i {
+    color: var(--accent-gold);
+}
+
+.feature-highlight p {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.sitemap-stats {
+    background: var(--primary-navy);
+    color: white;
+    padding: 3rem;
+    border-radius: 8px;
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.sitemap-stats h2 {
+    color: var(--accent-gold);
+    margin-bottom: 2rem;
+}
+
+.sitemap-stats .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-item .stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--accent-gold);
+    margin-bottom: 0.5rem;
+}
+
+.stat-item .stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.sitemap-footer {
+    background: var(--light-gold);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-top: 3rem;
+}
+
+.sitemap-footer h2 {
+    color: var(--primary-navy);
+    margin-bottom: 1rem;
+}
+
+.last-updated {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--accent-gold);
+}
+
+.last-updated p {
+    margin: 0.5rem 0;
+    color: var(--primary-navy);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+/* Mobile Responsive Weather Widget */
+@media (max-width: 768px) {
+    .weather-widget {
+        padding: 2rem 0;
+    }
+
+    .weather-card {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+
+    .weather-header {
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .weather-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .weather-main {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .temperature #current-temp {
+        font-size: 2.5rem;
+    }
+
+    .weather-details {
+        text-align: center;
+    }
+
+    .weather-stats {
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 1rem;
+    }
+
+    .weather-stats .stat {
+        justify-content: center;
+        font-size: 0.85rem;
+    }
+
+    .weather-notice {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .mobile-menu {
@@ -2463,6 +2974,51 @@ img {
         left: 10px;
         right: 10px;
     }
+
+    /* Legal Pages Mobile Responsive */
+    .legal-document {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    .legal-document h2 {
+        font-size: 1.5rem;
+    }
+    
+    .legal-document h3 {
+        font-size: 1.2rem;
+    }
+    
+    .sitemap-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sitemap-stats .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .contact-info {
+        padding: 1.5rem;
+    }
+
+    .sitemap-section {
+        padding: 1.5rem;
+    }
+    
+    .sitemap-features,
+    .sitemap-stats,
+    .sitemap-footer {
+        padding: 2rem 1rem;
+    }
+    
+    .stat-item .stat-number {
+        font-size: 2rem;
+    }
 }
 
 /* Smooth scrolling */
@@ -2515,359 +3071,6 @@ html {
     }
 }
 
-/* Legal Pages Styles */
-.legal-content {
-    padding: 6rem 0;
-    background: var(--bg-cream);
-}
-
-.legal-document {
-    max-width: 900px;
-    margin: 0 auto;
-    background: white;
-    padding: 4rem;
-    box-shadow: 0 8px 25px var(--shadow-soft);
-    border-radius: 8px;
-    border-top: 4px solid var(--accent-gold);
-}
-
-.legal-header {
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 2px solid var(--light-gold);
-}
-
-.legal-header p {
-    margin: 0.5rem 0;
-    color: #666;
-    font-weight: 600;
-}
-
-.legal-document h2 {
-    color: var(--primary-navy);
-    font-size: 1.8rem;
-    margin: 3rem 0 1.5rem 0;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #e2e8f0;
-    font-weight: 400;
-}
-
-.legal-document h3 {
-    color: var(--primary-navy);
-    font-size: 1.3rem;
-    margin: 2rem 0 1rem 0;
-    font-weight: 500;
-}
-
-.legal-document p {
-    color: #555;
-    line-height: 1.8;
-    margin-bottom: 1.5rem;
-    font-size: 1rem;
-}
-
-.legal-document ul {
-    margin: 1rem 0 2rem 2rem;
-}
-
-.legal-document li {
-    color: #555;
-    line-height: 1.7;
-    margin-bottom: 0.8rem;
-}
-
-.legal-document li strong {
-    color: var(--primary-navy);
-    font-weight: 600;
-}
-
-.contact-info {
-    background: var(--light-gold);
-    padding: 2rem;
-    border-radius: 8px;
-    border-left: 4px solid var(--accent-gold);
-    margin: 2rem 0;
-}
-
-.contact-info p {
-    margin: 0.5rem 0;
-    color: var(--primary-navy);
-}
-
-.contact-info a {
-    color: var(--primary-navy);
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.contact-info a:hover {
-    color: var(--accent-gold);
-    text-decoration: underline;
-}
-
-.legal-footer {
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 2px solid var(--light-gold);
-    font-style: italic;
-    color: #666;
-}
-
-.legal-footer p {
-    margin-bottom: 1rem;
-}
-
-/* Site Map Specific Styles */
-.sitemap-intro {
-    background: var(--light-gold);
-    padding: 2rem;
-    border-radius: 8px;
-    border-left: 4px solid var(--accent-gold);
-    margin-bottom: 3rem;
-}
-
-.sitemap-intro p {
-    margin: 0;
-    color: var(--primary-navy);
-    font-size: 1.1rem;
-    line-height: 1.7;
-}
-
-.sitemap-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 3rem;
-    margin-bottom: 4rem;
-}
-
-.sitemap-section {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px var(--shadow-soft);
-    border-top: 3px solid var(--accent-gold);
-}
-
-.sitemap-section h2 {
-    color: var(--primary-navy);
-    font-size: 1.4rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.sitemap-section h2 i {
-    color: var(--accent-gold);
-    font-size: 1.2rem;
-}
-
-.sitemap-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.sitemap-links li {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.sitemap-links li:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-}
-
-.sitemap-links a {
-    color: var(--primary-navy);
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.sitemap-links a:hover {
-    color: var(--accent-gold);
-}
-
-.sitemap-links p {
-    margin: 0.5rem 0 0 0;
-    color: #666;
-    font-size: 0.9rem;
-    line-height: 1.5;
-}
-
-.sitemap-features {
-    background: var(--bg-light);
-    padding: 3rem;
-    border-radius: 8px;
-    margin: 3rem 0;
-}
-
-.sitemap-features h2 {
-    text-align: center;
-    color: var(--primary-navy);
-    margin-bottom: 2rem;
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
-.feature-highlight {
-    background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    text-align: center;
-    box-shadow: 0 4px 15px var(--shadow-soft);
-}
-
-.feature-highlight h3 {
-    color: var(--primary-navy);
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.feature-highlight h3 i {
-    color: var(--accent-gold);
-}
-
-.feature-highlight p {
-    color: #666;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    margin: 0;
-}
-
-.sitemap-stats {
-    background: var(--primary-navy);
-    color: white;
-    padding: 3rem;
-    border-radius: 8px;
-    text-align: center;
-    margin: 3rem 0;
-}
-
-.sitemap-stats h2 {
-    color: var(--accent-gold);
-    margin-bottom: 2rem;
-}
-
-.sitemap-stats .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-.stat-item {
-    text-align: center;
-}
-
-.stat-item .stat-number {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--accent-gold);
-    margin-bottom: 0.5rem;
-}
-
-.stat-item .stat-label {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.sitemap-footer {
-    background: var(--light-gold);
-    padding: 2rem;
-    border-radius: 8px;
-    margin-top: 3rem;
-}
-
-.sitemap-footer h2 {
-    color: var(--primary-navy);
-    margin-bottom: 1rem;
-}
-
-.last-updated {
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--accent-gold);
-}
-
-.last-updated p {
-    margin: 0.5rem 0;
-    color: var(--primary-navy);
-    font-weight: 600;
-    font-size: 0.9rem;
-}
-
-/* Legal Pages Mobile Responsive */
-@media (max-width: 768px) {
-    .legal-document {
-        padding: 2rem;
-        margin: 1rem;
-    }
-    
-    .legal-document h2 {
-        font-size: 1.5rem;
-    }
-    
-    .legal-document h3 {
-        font-size: 1.2rem;
-    }
-    
-    .sitemap-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-    }
-    
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .sitemap-stats .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .contact-info {
-        padding: 1.5rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .legal-document {
-        padding: 1.5rem;
-        margin: 0.5rem;
-    }
-    
-    .legal-document h2 {
-        font-size: 1.3rem;
-    }
-    
-    .sitemap-section {
-        padding: 1.5rem;
-    }
-    
-    .sitemap-features,
-    .sitemap-stats,
-    .sitemap-footer {
-        padding: 2rem 1rem;
-    }
-    
-    .stat-item .stat-number {
-        font-size: 2rem;
-    }
-}
-
 /* Reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
     *,
@@ -2886,7 +3089,8 @@ html {
     .golf-ball,
     .loading-progress,
     .modal-icon,
-    .golf-decoration i {
+    .golf-decoration i,
+    .weather-icon {
         animation: none;
     }
 }
