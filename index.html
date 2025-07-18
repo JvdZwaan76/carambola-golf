@@ -143,6 +143,7 @@
     <!-- Critical Resource Preloading -->
     <link rel="preload" href="styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image">
+    <link rel="preload" href="/video/carambola-golf-video-loop-hero.mp4" as="video" type="video/mp4">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
     <!-- DNS Prefetch for Performance -->
@@ -465,11 +466,14 @@
 
     <!-- Hero Section with Video -->
     <section id="home" class="hero">
-        <video class="hero-video" autoplay muted loop playsinline>
-            <source src="/videos/carambola-hero-video.mp4" type="video/mp4">
-            <!-- Fallback image if video doesn't load -->
-            <img src="/images/carambola-golf-clubhouse.webp" alt="Carambola Golf Club Championship Clubhouse" class="hero-bg">
-        </video>
+        <div class="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+                <source src="/video/carambola-golf-video-loop-hero.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <img src="/images/carambola-golf-clubhouse.webp" alt="Carambola Golf Club Championship Clubhouse" class="hero-fallback-image">
+        </div>
+        <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="hero-tagline">Play the Caribbean's Premier Golf Course</div>
             <h1>Carambola Golf Club</h1>
