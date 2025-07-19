@@ -1268,6 +1268,145 @@ img {
     box-shadow: 0 3px 10px rgba(0,0,0,0.3);
 }
 
+/* Hole 1 Special Carousel Styles */
+.hole-1-special {
+    position: relative;
+}
+
+.hole-image-carousel {
+    width: 100%;
+    height: 250px;
+    position: relative;
+    overflow: hidden;
+    background-color: #f7fafc;
+}
+
+.hole-carousel-slides {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.hole-carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.hole-carousel-slide.active {
+    opacity: 1;
+}
+
+.hole-carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hole-carousel-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(30, 58, 95, 0.8);
+    color: var(--accent-gold);
+    border: 2px solid var(--accent-gold);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    backdrop-filter: blur(10px);
+    z-index: 3;
+}
+
+.hole-carousel-play-btn:hover {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.hole-carousel-play-btn.playing {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+}
+
+.hole-carousel-play-btn.playing i::before {
+    content: "\f04c"; /* Pause icon */
+}
+
+.hole-carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: 4;
+    opacity: 0;
+    transition: opacity var(--transition-medium);
+}
+
+.hole-image-carousel:hover .hole-carousel-nav {
+    opacity: 1;
+}
+
+.hole-carousel-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(30, 58, 95, 0.8);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+.hole-carousel-btn:hover {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    transform: scale(1.1);
+}
+
+.hole-carousel-dots {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 4;
+}
+
+.hole-carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all var(--transition-medium);
+}
+
+.hole-carousel-dot.active {
+    background: var(--accent-gold);
+    transform: scale(1.3);
+}
+
+.hole-carousel-dot:hover {
+    background: rgba(255, 255, 255, 0.8);
+}
+
 .hole-info {
     padding: 2rem;
 }
@@ -1309,6 +1448,19 @@ img {
     color: #888;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/* Hole Gallery Responsive - Show fewer holes on mobile */
+@media (max-width: 768px) {
+    .hole-card:nth-child(n+7) {
+        display: none;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hole-card:nth-child(n+13) {
+        display: none;
+    }
 }
 
 /* Accommodations Section */
@@ -2365,11 +2517,21 @@ img {
     opacity: 0.9;
     transition: all var(--transition-medium);
     font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .footer-section a:hover {
     color: var(--accent-gold);
     opacity: 1;
+}
+
+/* Social Media Links Styling */
+.footer-section a i.fab {
+    font-size: 1rem;
+    width: 16px;
+    text-align: center;
 }
 
 .footer-contact {
@@ -2885,6 +3047,33 @@ img {
         width: 10px;
         height: 10px;
     }
+
+    /* Hole 1 Carousel Mobile */
+    .hole-image-carousel {
+        height: 220px;
+    }
+
+    .hole-carousel-play-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .hole-carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 0.8rem;
+    }
+
+    .hole-carousel-dots {
+        bottom: 0.5rem;
+        gap: 0.3rem;
+    }
+
+    .hole-carousel-dot {
+        width: 6px;
+        height: 6px;
+    }
 }
 
 /* Responsive Design */
@@ -3282,6 +3471,37 @@ img {
         width: 8px;
         height: 8px;
     }
+
+    /* Hole 1 Carousel Extra Small Mobile */
+    .hole-image-carousel {
+        height: 200px;
+    }
+
+    .hole-carousel-play-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1rem;
+    }
+
+    .hole-carousel-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.7rem;
+    }
+
+    .hole-carousel-nav {
+        padding: 0 0.5rem;
+    }
+
+    .hole-carousel-dots {
+        bottom: 0.25rem;
+        gap: 0.2rem;
+    }
+
+    .hole-carousel-dot {
+        width: 5px;
+        height: 5px;
+    }
 }
 
 /* Smooth scrolling */
@@ -3308,7 +3528,10 @@ html {
 .nav-links a:focus,
 .action-button:focus,
 .carousel-btn:focus,
-.carousel-dot:focus {
+.carousel-dot:focus,
+.hole-carousel-btn:focus,
+.hole-carousel-dot:focus,
+.hole-carousel-play-btn:focus {
     outline: 2px solid var(--accent-gold);
     outline-offset: 2px;
 }
@@ -3323,7 +3546,10 @@ html {
     .offline-indicator,
     .carousel-nav,
     .carousel-dots,
-    .carousel-progress {
+    .carousel-progress,
+    .hole-carousel-nav,
+    .hole-carousel-dots,
+    .hole-carousel-play-btn {
         display: none;
     }
     
@@ -3372,6 +3598,10 @@ html {
     }
 
     .slide-content {
+        transition: none;
+    }
+
+    .hole-carousel-slide {
         transition: none;
     }
 }
