@@ -1,4 +1,4 @@
-// Carambola Golf Club JavaScript - Enhanced Performance Version with Video Hero and Carousel
+// Carambola Golf Club JavaScript - Enhanced Performance Version with Video Hero, Carousel and Hole 1 Mini Carousel
 (function() {
     'use strict';
 
@@ -415,6 +415,223 @@
         trackCarouselInteraction(action) {
             if (typeof trackCarouselInteraction !== 'undefined') {
                 trackCarouselInteraction(this.currentSlide, action);
+            }
+        }
+    }
+
+    // Hole 1 Mini Carousel Manager
+    class HoleCarouselManager {
+        constructor() {
+            this.carousel = document.getElementById('hole1Carousel');
+            this.slides = document.querySelectorAll('.hole-carousel-slide');
+            this.playBtn = document.querySelector('.hole-carousel-play-btn');
+            this.prevBtn = document.querySelector('.hole-carousel-btn.prev');
+            this.nextBtn = document.querySelector('.hole-carousel-btn.next');
+            this.dots = document.querySelectorAll('.hole-carousel-dot');
+            
+            this.currentSlide = 0;
+            this.totalSlides = this.slides.length;
+            this.isPlaying = false;
+            this.autoplayTimer = null;
+            this.autoplayDelay = 3000; // 3 seconds per slide
+            
+            this.init();
+        }
+
+        init() {
+            if (!this.carousel || this.totalSlides === 0) return;
+
+            this.setupEventListeners();
+            this.updateDots();
+
+            // Track hole carousel initialization
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'hole_carousel_initialized', {
+                    'event_category': 'hole_gallery',
+                    'event_label': 'hole_1',
+                    'slide_count': this.totalSlides
+                });
+            }
+        }
+
+        setupEventListeners() {
+            // Play/Pause button
+            if (this.playBtn) {
+                this.playBtn.addEventListener('click', () => {
+                    this.togglePlayback();
+                });
+            }
+
+            // Navigation buttons
+            if (this.prevBtn) {
+                this.prevBtn.addEventListener('click', () => {
+                    this.previousSlide();
+                    this.trackHoleCarouselInteraction('prev_button');
+                });
+            }
+
+            if (this.nextBtn) {
+                this.nextBtn.addEventListener('click', () => {
+                    this.nextSlide();
+                    this.trackHoleCarouselInteraction('next_button');
+                });
+            }
+
+            // Dots navigation
+            this.dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    this.goToSlide(index);
+                    this.trackHoleCarouselInteraction('dot_navigation');
+                });
+            });
+
+            // Touch/swipe support
+            this.setupTouchEvents();
+
+            // Keyboard navigation when focused
+            this.carousel.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    this.previousSlide();
+                    this.trackHoleCarouselInteraction('keyboard_prev');
+                } else if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    this.nextSlide();
+                    this.trackHoleCarouselInteraction('keyboard_next');
+                } else if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    this.togglePlayback();
+                }
+            });
+
+            // Make carousel focusable for keyboard navigation
+            this.carousel.setAttribute('tabindex', '0');
+        }
+
+        setupTouchEvents() {
+            let startX = 0;
+            let endX = 0;
+            let startY = 0;
+            let endY = 0;
+
+            this.carousel.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            }, passiveIfSupported);
+
+            this.carousel.addEventListener('touchend', (e) => {
+                endX = e.changedTouches[0].clientX;
+                endY = e.changedTouches[0].clientY;
+                
+                const deltaX = startX - endX;
+                const deltaY = startY - endY;
+                
+                // Only trigger if horizontal swipe is more significant than vertical
+                if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 30) {
+                    if (deltaX > 0) {
+                        this.nextSlide();
+                        this.trackHoleCarouselInteraction('swipe_left');
+                    } else {
+                        this.previousSlide();
+                        this.trackHoleCarouselInteraction('swipe_right');
+                    }
+                }
+            }, passiveIfSupported);
+        }
+
+        togglePlayback() {
+            if (this.isPlaying) {
+                this.pause();
+            } else {
+                this.play();
+            }
+        }
+
+        play() {
+            this.isPlaying = true;
+            this.playBtn.classList.add('playing');
+            
+            // Update play button icon
+            const icon = this.playBtn.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-play');
+                icon.classList.add('fa-pause');
+            }
+
+            this.startAutoplay();
+            this.trackHoleCarouselInteraction('play');
+        }
+
+        pause() {
+            this.isPlaying = false;
+            this.playBtn.classList.remove('playing');
+            
+            // Update play button icon
+            const icon = this.playBtn.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-pause');
+                icon.classList.add('fa-play');
+            }
+
+            this.stopAutoplay();
+            this.trackHoleCarouselInteraction('pause');
+        }
+
+        startAutoplay() {
+            if (this.autoplayTimer) {
+                clearInterval(this.autoplayTimer);
+            }
+            
+            this.autoplayTimer = setInterval(() => {
+                this.nextSlide();
+            }, this.autoplayDelay);
+        }
+
+        stopAutoplay() {
+            if (this.autoplayTimer) {
+                clearInterval(this.autoplayTimer);
+                this.autoplayTimer = null;
+            }
+        }
+
+        goToSlide(index) {
+            if (index < 0 || index >= this.totalSlides || index === this.currentSlide) return;
+
+            // Remove active class from current slide
+            this.slides[this.currentSlide].classList.remove('active');
+            
+            // Update current slide
+            this.currentSlide = index;
+            
+            // Add active class to new slide
+            this.slides[this.currentSlide].classList.add('active');
+            
+            this.updateDots();
+        }
+
+        nextSlide() {
+            const nextIndex = (this.currentSlide + 1) % this.totalSlides;
+            this.goToSlide(nextIndex);
+        }
+
+        previousSlide() {
+            const prevIndex = (this.currentSlide - 1 + this.totalSlides) % this.totalSlides;
+            this.goToSlide(prevIndex);
+        }
+
+        updateDots() {
+            this.dots.forEach((dot, index) => {
+                if (index === this.currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        trackHoleCarouselInteraction(action) {
+            if (typeof trackHoleCarouselInteraction !== 'undefined') {
+                trackHoleCarouselInteraction(1, action);
             }
         }
     }
@@ -1329,6 +1546,7 @@
         preloader.addStep(); // Analytics
         preloader.addStep(); // Initial animations
         preloader.addStep(); // Video/Carousel
+        preloader.addStep(); // Hole carousel
         
         try {
             // Register service worker
@@ -1365,6 +1583,11 @@
             // Initialize carousel for course page
             if (document.querySelector('.course-hero-carousel')) {
                 new CarouselManager();
+            }
+            
+            // Initialize hole 1 carousel
+            if (document.getElementById('hole1Carousel')) {
+                new HoleCarouselManager();
             }
             
             // Setup additional functionality
@@ -1409,7 +1632,7 @@
 
     // Console branding
     console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
-    console.log('%cEnhanced website with PWA features, video hero, and carousel', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%cEnhanced website with PWA features, video hero, carousel, and hole gallery', 'color: #1e3a5f; font-size: 12px;');
     console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
