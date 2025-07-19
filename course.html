@@ -53,15 +53,6 @@
             });
         }
 
-        function trackHoleCarouselInteraction(holeNumber, action) {
-            gtag('event', 'hole_carousel_interaction', {
-                event_category: 'Hole Gallery',
-                event_label: `Hole ${holeNumber} - ${action}`,
-                hole_number: holeNumber,
-                interaction_type: action
-            });
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             // Track hole card interactions
             document.querySelectorAll('.hole-card').forEach((card, index) => {
@@ -101,19 +92,6 @@
                         event_label: 'course_page_cta',
                         value: 115,
                         currency: 'USD'
-                    });
-                });
-            });
-
-            // Track social media clicks
-            document.querySelectorAll('.social-links a').forEach(link => {
-                link.addEventListener('click', function() {
-                    const platform = this.querySelector('i').className.includes('instagram') ? 'instagram' : 
-                                    this.querySelector('i').className.includes('facebook') ? 'facebook' : 'twitter';
-                    gtag('event', 'social_media_click', {
-                        event_category: 'Social Media',
-                        event_label: platform,
-                        page_location: window.location.pathname
                     });
                 });
             });
@@ -162,12 +140,7 @@
             "addressLocality": "St. Croix",
             "addressRegion": "VI",
             "addressCountry": "US"
-        },
-        "sameAs": [
-            "https://www.instagram.com/carambolagolfclub/?hl=en",
-            "https://www.facebook.com/CarambolaGolf/",
-            "https://x.com/carambolagolfer"
-        ]
+        }
     }
     </script>
 </head>
@@ -375,55 +348,9 @@
                 <p>Each hole at Carambola tells a unique story of Jones' design genius, offering distinct challenges while maintaining the seamless flow that defines championship golf. From dramatic ocean views to strategic water crossings, every hole provides a memorable experience in tropical paradise.</p>
             </div>
             <div class="gallery-grid">
-                <!-- Hole 1 with Mini Carousel -->
-                <article class="hole-card featured-hole">
-                    <div class="hole-image-container">
-                        <div class="hole-mini-carousel" data-hole="1">
-                            <div class="carousel-slides-mini">
-                                <div class="carousel-slide-mini active">
-                                    <picture>
-                                        <source srcset="/images/carambola-golf-hole-1-1.webp" type="image/webp">
-                                        <img src="/images/carambola-golf-hole-1-1.jpg" alt="Carambola Golf Club Hole 1 - View 1" loading="lazy">
-                                    </picture>
-                                </div>
-                                <div class="carousel-slide-mini">
-                                    <picture>
-                                        <source srcset="/images/carambola-golf-hole-1-2.webp" type="image/webp">
-                                        <img src="/images/carambola-golf-hole-1-2.jpg" alt="Carambola Golf Club Hole 1 - View 2" loading="lazy">
-                                    </picture>
-                                </div>
-                                <div class="carousel-slide-mini">
-                                    <picture>
-                                        <source srcset="/images/carambola-golf-hole-1-3.webp" type="image/webp">
-                                        <img src="/images/carambola-golf-hole-1-3.jpg" alt="Carambola Golf Club Hole 1 - View 3" loading="lazy">
-                                    </picture>
-                                </div>
-                                <div class="carousel-slide-mini">
-                                    <picture>
-                                        <source srcset="/images/carambola-golf-hole-1-4.webp" type="image/webp">
-                                        <img src="/images/carambola-golf-hole-1-4.jpg" alt="Carambola Golf Club Hole 1 - View 4" loading="lazy">
-                                    </picture>
-                                </div>
-                                <div class="carousel-slide-mini">
-                                    <picture>
-                                        <source srcset="/images/carambola-golf-hole-1-5.webp" type="image/webp">
-                                        <img src="/images/carambola-golf-hole-1-5.jpg" alt="Carambola Golf Club Hole 1 - View 5" loading="lazy">
-                                    </picture>
-                                </div>
-                            </div>
-                            <div class="carousel-controls-mini">
-                                <button class="play-btn" aria-label="Play slideshow">
-                                    <i class="fas fa-play"></i>
-                                </button>
-                                <div class="carousel-dots-mini">
-                                    <button class="dot-mini active" data-slide="0"></button>
-                                    <button class="dot-mini" data-slide="1"></button>
-                                    <button class="dot-mini" data-slide="2"></button>
-                                    <button class="dot-mini" data-slide="3"></button>
-                                    <button class="dot-mini" data-slide="4"></button>
-                                </div>
-                            </div>
-                        </div>
+                <!-- Sample holes - you can add all 18 -->
+                <article class="hole-card">
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-1.webp')">
                         <div class="hole-number">1</div>
                     </div>
                     <div class="hole-info">
@@ -440,247 +367,6 @@
                             </div>
                             <div class="hole-stat">
                                 <span class="hole-stat-value">15</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <!-- Holes 2-18 -->
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-2.webp')">
-                        <div class="hole-number">2</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Caribbean Challenge</h4>
-                        <div class="hole-description">This demanding par 4 features a dogleg right with strategic bunkering. Ocean breezes and elevation changes make club selection crucial for the approach to the well-protected green.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">425</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">3</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-3.webp')">
-                        <div class="hole-number">3</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Island Precision</h4>
-                        <div class="hole-description">A beautiful par 3 over water requiring precise distance control. The green sits on a natural peninsula, surrounded by crystal blue waters and lush tropical vegetation.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">3</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">165</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">17</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-4.webp')">
-                        <div class="hole-number">4</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Trade Wind Test</h4>
-                        <div class="hole-description">A long par 4 that plays into the prevailing trade winds. Strategic positioning from the tee sets up the best angle for the challenging uphill approach to the elevated green.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">445</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">9</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-5.webp')">
-                        <div class="hole-number">5</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Tropical Eagle</h4>
-                        <div class="hole-description">A reachable par 5 with risk-reward options. Long hitters can attempt to reach the green in two, but must navigate water hazards and strategic bunkering to achieve birdie or eagle.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">520</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">11</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-6.webp')">
-                        <div class="hole-number">6</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Valley Vista</h4>
-                        <div class="hole-description">A scenic par 4 through a tropical valley. The tee shot must carry a natural ravine, while the approach plays to a green nestled among mature palm trees and native vegetation.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">385</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">13</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-7.webp')">
-                        <div class="hole-number">7</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Ocean Vista</h4>
-                        <div class="hole-description">A challenging par 5 that showcases the natural beauty of St. Croix's coastline. Multiple strategic options reward course management while punishing aggressive play with water and bunkers.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">578</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-8.webp')">
-                        <div class="hole-number">8</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Sunset Short</h4>
-                        <div class="hole-description">A picturesque par 3 playing over a natural lagoon. Club selection is critical as the green is well-protected by water and strategically placed bunkers surrounding the putting surface.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">3</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">145</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">18</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-9.webp')">
-                        <div class="hole-number">9</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Clubhouse Return</h4>
-                        <div class="hole-description">The closing hole of the front nine features a dramatic uphill finish back to the clubhouse. Strategic placement from the tee is essential for the demanding approach shot.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">415</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">7</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-10.webp')">
-                        <div class="hole-number">10</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Back Nine Beginning</h4>
-                        <div class="hole-description">A strong par 4 that starts the back nine with authority. The downhill tee shot offers distance, but the approach to the well-bunkered green demands precision and course knowledge.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">405</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">12</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-11.webp')">
-                        <div class="hole-number">11</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Strategic Sweeper</h4>
-                        <div class="hole-description">A long par 5 that sweeps along the coastline. Three distinct sections offer different challenges, from the elevated tee through the valley fairway to the plateau green complex.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">598</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">6</span>
                                 <span class="hole-stat-label">Handicap</span>
                             </div>
                         </div>
@@ -704,127 +390,7 @@
                                 <span class="hole-stat-label">Yards</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-13.webp')">
-                        <div class="hole-number">13</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Mountain Ascent</h4>
-                        <div class="hole-description">An uphill par 4 that climbs through tropical terrain. The elevated green rewards accurate approach shots while penalizing anything short with steep slopes and strategic bunkering.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">390</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">14</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-14.webp')">
-                        <div class="hole-number">14</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Risk and Reward</h4>
-                        <div class="hole-description">Jones' genius shines in this risk-reward par 4. Players can choose the conservative route or challenge the water hazard for a shorter approach to the green and potential birdie opportunity.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">421</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">8</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-15.webp')">
-                        <div class="hole-number">15</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Natural Amphitheater</h4>
-                        <div class="hole-description">A dramatic par 5 played through a natural amphitheater of tropical vegetation. The three-shot hole requires strategic positioning for each shot to navigate the undulating terrain.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">545</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">10</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-16.webp')">
-                        <div class="hole-number">16</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Tropical Paradise</h4>
-                        <div class="hole-description">A picturesque par 3 surrounded by lush tropical vegetation. Precise club selection is crucial as the green is well-protected by strategic bunkering and natural water features.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
                                 <span class="hole-stat-value">3</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">156</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">16</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-17.webp')">
-                        <div class="hole-number">17</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Penultimate Challenge</h4>
-                        <div class="hole-description">The second-to-last hole demands precision and nerve. This challenging par 4 features narrow landing areas and a well-protected green that can make or break a good round.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">412</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">2</span>
                                 <span class="hole-stat-label">Handicap</span>
                             </div>
                         </div>
@@ -849,6 +415,79 @@
                             </div>
                             <div class="hole-stat">
                                 <span class="hole-stat-value">1</span>
+                                <span class="hole-stat-label">Handicap</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- More holes can be added here -->
+                <article class="hole-card">
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-7.webp')">
+                        <div class="hole-number">7</div>
+                    </div>
+                    <div class="hole-info">
+                        <h4>Ocean Vista</h4>
+                        <div class="hole-description">A challenging par 5 that showcases the natural beauty of St. Croix's coastline. Multiple strategic options reward course management while punishing aggressive play.</div>
+                        <div class="hole-stats">
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">5</span>
+                                <span class="hole-stat-label">Par</span>
+                            </div>
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">578</span>
+                                <span class="hole-stat-label">Yards</span>
+                            </div>
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">5</span>
+                                <span class="hole-stat-label">Handicap</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hole-card">
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-14.webp')">
+                        <div class="hole-number">14</div>
+                    </div>
+                    <div class="hole-info">
+                        <h4>Risk and Reward</h4>
+                        <div class="hole-description">Jones' genius shines in this risk-reward par 4. Players can choose the conservative route or challenge the water hazard for a shorter approach to the green.</div>
+                        <div class="hole-stats">
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">4</span>
+                                <span class="hole-stat-label">Par</span>
+                            </div>
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">421</span>
+                                <span class="hole-stat-label">Yards</span>
+                            </div>
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">7</span>
+                                <span class="hole-stat-label">Handicap</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="hole-card">
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-16.webp')">
+                        <div class="hole-number">16</div>
+                    </div>
+                    <div class="hole-info">
+                        <h4>Tropical Paradise</h4>
+                        <div class="hole-description">A picturesque par 3 surrounded by lush tropical vegetation. Precise club selection is crucial as the green is well-protected by strategic bunkering and natural hazards.</div>
+                        <div class="hole-stats">
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">3</span>
+                                <span class="hole-stat-label">Par</span>
+                            </div>
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">156</span>
+                                <span class="hole-stat-label">Yards</span>
+                            </div>
+                            <div class="hole-stat">
+                                <span class="hole-stat-value">17</span>
                                 <span class="hole-stat-label">Handicap</span>
                             </div>
                         </div>
@@ -905,23 +544,10 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Social Media Links -->
-            <div class="social-links">
-                <a href="https://www.instagram.com/carambolagolfclub/?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://www.facebook.com/CarambolaGolf/" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Facebook">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://x.com/carambolagolfer" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X (Twitter)">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-            </div>
             
             <div class="footer-contact">
                 <p>For inquiries regarding this website please contact:</p>
-                <p><a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a> | <a href="tel:+18053387681">+1 (805) 338.7681</a></p>
+                <p><a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a> | <a href="tel:+18053387680">+1-805-338-7680</a></p>
             </div>
         </div>
     </footer>
