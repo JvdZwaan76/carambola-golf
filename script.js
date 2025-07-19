@@ -1,4 +1,4 @@
-// Carambola Golf Club JavaScript - Enhanced Performance Version with Video Hero and Carousel
+// Carambola Golf Club JavaScript - Enhanced Performance Version with Video Hero, Carousel, and Hole Mini-Carousel
 (function() {
     'use strict';
 
@@ -416,6 +416,87 @@
             if (typeof trackCarouselInteraction !== 'undefined') {
                 trackCarouselInteraction(this.currentSlide, action);
             }
+        }
+    }
+
+    // Enhanced hole mini-carousel manager
+    class HoleMiniCarouselManager {
+        constructor() {
+            this.carousels = document.querySelectorAll('.hole-mini-carousel');
+            this.init();
+        }
+
+        init() {
+            this.carousels.forEach(carousel => {
+                const holeNumber = carousel.dataset.hole;
+                const slides = carousel.querySelectorAll('.carousel-slide-mini');
+                const playBtn = carousel.querySelector('.play-btn');
+                const dots = carousel.querySelectorAll('.dot-mini');
+                
+                let currentSlide = 0;
+                let isPlaying = false;
+                let playInterval = null;
+
+                // Play button functionality
+                playBtn.addEventListener('click', () => {
+                    if (isPlaying) {
+                        this.stopSlideshow(playBtn, playInterval);
+                        isPlaying = false;
+                        playInterval = null;
+                    } else {
+                        playInterval = this.startSlideshow(slides, dots, () => {
+                            currentSlide = (currentSlide + 1) % slides.length;
+                            this.showSlide(slides, dots, currentSlide);
+                        });
+                        isPlaying = true;
+                        playBtn.classList.add('playing');
+                    }
+
+                    // Track interaction
+                    if (typeof trackHoleCarouselInteraction !== 'undefined') {
+                        trackHoleCarouselInteraction(holeNumber, isPlaying ? 'play' : 'pause');
+                    }
+                });
+
+                // Dot navigation
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        if (isPlaying) {
+                            this.stopSlideshow(playBtn, playInterval);
+                            isPlaying = false;
+                            playInterval = null;
+                        }
+                        currentSlide = index;
+                        this.showSlide(slides, dots, currentSlide);
+                        
+                        if (typeof trackHoleCarouselInteraction !== 'undefined') {
+                            trackHoleCarouselInteraction(holeNumber, 'dot_navigation');
+                        }
+                    });
+                });
+            });
+        }
+
+        showSlide(slides, dots, index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        }
+
+        startSlideshow(slides, dots, callback) {
+            return setInterval(() => {
+                callback();
+            }, 2000); // 2 seconds per slide
+        }
+
+        stopSlideshow(playBtn, interval) {
+            if (interval) {
+                clearInterval(interval);
+            }
+            playBtn.classList.remove('playing');
         }
     }
 
@@ -1329,6 +1410,7 @@
         preloader.addStep(); // Analytics
         preloader.addStep(); // Initial animations
         preloader.addStep(); // Video/Carousel
+        preloader.addStep(); // Hole Mini-Carousel
         
         try {
             // Register service worker
@@ -1366,6 +1448,11 @@
             if (document.querySelector('.course-hero-carousel')) {
                 new CarouselManager();
             }
+
+            // Initialize hole mini-carousel
+            if (document.querySelector('.hole-mini-carousel')) {
+                new HoleMiniCarouselManager();
+            }
             
             // Setup additional functionality
             setupSmoothScrolling();
@@ -1373,6 +1460,7 @@
             setupFormHandling();
             setupErrorHandling();
             
+            preloader.completeStep();
             preloader.completeStep();
             preloader.completeStep();
             performanceMetrics.mark('init_complete');
@@ -1409,7 +1497,7 @@
 
     // Console branding
     console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
-    console.log('%cEnhanced website with PWA features, video hero, and carousel', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%cEnhanced website with PWA features, video hero, carousel, and hole mini-carousel', 'color: #1e3a5f; font-size: 12px;');
     console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
