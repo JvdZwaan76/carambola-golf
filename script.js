@@ -1,4 +1,4 @@
-// Carambola Golf Club JavaScript - Enhanced Performance Version with Video Hero, Carousel and Hole 1 Mini Carousel
+// Carambola Golf Club JavaScript - FIXED VERSION with Preloader Timeout Protection
 (function() {
     'use strict';
 
@@ -76,7 +76,116 @@
         }
     };
 
-    // Service Worker Registration
+    // FIXED Enhanced preloader with timeout protection and better error handling
+    class PreloaderManager {
+        constructor() {
+            this.preloader = document.getElementById('preloader');
+            this.progress = document.querySelector('.loading-progress');
+            this.loadingSteps = 0;
+            this.completedSteps = 0;
+            this.minimumShowTime = 1000; // Minimum time to show preloader
+            this.maxShowTime = 5000; // MAXIMUM time to show preloader - CRITICAL FIX
+            this.startTime = performance.now();
+            this.stepTimeouts = new Map(); // Track timeouts for each step
+            this.forceHideTimer = null;
+        }
+
+        addStep(stepName = 'unnamed', timeout = 3000) {
+            this.loadingSteps++;
+            
+            // Add a timeout for this step to prevent hanging
+            const timeoutId = setTimeout(() => {
+                console.warn(`Preloader step "${stepName}" timed out after ${timeout}ms`);
+                this.completeStep(`${stepName} (timeout)`);
+            }, timeout);
+            
+            this.stepTimeouts.set(stepName, timeoutId);
+            
+            // Force hide after maximum time regardless of steps
+            if (!this.forceHideTimer) {
+                this.forceHideTimer = setTimeout(() => {
+                    console.warn('Preloader force-hidden after maximum time');
+                    this.forceHide();
+                }, this.maxShowTime);
+            }
+        }
+
+        completeStep(stepName = 'unnamed') {
+            this.completedSteps++;
+            
+            // Clear the timeout for this step
+            if (this.stepTimeouts.has(stepName)) {
+                clearTimeout(this.stepTimeouts.get(stepName));
+                this.stepTimeouts.delete(stepName);
+            }
+            
+            console.log(`Preloader step completed: ${stepName} (${this.completedSteps}/${this.loadingSteps})`);
+            this.updateProgress();
+            
+            if (this.completedSteps >= this.loadingSteps) {
+                this.checkComplete();
+            }
+        }
+
+        updateProgress() {
+            if (this.progress && this.loadingSteps > 0) {
+                const percentage = (this.completedSteps / this.loadingSteps) * 100;
+                this.progress.style.width = `${percentage}%`;
+            }
+        }
+
+        async checkComplete() {
+            const elapsedTime = performance.now() - this.startTime;
+            const remainingTime = Math.max(0, this.minimumShowTime - elapsedTime);
+            
+            if (remainingTime > 0) {
+                await new Promise(resolve => setTimeout(resolve, remainingTime));
+            }
+            
+            this.hide();
+        }
+
+        forceHide() {
+            console.log('Force hiding preloader');
+            this.hide();
+        }
+
+        hide() {
+            // Clear all remaining timeouts
+            this.stepTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+            this.stepTimeouts.clear();
+            
+            if (this.forceHideTimer) {
+                clearTimeout(this.forceHideTimer);
+                this.forceHideTimer = null;
+            }
+            
+            if (this.preloader) {
+                this.preloader.classList.add('hidden');
+                performanceMetrics.mark('preloader_hidden');
+                
+                // Remove from DOM after animation
+                setTimeout(() => {
+                    if (this.preloader && this.preloader.parentNode) {
+                        this.preloader.parentNode.removeChild(this.preloader);
+                    }
+                }, 500);
+                
+                // Track preloader completion time
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'preloader_complete', {
+                        'event_category': 'performance',
+                        'value': Math.round(performance.now() - this.startTime),
+                        'non_interaction': true
+                    });
+                }
+                
+                console.log('Preloader hidden successfully');
+            }
+        }
+    }
+
+    // Service Worker Registration with better error handling
     async function registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             try {
@@ -106,6 +215,7 @@
                     });
                 });
 
+                return true;
             } catch (error) {
                 console.log('ServiceWorker registration failed:', error);
                 if (typeof gtag !== 'undefined') {
@@ -115,8 +225,10 @@
                         'non_interaction': true
                     });
                 }
+                return false;
             }
         }
+        return false;
     }
 
     // Show update notification
@@ -138,11 +250,15 @@
         constructor() {
             this.video = document.querySelector('.hero-video');
             this.fallbackImage = document.querySelector('.hero-fallback-image');
+            this.initialized = false;
             this.init();
         }
 
         init() {
-            if (!this.video) return;
+            if (!this.video) {
+                console.log('No hero video found');
+                return;
+            }
 
             // Handle video loading
             this.video.addEventListener('loadeddata', this.handleVideoLoaded.bind(this));
@@ -165,6 +281,8 @@
             if (navigator.connection && navigator.connection.effectiveType === '4g') {
                 this.video.preload = 'auto';
             }
+            
+            this.initialized = true;
         }
 
         loadVideo() {
@@ -232,12 +350,16 @@
             this.autoplayTimer = null;
             this.isPlaying = true;
             this.progressTimer = null;
+            this.initialized = false;
 
             this.init();
         }
 
         init() {
-            if (!this.carousel || this.totalSlides === 0) return;
+            if (!this.carousel || this.totalSlides === 0) {
+                console.log('No carousel found or no slides');
+                return;
+            }
 
             this.setupEventListeners();
             this.startAutoplay();
@@ -255,6 +377,8 @@
                     'slide_count': this.totalSlides
                 });
             }
+            
+            this.initialized = true;
         }
 
         setupEventListeners() {
@@ -434,12 +558,16 @@
             this.isPlaying = false;
             this.autoplayTimer = null;
             this.autoplayDelay = 3000; // 3 seconds per slide
+            this.initialized = false;
             
             this.init();
         }
 
         init() {
-            if (!this.carousel || this.totalSlides === 0) return;
+            if (!this.carousel || this.totalSlides === 0) {
+                console.log('No hole carousel found or no slides');
+                return;
+            }
 
             this.setupEventListeners();
             this.updateDots();
@@ -452,6 +580,8 @@
                     'slide_count': this.totalSlides
                 });
             }
+            
+            this.initialized = true;
         }
 
         setupEventListeners() {
@@ -636,81 +766,24 @@
         }
     }
 
-    // Enhanced preloader with progress tracking
-    class PreloaderManager {
-        constructor() {
-            this.preloader = document.getElementById('preloader');
-            this.progress = document.querySelector('.loading-progress');
-            this.loadingSteps = 0;
-            this.completedSteps = 0;
-            this.minimumShowTime = 1000; // Minimum time to show preloader
-            this.startTime = performance.now();
-        }
-
-        addStep() {
-            this.loadingSteps++;
-        }
-
-        completeStep() {
-            this.completedSteps++;
-            this.updateProgress();
-            
-            if (this.completedSteps >= this.loadingSteps) {
-                this.checkComplete();
-            }
-        }
-
-        updateProgress() {
-            if (this.progress && this.loadingSteps > 0) {
-                const percentage = (this.completedSteps / this.loadingSteps) * 100;
-                this.progress.style.width = `${percentage}%`;
-            }
-        }
-
-        async checkComplete() {
-            const elapsedTime = performance.now() - this.startTime;
-            const remainingTime = Math.max(0, this.minimumShowTime - elapsedTime);
-            
-            if (remainingTime > 0) {
-                await new Promise(resolve => setTimeout(resolve, remainingTime));
-            }
-            
-            this.hide();
-        }
-
-        hide() {
-            if (this.preloader) {
-                this.preloader.classList.add('hidden');
-                performanceMetrics.mark('preloader_hidden');
-                
-                // Remove from DOM after animation
-                setTimeout(() => {
-                    if (this.preloader && this.preloader.parentNode) {
-                        this.preloader.parentNode.removeChild(this.preloader);
-                    }
-                }, 500);
-                
-                // Track preloader completion time
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'preloader_complete', {
-                        'event_category': 'performance',
-                        'value': Math.round(performance.now() - this.startTime),
-                        'non_interaction': true
-                    });
-                }
-            }
-        }
-    }
-
-    // Image optimization and lazy loading
+    // Image optimization and lazy loading with better completion tracking
     class ImageOptimizer {
         constructor() {
             this.lazyImages = document.querySelectorAll('img[data-src]');
             this.imageObserver = null;
+            this.loadedCount = 0;
+            this.totalImages = this.lazyImages.length;
+            this.initialized = false;
             this.init();
         }
 
         init() {
+            if (this.totalImages === 0) {
+                console.log('No lazy images found');
+                this.initialized = true;
+                return;
+            }
+
             if ('IntersectionObserver' in window) {
                 this.imageObserver = new IntersectionObserver(this.handleIntersection.bind(this), {
                     root: null,
@@ -723,6 +796,8 @@
                 // Fallback for older browsers
                 this.loadAllImages();
             }
+            
+            this.initialized = true;
         }
 
         handleIntersection(entries) {
@@ -740,9 +815,13 @@
                 newImg.onload = () => {
                     img.src = img.dataset.src;
                     img.classList.add('loaded');
+                    this.loadedCount++;
                     resolve();
                 };
-                newImg.onerror = resolve; // Continue even if image fails
+                newImg.onerror = () => {
+                    this.loadedCount++;
+                    resolve(); // Continue even if image fails
+                };
                 newImg.src = img.dataset.src;
             });
         }
@@ -757,6 +836,7 @@
         constructor() {
             this.indicator = document.getElementById('offlineIndicator');
             this.isOnline = navigator.onLine;
+            this.initialized = false;
             this.init();
         }
 
@@ -768,6 +848,8 @@
             if (!this.isOnline) {
                 this.showOfflineIndicator();
             }
+            
+            this.initialized = true;
         }
 
         handleOnline() {
@@ -816,6 +898,7 @@
             this.closeBtn = document.getElementById('closeModal');
             this.bookButtons = document.querySelectorAll('.book-tee-time, .cta-button');
             this.hasVisited = this.checkVisitHistory();
+            this.initialized = false;
             this.init();
         }
 
@@ -838,6 +921,8 @@
             if (!this.hasVisited) {
                 setTimeout(() => this.show(), 2000);
             }
+            
+            this.initialized = true;
         }
 
         checkVisitHistory() {
@@ -950,6 +1035,7 @@
             this.navLinks = document.querySelector('.nav-links');
             this.lastScrollY = window.scrollY;
             this.isScrolling = false;
+            this.initialized = false;
             this.init();
         }
 
@@ -962,6 +1048,7 @@
             // Optimized scroll handling
             window.addEventListener('scroll', throttle(this.handleScroll.bind(this), 16), passiveIfSupported);
             this.setActiveNavigation();
+            this.initialized = true;
         }
 
         toggleMobileMenu() {
@@ -1040,6 +1127,7 @@
             };
             this.observer = null;
             this.statsObserver = null;
+            this.initialized = false;
             this.init();
         }
 
@@ -1047,6 +1135,7 @@
             this.setupMainObserver();
             this.setupStatsObserver();
             this.observeElements();
+            this.initialized = true;
         }
 
         setupMainObserver() {
@@ -1119,6 +1208,7 @@
     // Enhanced tab functionality
     class TabManager {
         constructor() {
+            this.initialized = false;
             this.init();
         }
 
@@ -1126,6 +1216,7 @@
             this.setupPricingTabs();
             this.setupExperienceTabs();
             this.setupAccommodationTabs();
+            this.initialized = true;
         }
 
         setupPricingTabs() {
@@ -1222,6 +1313,7 @@
             this.maxScroll = 0;
             this.scrollDepthThresholds = [25, 50, 75, 100];
             this.scrollDepthHit = new Set();
+            this.initialized = false;
             this.init();
         }
 
@@ -1231,6 +1323,7 @@
             this.setupFormTracking();
             this.setupPerformanceTracking();
             this.trackPageView();
+            this.initialized = true;
         }
 
         setupScrollTracking() {
@@ -1320,6 +1413,7 @@
     // Enhanced card interactions
     class CardInteractionManager {
         constructor() {
+            this.initialized = false;
             this.init();
         }
 
@@ -1328,6 +1422,7 @@
             this.setupExperienceCards();
             this.setupQuickLinkCards();
             this.setupAccommodationCards();
+            this.initialized = true;
         }
 
         setupHoleCards() {
@@ -1510,6 +1605,7 @@
     // Error handling and reporting
     function setupErrorHandling() {
         window.addEventListener('error', function(e) {
+            console.error('JavaScript Error:', e.message, e.filename, e.lineno);
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'javascript_error', {
                     'event_category': 'error',
@@ -1521,6 +1617,7 @@
         });
 
         window.addEventListener('unhandledrejection', function(e) {
+            console.error('Promise Rejection:', e.reason);
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'promise_rejection', {
                     'event_category': 'error',
@@ -1532,77 +1629,139 @@
         });
     }
 
-    // Main initialization
+    // MAIN INITIALIZATION WITH FIXED PRELOADER LOGIC
     document.addEventListener('DOMContentLoaded', async function() {
+        console.log('🏌️ Carambola Golf Club - Initializing...');
         performanceMetrics.mark('dom_ready');
         
-        // Initialize preloader
+        // Initialize preloader with timeout protection
         const preloader = new PreloaderManager();
         
-        // Add loading steps
-        preloader.addStep(); // Service worker
-        preloader.addStep(); // Images
-        preloader.addStep(); // Fonts
-        preloader.addStep(); // Analytics
-        preloader.addStep(); // Initial animations
-        preloader.addStep(); // Video/Carousel
-        preloader.addStep(); // Hole carousel
+        // Add loading steps with timeouts
+        preloader.addStep('service_worker', 2000);
+        preloader.addStep('images', 1500);
+        preloader.addStep('fonts', 1000);
+        preloader.addStep('analytics', 500);
+        preloader.addStep('animations', 500);
+        preloader.addStep('components', 1000);
+        preloader.addStep('features', 500);
         
         try {
-            // Register service worker
-            await registerServiceWorker();
-            preloader.completeStep();
+            // Service worker registration (with timeout)
+            setTimeout(async () => {
+                try {
+                    await registerServiceWorker();
+                    preloader.completeStep('service_worker');
+                } catch (e) {
+                    console.warn('Service worker failed, continuing...', e);
+                    preloader.completeStep('service_worker');
+                }
+            }, 100);
             
-            // Initialize image optimizer
-            new ImageOptimizer();
-            preloader.completeStep();
+            // Initialize image optimizer (with timeout)
+            setTimeout(() => {
+                try {
+                    new ImageOptimizer();
+                    preloader.completeStep('images');
+                } catch (e) {
+                    console.warn('Image optimizer failed, continuing...', e);
+                    preloader.completeStep('images');
+                }
+            }, 200);
             
-            // Check for font loading
-            if (document.fonts) {
-                await document.fonts.ready;
-            }
-            preloader.completeStep();
+            // Check for font loading (with timeout)
+            setTimeout(async () => {
+                try {
+                    if (document.fonts) {
+                        await Promise.race([
+                            document.fonts.ready,
+                            new Promise(resolve => setTimeout(resolve, 800))
+                        ]);
+                    }
+                    preloader.completeStep('fonts');
+                } catch (e) {
+                    console.warn('Font loading failed, continuing...', e);
+                    preloader.completeStep('fonts');
+                }
+            }, 300);
             
-            // Initialize analytics
-            new AnalyticsManager();
-            preloader.completeStep();
+            // Initialize analytics (with timeout)
+            setTimeout(() => {
+                try {
+                    new AnalyticsManager();
+                    preloader.completeStep('analytics');
+                } catch (e) {
+                    console.warn('Analytics failed, continuing...', e);
+                    preloader.completeStep('analytics');
+                }
+            }, 400);
             
-            // Initialize all managers
-            new ModalManager();
-            new NavigationManager();
-            new AnimationManager();
-            new TabManager();
-            new CardInteractionManager();
-            new OfflineManager();
+            // Initialize animations (with timeout)
+            setTimeout(() => {
+                try {
+                    new AnimationManager();
+                    preloader.completeStep('animations');
+                } catch (e) {
+                    console.warn('Animations failed, continuing...', e);
+                    preloader.completeStep('animations');
+                }
+            }, 500);
             
-            // Initialize video hero for home page
-            if (document.querySelector('.hero-video')) {
-                new VideoHeroManager();
-            }
+            // Initialize all other components (with timeout)
+            setTimeout(() => {
+                try {
+                    // Initialize core managers
+                    new ModalManager();
+                    new NavigationManager();
+                    new TabManager();
+                    new CardInteractionManager();
+                    new OfflineManager();
+                    
+                    // Initialize video hero for home page (if exists)
+                    if (document.querySelector('.hero-video')) {
+                        new VideoHeroManager();
+                    }
+                    
+                    // Initialize carousel for course page (if exists)
+                    if (document.querySelector('.course-hero-carousel')) {
+                        new CarouselManager();
+                    }
+                    
+                    // Initialize hole 1 carousel (if exists)
+                    if (document.getElementById('hole1Carousel')) {
+                        new HoleCarouselManager();
+                    }
+                    
+                    preloader.completeStep('components');
+                } catch (e) {
+                    console.warn('Components failed, continuing...', e);
+                    preloader.completeStep('components');
+                }
+            }, 600);
             
-            // Initialize carousel for course page
-            if (document.querySelector('.course-hero-carousel')) {
-                new CarouselManager();
-            }
+            // Setup additional functionality (with timeout)
+            setTimeout(() => {
+                try {
+                    setupSmoothScrolling();
+                    setupExternalLinkTracking();
+                    setupFormHandling();
+                    setupErrorHandling();
+                    preloader.completeStep('features');
+                } catch (e) {
+                    console.warn('Features setup failed, continuing...', e);
+                    preloader.completeStep('features');
+                }
+            }, 700);
             
-            // Initialize hole 1 carousel
-            if (document.getElementById('hole1Carousel')) {
-                new HoleCarouselManager();
-            }
-            
-            // Setup additional functionality
-            setupSmoothScrolling();
-            setupExternalLinkTracking();
-            setupFormHandling();
-            setupErrorHandling();
-            
-            preloader.completeStep();
-            preloader.completeStep();
             performanceMetrics.mark('init_complete');
+            console.log('🏌️ Carambola Golf Club - Initialization complete!');
             
         } catch (error) {
-            console.error('Initialization error:', error);
-            preloader.hide(); // Hide preloader even if there's an error
+            console.error('❌ Critical initialization error:', error);
+            // Force hide preloader even if there's an error
+            setTimeout(() => {
+                preloader.forceHide();
+            }, 1000);
         }
     });
 
@@ -1632,7 +1791,7 @@
 
     // Console branding
     console.log('%c🏌️ Welcome to Carambola Golf Club! 🏌️', 'color: #d4af37; font-size: 16px; font-weight: bold;');
-    console.log('%cEnhanced website with PWA features, video hero, carousel, and hole gallery', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%cFixed preloader with timeout protection and error handling', 'color: #1e3a5f; font-size: 12px;');
     console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
@@ -1663,6 +1822,18 @@
             if (modal) {
                 modal.classList.add('show');
                 document.body.style.overflow = 'hidden';
+            }
+        },
+        
+        hidePreloader: function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                preloader.classList.add('hidden');
+                setTimeout(() => {
+                    if (preloader.parentNode) {
+                        preloader.parentNode.removeChild(preloader);
+                    }
+                }, 500);
             }
         },
         
