@@ -318,6 +318,104 @@
         </div>
     </section>
 
+    <!-- Course Scorecard -->
+    <section class="scorecard-section">
+        <div class="container">
+            <h2 class="section-title">Official Scorecard</h2>
+            <div class="section-subtitle">Complete course details and yardages for your round</div>
+            
+            <div class="scorecard-tabs">
+                <button class="scorecard-tab active" data-tab="front">
+                    <i class="fas fa-golf-ball"></i>
+                    Front Side
+                </button>
+                <button class="scorecard-tab" data-tab="back">
+                    <i class="fas fa-flag"></i>
+                    Back Side
+                </button>
+            </div>
+            
+            <div class="scorecard-content">
+                <div class="scorecard-container active" id="scorecard-front">
+                    <div class="scorecard-image-wrapper">
+                        <picture>
+                            <source srcset="/images/carambola-score-card-front.webp" type="image/webp">
+                            <img src="/images/carambola-score-card-front.jpg" alt="Carambola Golf Club Official Scorecard - Front Side with Holes 1-18" loading="lazy">
+                        </picture>
+                        <div class="scorecard-overlay">
+                            <button class="scorecard-zoom-btn" aria-label="View full size scorecard">
+                                <i class="fas fa-search-plus"></i>
+                                View Full Size
+                            </button>
+                        </div>
+                    </div>
+                    <div class="scorecard-info">
+                        <h3>Course Layout & Statistics</h3>
+                        <p>Complete hole-by-hole information including yardages from all tee positions, par values, and handicap ratings. Course rating and slope information for tournament play.</p>
+                        <div class="scorecard-highlights">
+                            <div class="highlight-item">
+                                <i class="fas fa-ruler"></i>
+                                <span>Multiple tee options for every skill level</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-trophy"></i>
+                                <span>USGA sanctioned ratings and slope</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-map"></i>
+                                <span>Strategic course layout and routing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="scorecard-container" id="scorecard-back">
+                    <div class="scorecard-image-wrapper">
+                        <picture>
+                            <source srcset="/images/carambola-score-card-back.webp" type="image/webp">
+                            <img src="/images/carambola-score-card-back.jpg" alt="Carambola Golf Club Official Scorecard - Back Side with Local Rules and Course Information" loading="lazy">
+                        </picture>
+                        <div class="scorecard-overlay">
+                            <button class="scorecard-zoom-btn" aria-label="View full size scorecard back">
+                                <i class="fas fa-search-plus"></i>
+                                View Full Size
+                            </button>
+                        </div>
+                    </div>
+                    <div class="scorecard-info">
+                        <h3>Local Rules & Course Information</h3>
+                        <p>Essential information for your round including local rules, course policies, and helpful playing tips. Review these guidelines before your first tee shot.</p>
+                        <div class="scorecard-highlights">
+                            <div class="highlight-item">
+                                <i class="fas fa-gavel"></i>
+                                <span>Local rules and regulations</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Course policies and etiquette</span>
+                            </div>
+                            <div class="highlight-item">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Playing tips and recommendations</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="scorecard-actions">
+                <a href="/images/carambola-score-card-front.jpg" download="carambola-scorecard" class="scorecard-download-btn">
+                    <i class="fas fa-download"></i>
+                    Download Scorecard
+                </a>
+                <button class="scorecard-print-btn" onclick="window.print()">
+                    <i class="fas fa-print"></i>
+                    Print Friendly
+                </button>
+            </div>
+        </div>
+    </section>
+
     <!-- Course Features -->
     <section class="features">
         <div class="container">
