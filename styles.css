@@ -1113,15 +1113,18 @@ img {
 /* Course Scorecard Section */
 .scorecard-section {
     padding: 6rem 0;
-    background: var(--bg-cream);
+    background: var(--bg-light);
 }
 
 .scorecard-tabs {
     display: flex;
     justify-content: center;
-    margin-bottom: 3rem;
+    margin-bottom: 4rem;
     border-bottom: 2px solid #e2e8f0;
-    gap: 1rem;
+    gap: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .scorecard-tab {
@@ -1160,7 +1163,7 @@ img {
 
 .scorecard-content {
     position: relative;
-    min-height: 600px;
+    min-height: 500px;
 }
 
 .scorecard-container {
@@ -1170,7 +1173,7 @@ img {
 
 .scorecard-container.active {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 3rem;
     align-items: start;
 }
@@ -1178,16 +1181,18 @@ img {
 .scorecard-image-wrapper {
     position: relative;
     background: white;
-    border-radius: 12px;
-    box-shadow: 0 15px 35px rgba(30, 58, 95, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 8px 25px var(--shadow-soft);
     overflow: hidden;
-    border: 2px solid var(--light-gold);
+    border-top: 3px solid var(--accent-gold);
     transition: all var(--transition-medium);
+    transform: translateY(0);
+    will-change: transform;
 }
 
 .scorecard-image-wrapper:hover {
     transform: translateY(-5px);
-    box-shadow: 0 25px 50px rgba(30, 58, 95, 0.2);
+    box-shadow: 0 15px 40px var(--shadow-medium);
 }
 
 .scorecard-image-wrapper img {
@@ -1225,7 +1230,7 @@ img {
     color: var(--primary-navy);
     border: none;
     padding: 0.75rem 1.5rem;
-    border-radius: 25px;
+    border-radius: 5px;
     font-weight: 600;
     cursor: pointer;
     transition: all var(--transition-medium);
@@ -1250,16 +1255,24 @@ img {
 .scorecard-info {
     background: white;
     padding: 3rem 2.5rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(30, 58, 95, 0.1);
-    border-top: 4px solid var(--accent-gold);
+    border-radius: 8px;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    border-top: 3px solid var(--accent-gold);
     height: fit-content;
+    transition: all var(--transition-medium);
+    transform: translateY(0);
+    will-change: transform;
+}
+
+.scorecard-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
 }
 
 .scorecard-info h3 {
     color: var(--primary-navy);
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
     font-weight: 400;
 }
 
@@ -1307,23 +1320,24 @@ img {
 .highlight-item span {
     font-weight: 500;
     color: var(--primary-navy);
+    font-size: 0.95rem;
 }
 
 .scorecard-actions {
     display: flex;
     justify-content: center;
     gap: 1.5rem;
-    margin-top: 3rem;
+    margin-top: 4rem;
     flex-wrap: wrap;
 }
 
 .scorecard-download-btn,
 .scorecard-print-btn {
-    background: var(--primary-navy);
-    color: var(--text-light);
+    background: var(--accent-gold);
+    color: var(--primary-navy);
     padding: 1rem 2rem;
-    border: 2px solid var(--primary-navy);
-    border-radius: 8px;
+    border: 2px solid var(--accent-gold);
+    border-radius: 3px;
     text-decoration: none;
     font-weight: 600;
     font-size: 1rem;
@@ -1334,13 +1348,13 @@ img {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    transform: translateY(0);
 }
 
 .scorecard-download-btn:hover,
 .scorecard-print-btn:hover {
-    background: var(--accent-gold);
-    color: var(--primary-navy);
-    border-color: var(--accent-gold);
+    background: transparent;
+    color: var(--accent-gold);
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
 }
@@ -3508,6 +3522,10 @@ img {
     }
 
     /* Scorecard responsive */
+    .scorecard-section {
+        padding: 4rem 0;
+    }
+
     .scorecard-tabs {
         flex-direction: column;
         gap: 0.5rem;
@@ -3538,12 +3556,13 @@ img {
     }
 
     .scorecard-info h3 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
     .scorecard-actions {
         flex-direction: column;
         align-items: center;
+        margin-top: 3rem;
     }
 
     .scorecard-download-btn,
@@ -3810,7 +3829,11 @@ img {
 
     /* Scorecard extra small mobile */
     .scorecard-section {
-        padding: 4rem 0;
+        padding: 3rem 0;
+    }
+
+    .scorecard-tabs {
+        margin-bottom: 1.5rem;
     }
 
     .scorecard-tab {
@@ -3823,7 +3846,7 @@ img {
     }
 
     .scorecard-info h3 {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
 
     .scorecard-info p {
