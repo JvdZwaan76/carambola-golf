@@ -1216,6 +1216,7 @@
             this.setupPricingTabs();
             this.setupExperienceTabs();
             this.setupAccommodationTabs();
+            this.setupScorecardTabs();
             this.initialized = true;
         }
 
@@ -1303,6 +1304,133 @@
                         });
                     }
                 });
+            });
+        }
+
+        setupScorecardTabs() {
+            const scorecardTabs = document.querySelectorAll('.scorecard-tab');
+            const scorecardContainers = document.querySelectorAll('.scorecard-container');
+            
+            scorecardTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const targetTab = tab.dataset.tab;
+                    
+                    scorecardTabs.forEach(t => t.classList.remove('active'));
+                    scorecardContainers.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    const targetContainer = document.getElementById(`scorecard-${targetTab}`);
+                    if (targetContainer) {
+                        targetContainer.classList.add('active');
+                    }
+                    
+                    if (typeof gtag !== 'undefined') {
+                        gtag('event', 'scorecard_tab_click', {
+                            'event_category': 'engagement',
+                            'event_label': targetTab,
+                            'section': 'scorecard',
+                            'page_location': window.location.pathname
+                        });
+                    }
+                });
+            });
+        }
+    }
+
+    // Scorecard Manager for zoom and modal functionality
+    class ScorecardManager {
+        constructor() {
+            this.modal = null;
+            this.initialized = false;
+            this.init();
+        }
+
+        init() {
+            this.setupZoomButtons();
+            this.setupKeyboardNavigation();
+            this.initialized = true;
+        }
+
+        setupZoomButtons() {
+            document.querySelectorAll('.scorecard-zoom-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const container = btn.closest('.scorecard-container');
+                    const img = container.querySelector('img');
+                    if (img) {
+                        this.showModal(img.src, img.alt);
+                        
+                        // Track scorecard zoom interaction
+                        if (typeof gtag !== 'undefined') {
+                            const side = container.id.includes('front') ? 'front' : 'back';
+                            gtag('event', 'scorecard_zoom', {
+                                'event_category': 'engagement',
+                                'event_label': `scorecard_${side}`,
+                                'page_location': window.location.pathname
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        showModal(imageSrc, imageAlt) {
+            // Create modal if it doesn't exist
+            if (!this.modal) {
+                this.createModal();
+            }
+
+            const modalImg = this.modal.querySelector('img');
+            modalImg.src = imageSrc;
+            modalImg.alt = imageAlt;
+
+            this.modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+
+            // Focus trap
+            this.modal.focus();
+        }
+
+        hideModal() {
+            if (this.modal) {
+                this.modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        createModal() {
+            this.modal = document.createElement('div');
+            this.modal.className = 'scorecard-modal';
+            this.modal.setAttribute('tabindex', '-1');
+            this.modal.innerHTML = `
+                <div class="scorecard-modal-content">
+                    <button class="scorecard-modal-close" aria-label="Close modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <img src="" alt="">
+                </div>
+            `;
+
+            document.body.appendChild(this.modal);
+
+            // Event listeners
+            const closeBtn = this.modal.querySelector('.scorecard-modal-close');
+            closeBtn.addEventListener('click', () => this.hideModal());
+
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) {
+                    this.hideModal();
+                }
+            });
+        }
+
+        setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                if (this.modal && this.modal.classList.contains('show')) {
+                    if (e.key === 'Escape') {
+                        this.hideModal();
+                    }
+                }
             });
         }
     }
@@ -1716,6 +1844,7 @@
                     new TabManager();
                     new CardInteractionManager();
                     new OfflineManager();
+                    new ScorecardManager();
                     
                     // Initialize video hero for home page (if exists)
                     if (document.querySelector('.hero-video')) {
