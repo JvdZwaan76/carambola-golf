@@ -64,6 +64,97 @@
       --transition-fast: 0.2s ease;
       --transition-medium: 0.3s ease;
       --transition-slow: 0.5s ease;
+    
+    /* Landscape phone optimization - Perfect for all orientations */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .section {
+        padding: 2.5rem 0;
+      }
+      
+      .section-header {
+        margin-bottom: 2rem;
+      }
+      
+      .metric-card {
+        padding: 1.5rem 1rem;
+      }
+      
+      .metric-value {
+        font-size: 2.25rem;
+      }
+
+      .service-status-card {
+        padding: 1.25rem;
+      }
+
+      .section-title {
+        font-size: 2.25rem;
+        margin-bottom: 1rem;
+      }
+
+      .section-subtitle {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .py-12 {
+        padding: 2rem 0;
+      }
+
+      .py-8 {
+        padding: 1.5rem 0;
+      }
+
+      .h-48 {
+        height: 8rem;
+      }
+
+      .md\\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .lg\\:grid-cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .gap-6 {
+        gap: 1rem;
+      }
+
+      .gap-8 {
+        gap: 1.25rem;
+      }
+    }
+
+    /* Tablet optimizations */
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+
+      .metric-value {
+        font-size: 3rem;
+      }
+
+      .service-status-card {
+        padding: 1.75rem;
+      }
+
+      .metric-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .section-title {
+        font-size: 3rem;
+      }
+
+      .gap-6 {
+        gap: 1.25rem;
+      }
+
+      .gap-8 {
+        gap: 1.5rem;
+      }
     }
 
     /* Enhanced gradient backgrounds with golf club aesthetics */
@@ -663,7 +754,7 @@
       font-size: 1.1rem;
     }
 
-    /* Mobile responsive adjustments */
+    /* Mobile responsive adjustments - Enhanced for perfect rendering */
     @media (max-width: 768px) {
       .container {
         padding: 0 1rem;
@@ -673,6 +764,10 @@
         padding: 4rem 0;
       }
 
+      .section-header {
+        margin-bottom: 3rem;
+      }
+
       .metric-value {
         font-size: 2.5rem;
       }
@@ -680,8 +775,9 @@
       .service-status-card {
         flex-direction: column;
         align-items: flex-start;
-        gap: 1rem;
+        gap: 1.5rem;
         padding: 1.5rem;
+        margin-bottom: 0.5rem;
       }
       
       .service-status {
@@ -694,12 +790,14 @@
       .status-pill {
         justify-content: center;
         width: 100%;
-        padding: 0.75rem 1rem;
+        padding: 0.875rem 1rem;
         font-size: 0.8rem;
+        min-height: 48px; /* Better touch target */
       }
 
       .metric-card {
-        padding: 1.5rem 1rem;
+        padding: 2rem 1rem;
+        margin-bottom: 0.5rem;
       }
 
       .card-body {
@@ -717,59 +815,341 @@
       }
 
       .section-title {
-        font-size: 2rem;
+        font-size: 2.25rem;
         line-height: 1.2;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
       }
 
       .section-subtitle {
         font-size: 1rem;
         line-height: 1.6;
+        padding: 0 0.5rem;
       }
 
       .grid {
-        gap: 1rem;
+        gap: 1.5rem;
       }
 
+      /* Mobile navigation improvements */
       .flex-col { flex-direction: column; }
       .sm\\:flex-row { flex-direction: row; }
 
-      .w-full { width: 100%; }
+      /* Mobile button improvements */
+      .btn {
+        padding: 1rem 1.5rem;
+        font-size: 0.9rem;
+        min-height: 48px; /* Better touch targets */
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .btn-lg {
+        padding: 1.25rem 2rem;
+        font-size: 1rem;
+      }
+
+      /* Mobile card improvements */
+      .card {
+        margin-bottom: 1rem;
+        border-radius: 1.5rem;
+      }
+
+      /* Mobile chart improvements */
+      .h-48 {
+        height: 10rem; /* Slightly smaller on mobile */
+      }
+
+      /* Mobile footer improvements */
+      .footer-contact {
+        text-align: center;
+        padding: 0 1rem;
+      }
+
+      /* Mobile status header improvements */
+      .status-header {
+        padding: 3rem 0;
+      }
+
+      .status-header .flex {
+        gap: 1rem;
+      }
+
+      /* Mobile metrics grid */
+      .md\\:grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .md\\:grid-cols-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .md\\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      /* Mobile core web vitals */
+      #core-web-vitals {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      /* Mobile activity cards border adjustments */
+      .card.border-l-4 {
+        border-left-width: 3px;
+      }
+
+      /* Mobile text improvements */
+      .text-2xl {
+        font-size: 1.75rem;
+      }
+
+      .text-lg {
+        font-size: 1.125rem;
+      }
+
+      /* Mobile spacing adjustments */
+      .mb-8 {
+        margin-bottom: 1.5rem;
+      }
+
+      .mb-6 {
+        margin-bottom: 1.25rem;
+      }
+
+      .py-12 {
+        padding: 3rem 0;
+      }
+
+      /* Improve mobile readability */
+      .service-info h3 {
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .service-info p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      /* Mobile contact section improvements */
+      .max-w-2xl {
+        max-width: 100%;
+        padding: 0 0.5rem;
+      }
+
+      .card-premium {
+        margin-bottom: 2rem;
+      }
+
+      .gap-3 {
+        gap: 1rem;
+      }
+
+      .gap-4 {
+        gap: 1.25rem;
+      }
     }
 
+    /* Enhanced small screens (phones) - Perfect mobile rendering */
     @media (max-width: 480px) {
       .container {
-        padding: 0 0.75rem;
+        padding: 0 1rem;
       }
       
       .metric-value {
-        font-size: 2rem;
+        font-size: 2.25rem;
       }
       
       .metric-card {
-        padding: 1.25rem 0.75rem;
+        padding: 1.5rem 1rem;
+        margin-bottom: 0.75rem;
       }
       
       .service-status-card {
-        padding: 1rem;
+        padding: 1.25rem;
+        border-radius: 1.25rem;
       }
       
       .status-pill {
         font-size: 0.75rem;
-        padding: 0.625rem 0.875rem;
+        padding: 0.75rem 1rem;
+        min-height: 44px;
       }
       
       .section-title {
-        font-size: 1.75rem;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      .section-subtitle {
+        font-size: 0.95rem;
+        padding: 0 0.5rem;
+        line-height: 1.6;
       }
       
       .btn {
-        padding: 0.625rem 1.25rem;
+        padding: 1rem 1.25rem;
         font-size: 0.85rem;
+        min-height: 48px;
+      }
+
+      .btn-lg {
+        padding: 1.125rem 1.5rem;
+        font-size: 0.9rem;
       }
       
       .card-body {
-        padding: 1rem;
+        padding: 1.25rem;
+      }
+
+      /* Small screen grid adjustments */
+      .md\\:grid-cols-4 {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+
+      .lg\\:grid-cols-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .lg\\:grid-cols-4 {
+        grid-template-columns: 1fr;
+      }
+
+      /* Small screen typography */
+      .text-2xl {
+        font-size: 1.5rem;
+      }
+
+      .text-lg {
+        font-size: 1rem;
+      }
+
+      .text-sm {
+        font-size: 0.8rem;
+      }
+
+      .text-xs {
+        font-size: 0.7rem;
+      }
+
+      /* Small screen spacing */
+      .section {
+        padding: 3rem 0;
+      }
+
+      .section-header {
+        margin-bottom: 2rem;
+      }
+
+      .py-12 {
+        padding: 2.5rem 0;
+      }
+
+      .py-8 {
+        padding: 2rem 0;
+      }
+
+      .mb-8 {
+        margin-bottom: 1.25rem;
+      }
+
+      .mb-6 {
+        margin-bottom: 1rem;
+      }
+
+      .gap-6 {
+        gap: 1rem;
+      }
+
+      .gap-8 {
+        gap: 1.5rem;
+      }
+
+      /* Small screen service cards */
+      .service-info h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .service-info p {
+        font-size: 0.85rem;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+      }
+
+      .service-info .uptime-text {
+        font-size: 0.75rem;
+      }
+
+      /* Small screen charts */
+      .h-48 {
+        height: 8rem;
+      }
+
+      /* Small screen core web vitals */
+      #core-web-vitals {
+        gap: 1.5rem;
+      }
+
+      /* Small screen contact section */
+      .max-w-2xl {
+        padding: 0;
+      }
+
+      .card-premium .card-body {
+        padding: 1.5rem;
+      }
+
+      /* Small screen metric labels */
+      .metric-label {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+      }
+
+      .metric-trend {
+        padding: 0.625rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      /* Small screen activity cards */
+      .card.border-l-4 {
+        border-left-width: 2px;
+      }
+
+      /* Small screen footer improvements */
+      .footer-contact {
+        padding: 0 0.5rem;
+      }
+
+      .footer-contact p {
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Ensure touch targets are adequate */
+      .status-pill,
+      .btn,
+      .metric-card,
+      .service-status-card {
+        min-height: 44px;
+      }
+
+      /* Small screen navigation spacing */
+      .status-header .flex {
+        gap: 0.75rem;
+      }
+
+      /* Small screen status indicator adjustments */
+      .status-indicator {
+        width: 6px;
+        height: 6px;
+      }
+
+      .status-spinner {
+        width: 12px;
+        height: 12px;
       }
     }
   </style>
@@ -1105,7 +1485,7 @@
   <!-- Enhanced Status Page JavaScript for Carambola Golf -->
   <script>
     // Status API Configuration for Carambola Golf
-    const STATUS_API_URL = 'https://carambola-golf-status-api.jaspervdz.workers.dev';
+    const STATUS_API_URL = 'https://status-api.carambola.golf';
     
     // Global state
     let statusData = null;
