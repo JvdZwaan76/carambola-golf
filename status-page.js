@@ -36,20 +36,34 @@
 
         async init() {
             try {
+                console.log('🌴 Initializing Carambola Golf Status Page...');
+                
                 // Set initial fallback data to prevent undefined errors
                 this.useFallbackData();
+                console.log('✓ Initial fallback data set');
                 
+                // Try to detect if backend is available
                 await this.detectCloudflareZone();
-                await this.fetchStatusData();
+                
+                // Attempt to fetch real-time data (will fallback gracefully if not available)
+                try {
+                    await this.fetchStatusData();
+                    console.log('✓ Status data fetch completed');
+                } catch (error) {
+                    console.log('! Using fallback data due to fetch error:', error.message);
+                }
+                
                 this.updateStatusDisplay();
                 this.updateTimestamp();
                 
                 // Wait for Chart.js to load before initializing charts
                 this.waitForChartJS(() => {
                     this.initializeCharts();
+                    console.log('✓ Charts initialized');
                 });
                 
                 this.startAutoRefresh();
+                console.log('✓ Auto-refresh started (30 second interval)');
                 
                 // Track status page visit
                 if (typeof gtag !== 'undefined') {
@@ -59,8 +73,18 @@
                         value: 1
                     });
                 }
+                
+                console.log('✅ Carambola Golf Status Page initialized successfully');
+                
+                // Show mode information
+                if (this.fallbackMode) {
+                    console.log('📊 Operating in FALLBACK mode (estimated data)');
+                } else {
+                    console.log('📊 Operating in LIVE mode (real-time data)');
+                }
+                
             } catch (error) {
-                console.error('Failed to initialize status page:', error);
+                console.error('❌ Failed to initialize status page:', error);
                 this.showFallbackData();
             }
         }
@@ -71,7 +95,7 @@
                 const domain = window.location.hostname;
                 console.log('Detecting Cloudflare zone for domain:', domain);
                 
-                // Try to get zone info from your backend
+                // Try to get zone info from your backend (only if available)
                 const response = await fetch('/api/cloudflare-zone-info', {
                     method: 'GET',
                     headers: {
@@ -84,14 +108,16 @@
                     this.cloudflareConfig.zoneId = zoneInfo.zoneId;
                     console.log('Zone ID detected:', this.cloudflareConfig.zoneId);
                     return;
+                } else {
+                    console.log('Backend API not available, using fallback mode');
                 }
             } catch (error) {
-                console.warn('Could not auto-detect zone ID:', error);
+                console.log('Backend API not available, using fallback mode:', error.message);
             }
             
-            // Fallback: Use environment variable or hardcoded value
-            // You'll need to set this in your backend or configuration
-            this.cloudflareConfig.zoneId = process.env.CLOUDFLARE_ZONE_ID || 'YOUR_ZONE_ID_HERE';
+            // No backend available - use fallback mode
+            this.cloudflareConfig.zoneId = null;
+            console.log('Operating in fallback mode without Cloudflare API');
         }
 
         waitForChartJS(callback) {
@@ -110,7 +136,7 @@
                 const cacheKey = 'status_data';
                 const cached = this.dataCache.get(cacheKey);
                 if (cached && (Date.now() - cached.timestamp) < this.cacheExpiry) {
-                    console.log('Using cached status data');
+                    console.log('✓ Using cached status data');
                     this.statusData = cached.data;
                     this.lastSuccessfulFetch = new Date(cached.timestamp);
                     this.fallbackMode = false;
@@ -122,25 +148,25 @@
                 
                 // Fetch Cloudflare Analytics
                 dataPromises.push(this.fetchCloudflareData().catch(error => {
-                    console.warn('Cloudflare data fetch failed:', error);
+                    console.log('! Cloudflare data fetch failed, using estimates');
                     return this.getEstimatedCloudflareData();
                 }));
                 
                 // Fetch uptime data
                 dataPromises.push(this.fetchUptimeData().catch(error => {
-                    console.warn('Uptime data fetch failed:', error);
+                    console.log('! Uptime check failed, using estimates');
                     return { uptime: 99.5, endpoints: [] };
                 }));
                 
                 // Fetch performance metrics
                 dataPromises.push(this.fetchPerformanceData().catch(error => {
-                    console.warn('Performance data fetch failed:', error);
+                    console.log('! Performance data fetch failed, using estimates');
                     return this.getEstimatedPerformanceData();
                 }));
                 
                 // Fetch website health check
                 dataPromises.push(this.performHealthCheck().catch(error => {
-                    console.warn('Health check failed:', error);
+                    console.log('! Health check failed, using defaults');
                     return { dns: true, ssl: true, cdn: true, serviceWorker: true, api: true };
                 }));
                 
@@ -151,7 +177,7 @@
                     if (result.status === 'fulfilled') {
                         return result;
                     } else {
-                        console.warn(`Data source ${index} failed:`, result.reason);
+                        console.log(`! Data source ${index} failed:`, result.reason?.message || 'Unknown error');
                         // Return default data based on index
                         switch (index) {
                             case 0: return { status: 'fulfilled', value: this.getEstimatedCloudflareData() };
@@ -178,10 +204,10 @@
                     trackStatusCheck('api_success');
                 }
                 
-                console.log('Status data fetched successfully:', this.statusData);
+                console.log('✓ Status data successfully compiled');
                 
             } catch (error) {
-                console.error('Error fetching status data:', error);
+                console.error('! Error fetching status data:', error.message);
                 if (typeof trackStatusCheck === 'function') {
                     trackStatusCheck('api_error');
                 }
@@ -197,24 +223,32 @@
 
         async fetchCloudflareData() {
             try {
-                console.log('Fetching Cloudflare analytics data...');
+                console.log('Attempting to fetch Cloudflare analytics data...');
+                
+                // If no backend is available, skip API calls
+                if (!this.cloudflareConfig.zoneId) {
+                    console.log('No Cloudflare configuration available, using estimated data');
+                    return this.getEstimatedCloudflareData();
+                }
                 
                 // First try the proxy endpoint
                 const proxyResponse = await this.tryCloudflareProxy();
                 if (proxyResponse) {
+                    console.log('Successfully fetched data from Cloudflare proxy');
                     return proxyResponse;
                 }
                 
                 // If proxy fails, try direct API (this requires CORS to be handled)
                 const directResponse = await this.tryCloudflareDirectAPI();
                 if (directResponse) {
+                    console.log('Successfully fetched data from Cloudflare direct API');
                     return directResponse;
                 }
                 
                 throw new Error('All Cloudflare API methods failed');
                 
             } catch (error) {
-                console.warn('Cloudflare data unavailable, using estimated metrics:', error);
+                console.log('Cloudflare data unavailable, using estimated metrics:', error.message);
                 return this.getEstimatedCloudflareData();
             }
         }
@@ -235,14 +269,22 @@
                 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Cloudflare proxy response:', data);
+                    console.log('Cloudflare proxy response received');
                     return this.parseCloudflareResponse(data);
+                } else if (response.status === 404) {
+                    console.log('Cloudflare proxy endpoint not found - backend not configured');
+                    return null;
+                } else {
+                    console.log(`Cloudflare proxy failed with status: ${response.status}`);
+                    return null;
                 }
                 
-                throw new Error(`Proxy response: ${response.status}`);
-                
             } catch (error) {
-                console.warn('Cloudflare proxy failed:', error);
+                if (error.message.includes('Failed to fetch') || error.message.includes('404')) {
+                    console.log('Cloudflare proxy endpoint not available');
+                } else {
+                    console.log('Cloudflare proxy error:', error.message);
+                }
                 return null;
             }
         }
@@ -844,7 +886,7 @@
                 lastUpdated: now.toISOString()
             };
             
-            console.log('Fallback data set:', this.statusData);
+            console.log('✓ Fallback data structure ready');
         }
 
         updateStatusDisplay() {
@@ -1405,7 +1447,7 @@
         }
 
         showFallbackData() {
-            console.log('Showing fallback data for status page');
+            console.log('🔄 Activating fallback mode - using estimated data');
             this.useFallbackData();
             this.updateStatusDisplay();
         }
@@ -1552,8 +1594,6 @@
                 }
             }
         };
-        
-        console.log('✅ Carambola Golf Status Page initialized successfully');
     });
 
     // Cleanup on page unload
