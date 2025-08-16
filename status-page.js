@@ -1,17 +1,16 @@
 // Carambola Golf Club Status Page JavaScript
 // This file is loaded ONLY on the status page
 // It's completely isolated from the main script.js
-
 (function() {
     'use strict';
-    
+   
     // Only run if we're on the status page
     if (!window.location.pathname.includes('status')) {
         return;
     }
-    
+   
     console.log('🏌️‍♂️ Initializing Carambola Golf Status Page...');
-    
+   
     class StatusPageManager {
         constructor() {
             this.statusData = null;
@@ -19,20 +18,19 @@
             this.charts = {};
             this.init();
         }
-
         async init() {
             try {
                 await this.fetchStatusData();
                 this.updateStatusDisplay();
                 this.updateTimestamp();
-                
+               
                 // Wait for Chart.js to load before initializing charts
                 this.waitForChartJS(() => {
                     this.initializeCharts();
                 });
-                
+               
                 this.startAutoRefresh();
-                
+               
                 // Track status page visit
                 if (typeof gtag !== 'undefined') {
                     gtag('event', 'status_page_view', {
@@ -46,7 +44,6 @@
                 this.showFallbackData();
             }
         }
-
         waitForChartJS(callback) {
             if (typeof Chart !== 'undefined') {
                 callback();
@@ -54,62 +51,106 @@
                 setTimeout(() => this.waitForChartJS(callback), 100);
             }
         }
-
         async fetchStatusData() {
             try {
-                // Mock data for demo - replace with your actual API endpoint
+                const apiToken = 'YOUR_API_TOKEN';  // Replace with your actual Cloudflare API token
+                const accountId = 'YOUR_ACCOUNT_ID';  // Replace with your Cloudflare Account ID
+                const zoneId = 'YOUR_ZONE_ID';  // Replace with your domain's Zone ID
+                const graphqlEndpoint = 'https://api.cloudflare.com/client/v4/graphql';
+
+                // Example GraphQL query for analytics (adapt as needed for more metrics)
+                const query = `
+                    query {
+                        viewer {
+                            zones(filter: {zoneTag: "${zoneId}"}) {
+                                httpRequests1dGroups(limit: 1, filter: {date_geq: "2025-08-01"}) {
+                                    sum {
+                                        requests
+                                        cachedRequests
+                                        pageViews
+                                    }
+                                    uniq {
+                                        uniques
+                                    }
+                                }
+                            }
+                        }
+                    }
+                `;
+
+                const response = await fetch(graphqlEndpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const zoneData = data.data.viewer.zones[0].httpRequests1dGroups[0];
+
+                // Map API data to your statusData format (adapt calculations; add more queries for uptime/response if needed)
                 this.statusData = {
-                    overall: { status: 'operational', uptime: 99.98, responseTime: 247 },
-                    metrics: { 
-                        uptime30Days: 99.98, 
-                        averageResponseTime: 247, 
-                        pageSpeedScore: 94, 
-                        securityGrade: 'A+', 
-                        requests24h: '12,847',
-                        cachingRatio: 94.2 
+                    overall: {
+                        status: 'operational',  // Derive based on data, e.g., if requests > 0
+                        uptime: ((zoneData.sum.cachedRequests / zoneData.sum.requests) * 100).toFixed(2),
+                        responseTime: 247  // Use real metric if available, or fetch separately
+                    },
+                    metrics: {
+                        uptime30Days: 99.98,  // Fetch historical if needed
+                        averageResponseTime: 247,
+                        pageSpeedScore: 94,
+                        securityGrade: 'A+',
+                        requests24h: zoneData.sum.requests.toLocaleString(),
+                        cachingRatio: ((zoneData.sum.cachedRequests / zoneData.sum.requests) * 100).toFixed(1)
                     },
                     services: [
-                        { 
-                            name: 'Website Core', 
-                            description: 'Main golf course website and content delivery for championship course information', 
-                            status: 'operational', 
-                            uptime: 99.98 
+                        {
+                            name: 'Website Core',
+                            description: 'Main golf course website and content delivery for championship course information',
+                            status: 'operational',
+                            uptime: 99.98
                         },
-                        { 
-                            name: 'Tee Time Requests', 
-                            description: 'Online tee time booking system and golf course reservations', 
-                            status: 'operational', 
-                            uptime: 99.97 
+                        {
+                            name: 'Tee Time Requests',
+                            description: 'Online tee time booking system and golf course reservations',
+                            status: 'operational',
+                            uptime: 99.97
                         },
-                        { 
-                            name: 'Pro Shop Communications', 
-                            description: 'Primary pro shop line +1-340-778-5638 for reservations and inquiries', 
-                            status: 'operational', 
-                            uptime: 99.99 
+                        {
+                            name: 'Pro Shop Communications',
+                            description: 'Primary pro shop line +1-340-778-5638 for reservations and inquiries',
+                            status: 'operational',
+                            uptime: 99.99
                         },
-                        { 
-                            name: 'Email Services', 
-                            description: 'Golf course email system and automated booking confirmations', 
-                            status: 'operational', 
-                            uptime: 99.95 
+                        {
+                            name: 'Email Services',
+                            description: 'Golf course email system and automated booking confirmations',
+                            status: 'operational',
+                            uptime: 99.95
                         },
-                        { 
-                            name: 'Course Information System', 
-                            description: 'Robert Trent Jones Sr. course details, hole descriptions, and statistics', 
-                            status: 'operational', 
-                            uptime: 99.98 
+                        {
+                            name: 'Course Information System',
+                            description: 'Robert Trent Jones Sr. course details, hole descriptions, and statistics',
+                            status: 'operational',
+                            uptime: 99.98
                         },
-                        { 
-                            name: 'Accommodations Portal', 
-                            description: 'Luxury lodging information and booking integration', 
-                            status: 'operational', 
-                            uptime: 99.96 
+                        {
+                            name: 'Accommodations Portal',
+                            description: 'Luxury lodging information and booking integration',
+                            status: 'operational',
+                            uptime: 99.96
                         },
-                        { 
-                            name: 'Weather & Course Conditions', 
-                            description: 'St. Croix weather data and real-time course condition updates', 
-                            status: 'operational', 
-                            uptime: 99.94 
+                        {
+                            name: 'Weather & Course Conditions',
+                            description: 'St. Croix weather data and real-time course condition updates',
+                            status: 'operational',
+                            uptime: 99.94
                         }
                     ],
                     coreWebVitals: {
@@ -141,11 +182,11 @@
                         }
                     ]
                 };
-                
+               
                 if (typeof trackStatusCheck === 'function') {
                     trackStatusCheck('api_success');
                 }
-                
+               
             } catch (error) {
                 console.error('Error fetching status data:', error);
                 if (typeof trackStatusCheck === 'function') {
@@ -154,12 +195,9 @@
                 throw error;
             }
         }
-
         updateStatusDisplay() {
             if (!this.statusData) return;
-
             const { overall, metrics, services, coreWebVitals, activity } = this.statusData;
-
             this.updateOverallStatus(overall);
             this.updateKeyMetrics(metrics);
             this.updateServicesList(services);
@@ -167,13 +205,11 @@
             this.updateActivityList(activity);
             this.updateFooterStatus(overall);
         }
-
         updateOverallStatus(overall) {
             const statusElement = document.getElementById('overall-status');
             const uptimeElement = document.querySelector('.hero-uptime-text');
-            
+           
             if (!statusElement) return;
-
             if (overall.status === 'operational') {
                 statusElement.className = 'status-pill operational';
                 statusElement.innerHTML = `
@@ -187,13 +223,11 @@
                     <span>Service Issues Detected</span>
                 `;
             }
-
             // Update uptime indicator
             if (uptimeElement) {
                 uptimeElement.textContent = `${overall.uptime}% Uptime`;
             }
         }
-
         updateKeyMetrics(metrics) {
             const elements = {
                 'uptime-value': `${metrics.uptime30Days}%`,
@@ -201,30 +235,25 @@
                 'pagespeed-value': metrics.pageSpeedScore,
                 'security-value': metrics.securityGrade
             };
-
             Object.entries(elements).forEach(([id, value]) => {
                 const element = document.getElementById(id);
                 if (element) {
                     element.textContent = value;
                 }
             });
-
             // Update chart summaries
             const responseChartSummary = document.getElementById('response-chart-summary');
             if (responseChartSummary) {
                 responseChartSummary.textContent = `Average: ${metrics.averageResponseTime}ms | Requests: ${metrics.requests24h}`;
             }
-
             const uptimeChartSummary = document.getElementById('uptime-chart-summary');
             if (uptimeChartSummary) {
                 uptimeChartSummary.textContent = `30-day uptime: ${metrics.uptime30Days}% | Caching: ${metrics.cachingRatio}%`;
             }
         }
-
         updateServicesList(services) {
             const servicesContainer = document.getElementById('services-list');
             if (!servicesContainer || !services) return;
-
             servicesContainer.innerHTML = services.map(service => `
                 <div class="service-status-card">
                     <div class="service-info">
@@ -241,17 +270,14 @@
                 </div>
             `).join('');
         }
-
         updateCoreWebVitals(vitals) {
             const vitalsContainer = document.getElementById('core-web-vitals');
             if (!vitalsContainer || !vitals) return;
-
             const vitalsData = [
                 { name: 'Largest Contentful Paint', metric: vitals.lcp, unit: 's', target: '<2.5s' },
                 { name: 'First Input Delay', metric: vitals.fid, unit: 'ms', target: '<100ms' },
                 { name: 'Cumulative Layout Shift', metric: vitals.cls, unit: '', target: '<0.1' }
             ];
-
             vitalsContainer.innerHTML = vitalsData.map(vital => `
                 <div class="vital-metric">
                     <div class="vital-header">
@@ -264,7 +290,6 @@
                     <div class="vital-target">Target: ${vital.target} | ${vital.metric.status === 'good' ? 'Excellent' : 'Needs improvement'}</div>
                 </div>
             `).join('');
-
             // Animate progress bars
             setTimeout(() => {
                 vitalsContainer.querySelectorAll('[data-width]').forEach(bar => {
@@ -273,11 +298,9 @@
                 });
             }, 100);
         }
-
         updateActivityList(activity) {
             const activityContainer = document.getElementById('activity-list');
             if (!activityContainer || !activity) return;
-
             activityContainer.innerHTML = activity.map(item => `
                 <div class="activity-card ${item.status}">
                     <div class="activity-content">
@@ -296,11 +319,9 @@
                 </div>
             `).join('');
         }
-
         updateFooterStatus(overall) {
             const footerLastCheck = document.getElementById('footer-last-check');
             const footerOverallStatus = document.getElementById('footer-overall-status');
-
             if (footerLastCheck) {
                 const now = new Date();
                 footerLastCheck.textContent = now.toLocaleTimeString('en-US', {
@@ -310,13 +331,11 @@
                     timeZoneName: 'short'
                 });
             }
-
             if (footerOverallStatus) {
                 footerOverallStatus.textContent = overall.status === 'operational' ? 'All services operational' : 'Service issues detected';
                 footerOverallStatus.className = `footer-overall-status ${overall.status}`;
             }
         }
-
         updateTimestamp() {
             const now = new Date();
             const timestamp = now.toLocaleString('en-US', {
@@ -328,44 +347,36 @@
                 minute: '2-digit',
                 timeZoneName: 'short'
             });
-
             const lastUpdateElement = document.getElementById('last-update');
             if (lastUpdateElement) {
                 lastUpdateElement.textContent = timestamp;
             }
         }
-
         initializeCharts() {
             if (typeof Chart === 'undefined') {
                 console.warn('Chart.js not loaded');
                 return;
             }
-
             this.createResponseTimeChart();
             this.createUptimeChart();
         }
-
         createResponseTimeChart() {
             const ctx = document.getElementById('response-time-chart');
             if (!ctx) return;
-
             // Generate 24 hours of sample data
             const now = new Date();
             const data = [];
             const labels = [];
-
             for (let i = 23; i >= 0; i--) {
                 const time = new Date(now.getTime() - i * 60 * 60 * 1000);
-                labels.push(time.toLocaleTimeString('en-US', { 
-                    hour: 'numeric', 
-                    hour12: true 
+                labels.push(time.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    hour12: true
                 }));
-
                 const baseTime = 230;
                 const variation = Math.sin(i * 0.5) * 25 + Math.random() * 15;
                 data.push(Math.max(200, Math.min(320, baseTime + variation)));
             }
-
             this.charts.responseTime = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -395,7 +406,7 @@
                         x: {
                             display: true,
                             grid: { display: false },
-                            ticks: { 
+                            ticks: {
                                 maxTicksLimit: 6,
                                 color: '#6b7280',
                                 font: { size: 12 }
@@ -419,27 +430,22 @@
                 }
             });
         }
-
         createUptimeChart() {
             const ctx = document.getElementById('uptime-chart');
             if (!ctx) return;
-
             // Generate 30 days of uptime data
             const data = [];
             const labels = [];
-
             for (let i = 29; i >= 0; i--) {
                 const date = new Date();
                 date.setDate(date.getDate() - i);
-                labels.push(date.toLocaleDateString('en-US', { 
-                    month: 'short', 
-                    day: 'numeric' 
+                labels.push(date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
                 }));
-
                 const uptime = Math.random() > 0.03 ? 100 : (99.7 + Math.random() * 0.3);
                 data.push(uptime);
             }
-
             this.charts.uptime = new Chart(ctx, {
                 type: 'line',
                 data: {
@@ -469,7 +475,7 @@
                         x: {
                             display: true,
                             grid: { display: false },
-                            ticks: { 
+                            ticks: {
                                 maxTicksLimit: 8,
                                 color: '#6b7280'
                             }
@@ -490,7 +496,6 @@
                 }
             });
         }
-
         startAutoRefresh() {
             this.refreshInterval = setInterval(async () => {
                 try {
@@ -502,13 +507,11 @@
                 }
             }, 30000); // Refresh every 30 seconds
         }
-
         showFallbackData() {
             console.log('Showing fallback data for status page');
             // Fallback data is already set in fetchStatusData mock
             this.updateStatusDisplay();
         }
-
         // Utility functions
         getStatusClass(status) {
             switch (status) {
@@ -518,7 +521,6 @@
                 default: return 'operational';
             }
         }
-
         getStatusText(status) {
             switch (status) {
                 case 'operational': return 'Operational';
@@ -527,7 +529,6 @@
                 default: return 'Unknown';
             }
         }
-
         getActivityStatusClass(status) {
             switch (status) {
                 case 'completed': return 'operational';
@@ -536,7 +537,6 @@
                 default: return 'operational';
             }
         }
-
         getActivityStatusText(status) {
             switch (status) {
                 case 'completed': return 'Completed Successfully';
@@ -545,14 +545,12 @@
                 default: return 'Unknown';
             }
         }
-
         formatTimestamp(timestamp) {
             const date = new Date(timestamp);
             const now = new Date();
             const diffMs = now - date;
             const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
             const diffDays = Math.floor(diffHours / 24);
-
             if (diffHours < 1) {
                 return 'Just now';
             } else if (diffHours < 24) {
@@ -561,13 +559,12 @@
                 return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
             }
         }
-
         // Cleanup
         destroy() {
             if (this.refreshInterval) {
                 clearInterval(this.refreshInterval);
             }
-            
+           
             Object.values(this.charts).forEach(chart => {
                 if (chart && typeof chart.destroy === 'function') {
                     chart.destroy();
@@ -575,11 +572,10 @@
             });
         }
     }
-
     // Initialize status page manager when DOM is ready
     document.addEventListener('DOMContentLoaded', function() {
         const statusManager = new StatusPageManager();
-        
+       
         // Store globally for potential debugging/manual refresh
         window.CarambolaGolfStatus = {
             manager: statusManager,
@@ -590,15 +586,13 @@
                 });
             }
         };
-        
+       
         console.log('✅ Carambola Golf Status Page initialized successfully');
     });
-
     // Cleanup on page unload
     window.addEventListener('beforeunload', function() {
         if (window.CarambolaGolfStatus && window.CarambolaGolfStatus.manager) {
             window.CarambolaGolfStatus.manager.destroy();
         }
     });
-
 })();
