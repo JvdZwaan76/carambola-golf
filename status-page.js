@@ -378,4 +378,329 @@
                     <div class="vital-header">
                         <span class="vital-name">${vital.name}</span>
                         <span class="vital-value">${vital.metric.value}${vital.unit}</span>
-                    </div
+                    </div>
+                    <div class="vital-progress">
+                        <div class="vital-progress-bar" data-width="${vital.metric.score}%"></div>
+                    </div>
+                    <div class="vital-target">Target: ${vital.target} | ${vital.metric.status === 'good' ? 'Excellent' : 'Needs improvement'}</div>
+                </div>
+            `).join('');
+            // Animate progress bars
+            setTimeout(() => {
+                vitalsContainer.querySelectorAll('[data-width]').forEach(bar => {
+                    const width = bar.getAttribute('data-width');
+                    bar.style.width = width;
+                });
+            }, 100);
+        }
+        updateActivityList(activity) {
+            const activityContainer = document.getElementById('activity-list');
+            if (!activityContainer || !activity) return;
+            activityContainer.innerHTML = activity.map(item => `
+                <div class="activity-card ${item.status}">
+                    <div class="activity-content">
+                        <div class="activity-header">
+                            <h3 class="activity-title">${item.title}</h3>
+                            <span class="activity-timestamp">${this.formatTimestamp(item.timestamp)}</span>
+                        </div>
+                        <p class="activity-description">${item.description}</p>
+                        <div class="activity-status">
+                            <div class="status-pill ${this.getActivityStatusClass(item.status)}">
+                                <div class="status-indicator ${this.getActivityStatusClass(item.status)}"></div>
+                                <span>${this.getActivityStatusText(item.status)}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        updateFooterStatus(overall) {
+            const footerLastCheck = document.getElementById('footer-last-check');
+            const footerOverallStatus = document.getElementById('footer-overall-status');
+            if (footerLastCheck) {
+                const now = new Date();
+                footerLastCheck.textContent = now.toLocaleTimeString('en-US', {
+                    timeZone: 'America/St_Thomas',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    timeZoneName: 'short'
+                });
+            }
+            if (footerOverallStatus) {
+                footerOverallStatus.textContent = overall.status === 'operational' ? 'All services operational' : 'Service issues detected';
+                footerOverallStatus.className = `footer-overall-status ${overall.status}`;
+            }
+        }
+        updateTimestamp() {
+            const now = new Date();
+            const timestamp = now.toLocaleString('en-US', {
+                timeZone: 'America/St_Thomas',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                timeZoneName: 'short'
+            });
+            const lastUpdateElement = document.getElementById('last-update');
+            if (lastUpdateElement) {
+                lastUpdateElement.textContent = timestamp;
+            }
+        }
+        initializeCharts() {
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js not loaded');
+                return;
+            }
+            this.createResponseTimeChart();
+            this.createUptimeChart();
+        }
+        createResponseTimeChart() {
+            const ctx = document.getElementById('response-time-chart');
+            if (!ctx) return;
+            // Generate 24 hours of sample data
+            const now = new Date();
+            const data = [];
+            const labels = [];
+            for (let i = 23; i >= 0; i--) {
+                const time = new Date(now.getTime() - i * 60 * 60 * 1000);
+                labels.push(time.toLocaleTimeString('en-US', {
+                    hour: 'numeric',
+                    hour12: true
+                }));
+                const baseTime = 230;
+                const variation = Math.sin(i * 0.5) * 25 + Math.random() * 15;
+                data.push(Math.max(200, Math.min(320, baseTime + variation)));
+            }
+            this.charts.responseTime = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Response Time (ms)',
+                        data: data,
+                        borderColor: '#1e3a5f',
+                        backgroundColor: 'rgba(30, 58, 95, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 3,
+                        pointHoverRadius: 5,
+                        pointBackgroundColor: '#d4af37',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            grid: { display: false },
+                            ticks: {
+                                maxTicksLimit: 6,
+                                color: '#6b7280',
+                                font: { size: 12 }
+                            }
+                        },
+                        y: {
+                            display: true,
+                            beginAtZero: false,
+                            min: 180,
+                            max: 350,
+                            grid: { color: 'rgba(212, 175, 55, 0.1)' },
+                            ticks: {
+                                color: '#6b7280',
+                                font: { size: 12 },
+                                callback: function(value) {
+                                    return value + 'ms';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        createUptimeChart() {
+            const ctx = document.getElementById('uptime-chart');
+            if (!ctx) return;
+            // Generate 30 days of uptime data
+            const data = [];
+            const labels = [];
+            for (let i = 29; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                labels.push(date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric'
+                }));
+                const uptime = Math.random() > 0.03 ? 100 : (99.7 + Math.random() * 0.3);
+                data.push(uptime);
+            }
+            this.charts.uptime = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Uptime %',
+                        data: data,
+                        borderColor: '#16a34a',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 2,
+                        pointHoverRadius: 4,
+                        pointBackgroundColor: '#d4af37',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            grid: { display: false },
+                            ticks: {
+                                maxTicksLimit: 8,
+                                color: '#6b7280'
+                            }
+                        },
+                        y: {
+                            display: true,
+                            min: 99.5,
+                            max: 100,
+                            grid: { color: 'rgba(212, 175, 55, 0.1)' },
+                            ticks: {
+                                color: '#6b7280',
+                                callback: function(value) {
+                                    return value.toFixed(1) + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        startAutoRefresh() {
+            this.refreshInterval = setInterval(async () => {
+                try {
+                    await this.fetchStatusData();
+                    this.updateStatusDisplay();
+                    this.updateTimestamp();
+                } catch (error) {
+                    console.error('Auto-refresh failed:', error);
+                }
+            }, 30000); // Refresh every 30 seconds
+        }
+        showFallbackData() {
+            console.log('Showing fallback data for status page');
+            // Fallback data is already set in fetchStatusData mock
+            this.updateStatusDisplay();
+        }
+        // Utility functions
+        getStatusClass(status) {
+            switch (status) {
+                case 'operational': return 'operational';
+                case 'degraded': return 'degraded';
+                case 'down': return 'down';
+                default: return 'operational';
+            }
+        }
+        getStatusText(status) {
+            switch (status) {
+                case 'operational': return 'Operational';
+                case 'degraded': return 'Degraded';
+                case 'down': return 'Down';
+                default: return 'Unknown';
+            }
+        }
+        getActivityStatusClass(status) {
+            switch (status) {
+                case 'completed': return 'operational';
+                case 'in-progress': return 'degraded';
+                case 'failed': return 'down';
+                default: return 'operational';
+            }
+        }
+        getActivityStatusText(status) {
+            switch (status) {
+                case 'completed': return 'Completed Successfully';
+                case 'in-progress': return 'In Progress';
+                case 'failed': return 'Failed';
+                default: return 'Unknown';
+            }
+        }
+        formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffHours / 24);
+            if (diffHours < 1) {
+                return 'Just now';
+            } else if (diffHours < 24) {
+                return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+            } else {
+                return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+            }
+        }
+        // Cleanup
+        destroy() {
+            if (this.refreshInterval) {
+                clearInterval(this.refreshInterval);
+            }
+           
+            Object.values(this.charts).forEach(chart => {
+                if (chart && typeof chart.destroy === 'function') {
+                    chart.destroy();
+                }
+            });
+        }
+    }
+    // Initialize status page manager when DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const statusManager = new StatusPageManager();
+       
+        // Store globally for potential debugging/manual refresh
+        window.CarambolaGolfStatus = {
+            manager: statusManager,
+            refresh: function() {
+                statusManager.fetchStatusData().then(() => {
+                    statusManager.updateStatusDisplay();
+                    statusManager.updateTimestamp();
+                });
+            }
+        };
+       
+        console.log('✅ Carambola Golf Status Page initialized successfully');
+    });
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        if (window.CarambolaGolfStatus && window.CarambolaGolfStatus.manager) {
+            window.CarambolaGolfStatus.manager.destroy();
+        }
+    });
+})();
+</xaiArtifact>
+
+### Deployment and Testing Instructions
+1. **Save the File**:
+   - Copy-paste the above code into your `status-page.js`, overwriting the existing file.
+   - Save the file in your project directory.
+
+2. **Upload to Server**:
+   - **GitHub Pages/Netlify/Vercel**:
+     ```bash
+     git add status-page.js
+     git commit -m "Use api.allorigins.win proxy to fix SSL protocol error"
+     git push
