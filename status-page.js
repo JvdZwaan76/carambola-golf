@@ -54,8 +54,10 @@
         async fetchStatusData() {
             try {
                 const apiToken = 'KN6v9i_AQbBdi8KtDvttX6gvoPsqD79MWE9Potqe'; // Your provided API token
+                const accountId = '70aca6ff38f6ee6ee0752adbf1f51190'; // Your provided Account ID
                 const zoneId = '1734dd228acb83ffd056908eb2774257'; // Your provided Zone ID
                 const graphqlEndpoint = 'https://api.cloudflare.com/client/v4/graphql';
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(graphqlEndpoint); // Using CORS proxy
 
                 // GraphQL query for analytics
                 const query = `
@@ -77,7 +79,7 @@
                     }
                 `;
 
-                const response = await fetch(graphqlEndpoint, {
+                const response = await fetch(proxyUrl, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${apiToken}`,
@@ -675,7 +677,7 @@
             refresh: function() {
                 statusManager.fetchStatusData().then(() => {
                     statusManager.updateStatusDisplay();
-                    statusManager.updateTimestamp();
+                    this.updateTimestamp();
                 });
             }
         };
