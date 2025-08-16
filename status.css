@@ -110,7 +110,6 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: all var(--transition-medium);
     border: 2px solid transparent;
-    position: relative;
 }
 
 .status-pill.operational {
@@ -129,51 +128,6 @@
     background: var(--status-down-bg);
     border-color: var(--status-down);
     color: #991b1b;
-}
-
-/* Real-time indicator */
-.real-time-indicator {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    background: #16a34a;
-    color: white;
-    padding: 0.25rem 0.5rem;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
-    animation: pulse-live 2s infinite;
-    z-index: 10;
-}
-
-.real-time-indicator i {
-    color: #4ade80;
-    margin-right: 0.25rem;
-    font-size: 0.6rem;
-    animation: blink 1.5s infinite;
-}
-
-@keyframes pulse-live {
-    0%, 100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
-}
-
-@keyframes blink {
-    0%, 50% {
-        opacity: 1;
-    }
-    51%, 100% {
-        opacity: 0.3;
-    }
 }
 
 /* Status Indicators */
@@ -884,14 +838,6 @@
         max-width: 280px;
         justify-content: center;
     }
-
-    /* Real-time indicator mobile adjustments */
-    .real-time-indicator {
-        top: -6px;
-        right: -6px;
-        padding: 0.2rem 0.4rem;
-        font-size: 0.65rem;
-    }
 }
 
 @media (max-width: 480px) {
@@ -949,14 +895,6 @@
     .status-indicator {
         width: 8px;
         height: 8px;
-    }
-
-    /* Real-time indicator mobile adjustments */
-    .real-time-indicator {
-        position: static;
-        margin-left: 0.5rem;
-        padding: 0.15rem 0.35rem;
-        font-size: 0.6rem;
     }
 }
 
@@ -1100,6 +1038,61 @@
     }
 }
 
+/* Mobile responsive adjustments for new indicators */
+@media (max-width: 768px) {
+    .footer-status-indicator {
+        margin-left: 0.5rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .footer-status-dot {
+        width: 6px;
+        height: 6px;
+    }
+    
+    .footer-status-text {
+        font-size: 0.7rem;
+    }
+    
+    .hero-uptime-indicator {
+        margin-left: 0.75rem;
+        padding: 0.4rem 0.75rem;
+        flex-direction: column;
+        gap: 0.25rem;
+        text-align: center;
+    }
+    
+    .hero-uptime-light {
+        width: 10px;
+        height: 10px;
+    }
+    
+    .hero-uptime-text {
+        font-size: 0.8rem;
+        line-height: 1.2;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-status-indicator {
+        margin-left: 0.25rem;
+        padding: 0.15rem 0.4rem;
+    }
+    
+    .footer-status-text {
+        font-size: 0.65rem;
+    }
+    
+    .hero-uptime-indicator {
+        margin-left: 0.5rem;
+        padding: 0.3rem 0.6rem;
+    }
+    
+    .hero-uptime-text {
+        font-size: 0.75rem;
+    }
+}
+
 /* Focus styles for accessibility */
 .status-pill:focus,
 .support-contact:focus,
@@ -1130,9 +1123,7 @@
     .status-indicator,
     .status-spinner,
     .loading-shimmer,
-    .vital-progress-bar,
-    .real-time-indicator,
-    .hero-uptime-light {
+    .vital-progress-bar {
         animation: none;
     }
     
