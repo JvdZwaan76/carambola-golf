@@ -1,4 +1,4 @@
-// Carambola Golf Club JavaScript - Fixed Version
+// Carambola Golf Club JavaScript - Fixed Preloader Version
 (function() {
     'use strict';
 
@@ -76,7 +76,7 @@
         }
     };
 
-    // Service Worker Registration with better error handling
+    // Service Worker Registration - Fixed with better error handling
     async function registerServiceWorker() {
         if ('serviceWorker' in navigator) {
             try {
@@ -117,7 +117,7 @@
                         'non_interaction': true
                     });
                 }
-                return false;
+                return false; // Don't fail completely, just log and continue
             }
         }
         return false;
@@ -135,54 +135,6 @@
             </div>
         `;
         document.body.appendChild(notification);
-    }
-
-    // Simplified preloader manager - Fix hanging issue
-    class PreloaderManager {
-        constructor() {
-            this.preloader = document.getElementById('preloader');
-            this.progress = document.querySelector('.loading-progress');
-            this.minimumShowTime = 800; // Reduced minimum time
-            this.maxWaitTime = 3000; // Maximum wait time to prevent hanging
-            this.startTime = performance.now();
-            this.completed = false;
-        }
-
-        hide() {
-            if (this.completed || !this.preloader) return;
-            
-            this.completed = true;
-            
-            const elapsedTime = performance.now() - this.startTime;
-            const remainingTime = Math.max(0, this.minimumShowTime - elapsedTime);
-            
-            setTimeout(() => {
-                if (this.preloader) {
-                    this.preloader.classList.add('hidden');
-                    performanceMetrics.mark('preloader_hidden');
-                    
-                    // Remove from DOM after animation
-                    setTimeout(() => {
-                        if (this.preloader && this.preloader.parentNode) {
-                            this.preloader.parentNode.removeChild(this.preloader);
-                        }
-                    }, 500);
-                    
-                    // Track preloader completion time
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'preloader_complete', {
-                            'event_category': 'performance',
-                            'value': Math.round(performance.now() - this.startTime),
-                            'non_interaction': true
-                        });
-                    }
-                }
-            }, remainingTime);
-        }
-
-        forceHide() {
-            this.hide();
-        }
     }
 
     // Enhanced Video Hero Manager
@@ -684,6 +636,110 @@
         trackHoleCarouselInteraction(action) {
             if (typeof trackHoleCarouselInteraction !== 'undefined') {
                 trackHoleCarouselInteraction(1, action);
+            }
+        }
+    }
+
+    // FIXED Enhanced preloader with proper timeout and error handling
+    class PreloaderManager {
+        constructor() {
+            this.preloader = document.getElementById('preloader');
+            this.progress = document.querySelector('.loading-progress');
+            this.loadingSteps = 0;
+            this.completedSteps = 0;
+            this.minimumShowTime = 1000; // Minimum time to show preloader
+            this.maxShowTime = 5000; // Maximum time to show preloader
+            this.startTime = performance.now();
+            this.stepTimeouts = new Map(); // Track timeouts for each step
+        }
+
+        addStep(stepName = 'unknown', timeout = 3000) {
+            this.loadingSteps++;
+            
+            // Set a timeout for this step to prevent hanging
+            const timeoutId = setTimeout(() => {
+                console.warn(`Preloader step "${stepName}" timed out after ${timeout}ms`);
+                this.completeStep(stepName + '_timeout');
+            }, timeout);
+            
+            this.stepTimeouts.set(stepName, timeoutId);
+            
+            console.log(`Preloader step added: ${stepName} (${this.loadingSteps} total)`);
+        }
+
+        completeStep(stepName = 'unknown') {
+            this.completedSteps++;
+            
+            // Clear timeout for this step if it exists
+            if (this.stepTimeouts.has(stepName)) {
+                clearTimeout(this.stepTimeouts.get(stepName));
+                this.stepTimeouts.delete(stepName);
+            }
+            
+            console.log(`Preloader step completed: ${stepName} (${this.completedSteps}/${this.loadingSteps})`);
+            
+            this.updateProgress();
+            
+            if (this.completedSteps >= this.loadingSteps) {
+                this.checkComplete();
+            }
+        }
+
+        updateProgress() {
+            if (this.progress && this.loadingSteps > 0) {
+                const percentage = (this.completedSteps / this.loadingSteps) * 100;
+                this.progress.style.width = `${percentage}%`;
+            }
+        }
+
+        async checkComplete() {
+            const elapsedTime = performance.now() - this.startTime;
+            
+            // Force hide after maximum time
+            if (elapsedTime >= this.maxShowTime) {
+                console.warn('Preloader forced to hide after maximum time');
+                this.hide();
+                return;
+            }
+            
+            const remainingTime = Math.max(0, this.minimumShowTime - elapsedTime);
+            
+            if (remainingTime > 0) {
+                await new Promise(resolve => setTimeout(resolve, remainingTime));
+            }
+            
+            this.hide();
+        }
+
+        forceHide() {
+            console.warn('Preloader force hidden');
+            this.hide();
+        }
+
+        hide() {
+            // Clear all remaining timeouts
+            this.stepTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+            this.stepTimeouts.clear();
+            
+            if (this.preloader) {
+                this.preloader.classList.add('hidden');
+                performanceMetrics.mark('preloader_hidden');
+                
+                // Remove from DOM after animation
+                setTimeout(() => {
+                    if (this.preloader && this.preloader.parentNode) {
+                        this.preloader.parentNode.removeChild(this.preloader);
+                    }
+                }, 500);
+                
+                // Track preloader completion time
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'preloader_complete', {
+                        'event_category': 'performance',
+                        'value': Math.round(performance.now() - this.startTime),
+                        'non_interaction': true
+                    });
+                }
             }
         }
     }
@@ -1496,6 +1552,7 @@
     // Error handling and reporting
     function setupErrorHandling() {
         window.addEventListener('error', function(e) {
+            console.error('JavaScript error:', e);
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'javascript_error', {
                     'event_category': 'error',
@@ -1507,6 +1564,7 @@
         });
 
         window.addEventListener('unhandledrejection', function(e) {
+            console.error('Promise rejection:', e);
             if (typeof gtag !== 'undefined') {
                 gtag('event', 'promise_rejection', {
                     'event_category': 'error',
@@ -1518,86 +1576,140 @@
         });
     }
 
-    // Main initialization - FIXED VERSION
+    // FIXED Main initialization with proper error handling and timeouts
     document.addEventListener('DOMContentLoaded', async function() {
         performanceMetrics.mark('dom_ready');
         
-        console.log('🌊 Welcome to Carambola Golf Club! 🌊');
-        
-        // Initialize preloader first
+        // Initialize preloader with timeout fallback
         const preloader = new PreloaderManager();
         
-        // Set maximum timeout to prevent hanging
-        const maxTimeout = setTimeout(() => {
-            console.log('Forcing preloader hide due to timeout');
+        // Force hide preloader after 5 seconds regardless
+        setTimeout(() => {
             preloader.forceHide();
-        }, preloader.maxWaitTime);
+        }, 5000);
+        
+        // Add loading steps with names and timeouts
+        preloader.addStep('service_worker', 2000);
+        preloader.addStep('images', 3000);
+        preloader.addStep('fonts', 2000);
+        preloader.addStep('analytics', 1000);
+        preloader.addStep('animations', 1000);
+        preloader.addStep('video_carousel', 2000);
+        preloader.addStep('hole_carousel', 1000);
         
         try {
-            // Quick initialization for essential components
-            const initPromises = [];
+            console.log('Starting initialization...');
             
-            // Register service worker (don't wait for it)
-            initPromises.push(
-                registerServiceWorker().catch(err => {
-                    console.warn('Service worker registration failed:', err);
-                    return false;
-                })
-            );
+            // Register service worker with timeout
+            try {
+                const swSuccess = await Promise.race([
+                    registerServiceWorker(),
+                    new Promise(resolve => setTimeout(() => resolve(false), 1500))
+                ]);
+                console.log('Service worker registration result:', swSuccess);
+            } catch (error) {
+                console.warn('Service worker failed:', error);
+            } finally {
+                preloader.completeStep('service_worker');
+            }
             
-            // Initialize all managers immediately
-            initPromises.push(Promise.resolve().then(() => {
+            // Initialize image optimizer
+            try {
+                new ImageOptimizer();
+                console.log('Image optimizer initialized');
+            } catch (error) {
+                console.warn('Image optimizer failed:', error);
+            } finally {
+                preloader.completeStep('images');
+            }
+            
+            // Check for font loading with timeout
+            try {
+                if (document.fonts) {
+                    await Promise.race([
+                        document.fonts.ready,
+                        new Promise(resolve => setTimeout(resolve, 1500))
+                    ]);
+                }
+                console.log('Fonts ready');
+            } catch (error) {
+                console.warn('Font loading failed:', error);
+            } finally {
+                preloader.completeStep('fonts');
+            }
+            
+            // Initialize analytics
+            try {
+                new AnalyticsManager();
+                console.log('Analytics initialized');
+            } catch (error) {
+                console.warn('Analytics failed:', error);
+            } finally {
+                preloader.completeStep('analytics');
+            }
+            
+            // Initialize all managers
+            try {
                 new ModalManager();
                 new NavigationManager();
                 new AnimationManager();
                 new TabManager();
                 new CardInteractionManager();
                 new OfflineManager();
-                new AnalyticsManager();
-                new ImageOptimizer();
-                
-                // Initialize video hero for home page
+                console.log('Core managers initialized');
+            } catch (error) {
+                console.warn('Core managers failed:', error);
+            } finally {
+                preloader.completeStep('animations');
+            }
+            
+            // Initialize video hero for home page
+            try {
                 if (document.querySelector('.hero-video')) {
                     new VideoHeroManager();
+                    console.log('Video hero initialized');
                 }
                 
                 // Initialize carousel for course page
                 if (document.querySelector('.course-hero-carousel')) {
                     new CarouselManager();
+                    console.log('Course carousel initialized');
                 }
-                
-                // Initialize hole 1 carousel
+            } catch (error) {
+                console.warn('Video/Carousel initialization failed:', error);
+            } finally {
+                preloader.completeStep('video_carousel');
+            }
+            
+            // Initialize hole 1 carousel
+            try {
                 if (document.getElementById('hole1Carousel')) {
                     new HoleCarouselManager();
+                    console.log('Hole carousel initialized');
                 }
-                
-                // Setup additional functionality
+            } catch (error) {
+                console.warn('Hole carousel failed:', error);
+            } finally {
+                preloader.completeStep('hole_carousel');
+            }
+            
+            // Setup additional functionality
+            try {
                 setupSmoothScrolling();
                 setupExternalLinkTracking();
                 setupFormHandling();
                 setupErrorHandling();
-                
-                return true;
-            }));
-            
-            // Wait for all initializations to complete or timeout after 2 seconds
-            await Promise.race([
-                Promise.all(initPromises),
-                new Promise(resolve => setTimeout(() => resolve(true), 2000))
-            ]);
+                console.log('Additional functionality setup complete');
+            } catch (error) {
+                console.warn('Additional setup failed:', error);
+            }
             
             performanceMetrics.mark('init_complete');
-            
-            // Clear the timeout and hide preloader
-            clearTimeout(maxTimeout);
-            setTimeout(() => preloader.hide(), 100);
-            
-            console.log('✅ Carambola Golf initialized successfully');
+            console.log('Initialization complete!');
             
         } catch (error) {
-            console.error('Initialization error:', error);
-            clearTimeout(maxTimeout);
-            preloader.forceHide(); // Force hide even if there's an error
+            console.error('Critical initialization error:', error);
+            preloader.forceHide(); // Force hide preloader even if there's an error
         }
     });
 
@@ -1624,6 +1736,11 @@
             }
         });
     }, 250));
+
+    // Console branding
+    console.log('%c🌴 Welcome to Carambola Golf Club! 🌴', 'color: #d4af37; font-size: 16px; font-weight: bold;');
+    console.log('%cFixed preloader and enhanced performance', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
     window.CarambolaGolf = {
