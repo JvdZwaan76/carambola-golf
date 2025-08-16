@@ -6,17 +6,27 @@
     // Status Page Manager
     class StatusPageManager {
         constructor() {
+            // Only initialize if we're actually on the status page
             this.isStatusPage = window.location.pathname.includes('status');
             this.statusData = null;
             this.refreshInterval = null;
             this.charts = {};
             
-            if (this.isStatusPage) {
-                this.init();
+            // Add safety check
+            if (!this.isStatusPage) {
+                console.log('StatusPageManager: Not on status page, skipping initialization');
+                return;
             }
+            
+            // Initialize with additional error handling
+            this.init().catch(error => {
+                console.error('StatusPageManager initialization failed:', error);
+            });
         }
 
         async init() {
+            if (!this.isStatusPage) return;
+            
             try {
                 await this.fetchStatusData();
                 this.updateStatusDisplay();
