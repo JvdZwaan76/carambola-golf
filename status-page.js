@@ -691,3 +691,16 @@
         }
     });
 })();
+</xaiArtifact>
+
+### Deployment and Testing Instructions
+1. **Save the File**:
+   - Copy-paste the above code into your `status-page.js`, overwriting the existing file.
+   - Save the file in your project directory.
+
+2. **Upload to Server**:
+   - **GitHub Pages/Netlify/Vercel**:
+     ```bash
+     git add status-page.js
+     git commit -m "Use api.allorigins.win proxy to fix SSL protocol error"
+     git push
