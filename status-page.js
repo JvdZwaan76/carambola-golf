@@ -1,4 +1,4 @@
-// Carambola Golf Club Status Page JavaScript - FIXED VERSION
+// Carambola Golf Club Status Page JavaScript - FIXED VERSION with Real-Time Detection
 // This file is loaded ONLY on the status page
 // It's completely isolated from the main script.js
 
@@ -23,7 +23,8 @@
                 zoneId: null, // Will be auto-detected or configured
                 apiToken: null, // Set via environment or config
                 apiBase: 'https://api.cloudflare.com/client/v4',
-                proxyEndpoint: 'https://carambola-golf-status-api.jaspervdz.workers.dev/api/cloudflare-proxy'
+                proxyEndpoint: 'https://carambola-golf-status-api.jaspervdz.workers.dev/api/cloudflare-proxy',
+                statusEndpoint: 'https://carambola-golf-status-api.jaspervdz.workers.dev/api/status'
             };
             
             this.fallbackMode = false;
@@ -282,31 +283,30 @@
                     console.log('✓ Using cached status data');
                     this.statusData = cached.data;
                     this.lastSuccessfulFetch = new Date(cached.timestamp);
-                    this.fallbackMode = false;
+                    // Check if cached data is real-time
+                    this.fallbackMode = !(this.statusData.realTime === true && this.statusData.fallbackMode === false);
                     return;
                 }
                 
-                // Try to fetch from Worker API
-                const response = await fetch(this.cloudflareConfig.proxyEndpoint, {
-                    method: 'POST',
+                // Fetch from the main status API endpoint
+                const response = await fetch(this.cloudflareConfig.statusEndpoint, {
+                    method: 'GET',
                     headers: {
                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        action: 'getAnalytics',
-                        zoneId: this.cloudflareConfig.zoneId,
-                        timeRange: '24h'
-                    })
+                    }
                 });
                 
                 if (response.ok) {
                     const data = await response.json();
                     console.log('✓ API response received');
                     
-                    // Update our status data with the API response
-                    if (data.result) {
-                        this.updateStatusDataFromAPI(data.result);
-                        this.fallbackMode = false;
+                    // Check if we got real-time data
+                    if (data.realTime === true && data.fallbackMode === false) {
+                        console.log('✅ Real-time data detected! Switching to LIVE mode');
+                        
+                        // Update our status data with the complete API response
+                        this.statusData = data;
+                        this.fallbackMode = false; // Switch to live mode
                         
                         // Cache the successful result
                         this.dataCache.set(cacheKey, {
@@ -315,10 +315,18 @@
                         });
                         
                         if (typeof trackStatusCheck === 'function') {
-                            trackStatusCheck('api_success');
+                            trackStatusCheck('api_success_realtime');
                         }
                         
-                        console.log('✓ Status data successfully updated from API');
+                        console.log('✓ Status data successfully updated with REAL-TIME analytics');
+                    } else {
+                        console.log('ℹ️ API returned fallback data, staying in fallback mode');
+                        this.statusData = data;
+                        this.fallbackMode = true;
+                        
+                        if (typeof trackStatusCheck === 'function') {
+                            trackStatusCheck('api_success_fallback');
+                        }
                     }
                 } else {
                     throw new Error(`API response: ${response.status}`);
@@ -336,45 +344,6 @@
                 
                 throw error;
             }
-        }
-
-        updateStatusDataFromAPI(apiData) {
-            // Safely update our status data with API response
-            if (!this.statusData) {
-                this.setInitialFallbackData();
-            }
-            
-            // Update metrics from API data
-            if (apiData.requests !== undefined) {
-                this.statusData.metrics.requests24h = apiData.requests.toLocaleString();
-            }
-            if (apiData.bandwidth !== undefined) {
-                this.statusData.metrics.bandwidth = apiData.bandwidth;
-            }
-            if (apiData.responseTime !== undefined) {
-                this.statusData.metrics.averageResponseTime = Math.round(apiData.responseTime);
-                this.statusData.overall.responseTime = Math.round(apiData.responseTime);
-            }
-            if (apiData.cacheHitRatio !== undefined) {
-                this.statusData.metrics.cachingRatio = Number(apiData.cacheHitRatio.toFixed(1));
-            }
-            if (apiData.uniqueVisitors !== undefined) {
-                this.statusData.metrics.uniqueVisitors = apiData.uniqueVisitors;
-            }
-            if (apiData.threats !== undefined) {
-                this.statusData.metrics.threats = apiData.threats;
-            }
-            
-            // Update cloudflare data
-            this.statusData.cloudflare = {
-                ...this.statusData.cloudflare,
-                ...apiData
-            };
-            
-            // Mark as real-time data
-            this.statusData.realTime = true;
-            this.statusData.fallbackMode = false;
-            this.statusData.lastUpdated = new Date().toISOString();
         }
 
         updateStatusDisplay() {
@@ -405,6 +374,8 @@
                 // Show fallback mode warning if applicable
                 if (this.fallbackMode) {
                     this.showFallbackWarning();
+                } else {
+                    this.hideFallbackWarning();
                 }
             } catch (error) {
                 console.error('Error updating status display:', error);
@@ -686,6 +657,13 @@
             }
         }
 
+        hideFallbackWarning() {
+            const existingWarning = document.querySelector('.fallback-warning');
+            if (existingWarning) {
+                existingWarning.remove();
+            }
+        }
+
         initializeCharts() {
             if (typeof Chart === 'undefined') {
                 console.warn('Chart.js not loaded');
@@ -889,6 +867,13 @@
                     await this.fetchStatusData();
                     this.updateStatusDisplay();
                     this.updateTimestamp();
+                    
+                    // Show mode information after refresh
+                    if (this.fallbackMode) {
+                        console.log('📊 Operating in FALLBACK mode (estimated data)');
+                    } else {
+                        console.log('📊 Operating in LIVE mode (real-time data)');
+                    }
                     
                     // Update charts with new data
                     if (this.charts.responseTime) {
