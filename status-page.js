@@ -1,6 +1,5 @@
-// Carambola Golf Club Status Page JavaScript - FINAL WORKING VERSION
-// This file is loaded ONLY on the status page
-// Fixed all errors and real-time detection issues
+// Carambola Golf Club Status Page JavaScript - COMPLETE ENHANCED VERSION
+// This file is loaded ONLY on the status page with all mobile optimizations and features
 
 (function() {
     'use strict';
@@ -10,7 +9,514 @@
         return;
     }
     
-    console.log('🏌️‍♂️ Initializing Carambola Golf Status Page...');
+    console.log('🌴⛳ Initializing Enhanced Carambola Golf Status Page...');
+    
+    // Enhanced Mobile Navigation for Status Sections
+    class StatusNavigation {
+        constructor() {
+            this.currentSection = 'metrics';
+            this.sections = ['metrics', 'services', 'performance', 'activity', 'support'];
+            this.init();
+        }
+
+        init() {
+            this.createMobileNav();
+            this.setupIntersectionObserver();
+            this.setupSmoothScrolling();
+        }
+
+        createMobileNav() {
+            if (window.innerWidth <= 768) {
+                const navHTML = `
+                    <nav class="status-nav-mobile" aria-label="Status page navigation">
+                        <div class="status-nav-links">
+                            <a href="#metrics" class="status-nav-link active" data-section="metrics">
+                                <i class="fas fa-tachometer-alt"></i> Metrics
+                            </a>
+                            <a href="#services" class="status-nav-link" data-section="services">
+                                <i class="fas fa-server"></i> Services
+                            </a>
+                            <a href="#performance" class="status-nav-link" data-section="performance">
+                                <i class="fas fa-chart-line"></i> Performance
+                            </a>
+                            <a href="#activity" class="status-nav-link" data-section="activity">
+                                <i class="fas fa-history"></i> Activity
+                            </a>
+                            <a href="#support" class="status-nav-link" data-section="support">
+                                <i class="fas fa-headset"></i> Support
+                            </a>
+                        </div>
+                    </nav>
+                `;
+                
+                const statusHeader = document.querySelector('.status-header');
+                if (statusHeader && !document.querySelector('.status-nav-mobile')) {
+                    statusHeader.insertAdjacentHTML('afterend', navHTML);
+                }
+            }
+        }
+
+        setupIntersectionObserver() {
+            const sections = document.querySelectorAll('.status-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = this.getSectionId(entry.target);
+                        this.updateActiveNav(sectionId);
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '-20% 0px -60% 0px'
+            });
+
+            sections.forEach(section => observer.observe(section));
+        }
+
+        getSectionId(section) {
+            if (section.querySelector('.metrics-grid')) return 'metrics';
+            if (section.querySelector('.services-list')) return 'services';
+            if (section.querySelector('.charts-grid')) return 'performance';
+            if (section.querySelector('.activity-feed')) return 'activity';
+            if (section.querySelector('.support-content')) return 'support';
+            return 'metrics';
+        }
+
+        updateActiveNav(sectionId) {
+            const navLinks = document.querySelectorAll('.status-nav-link');
+            navLinks.forEach(link => {
+                if (link.dataset.section === sectionId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            this.currentSection = sectionId;
+        }
+
+        setupSmoothScrolling() {
+            document.addEventListener('click', (e) => {
+                const link = e.target.closest('.status-nav-link');
+                if (link) {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetSection = this.findSectionByType(targetId);
+                    
+                    if (targetSection) {
+                        const offset = document.querySelector('.navbar')?.offsetHeight || 0;
+                        const mobileNavHeight = document.querySelector('.status-nav-mobile')?.offsetHeight || 0;
+                        const targetPosition = targetSection.offsetTop - offset - mobileNavHeight - 20;
+                        
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            });
+        }
+
+        findSectionByType(type) {
+            const sections = document.querySelectorAll('.status-section');
+            for (const section of sections) {
+                if (this.getSectionId(section) === type) {
+                    return section;
+                }
+            }
+            return null;
+        }
+    }
+
+    // Enhanced Toast Notification System
+    class StatusToastManager {
+        constructor() {
+            this.toasts = [];
+            this.maxToasts = 3;
+            this.defaultDuration = 5000;
+        }
+
+        show(title, message, type = 'info', duration = null) {
+            const toast = this.createToast(title, message, type, duration || this.defaultDuration);
+            this.addToast(toast);
+            return toast;
+        }
+
+        createToast(title, message, type, duration) {
+            const toastId = `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-triangle',
+                warning: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+
+            const toast = document.createElement('div');
+            toast.id = toastId;
+            toast.className = `status-toast ${type}`;
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'polite');
+            
+            toast.innerHTML = `
+                <div class="toast-title">
+                    <i class="fas ${icons[type] || icons.info}"></i>
+                    ${title}
+                </div>
+                <p class="toast-message">${message}</p>
+            `;
+
+            // Auto-dismiss
+            setTimeout(() => this.removeToast(toastId), duration);
+
+            // Manual dismiss on click
+            toast.addEventListener('click', () => this.removeToast(toastId));
+
+            return { element: toast, id: toastId };
+        }
+
+        addToast(toast) {
+            // Remove oldest toast if at max capacity
+            if (this.toasts.length >= this.maxToasts) {
+                const oldestToast = this.toasts.shift();
+                this.removeToast(oldestToast.id);
+            }
+
+            document.body.appendChild(toast.element);
+            this.toasts.push(toast);
+
+            // Trigger show animation
+            requestAnimationFrame(() => {
+                toast.element.classList.add('show');
+            });
+
+            // Announce to screen readers
+            this.announceToScreenReader(`${toast.element.textContent}`);
+        }
+
+        removeToast(toastId) {
+            const toastIndex = this.toasts.findIndex(t => t.id === toastId);
+            if (toastIndex === -1) return;
+
+            const toast = this.toasts[toastIndex];
+            if (toast.element && toast.element.classList) {
+                toast.element.classList.remove('show');
+            }
+
+            setTimeout(() => {
+                if (toast.element && toast.element.parentNode) {
+                    toast.element.parentNode.removeChild(toast.element);
+                }
+                this.toasts.splice(toastIndex, 1);
+            }, 300);
+        }
+
+        announceToScreenReader(message) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = message;
+            
+            document.body.appendChild(announcement);
+            
+            setTimeout(() => {
+                if (announcement.parentNode) {
+                    announcement.parentNode.removeChild(announcement);
+                }
+            }, 1000);
+        }
+    }
+
+    // Enhanced Error State Management
+    class StatusErrorManager {
+        constructor(statusManager) {
+            this.statusManager = statusManager;
+            this.retryAttempts = 0;
+            this.maxRetries = 3;
+            this.retryDelay = 5000;
+            this.backoffMultiplier = 2;
+        }
+
+        showError(message, canRetry = true) {
+            const errorHTML = `
+                <div class="status-error" role="alert">
+                    <h3>
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Connection Issue
+                    </h3>
+                    <p>${message}</p>
+                    ${canRetry ? `
+                        <button class="status-retry-btn" onclick="window.statusErrorManager?.retry()">
+                            <i class="fas fa-redo"></i> Retry Connection
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+
+            const existingError = document.querySelector('.status-error');
+            if (existingError) {
+                existingError.remove();
+            }
+
+            const statusControls = document.querySelector('.status-controls');
+            if (statusControls) {
+                statusControls.insertAdjacentHTML('afterend', errorHTML);
+            }
+
+            // Show toast notification as well
+            if (window.statusToasts) {
+                window.statusToasts.show(
+                    'Connection Issue',
+                    'Using cached data while reconnecting...',
+                    'warning'
+                );
+            }
+        }
+
+        hideError() {
+            const errorElement = document.querySelector('.status-error');
+            if (errorElement) {
+                errorElement.remove();
+            }
+        }
+
+        async retry() {
+            if (this.retryAttempts >= this.maxRetries) {
+                this.showError('Maximum retry attempts reached. Please refresh the page.', false);
+                return;
+            }
+
+            this.retryAttempts++;
+            const delay = this.retryDelay * Math.pow(this.backoffMultiplier, this.retryAttempts - 1);
+
+            // Show loading state
+            const retryBtn = document.querySelector('.status-retry-btn');
+            if (retryBtn) {
+                retryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Reconnecting...';
+                retryBtn.disabled = true;
+            }
+
+            try {
+                // Wait for delay
+                await new Promise(resolve => setTimeout(resolve, Math.min(delay, 30000)));
+                
+                // Attempt to reconnect
+                await this.statusManager.fetchStatusData();
+                this.statusManager.updateStatusDisplay();
+                
+                // Success - reset retry count and hide error
+                this.retryAttempts = 0;
+                this.hideError();
+                
+                if (window.statusToasts) {
+                    window.statusToasts.show(
+                        'Connection Restored',
+                        'Successfully reconnected to live data',
+                        'success'
+                    );
+                }
+
+            } catch (error) {
+                console.error('Retry failed:', error);
+                
+                if (this.retryAttempts >= this.maxRetries) {
+                    this.showError('Unable to establish connection. Please check your internet connection and refresh the page.', false);
+                } else {
+                    // Re-enable retry button
+                    if (retryBtn) {
+                        retryBtn.innerHTML = '<i class="fas fa-redo"></i> Retry Connection';
+                        retryBtn.disabled = false;
+                    }
+                }
+            }
+        }
+    }
+
+    // Enhanced Touch Gesture Support
+    class StatusTouchManager {
+        constructor() {
+            this.touchStartX = 0;
+            this.touchStartY = 0;
+            this.touchEndX = 0;
+            this.touchEndY = 0;
+            this.minSwipeDistance = 50;
+            this.maxVerticalDistance = 100;
+            this.init();
+        }
+
+        init() {
+            if ('ontouchstart' in window) {
+                this.setupTouchEvents();
+            }
+        }
+
+        setupTouchEvents() {
+            // Enhanced chart touch interactions
+            document.querySelectorAll('.chart-container').forEach(container => {
+                container.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
+                container.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
+            });
+
+            // Card tap enhancements
+            document.querySelectorAll('.metric-card, .service-status-card').forEach(card => {
+                let tapCount = 0;
+                card.addEventListener('touchend', (e) => {
+                    tapCount++;
+                    if (tapCount === 1) {
+                        setTimeout(() => {
+                            if (tapCount === 1) {
+                                this.handleSingleTap(card);
+                            } else if (tapCount === 2) {
+                                this.handleDoubleTap(card);
+                            }
+                            tapCount = 0;
+                        }, 300);
+                    }
+                });
+            });
+        }
+
+        handleTouchStart(e) {
+            this.touchStartX = e.changedTouches[0].screenX;
+            this.touchStartY = e.changedTouches[0].screenY;
+        }
+
+        handleTouchEnd(e) {
+            this.touchEndX = e.changedTouches[0].screenX;
+            this.touchEndY = e.changedTouches[0].screenY;
+            this.handleSwipe();
+        }
+
+        handleSwipe() {
+            const deltaX = this.touchEndX - this.touchStartX;
+            const deltaY = Math.abs(this.touchEndY - this.touchStartY);
+            
+            // Only register as swipe if horizontal movement is significant and vertical is minimal
+            if (Math.abs(deltaX) > this.minSwipeDistance && deltaY < this.maxVerticalDistance) {
+                if (deltaX > 0) {
+                    this.handleSwipeRight();
+                } else {
+                    this.handleSwipeLeft();
+                }
+            }
+        }
+
+        handleSwipeRight() {
+            // Navigate to previous section
+            if (window.statusNavigation) {
+                const sections = window.statusNavigation.sections;
+                const currentIndex = sections.indexOf(window.statusNavigation.currentSection);
+                if (currentIndex > 0) {
+                    const previousSection = sections[currentIndex - 1];
+                    this.navigateToSection(previousSection);
+                }
+            }
+        }
+
+        handleSwipeLeft() {
+            // Navigate to next section
+            if (window.statusNavigation) {
+                const sections = window.statusNavigation.sections;
+                const currentIndex = sections.indexOf(window.statusNavigation.currentSection);
+                if (currentIndex < sections.length - 1) {
+                    const nextSection = sections[currentIndex + 1];
+                    this.navigateToSection(nextSection);
+                }
+            }
+        }
+
+        navigateToSection(sectionId) {
+            const link = document.querySelector(`.status-nav-link[data-section="${sectionId}"]`);
+            if (link) {
+                link.click();
+            }
+        }
+
+        handleSingleTap(card) {
+            // Add visual feedback for single tap
+            card.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 150);
+        }
+
+        handleDoubleTap(card) {
+            // Enhanced interaction for double tap
+            const hasDetails = card.querySelector('.metric-value, .service-info');
+            if (hasDetails) {
+                this.showCardDetails(card);
+            }
+        }
+
+        showCardDetails(card) {
+            // Create detailed view overlay for mobile
+            const title = card.querySelector('h3, .metric-label')?.textContent || 'Details';
+            const details = this.extractCardDetails(card);
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'card-details-overlay';
+            overlay.innerHTML = `
+                <div class="card-details-content">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary-navy);">${title}</h3>
+                    ${details}
+                    <button class="close-details-btn" style="
+                        background: var(--accent-gold);
+                        color: var(--primary-navy);
+                        border: none;
+                        padding: 0.75rem 1.5rem;
+                        border-radius: 0.5rem;
+                        font-weight: 600;
+                        margin-top: 1rem;
+                        width: 100%;
+                        cursor: pointer;
+                    ">Close</button>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            // Handle close
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay || e.target.classList.contains('close-details-btn')) {
+                    document.body.removeChild(overlay);
+                }
+            });
+            
+            // Auto-close after 10 seconds
+            setTimeout(() => {
+                if (overlay.parentNode) {
+                    document.body.removeChild(overlay);
+                }
+            }, 10000);
+        }
+
+        extractCardDetails(card) {
+            // Extract relevant details from the card
+            const details = [];
+            
+            if (card.classList.contains('metric-card')) {
+                const value = card.querySelector('.metric-value')?.textContent;
+                const label = card.querySelector('.metric-label')?.textContent;
+                const trend = card.querySelector('.metric-trend')?.textContent;
+                
+                if (value) details.push(`<p><strong>Current Value:</strong> ${value}</p>`);
+                if (label) details.push(`<p><strong>Metric:</strong> ${label}</p>`);
+                if (trend) details.push(`<p><strong>Trend:</strong> ${trend}</p>`);
+                
+            } else if (card.classList.contains('service-status-card')) {
+                const name = card.querySelector('h3')?.textContent;
+                const description = card.querySelector('p')?.textContent;
+                const uptime = card.querySelector('.service-uptime')?.textContent;
+                const status = card.querySelector('.status-pill span')?.textContent;
+                
+                if (name) details.push(`<p><strong>Service:</strong> ${name}</p>`);
+                if (description) details.push(`<p><strong>Description:</strong> ${description}</p>`);
+                if (status) details.push(`<p><strong>Status:</strong> ${status}</p>`);
+                if (uptime) details.push(`<p><strong>${uptime}</strong></p>`);
+            }
+            
+            return details.length > 0 ? details.join('') : '<p>No additional details available.</p>';
+        }
+    }
     
     class StatusPageManager {
         constructor() {
@@ -34,7 +540,7 @@
 
         async init() {
             try {
-                console.log('🌴 Initializing Carambola Golf Status Page...');
+                console.log('🌴 Initializing Enhanced Carambola Golf Status Page...');
                 
                 // Set initial safe fallback data
                 this.setInitialFallbackData();
@@ -77,7 +583,7 @@
                     });
                 }
                 
-                console.log('✅ Carambola Golf Status Page initialized successfully');
+                console.log('✅ Enhanced Carambola Golf Status Page initialized successfully');
                 
                 // Show current mode
                 this.logCurrentMode();
@@ -86,6 +592,11 @@
                 console.error('❌ Failed to initialize status page:', error);
                 this.setInitialFallbackData();
                 this.updateStatusDisplay();
+                
+                // Show error to user
+                if (window.statusErrorManager) {
+                    window.statusErrorManager.showError('Failed to initialize status page. Please refresh to try again.');
+                }
             }
         }
 
@@ -274,6 +785,16 @@
                         
                         if (typeof trackStatusCheck === 'function') {
                             trackStatusCheck('api_success_realtime');
+                        }
+                        
+                        // Show success toast
+                        if (window.statusToasts) {
+                            window.statusToasts.show(
+                                'Live Data Connected',
+                                'Real-time metrics now active',
+                                'success',
+                                3000
+                            );
                         }
                     } else {
                         console.log('ℹ️ API returned fallback data, staying in fallback mode');
@@ -526,9 +1047,6 @@
                 <div class="activity-card ${item.status || 'completed'}">
                     <div class="activity-content">
                         <div class="activity-header">
-                            <div class="activity-type-icon ${item.type || 'optimization'}">
-                                <i class="fas fa-${this.getActivityIcon(item.type || 'optimization')}"></i>
-                            </div>
                             <div class="activity-details">
                                 <h3 class="activity-title">${item.title || 'System Activity'}</h3>
                                 <span class="activity-timestamp">${this.formatTimestamp(item.timestamp || new Date().toISOString())}</span>
@@ -598,6 +1116,15 @@
                     const indicator = document.createElement('div');
                     indicator.className = 'real-time-indicator';
                     indicator.innerHTML = '<i class="fas fa-circle"></i> Live';
+                    indicator.style.cssText = `
+                        margin-left: 0.5rem;
+                        color: #16a34a;
+                        font-size: 0.7rem;
+                        font-weight: 600;
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 0.25rem;
+                    `;
                     statusElement.appendChild(indicator);
                 }
             }
@@ -853,6 +1380,9 @@
                     
                 } catch (error) {
                     console.error('Auto-refresh failed:', error);
+                    if (window.statusErrorManager) {
+                        window.statusErrorManager.showError('Connection lost. Retrying automatically...');
+                    }
                 }
             }, 30000);
         }
@@ -1002,9 +1532,20 @@
         }
     }
 
-    // Initialize when DOM is ready
+    // Initialize all enhancements when DOM is ready
     document.addEventListener('DOMContentLoaded', function() {
+        // Initialize global managers
+        window.statusNavigation = new StatusNavigation();
+        window.statusToasts = new StatusToastManager();
+        window.statusTouchManager = new StatusTouchManager();
+        
+        // Initialize main status manager
         const statusManager = new StatusPageManager();
+        
+        // Initialize error manager after main status manager is available
+        setTimeout(() => {
+            window.statusErrorManager = new StatusErrorManager(statusManager);
+        }, 1000);
         
         // Global access for debugging
         window.CarambolaGolfStatus = {
@@ -1062,6 +1603,48 @@
                 }
             }
         };
+        
+        console.log('✅ Status page enhancements initialized');
+    });
+
+    // Handle window resize for responsive adjustments
+    window.addEventListener('resize', debounce(() => {
+        // Recreate mobile nav if switching to/from mobile
+        const existingNav = document.querySelector('.status-nav-mobile');
+        const shouldHaveNav = window.innerWidth <= 768;
+        
+        if (!existingNav && shouldHaveNav && window.statusNavigation) {
+            window.statusNavigation.createMobileNav();
+        } else if (existingNav && !shouldHaveNav) {
+            existingNav.remove();
+        }
+    }, 250));
+
+    // Enhanced keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        // Escape key closes any open overlays
+        if (e.key === 'Escape') {
+            const overlay = document.querySelector('.card-details-overlay');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+        
+        // Arrow key navigation for status sections
+        if (e.target.closest('.status-page') && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+            if (window.statusNavigation) {
+                const sections = window.statusNavigation.sections;
+                const currentIndex = sections.indexOf(window.statusNavigation.currentSection);
+                
+                if (e.key === 'ArrowLeft' && currentIndex > 0) {
+                    e.preventDefault();
+                    window.statusTouchManager.navigateToSection(sections[currentIndex - 1]);
+                } else if (e.key === 'ArrowRight' && currentIndex < sections.length - 1) {
+                    e.preventDefault();
+                    window.statusTouchManager.navigateToSection(sections[currentIndex + 1]);
+                }
+            }
+        }
     });
 
     // Cleanup on page unload
@@ -1070,5 +1653,18 @@
             window.CarambolaGolfStatus.manager.destroy();
         }
     });
+
+    // Utility functions
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
 
 })();
