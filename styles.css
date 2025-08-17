@@ -800,39 +800,6 @@ img {
     background: var(--accent-gold);
 }
 
-/* Status page link styling */
-.nav-status-link {
-    position: relative;
-    border: 1px solid rgba(212, 175, 55, 0.3) !important;
-    border-radius: 4px !important;
-    padding: 0.4rem 0.8rem !important;
-    margin-left: 1rem !important;
-    transition: all var(--transition-medium) !important;
-}
-
-.nav-status-link:hover {
-    background: rgba(212, 175, 55, 0.1) !important;
-    border-color: var(--accent-gold) !important;
-}
-
-.nav-status-link::before {
-    content: '●';
-    color: #16a34a;
-    margin-right: 0.5rem;
-    animation: pulse-dot 2s infinite;
-}
-
-@keyframes pulse-dot {
-    0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.6;
-        transform: scale(1.2);
-    }
-}
-
 .mobile-menu {
     display: none;
     background: none;
@@ -2420,6 +2387,101 @@ img {
     text-decoration: underline;
 }
 
+/* Footer Status Indicator */
+.footer-status {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-status p {
+    opacity: 0.8;
+    font-size: 0.85rem;
+    margin: 0.25rem 0;
+}
+
+.footer-overall-status {
+    font-weight: 600;
+}
+
+.footer-overall-status.operational {
+    color: #4ade80;
+}
+
+.footer-overall-status.degraded {
+    color: #fbbf24;
+}
+
+.footer-overall-status.down {
+    color: #f87171;
+}
+
+.footer-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(22, 163, 74, 0.1);
+    border: 1px solid rgba(22, 163, 74, 0.3);
+    border-radius: 12px;
+    transition: all var(--transition-medium);
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer-status-indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    width: 4px;
+    height: 20px;
+    background: #16a34a;
+    border-radius: 2px;
+    transform: translateY(-50%);
+}
+
+.footer-status-indicator:hover {
+    background: rgba(22, 163, 74, 0.15);
+    border-color: rgba(22, 163, 74, 0.5);
+    transform: translateY(-1px);
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-status-dot {
+    width: 8px;
+    height: 8px;
+    background: #16a34a;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
+    animation: pulse-green-subtle 2s infinite;
+}
+
+.footer-status-text {
+    font-size: 0.75rem;
+    color: #16a34a;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@keyframes pulse-green-subtle {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.1);
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);
+    }
+}
+
 /* Offline Indicator */
 .offline-indicator {
     position: fixed;
@@ -2942,14 +3004,6 @@ img {
         display: flex;
     }
 
-    /* Status link mobile adjustments */
-    .nav-status-link {
-        margin-left: 0 !important;
-        margin-top: 0.5rem !important;
-        width: fit-content !important;
-        align-self: center !important;
-    }
-
     /* Hero Section Mobile Fixes */
     .hero {
         height: auto;
@@ -3094,6 +3148,21 @@ img {
     .footer-links-grid {
         grid-template-columns: 1fr;
         text-align: left;
+    }
+
+    /* Footer Status Mobile */
+    .footer-status-indicator {
+        margin-left: 0.5rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .footer-status-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .footer-status-text {
+        font-size: 0.7rem;
     }
 
     /* Pricing responsive */
@@ -3255,6 +3324,44 @@ img {
         right: 10px;
     }
 
+    /* Additional mobile styles for footer status */
+    .footer-status-indicator {
+        margin-left: 0.25rem;
+        padding: 0.15rem 0.4rem;
+    }
+
+    .footer-status-text {
+        font-size: 0.65rem;
+    }
+
+    .footer-status p {
+        font-size: 0.8rem;
+    }
+
+    /* Carousel mobile optimizations */
+    .carousel-nav {
+        padding: 0 0.5rem;
+    }
+
+    .carousel-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 0.9rem;
+    }
+
+    .slide-content {
+        padding: 2rem 0.5rem 1.5rem;
+    }
+
+    .carousel-dots {
+        gap: 0.3rem;
+    }
+
+    .carousel-dot {
+        width: 8px;
+        height: 8px;
+    }
+
     /* Legal Pages Mobile Responsive */
     .legal-document {
         padding: 2rem;
@@ -3299,31 +3406,99 @@ img {
     .stat-item .stat-number {
         font-size: 2rem;
     }
-
-    /* Carousel mobile optimizations */
-    .carousel-nav {
-        padding: 0 0.5rem;
-    }
-
-    .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 0.9rem;
-    }
-
-    .slide-content {
-        padding: 2rem 0.5rem 1.5rem;
-    }
-
-    .carousel-dots {
-        gap: 0.3rem;
-    }
-
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
-    }
 }
 
 /* Smooth scrolling */
 html {
+    scroll-behavior: smooth;
+}
+
+/* Additional utility classes */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus styles for accessibility */
+.cta-button:focus,
+.modal-close-btn:focus,
+.nav-links a:focus,
+.action-button:focus,
+.carousel-btn:focus,
+.carousel-dot:focus,
+.footer-status-indicator:focus {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .modal-overlay,
+    .preloader,
+    .cta-button,
+    .update-notification,
+    .offline-indicator,
+    .carousel-nav,
+    .carousel-dots,
+    .carousel-progress,
+    .footer-status {
+        display: none;
+    }
+    
+    .hero,
+    .page-hero,
+    .course-hero-carousel {
+        height: auto;
+        padding: 2rem 0;
+    }
+    
+    body {
+        font-size: 12pt;
+        line-height: 1.4;
+    }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .preloader {
+        transition: none;
+    }
+    
+    .golf-ball,
+    .loading-progress,
+    .modal-icon,
+    .golf-decoration i,
+    .weather-icon,
+    .footer-status-dot {
+        animation: none;
+    }
+
+    .carousel-slide {
+        transition: none;
+    }
+
+    .carousel-slide img {
+        transition: none;
+    }
+
+    .slide-content {
+        transition: none;
+    }
+}
