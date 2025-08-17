@@ -391,7 +391,6 @@
     }
     </script>
 </head>
-
 <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -742,7 +741,7 @@
         </div>
     </section>
 
-    <!-- Enhanced Footer with Status Indicator -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">Carambola Golf Club</div>
@@ -783,16 +782,14 @@
             <div class="footer-contact">
                 <p>For inquiries regarding this website please contact:</p>
                 <p><a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a> | <a href="tel:+18053387680">+1-805-338-7680</a></p>
-                
-                <!-- Enhanced Footer Status Section -->
                 <div class="footer-status">
                     <p>Last system check: <span id="footer-last-check">Loading...</span></p>
                     <p>
                         <span id="footer-overall-status" class="footer-overall-status operational">All services operational</span>
-                        <span class="footer-status-indicator" aria-label="System status indicator">
+                        <a href="/status.html" class="footer-status-indicator" aria-label="View detailed system status">
                             <span class="footer-status-dot"></span>
                             <span class="footer-status-text">Live</span>
-                        </span>
+                        </a>
                     </p>
                 </div>
             </div>
@@ -807,39 +804,6 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
-    
-    <!-- Enhanced Footer Status Update Script -->
-    <script>
-        // Update footer status information
-        function updateFooterStatus() {
-            const footerLastCheck = document.getElementById('footer-last-check');
-            const footerOverallStatus = document.getElementById('footer-overall-status');
-            
-            if (footerLastCheck) {
-                const now = new Date();
-                footerLastCheck.textContent = now.toLocaleTimeString('en-US', {
-                    timeZone: 'America/St_Thomas',
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    timeZoneName: 'short'
-                });
-            }
-            
-            if (footerOverallStatus) {
-                // Set operational status
-                footerOverallStatus.textContent = 'All services operational';
-                footerOverallStatus.className = 'footer-overall-status operational';
-            }
-        }
-        
-        // Update footer status on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateFooterStatus();
-            
-            // Update footer status every 30 seconds
-            setInterval(updateFooterStatus, 30000);
-        });
-    </script>
     
     <!-- Weather Widget Script -->
     <script>
