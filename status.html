@@ -153,8 +153,10 @@
       </div>
     </section>
 
+    <!-- Mobile Navigation (Added by JavaScript on mobile) -->
+
     <!-- Key Metrics -->
-    <section class="status-section gray">
+    <section id="metrics" class="status-section gray">
       <div class="container">
         <div class="status-section-header">
           <h2 class="status-section-title">Performance Metrics</h2>
@@ -162,7 +164,7 @@
         
         <div class="metrics-grid">
           <!-- Uptime -->
-          <div class="metric-card">
+          <div class="metric-card" data-metric="uptime">
             <div id="uptime-value" class="metric-value">99.98%</div>
             <div class="metric-label">30-Day Uptime</div>
             <div id="uptime-trend" class="metric-trend">
@@ -172,7 +174,7 @@
           </div>
 
           <!-- Response Time -->
-          <div class="metric-card">
+          <div class="metric-card" data-metric="response-time">
             <div id="response-time-value" class="metric-value">247ms</div>
             <div class="metric-label">Avg Response Time</div>
             <div id="response-time-trend" class="metric-trend">
@@ -182,7 +184,7 @@
           </div>
 
           <!-- Page Speed -->
-          <div class="metric-card">
+          <div class="metric-card" data-metric="pagespeed">
             <div id="pagespeed-value" class="metric-value">94</div>
             <div class="metric-label">PageSpeed Score</div>
             <div id="pagespeed-trend" class="metric-trend">
@@ -192,7 +194,7 @@
           </div>
 
           <!-- Security Score -->
-          <div class="metric-card">
+          <div class="metric-card" data-metric="security">
             <div id="security-value" class="metric-value">A+</div>
             <div class="metric-label">Security Grade</div>
             <div class="metric-trend">
@@ -205,7 +207,7 @@
     </section>
 
     <!-- Service Status -->
-    <section class="status-section white">
+    <section id="services" class="status-section white">
       <div class="container">
         <div class="status-section-header">
           <h2 class="status-section-title">Golf Course Services Status</h2>
@@ -218,7 +220,7 @@
     </section>
 
     <!-- Performance Charts -->
-    <section class="status-section cream">
+    <section id="performance" class="status-section cream">
       <div class="container">
         <div class="status-section-header">
           <h2 class="status-section-title">Performance Overview</h2>
@@ -226,26 +228,26 @@
         
         <div class="charts-grid">
           <!-- Response Time Chart -->
-          <div class="chart-card">
+          <div class="chart-card" data-chart="response-time">
             <div class="chart-header">
               <h3>Response Time (24 Hours)</h3>
             </div>
             <div class="chart-body">
               <div class="chart-container">
-                <canvas id="response-time-chart"></canvas>
+                <canvas id="response-time-chart" aria-label="Response time chart showing performance over the last 24 hours"></canvas>
               </div>
               <p id="response-chart-summary" class="chart-summary">Average: Loading...</p>
             </div>
           </div>
 
           <!-- Uptime Chart -->
-          <div class="chart-card">
+          <div class="chart-card" data-chart="uptime">
             <div class="chart-header">
               <h3>Uptime (30 Days)</h3>
             </div>
             <div class="chart-body">
               <div class="chart-container">
-                <canvas id="uptime-chart"></canvas>
+                <canvas id="uptime-chart" aria-label="Uptime chart showing reliability over the last 30 days"></canvas>
               </div>
               <p id="uptime-chart-summary" class="chart-summary">Uptime: Loading...</p>
             </div>
@@ -257,7 +259,7 @@
           <div class="chart-header">
             <h3>Core Web Vitals</h3>
           </div>
-          <div id="core-web-vitals" class="web-vitals-grid">
+          <div id="core-web-vitals" class="web-vitals-grid" role="region" aria-label="Core Web Vitals performance metrics">
             <!-- Web vitals will be populated by JavaScript -->
           </div>
         </div>
@@ -265,20 +267,20 @@
     </section>
 
     <!-- Recent Activity -->
-    <section class="status-section white">
+    <section id="activity" class="status-section white">
       <div class="container">
         <div class="status-section-header">
           <h2 class="status-section-title">Recent System Activity</h2>
         </div>
         
-        <div id="activity-list" class="activity-feed">
+        <div id="activity-list" class="activity-feed" role="region" aria-label="Recent system activities and updates">
           <!-- Activity will be populated by JavaScript -->
         </div>
       </div>
     </section>
 
     <!-- Status Footer -->
-    <section class="status-section support-section">
+    <section id="support" class="status-section support-section">
       <div class="container">
         <div class="support-content">
           <h3 class="support-title">Need Technical Support?</h3>
@@ -293,11 +295,13 @@
               For website downtime, technical problems, or status page questions
             </p>
             <div class="support-contacts">
-              <a href="mailto:jaspervdz@me.com" class="support-contact">
+              <a href="mailto:jaspervdz@me.com" class="support-contact" 
+                 aria-label="Email technical support">
                 <i class="fas fa-envelope"></i>
                 jaspervdz@me.com
               </a>
-              <a href="tel:+18053387680" class="support-contact">
+              <a href="tel:+18053387680" class="support-contact"
+                 aria-label="Call technical support">
                 <i class="fas fa-phone"></i>
                 +1 (805) 338-7680
               </a>
@@ -308,11 +312,13 @@
           <div class="golf-services">
             <p>For golf course reservations, tee times, and inquiries about our championship course</p>
             <div class="golf-contacts">
-              <a href="tel:+13407785638" class="golf-contact">
+              <a href="tel:+13407785638" class="golf-contact"
+                 aria-label="Call Pro Shop for tee times">
                 <i class="fas fa-golf-ball"></i>
                 Pro Shop: +1-340-778-5638
               </a>
-              <a href="/contact.html" class="golf-contact secondary">
+              <a href="/contact.html" class="golf-contact secondary"
+                 aria-label="Visit contact form page">
                 <i class="fas fa-envelope"></i>
                 Contact Form
               </a>
@@ -322,6 +328,14 @@
       </div>
     </section>
   </main>
+
+  <!-- Enhanced ARIA Live Regions for Screen Reader Announcements -->
+  <div aria-live="polite" aria-atomic="true" class="sr-only" id="status-announcements"></div>
+  <div aria-live="assertive" aria-atomic="true" class="sr-only" id="status-alerts"></div>
+
+  <!-- Focus Management for Accessibility -->
+  <div class="focus-trap-start" tabindex="0"></div>
+  <div class="focus-trap-end" tabindex="0"></div>
 
   <!-- Footer -->
   <footer class="footer">
@@ -351,7 +365,7 @@
           <div class="footer-section">
             <h4>Information</h4>
             <ul>
-              <li><a href="/status.html">Website Status</a></li>
+              <li><a href="/status.html" aria-current="page">Website Status</a></li>
               <li><a href="/privacy-policy.html">Privacy Policy</a></li>
               <li><a href="/terms-of-service.html">Terms of Service</a></li>
               <li><a href="/accessibility.html">Accessibility</a></li>
@@ -363,10 +377,19 @@
       
       <div class="footer-contact">
         <p>For inquiries regarding this website please contact:</p>
-        <p><a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a> | <a href="tel:+18053387680">+1-805-338-7680</a></p>
+        <p>
+          <a href="mailto:jaspervdz@me.com" aria-label="Email website administrator">jaspervdz@me.com</a> | 
+          <a href="tel:+18053387680" aria-label="Call website administrator">+1-805-338-7680</a>
+        </p>
         <div class="footer-status">
           <p>Last system check: <span id="footer-last-check">Loading...</span></p>
-          <p><span id="footer-overall-status" class="footer-overall-status operational">All services operational</span></p>
+          <p>
+            <span id="footer-overall-status" class="footer-overall-status operational">All services operational</span>
+            <span class="footer-status-indicator" aria-label="System status indicator">
+              <span class="footer-status-dot"></span>
+              <span class="footer-status-text">Live</span>
+            </span>
+          </p>
         </div>
       </div>
     </div>
