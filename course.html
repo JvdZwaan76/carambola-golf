@@ -860,6 +860,154 @@
         </div>
     </section>
 
+    <!-- Score Card Section -->
+    <section class="score-card-section">
+        <div class="container">
+            <h2 class="section-title">Official Score Card</h2>
+            <div class="section-subtitle">Track your round on our championship course</div>
+            
+            <div class="score-card-container">
+                <div class="score-card-wrapper">
+                    <!-- Front Nine Card -->
+                    <div class="score-card-flip" id="frontNineCard" tabindex="0" role="button" aria-label="Front nine score card - click or press Enter to flip">
+                        <div class="score-card-inner">
+                            <div class="score-card-front">
+                                <div class="score-card-header">
+                                    <h3>Front Nine</h3>
+                                    <p>Holes 1-9</p>
+                                    <button class="flip-btn" aria-label="View back of front nine card">
+                                        <i class="fas fa-redo"></i>
+                                        <span>Flip Card</span>
+                                    </button>
+                                </div>
+                                <div class="score-card-image">
+                                    <picture>
+                                        <source srcset="/images/carambola-score-card-front.webp" type="image/webp">
+                                        <img src="/images/carambola-score-card-front.jpg" alt="Carambola Golf Club Score Card Front Nine" loading="lazy">
+                                    </picture>
+                                </div>
+                                <div class="score-card-info">
+                                    <div class="card-stats">
+                                        <div class="stat-item">
+                                            <span class="stat-value">36</span>
+                                            <span class="stat-label">Par</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-value">3,421</span>
+                                            <span class="stat-label">Championship Yards</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="score-card-back">
+                                <div class="score-card-header">
+                                    <h3>Course Information</h3>
+                                    <p>Front Nine Details</p>
+                                    <button class="flip-btn" aria-label="View front of front nine card">
+                                        <i class="fas fa-undo"></i>
+                                        <span>Flip Back</span>
+                                    </button>
+                                </div>
+                                <div class="score-card-image">
+                                    <picture>
+                                        <source srcset="/images/carambola-score-card-back.webp" type="image/webp">
+                                        <img src="/images/carambola-score-card-back.jpg" alt="Carambola Golf Club Score Card Information" loading="lazy">
+                                    </picture>
+                                </div>
+                                <div class="score-card-info">
+                                    <div class="card-features">
+                                        <div class="feature-item">
+                                            <i class="fas fa-map-marked-alt"></i>
+                                            <span>Course Layout & Yardages</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-info-circle"></i>
+                                            <span>Local Rules & Policies</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Back Nine Card -->
+                    <div class="score-card-flip" id="backNineCard" tabindex="0" role="button" aria-label="Back nine score card - click or press Enter to flip">
+                        <div class="score-card-inner">
+                            <div class="score-card-front">
+                                <div class="score-card-header">
+                                    <h3>Back Nine</h3>
+                                    <p>Holes 10-18</p>
+                                    <button class="flip-btn" aria-label="View back of back nine card">
+                                        <i class="fas fa-redo"></i>
+                                        <span>Flip Card</span>
+                                    </button>
+                                </div>
+                                <div class="score-card-image">
+                                    <picture>
+                                        <source srcset="/images/carambola-score-card-front.webp" type="image/webp">
+                                        <img src="/images/carambola-score-card-front.jpg" alt="Carambola Golf Club Score Card Back Nine" loading="lazy">
+                                    </picture>
+                                </div>
+                                <div class="score-card-info">
+                                    <div class="card-stats">
+                                        <div class="stat-item">
+                                            <span class="stat-value">36</span>
+                                            <span class="stat-label">Par</span>
+                                        </div>
+                                        <div class="stat-item">
+                                            <span class="stat-value">3,422</span>
+                                            <span class="stat-label">Championship Yards</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="score-card-back">
+                                <div class="score-card-header">
+                                    <h3>Course Policies</h3>
+                                    <p>Back Nine Details</p>
+                                    <button class="flip-btn" aria-label="View front of back nine card">
+                                        <i class="fas fa-undo"></i>
+                                        <span>Flip Back</span>
+                                    </button>
+                                </div>
+                                <div class="score-card-image">
+                                    <picture>
+                                        <source srcset="/images/carambola-score-card-back.webp" type="image/webp">
+                                        <img src="/images/carambola-score-card-back.jpg" alt="Carambola Golf Club Score Card Policies" loading="lazy">
+                                    </picture>
+                                </div>
+                                <div class="score-card-info">
+                                    <div class="card-features">
+                                        <div class="feature-item">
+                                            <i class="fas fa-stopwatch"></i>
+                                            <span>Pace of Play Guidelines</span>
+                                        </div>
+                                        <div class="feature-item">
+                                            <i class="fas fa-flag"></i>
+                                            <span>Pin Positions & Handicaps</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Download Section -->
+                <div class="score-card-download">
+                    <div class="download-content">
+                        <h4>Download Score Card</h4>
+                        <p>Get a printable version for your round</p>
+                        <button class="download-btn" onclick="window.print()">
+                            <i class="fas fa-download"></i>
+                            <span>Print Score Card</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Course CTA -->
     <section class="course-cta">
         <div class="container">
