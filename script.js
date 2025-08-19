@@ -466,7 +466,7 @@
                 });
             }
 
-            console.log('🏌️ Hole carousel initialized');
+            console.log('🌏 Hole carousel initialized');
         }
 
         setupEventListeners() {
@@ -665,15 +665,17 @@
         }
     }
 
-    // Enhanced preloader with progress tracking
+    // Enhanced preloader with progress tracking - CRITICAL MOBILE FIX
     class PreloaderManager {
         constructor() {
             this.preloader = document.getElementById('preloader');
             this.progress = document.querySelector('.loading-progress');
             this.loadingSteps = [];
             this.completedSteps = 0;
-            this.minimumShowTime = 1000; // Minimum time to show preloader
+            this.minimumShowTime = window.innerWidth <= 768 ? 800 : 1000; // Shorter on mobile
+            this.maximumShowTime = window.innerWidth <= 768 ? 5000 : 8000; // Max 5s on mobile, 8s desktop
             this.startTime = performance.now();
+            this.forceHideTimer = null;
         }
 
         addStep(name) {
@@ -710,6 +712,10 @@
         }
 
         hide() {
+            if (this.forceHideTimer) {
+                clearTimeout(this.forceHideTimer);
+            }
+            
             if (this.preloader) {
                 this.preloader.classList.add('hidden');
                 performanceMetrics.mark('preloader_hidden');
@@ -730,8 +736,16 @@
                     });
                 }
                 
-                console.log('Preloader force hidden');
+                console.log('Preloader hidden');
             }
+        }
+
+        init() {
+            // Force hide after maximum time regardless of completion
+            this.forceHideTimer = setTimeout(() => {
+                console.log('Preloader force timeout reached');
+                this.hide();
+            }, this.maximumShowTime);
         }
     }
 
@@ -1707,6 +1721,9 @@
         console.log('Starting initialization...');
         
         try {
+            // Initialize preloader with mobile optimizations
+            preloader.init();
+            
             // Register service worker
             const swResult = await registerServiceWorker();
             console.log('Service worker registration result:', swResult);
