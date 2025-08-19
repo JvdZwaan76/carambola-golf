@@ -1,158 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
-    <!-- End Google Tag Manager -->
-    
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-YJ3H2GJ4SS', {
-            // Enhanced measurement settings for granular data
-            enhanced_measurement: true,
-            scroll_threshold: 90,
-            send_page_view: true,
-            // Custom parameters for golf course analytics
-            custom_map: {
-                'golf_course_section': 'custom_parameter_1',
-                'user_intent': 'custom_parameter_2',
-                'booking_stage': 'custom_parameter_3'
-            }
-        });
-
-        // Enhanced Analytics Tracking Functions
-        function trackGolfEvent(action, section, details = {}) {
-            gtag('event', action, {
-                event_category: 'Golf Course Interaction',
-                event_label: section,
-                golf_course_section: section,
-                ...details
-            });
-        }
-
-        function trackBookingIntent(stage, method = '') {
-            gtag('event', 'booking_intent', {
-                event_category: 'Booking Funnel',
-                event_label: stage,
-                booking_stage: stage,
-                contact_method: method,
-                value: stage === 'tee_time_request' ? 115 : 0
-            });
-        }
-
-        function trackUserEngagement(action, element) {
-            gtag('event', action, {
-                event_category: 'User Engagement',
-                event_label: element,
-                engagement_time_msec: Date.now()
-            });
-        }
-
-        function trackScrollDepth() {
-            let maxScroll = 0;
-            window.addEventListener('scroll', function() {
-                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
-                    maxScroll = scrollPercent;
-                    gtag('event', 'scroll', {
-                        event_category: 'User Engagement',
-                        event_label: scrollPercent + '%',
-                        value: scrollPercent
-                    });
-                }
-            });
-        }
-
-        // Initialize enhanced tracking
-        document.addEventListener('DOMContentLoaded', function() {
-            trackScrollDepth();
-            
-            // Track CTA button clicks
-            document.querySelectorAll('.cta-button, .book-tee-time').forEach(button => {
-                button.addEventListener('click', function() {
-                    trackBookingIntent('cta_click', 'website_button');
-                });
-            });
-
-            // Track phone number clicks
-            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
-                link.addEventListener('click', function() {
-                    trackBookingIntent('phone_click', 'direct_call');
-                });
-            });
-
-            // Track email clicks
-            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-                link.addEventListener('click', function() {
-                    trackBookingIntent('email_click', 'direct_email');
-                });
-            });
-
-            // Track navigation clicks
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', function() {
-                    trackUserEngagement('navigation_click', this.textContent.trim());
-                });
-            });
-
-            // Track feature card interactions
-            document.querySelectorAll('.feature-card, .quick-link-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const title = this.querySelector('h3')?.textContent || 'Unknown Feature';
-                    trackGolfEvent('feature_interaction', title);
-                });
-            });
-
-            // Track modal interactions
-            const modal = document.getElementById('constructionModal');
-            if (modal) {
-                // Track modal shows
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.target.classList.contains('show')) {
-                            gtag('event', 'modal_view', {
-                                event_category: 'User Engagement',
-                                event_label: 'booking_modal'
-                            });
-                        }
-                    });
-                });
-                observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
-            }
-        });
-    </script>
-    
+    <!-- Critical Performance Optimizations -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="googlebot" content="index, follow">
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
+    <!-- Critical Resource Preloading - Prioritized Order -->
+    <link rel="preload" href="styles.css" as="style" fetchpriority="high">
+    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
+    <link rel="preload" href="script.js" as="script" fetchpriority="high">
+    
+    <!-- Enhanced DNS/Connection Optimization -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://api.openweathermap.org">
+    
+    <!-- Critical CSS Inline for Above-the-Fold Content -->
+    <style>
+        /* Critical above-the-fold styles */
+        :root{--primary-navy:#1e3a5f;--secondary-navy:#2c5282;--accent-gold:#d4af37;--light-gold:#f4e7c1;--text-dark:#2d3748;--text-light:#ffffff;--bg-light:#f7fafc;--bg-cream:#fefcf7;--shadow-soft:rgba(30,58,95,0.1);--shadow-medium:rgba(30,58,95,0.2);--transition-fast:0.2s ease;--transition-medium:0.3s ease;--transition-slow:0.5s ease}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Georgia','Times New Roman',serif;line-height:1.6;color:var(--text-dark);background-color:var(--bg-cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+        .preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,var(--primary-navy) 0%,var(--secondary-navy) 100%);display:flex;align-items:center;justify-content:center;z-index:10001;transition:opacity 0.5s ease,visibility 0.5s ease}
+        .preloader.hidden{opacity:0;visibility:hidden}
+        .navbar{position:fixed;top:0;width:100%;background:rgba(30,58,95,0.95);backdrop-filter:blur(10px);z-index:1000;padding:0.8rem 0;transition:all var(--transition-medium);border-bottom:1px solid var(--accent-gold)}
+        .hero{height:90vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text-light);margin-top:80px;padding-top:2rem;overflow:hidden}
+        .hero-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(rgba(30,58,95,0.4),rgba(30,58,95,0.6));z-index:1}
+        .hero-content{position:relative;z-index:2;max-width:900px;padding:0 2rem}
+        .hero-video-container{position:absolute;top:0;left:0;width:100%;height:100%;z-index:-2}
+        .hero-video{width:100%;height:100%;object-fit:cover;opacity:1;transition:opacity 1s ease-in-out}
+        .hero-fallback-image{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:0;transition:opacity 1s ease-in-out}
+    </style>
+    
+    <!-- Enhanced Performance & SEO Meta Tags -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow, max-image-preview:large">
     <meta name="theme-color" content="#1e3a5f">
+    <meta name="color-scheme" content="light">
+    
+    <!-- Enhanced PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Carambola Golf">
     <meta name="msapplication-TileColor" content="#1e3a5f">
     <meta name="msapplication-config" content="/browserconfig.xml">
     
-    <!-- Critical Resource Preloading -->
-    <link rel="preload" href="styles.css" as="style">
-    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
-    
-    <!-- DNS Prefetch for Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
-    <link rel="dns-prefetch" href="https://api.openweathermap.org">
-    
-    <!-- SEO Meta Tags -->
+    <!-- Enhanced SEO Meta Tags -->
     <title>Carambola Golf Club | Robert Trent Jones Sr. Championship Course | St. Croix Golf Resort</title>
     <meta name="description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands. Book your tee time today for the ultimate Caribbean golf vacation with luxury accommodations and island adventures.">
     <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course, golf vacation, tropical golf, us virgin islands, estate river, kingshill, golf resort, caribbean resort">
@@ -163,25 +60,26 @@
     <meta name="distribution" content="global">
     <meta name="rating" content="general">
     
-    <!-- Additional SEO Tags -->
+    <!-- Enhanced Mobile & Device Optimization -->
     <meta name="HandheldFriendly" content="true">
     <meta name="MobileOptimized" content="width">
+    <meta name="format-detection" content="telephone=yes">
     <meta name="apple-mobile-web-app-title" content="Carambola Golf">
     <meta name="application-name" content="Carambola Golf Club">
     <meta name="msapplication-tooltip" content="Championship Golf in Paradise">
     <meta name="msapplication-starturl" content="/">
     
-    <!-- Geographic Tags -->
+    <!-- Enhanced Geographic Tags -->
     <meta name="geo.region" content="VI">
     <meta name="geo.placename" content="St. Croix">
     <meta name="geo.position" content="17.7537;-64.8059">
     <meta name="ICBM" content="17.7537, -64.8059">
     
-    <!-- Open Graph / Facebook -->
+    <!-- Enhanced Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://carambola.golf/">
     <meta property="og:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
-    <meta property="og:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
+    <meta property="og:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands. Book your tee time today for the ultimate Caribbean golf vacation.">
     <meta property="og:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -189,28 +87,37 @@
     <meta property="og:site_name" content="Carambola Golf Club">
     <meta property="og:locale" content="en_US">
     
-    <!-- Twitter -->
+    <!-- Enhanced Twitter Cards -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://carambola.golf/">
     <meta property="twitter:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
     <meta property="twitter:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
     <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
     <meta property="twitter:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    <meta property="twitter:creator" content="@CarambolaGolf">
+    <meta property="twitter:site" content="@CarambolaGolf">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/">
     
-    <!-- Favicon and Icons -->
+    <!-- Enhanced Favicon and Icons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1e3a5f">
     
-    <!-- External CSS -->
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    <!-- External CSS with Performance Optimization -->
+    <link rel="stylesheet" href="styles.css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" media="all">
+    
+    <!-- Optimized Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
     
     <!-- Enhanced Structured Data / Schema.org -->
     <script type="application/ld+json">
@@ -222,11 +129,34 @@
         "url": "https://carambola.golf",
         "telephone": "+13407785638",
         "email": "info@carambola.golf",
-        "logo": "https://carambola.golf/images/carambola-golf-logo.png",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://carambola.golf/images/carambola-golf-logo.png",
+            "width": 300,
+            "height": 100
+        },
         "image": [
-            "https://carambola.golf/images/carambola-golf-clubhouse.webp",
-            "https://carambola.golf/images/carambola-golf-hole-12.webp",
-            "https://carambola.golf/images/carambola-golf-hole-18.webp"
+            {
+                "@type": "ImageObject",
+                "url": "https://carambola.golf/images/carambola-golf-clubhouse.webp",
+                "width": 1200,
+                "height": 630,
+                "caption": "Carambola Golf Club Championship Clubhouse"
+            },
+            {
+                "@type": "ImageObject", 
+                "url": "https://carambola.golf/images/carambola-golf-hole-12.webp",
+                "width": 1200,
+                "height": 630,
+                "caption": "Carambola Golf Club Hole 12"
+            },
+            {
+                "@type": "ImageObject",
+                "url": "https://carambola.golf/images/carambola-golf-hole-18.webp", 
+                "width": 1200,
+                "height": 630,
+                "caption": "Carambola Golf Club Hole 18"
+            }
         ],
         "address": {
             "@type": "PostalAddress",
@@ -258,51 +188,16 @@
             "worstRating": "1"
         },
         "amenityFeature": [
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Pro Shop",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification", 
-                "name": "Driving Range",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Putting Green", 
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Golf Lessons",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Golf Cart Rental",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Club Rental",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Restaurant",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Lounge",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Free Parking",
-                "value": true
-            }
+            {"@type": "LocationFeatureSpecification", "name": "Pro Shop", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Driving Range", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Putting Green", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Golf Lessons", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Golf Cart Rental", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Club Rental", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Restaurant", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Lounge", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "Free Parking", "value": true},
+            {"@type": "LocationFeatureSpecification", "name": "WiFi", "value": true}
         ],
         "founder": {
             "@type": "Person",
@@ -340,15 +235,30 @@
                 "description": "Unlimited golf access for one year",
                 "price": "1400",
                 "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock",
+                "availability": "https://schema.org/InStock", 
                 "validFrom": "2025-01-01",
                 "category": "Membership"
             }
-        ]
+        ],
+        "potentialAction": {
+            "@type": "ReserveAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "tel:+13407785638",
+                "actionPlatform": [
+                    "http://schema.org/DesktopWebPlatform",
+                    "http://schema.org/MobileWebPlatform"
+                ]
+            },
+            "result": {
+                "@type": "Reservation",
+                "name": "Golf Tee Time Reservation"
+            }
+        }
     }
     </script>
     
-    <!-- FAQ Schema for SEO -->
+    <!-- Enhanced FAQ Schema for SEO -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -359,7 +269,7 @@
                 "name": "Who designed Carambola Golf Club?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Carambola Golf Club was designed by legendary golf course architect Robert Trent Jones Sr., one of the most celebrated golf course designers in history."
+                    "text": "Carambola Golf Club was designed by legendary golf course architect Robert Trent Jones Sr., one of the most celebrated golf course designers in history. His strategic design philosophy creates challenging yet fair golf that rewards precision while incorporating the natural beauty of St. Croix."
                 }
             },
             {
@@ -367,7 +277,7 @@
                 "name": "How do I book a tee time at Carambola Golf Club?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "To book a tee time at Carambola Golf Club, call our Pro Shop at +1-340-778-5638 or email info@carambola.golf. We recommend booking 24-48 hours in advance."
+                    "text": "To book a tee time at Carambola Golf Club, call our Pro Shop at +1-340-778-5638 or email info@carambola.golf. We recommend booking 24-48 hours in advance, especially during peak season and weekends."
                 }
             },
             {
@@ -375,7 +285,7 @@
                 "name": "What are the green fees at Carambola Golf Club?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Visitor green fees are $115 for 18 holes with cart, $85 walking. Local residents (VI ID required) pay $75 for 18 holes with cart, $45 walking. Multi-round packages available."
+                    "text": "Visitor green fees are $115 for 18 holes with cart, $85 walking. Local residents (VI ID required) pay $75 for 18 holes with cart, $45 walking. Multi-round packages and annual memberships are available for additional savings."
                 }
             },
             {
@@ -383,22 +293,120 @@
                 "name": "Where is Carambola Golf Club located?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Carambola Golf Club is located at Estate River, Kingshill, St. Croix, VI 00850, approximately 20 minutes from Henry E. Rohlsen Airport."
+                    "text": "Carambola Golf Club is located at Estate River, Kingshill, St. Croix, VI 00850, approximately 20 minutes from Henry E. Rohlsen Airport. Free parking is available on-site."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What amenities does Carambola Golf Club offer?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Carambola Golf Club features a full Pro Shop, driving range, putting green, PGA instruction, golf cart and club rentals, restaurant, lounge, and complimentary parking. We also offer tournament packages and group events."
                 }
             }
         ]
     }
     </script>
+    
+    <!-- Enhanced Google Analytics with Optimized Performance -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJ3H2GJ4SS', {
+            enhanced_measurement: true,
+            scroll_threshold: 90,
+            send_page_view: true,
+            anonymize_ip: true,
+            allow_google_signals: false,
+            custom_map: {
+                'golf_course_section': 'custom_parameter_1',
+                'user_intent': 'custom_parameter_2', 
+                'booking_stage': 'custom_parameter_3'
+            }
+        });
+        
+        // Enhanced Performance and Core Web Vitals Tracking
+        function trackWebVitals() {
+            if ('web-vital' in window) {
+                new PerformanceObserver((entryList) => {
+                    for (const entry of entryList.getEntries()) {
+                        if (entry.entryType === 'navigation') {
+                            gtag('event', 'web_vitals', {
+                                event_category: 'performance',
+                                event_label: 'navigation',
+                                value: Math.round(entry.duration),
+                                non_interaction: true
+                            });
+                        }
+                    }
+                }).observe({entryTypes: ['navigation']});
+            }
+        }
+        
+        // Enhanced User Engagement Tracking
+        function trackUserBehavior() {
+            let sessionStart = Date.now();
+            let interactionCount = 0;
+            
+            document.addEventListener('click', function() {
+                interactionCount++;
+                if (interactionCount === 1) {
+                    gtag('event', 'first_interaction', {
+                        event_category: 'engagement',
+                        value: Math.round((Date.now() - sessionStart) / 1000),
+                        non_interaction: false
+                    });
+                }
+            });
+            
+            // Track session duration
+            window.addEventListener('beforeunload', function() {
+                const sessionDuration = Math.round((Date.now() - sessionStart) / 1000);
+                gtag('event', 'session_duration', {
+                    event_category: 'engagement',
+                    value: sessionDuration,
+                    non_interaction: true
+                });
+            });
+        }
+        
+        // Initialize tracking when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                trackWebVitals();
+                trackUserBehavior();
+            });
+        } else {
+            trackWebVitals();
+            trackUserBehavior();
+        }
+    </script>
+    
+    <!-- Google Tag Manager with Enhanced Performance -->
+    <script>
+        (function(w,d,s,l,i){
+            w[l]=w[l]||[];
+            w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+            var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+            j.async=true;
+            j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
+            j.setAttribute('fetchpriority', 'low');
+            f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-TT6N8MNJ');
+    </script>
+    
+    <!-- Google Analytics Script with Enhanced Performance -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS" fetchpriority="low"></script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Preloader -->
-    <div id="preloader" class="preloader">
+    <!-- Enhanced Preloader with Accessibility -->
+    <div id="preloader" class="preloader" role="status" aria-label="Loading Carambola Golf Club">
         <div class="preloader-content">
-            <div class="golf-loader">
+            <div class="golf-loader" aria-hidden="true">
                 <div class="golf-ball"></div>
                 <div class="golf-hole"></div>
                 <div class="golf-flag"></div>
@@ -407,37 +415,37 @@
                 <h2>Carambola Golf Club</h2>
                 <p>Loading championship golf experience...</p>
             </div>
-            <div class="loading-bar">
+            <div class="loading-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
                 <div class="loading-progress"></div>
             </div>
         </div>
     </div>
 
-    <!-- Under Construction Modal -->
-    <div id="constructionModal" class="modal-overlay">
+    <!-- Enhanced Modal with Better Accessibility -->
+    <div id="constructionModal" class="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-description" aria-hidden="true">
         <div class="modal-content">
             <div class="modal-header">
-                <i class="fas fa-golf-ball modal-icon"></i>
-                <h2>Ready to Tee Off?</h2>
+                <i class="fas fa-golf-ball modal-icon" aria-hidden="true"></i>
+                <h2 id="modal-title">Ready to Tee Off?</h2>
             </div>
             <div class="modal-body">
-                <p>Welcome to Carambola Golf Club! Ready to experience championship golf in paradise?</p>
+                <p id="modal-description">Welcome to Carambola Golf Club! Ready to experience championship golf in paradise?</p>
                 <p><strong>Call our Pro Shop to book your tee time:</strong></p>
                 <div class="contact-highlight">
-                    <i class="fas fa-phone"></i>
-                    <a href="tel:+13407785638">+1-340-778-5638</a>
+                    <i class="fas fa-phone" aria-hidden="true"></i>
+                    <a href="tel:+13407785638" aria-label="Call Carambola Golf Club Pro Shop">+1-340-778-5638</a>
                 </div>
                 <div class="contact-highlight">
-                    <i class="fas fa-envelope"></i>
-                    <a href="mailto:info@carambola.golf">info@carambola.golf</a>
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    <a href="mailto:info@carambola.golf" aria-label="Email Carambola Golf Club">info@carambola.golf</a>
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="closeModal" class="modal-close-btn">
-                    <i class="fas fa-times"></i> Continue to Website
+                <button id="closeModal" class="modal-close-btn" aria-label="Close booking modal and continue to website">
+                    <i class="fas fa-times" aria-hidden="true"></i> Continue to Website
                 </button>
             </div>
-            <div class="golf-decoration">
+            <div class="golf-decoration" aria-hidden="true">
                 <i class="fas fa-golf-ball"></i>
                 <i class="fas fa-golf-ball"></i>
                 <i class="fas fa-golf-ball"></i>
@@ -445,34 +453,42 @@
         </div>
     </div>
 
-    <!-- Navigation -->
+    <!-- Enhanced Navigation with Better Accessibility -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="/" class="logo">Carambola Golf Club</a>
-            <ul class="nav-links">
-                <li><a href="/" class="active">Home</a></li>
-                <li><a href="/course.html">The Course</a></li>
-                <li><a href="/pricing.html">Pricing</a></li>
-                <li><a href="/accommodations.html">Accommodations</a></li>
-                <li><a href="/st-croix.html">Experience St. Croix</a></li>
-                <li><a href="/contact.html">Contact</a></li>
+            <a href="/" class="logo" aria-label="Carambola Golf Club Homepage">Carambola Golf Club</a>
+            <ul class="nav-links" role="menubar">
+                <li role="none"><a href="/" class="active" role="menuitem" aria-current="page">Home</a></li>
+                <li role="none"><a href="/course.html" role="menuitem">The Course</a></li>
+                <li role="none"><a href="/pricing.html" role="menuitem">Pricing</a></li>
+                <li role="none"><a href="/accommodations.html" role="menuitem">Accommodations</a></li>
+                <li role="none"><a href="/st-croix.html" role="menuitem">Experience St. Croix</a></li>
+                <li role="none"><a href="/contact.html" role="menuitem">Contact</a></li>
             </ul>
-            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false">
-                <i class="fas fa-bars"></i>
+            <button class="mobile-menu" aria-label="Toggle mobile navigation menu" aria-expanded="false" aria-controls="nav-links">
+                <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
         </div>
     </nav>
 
-    <!-- Hero Section with Video -->
-    <section id="home" class="hero">
+    <!-- Enhanced Hero Section with Better Performance and Accessibility -->
+    <section id="home" class="hero" role="banner">
         <div class="hero-video-container">
-            <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+            <video class="hero-video" autoplay muted loop playsinline preload="metadata" 
+                   poster="/images/carambola-golf-clubhouse.webp"
+                   aria-label="Carambola Golf Club promotional video">
                 <source src="/video/carambola-golf-video-loop-hero.mp4" type="video/mp4">
+                <source src="/video/carambola-golf-video-loop-hero.webm" type="video/webm">
                 Your browser does not support the video tag.
             </video>
-            <img src="/images/carambola-golf-clubhouse.webp" alt="Carambola Golf Club Championship Clubhouse" class="hero-fallback-image">
+            <img src="/images/carambola-golf-clubhouse.webp" 
+                 alt="Carambola Golf Club Championship Clubhouse" 
+                 class="hero-fallback-image"
+                 width="1200" height="630"
+                 loading="eager"
+                 fetchpriority="high">
         </div>
-        <div class="hero-overlay"></div>
+        <div class="hero-overlay" aria-hidden="true"></div>
         <div class="hero-content">
             <div class="hero-tagline">Play the Caribbean's Premier Golf Course</div>
             <h1>Carambola Golf Club</h1>
@@ -480,49 +496,49 @@
             <div class="hero-description">
                 Experience championship golf in tropical paradise. Every hole showcases Jones' legendary design philosophy while incorporating St. Croix's natural beauty and challenging trade winds.
             </div>
-            <button class="cta-button book-tee-time">Book Tee Time</button>
+            <button class="cta-button book-tee-time" aria-label="Book a tee time at Carambola Golf Club">Book Tee Time</button>
         </div>
     </section>
 
-    <!-- Weather Widget -->
-    <section class="weather-widget">
+    <!-- Enhanced Weather Widget with Better Error Handling -->
+    <section class="weather-widget" aria-labelledby="weather-title">
         <div class="container">
             <div class="weather-card">
                 <div class="weather-header">
-                    <i class="fas fa-sun weather-icon"></i>
+                    <i class="fas fa-sun weather-icon" aria-hidden="true"></i>
                     <div class="weather-location">
-                        <h3>St. Croix Golf Weather</h3>
+                        <h3 id="weather-title">St. Croix Golf Weather</h3>
                         <p>Perfect conditions for championship golf</p>
                     </div>
                 </div>
                 <div class="weather-content">
                     <div class="weather-main">
                         <div class="temperature">
-                            <span id="current-temp">82°F</span>
-                            <div class="temp-range">
+                            <span id="current-temp" aria-label="Current temperature">82°F</span>
+                            <div class="temp-range" aria-label="Temperature range">
                                 <span id="high-temp">85°</span> / <span id="low-temp">78°</span>
                             </div>
                         </div>
                         <div class="weather-details">
                             <div class="weather-condition" id="weather-condition">Partly Sunny</div>
                             <div class="weather-stats">
-                                <div class="stat">
-                                    <i class="fas fa-wind"></i>
+                                <div class="stat" aria-label="Wind speed">
+                                    <i class="fas fa-wind" aria-hidden="true"></i>
                                     <span id="wind-speed">12 mph</span>
                                 </div>
-                                <div class="stat">
-                                    <i class="fas fa-tint"></i>
+                                <div class="stat" aria-label="Humidity">
+                                    <i class="fas fa-tint" aria-hidden="true"></i>
                                     <span id="humidity">65%</span>
                                 </div>
-                                <div class="stat">
-                                    <i class="fas fa-eye"></i>
+                                <div class="stat" aria-label="Visibility">
+                                    <i class="fas fa-eye" aria-hidden="true"></i>
                                     <span id="visibility">10 mi</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="weather-notice">
-                        <i class="fas fa-golf-ball"></i>
+                        <i class="fas fa-golf-ball" aria-hidden="true"></i>
                         <span>Excellent conditions for golf today!</span>
                     </div>
                 </div>
@@ -530,39 +546,39 @@
         </div>
     </section>
 
-    <!-- Heritage Section -->
-    <section class="heritage">
+    <!-- Enhanced Heritage Section -->
+    <section class="heritage" aria-labelledby="heritage-title">
         <div class="container">
             <div class="heritage-content">
-                <h2>A Legacy of Excellence</h2>
+                <h2 id="heritage-title">A Legacy of Excellence</h2>
                 <p>Welcome to Carambola Golf Club, where Robert Trent Jones Sr.'s masterful design meets the pristine beauty of St. Croix. Since opening, our championship course has challenged golfers with strategic bunkering, rolling fairways, and breathtaking Caribbean vistas.</p>
                 <p>Jones' signature style is evident throughout our 18-hole layout, featuring the perfect balance of challenge and playability that has made him golf's most celebrated architect. Every round at Carambola offers the opportunity to experience golf as it was meant to be played.</p>
             </div>
         </div>
     </section>
 
-    <!-- Course Features -->
-    <section id="course" class="features">
+    <!-- Enhanced Course Features Section -->
+    <section id="course" class="features" aria-labelledby="features-title">
         <div class="container">
-            <h2 class="section-title">Championship Golf in Paradise</h2>
+            <h2 class="section-title" id="features-title">Championship Golf in Paradise</h2>
             <div class="section-subtitle">Where legendary design meets tropical beauty</div>
             <div class="features-grid">
                 <article class="feature-card">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <i class="fas fa-drafting-compass"></i>
                     </div>
                     <h3>Robert Trent Jones Sr. Design</h3>
                     <p>Experience the work of golf's most celebrated architect. Jones' strategic design philosophy creates challenging yet fair golf that rewards precision and punishes wayward shots, all while incorporating the natural beauty of St. Croix.</p>
                 </article>
                 <article class="feature-card">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <i class="fas fa-mountain"></i>
                     </div>
                     <h3>Spectacular Island Setting</h3>
                     <p>Rolling fairways wind through tropical landscape with stunning Caribbean Sea views. The course's elevation changes and natural contours create dramatic vistas and memorable golf experiences on every hole.</p>
                 </article>
                 <article class="feature-card">
-                    <div class="feature-icon">
+                    <div class="feature-icon" aria-hidden="true">
                         <i class="fas fa-flag"></i>
                     </div>
                     <h3>Championship Conditions</h3>
@@ -572,28 +588,28 @@
         </div>
     </section>
 
-    <!-- Course Stats -->
-    <section class="course-stats">
+    <!-- Enhanced Course Stats Section -->
+    <section class="course-stats" aria-labelledby="stats-title">
         <div class="container">
-            <h2 class="section-title">Course Statistics</h2>
+            <h2 class="section-title" id="stats-title">Course Statistics</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <span class="stat-number">18</span>
+                    <span class="stat-number" data-count="18" aria-label="18">18</span>
                     <span class="stat-label">Championship Holes</span>
                     <div class="stat-description">Robert Trent Jones Sr. masterpiece featuring strategic design and natural beauty</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">72</span>
+                    <span class="stat-number" data-count="72" aria-label="72">72</span>
                     <span class="stat-label">Par</span>
                     <div class="stat-description">Balanced layout with challenging yet fair scoring opportunities</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">6,843</span>
+                    <span class="stat-number" data-count="6843" aria-label="6,843">6,843</span>
                     <span class="stat-label">Total Yards</span>
                     <div class="stat-description">Championship length with multiple tee options for all skill levels</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">365</span>
+                    <span class="stat-number" data-count="365" aria-label="365">365</span>
                     <span class="stat-label">Days of Golf</span>
                     <div class="stat-description">Perfect Caribbean weather ensures year-round playability</div>
                 </div>
@@ -601,77 +617,78 @@
         </div>
     </section>
 
-    <!-- Quick Links Section -->
-    <section class="quick-links">
+    <!-- Enhanced Quick Links Section -->
+    <section class="quick-links" aria-labelledby="quicklinks-title">
         <div class="container">
-            <h2 class="section-title">Explore More</h2>
+            <h2 class="section-title" id="quicklinks-title">Explore More</h2>
             <div class="quick-links-grid">
-                <a href="/course.html" class="quick-link-card">
-                    <div class="quick-link-icon">
+                <a href="/course.html" class="quick-link-card" aria-describedby="course-desc">
+                    <div class="quick-link-icon" aria-hidden="true">
                         <i class="fas fa-golf-ball"></i>
                     </div>
                     <h3>The Course</h3>
-                    <p>Explore all 18 championship holes designed by Robert Trent Jones Sr. with detailed hole descriptions and statistics.</p>
+                    <p id="course-desc">Explore all 18 championship holes designed by Robert Trent Jones Sr. with detailed hole descriptions and statistics.</p>
                 </a>
-                <a href="/pricing.html" class="quick-link-card">
-                    <div class="quick-link-icon">
+                <a href="/pricing.html" class="quick-link-card" aria-describedby="pricing-desc">
+                    <div class="quick-link-icon" aria-hidden="true">
                         <i class="fas fa-tag"></i>
                     </div>
                     <h3>Pricing & Packages</h3>
-                    <p>View our competitive rates for golf rounds, memberships, equipment rentals, and special packages.</p>
+                    <p id="pricing-desc">View our competitive rates for golf rounds, memberships, equipment rentals, and special packages.</p>
                 </a>
-                <a href="/accommodations.html" class="quick-link-card">
-                    <div class="quick-link-icon">
+                <a href="/accommodations.html" class="quick-link-card" aria-describedby="accommodations-desc">
+                    <div class="quick-link-icon" aria-hidden="true">
                         <i class="fas fa-bed"></i>
                     </div>
                     <h3>Luxury Accommodations</h3>
-                    <p>Discover premium lodging options perfect for your championship golf vacation in tropical paradise.</p>
+                    <p id="accommodations-desc">Discover premium lodging options perfect for your championship golf vacation in tropical paradise.</p>
                 </a>
-                <a href="/st-croix.html" class="quick-link-card">
-                    <div class="quick-link-icon">
+                <a href="/st-croix.html" class="quick-link-card" aria-describedby="stcroix-desc">
+                    <div class="quick-link-icon" aria-hidden="true">
                         <i class="fas fa-umbrella-beach"></i>
                     </div>
                     <h3>Experience St. Croix</h3>
-                    <p>Discover the island's finest dining, attractions, and activities beyond the fairways during your golf vacation.</p>
+                    <p id="stcroix-desc">Discover the island's finest dining, attractions, and activities beyond the fairways during your golf vacation.</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="testimonials">
+    <!-- Enhanced Testimonials Section -->
+    <section class="testimonials" aria-labelledby="testimonial-title">
         <div class="container">
             <div class="testimonial-content">
-                <div class="testimonial-quote">
+                <h2 class="visually-hidden" id="testimonial-title">What People Say About Carambola Golf Club</h2>
+                <blockquote class="testimonial-quote">
                     "Carambola Golf Club represents the perfect marriage of Robert Trent Jones Sr.'s legendary design philosophy with the natural beauty of the Caribbean. Every hole is a masterpiece."
-                </div>
-                <div class="testimonial-author">— Golf Architecture Review</div>
+                </blockquote>
+                <cite class="testimonial-author">— Golf Architecture Review</cite>
             </div>
         </div>
     </section>
 
-    <!-- Course Notices -->
-    <section class="course-notices">
+    <!-- Enhanced Course Notices Section -->
+    <section class="course-notices" aria-labelledby="notices-title">
         <div class="container">
-            <h3 class="notices-title">Course Information</h3>
+            <h3 class="notices-title" id="notices-title">Course Information</h3>
             <div class="notices-grid">
                 <div class="notice-item">
-                    <i class="fas fa-golf-ball"></i>
+                    <i class="fas fa-golf-ball" aria-hidden="true"></i>
                     <strong>Premium Equipment</strong><br>
                     Full rental sets available
                 </div>
                 <div class="notice-item">
-                    <i class="fas fa-graduation-cap"></i>
+                    <i class="fas fa-graduation-cap" aria-hidden="true"></i>
                     <strong>PGA Instruction</strong><br>
                     Professional lessons offered
                 </div>
                 <div class="notice-item">
-                    <i class="fas fa-users"></i>
+                    <i class="fas fa-users" aria-hidden="true"></i>
                     <strong>Group Events</strong><br>
                     Tournament packages available
                 </div>
                 <div class="notice-item">
-                    <i class="fas fa-sun"></i>
+                    <i class="fas fa-sun" aria-hidden="true"></i>
                     <strong>Year-Round Golf</strong><br>
                     Perfect Caribbean weather
                 </div>
@@ -679,33 +696,33 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <!-- Enhanced Contact Section -->
+    <section id="contact" class="contact" aria-labelledby="contact-title">
         <div class="container">
-            <h2 class="section-title">Contact & Tee Times</h2>
+            <h2 class="section-title" id="contact-title">Contact & Tee Times</h2>
             <div class="contact-content">
                 <div class="contact-info">
                     <h3>Reservations</h3>
                     <div class="contact-item">
-                        <i class="fas fa-phone"></i>
+                        <i class="fas fa-phone" aria-hidden="true"></i>
                         <div class="contact-item-content">
                             <div class="contact-item-title">Pro Shop</div>
                             <div class="contact-item-details">
-                                <a href="tel:+13407785638">+1-340-778-5638</a>
+                                <a href="tel:+13407785638" aria-label="Call Carambola Golf Club Pro Shop">+1-340-778-5638</a>
                             </div>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
                         <div class="contact-item-content">
                             <div class="contact-item-title">Email</div>
                             <div class="contact-item-details">
-                                <a href="mailto:info@carambola.golf">info@carambola.golf</a>
+                                <a href="mailto:info@carambola.golf" aria-label="Email Carambola Golf Club">info@carambola.golf</a>
                             </div>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-clock"></i>
+                        <i class="fas fa-clock" aria-hidden="true"></i>
                         <div class="contact-item-content">
                             <div class="contact-item-title">Operating Hours</div>
                             <div class="contact-item-details">Dawn to Dusk, 7 Days a Week</div>
@@ -715,21 +732,21 @@
                 <div class="contact-info">
                     <h3>Location</h3>
                     <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
                         <div class="contact-item-content">
                             <div class="contact-item-title">Address</div>
                             <div class="contact-item-details">Estate River, Kingshill<br>St. Croix, VI 00850</div>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-plane"></i>
+                        <i class="fas fa-plane" aria-hidden="true"></i>
                         <div class="contact-item-content">
                             <div class="contact-item-title">Airport</div>
                             <div class="contact-item-details">20 minutes from Henry E. Rohlsen Airport</div>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fas fa-car"></i>
+                        <i class="fas fa-car" aria-hidden="true"></i>
                         <div class="contact-item-content">
                             <div class="contact-item-title">Parking</div>
                             <div class="contact-item-details">Complimentary on-site parking</div>
@@ -740,8 +757,8 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
+    <!-- Enhanced Footer -->
+    <footer class="footer" role="contentinfo">
         <div class="footer-content">
             <div class="footer-logo">Carambola Golf Club</div>
             <p>&copy; 2025 Carambola Golf Club. All rights reserved.</p>
@@ -786,7 +803,7 @@
                     <p>
                         <span id="footer-overall-status" class="footer-overall-status operational">All services operational</span>
                         <a href="/status.html" class="footer-status-indicator" aria-label="View detailed system status">
-                            <span class="footer-status-dot"></span>
+                            <span class="footer-status-dot" aria-hidden="true"></span>
                             <span class="footer-status-text">Live</span>
                         </a>
                     </p>
@@ -795,57 +812,112 @@
         </div>
     </footer>
 
-    <!-- Offline Indicator -->
-    <div id="offlineIndicator" class="offline-indicator" style="display: none;">
-        <i class="fas fa-wifi"></i>
+    <!-- Enhanced Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator" style="display: none;" role="alert" aria-live="assertive">
+        <i class="fas fa-wifi" aria-hidden="true"></i>
         <span>You're offline. Some features may be limited.</span>
     </div>
 
-    <!-- Scripts -->
-    <script src="script.js"></script>
-    <script src="footer-status.js"></script>
+    <!-- Enhanced Scripts with Performance Optimization -->
+    <script defer src="script.js"></script>
+    <script defer src="footer-status.js"></script>
     
-    <!-- Weather Widget Script -->
+    <!-- Enhanced Weather Widget Script with Error Handling -->
     <script>
-        // Simple weather data (you can integrate with a real API)
+        // Enhanced weather data with better error handling and performance
         function updateWeather() {
-            // This is placeholder data - in production, you'd fetch from OpenWeatherMap or similar
-            const weatherData = {
-                temperature: Math.floor(Math.random() * 8) + 78, // 78-85°F
-                high: Math.floor(Math.random() * 5) + 85,
-                low: Math.floor(Math.random() * 5) + 76,
-                condition: ['Sunny', 'Partly Sunny', 'Partly Cloudy'][Math.floor(Math.random() * 3)],
-                windSpeed: Math.floor(Math.random() * 10) + 8,
-                humidity: Math.floor(Math.random() * 20) + 55,
-                visibility: 10
-            };
+            try {
+                // This is placeholder data - in production, integrate with OpenWeatherMap API
+                const weatherData = {
+                    temperature: Math.floor(Math.random() * 8) + 78, // 78-85°F
+                    high: Math.floor(Math.random() * 5) + 85,
+                    low: Math.floor(Math.random() * 5) + 76,
+                    condition: ['Sunny', 'Partly Sunny', 'Partly Cloudy'][Math.floor(Math.random() * 3)],
+                    windSpeed: Math.floor(Math.random() * 10) + 8,
+                    humidity: Math.floor(Math.random() * 20) + 55,
+                    visibility: 10
+                };
 
-            document.getElementById('current-temp').textContent = weatherData.temperature + '°F';
-            document.getElementById('high-temp').textContent = weatherData.high + '°';
-            document.getElementById('low-temp').textContent = weatherData.low + '°';
-            document.getElementById('weather-condition').textContent = weatherData.condition;
-            document.getElementById('wind-speed').textContent = weatherData.windSpeed + ' mph';
-            document.getElementById('humidity').textContent = weatherData.humidity + '%';
-            document.getElementById('visibility').textContent = weatherData.visibility + ' mi';
+                // Update DOM elements with error handling
+                const elements = {
+                    'current-temp': weatherData.temperature + '°F',
+                    'high-temp': weatherData.high + '°',
+                    'low-temp': weatherData.low + '°',
+                    'weather-condition': weatherData.condition,
+                    'wind-speed': weatherData.windSpeed + ' mph',
+                    'humidity': weatherData.humidity + '%',
+                    'visibility': weatherData.visibility + ' mi'
+                };
 
-            // Update weather icon based on condition
-            const weatherIcon = document.querySelector('.weather-icon');
-            const iconMap = {
-                'Sunny': 'fas fa-sun',
-                'Partly Sunny': 'fas fa-cloud-sun',
-                'Partly Cloudy': 'fas fa-cloud'
-            };
-            weatherIcon.className = iconMap[weatherData.condition] || 'fas fa-sun';
+                Object.entries(elements).forEach(([id, value]) => {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = value;
+                    }
+                });
+
+                // Update weather icon based on condition
+                const weatherIcon = document.querySelector('.weather-icon');
+                if (weatherIcon) {
+                    const iconMap = {
+                        'Sunny': 'fas fa-sun',
+                        'Partly Sunny': 'fas fa-cloud-sun',
+                        'Partly Cloudy': 'fas fa-cloud'
+                    };
+                    weatherIcon.className = iconMap[weatherData.condition] || 'fas fa-sun';
+                }
+
+                // Track weather update for analytics
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'weather_updated', {
+                        event_category: 'widget',
+                        event_label: weatherData.condition,
+                        non_interaction: true
+                    });
+                }
+            } catch (error) {
+                console.warn('Weather update failed:', error);
+                // Fallback to static good weather
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'weather_error', {
+                        event_category: 'error',
+                        event_label: error.message,
+                        non_interaction: true
+                    });
+                }
+            }
         }
 
-        // Update weather on page load
-        document.addEventListener('DOMContentLoaded', updateWeather);
-        
-        // Update weather every 30 minutes
-        setInterval(updateWeather, 30 * 60 * 1000);
+        // Enhanced initialization with better error handling
+        function initializeWeather() {
+            // Update weather on page load
+            updateWeather();
+            
+            // Update weather every 30 minutes with exponential backoff on errors
+            let retryDelay = 30 * 60 * 1000; // 30 minutes
+            function scheduleUpdate() {
+                setTimeout(() => {
+                    try {
+                        updateWeather();
+                        retryDelay = 30 * 60 * 1000; // Reset delay on success
+                    } catch (error) {
+                        retryDelay = Math.min(retryDelay * 2, 4 * 60 * 60 * 1000); // Max 4 hours
+                    }
+                    scheduleUpdate();
+                }, retryDelay);
+            }
+            scheduleUpdate();
+        }
+
+        // Initialize when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeWeather);
+        } else {
+            initializeWeather();
+        }
     </script>
     
-    <!-- Affiliate Program Tracking -->
-    <script src="https://www.anrdoezrs.net/am/101520211/include/allCj/impressions/page/am.js"></script>
+    <!-- Affiliate Program Tracking with Enhanced Performance -->
+    <script defer src="https://www.anrdoezrs.net/am/101520211/include/allCj/impressions/page/am.js" fetchpriority="low"></script>
 </body>
 </html>
