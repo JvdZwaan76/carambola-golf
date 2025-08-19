@@ -1,239 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-// MOBILE EMERGENCY FIX - Disable preloader on mobile completely
-(function() {
-    const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
+    <!-- End Google Tag Manager -->
     
-    if (isMobile) {
-        console.log('🚨 Mobile detected - disabling preloader');
-        
-        // Prevent any preloader from showing
-        window.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.preloader, .loader, #preloader, [class*="preload"]').forEach(el => {
-                el.remove(); // Completely remove from DOM
-            });
-            
-            // Force show all content immediately
-            document.body.style.visibility = 'visible';
-            document.body.style.opacity = '1';
-        });
-        
-        // Override problematic preloader functions
-        const originalSetTimeout = window.setTimeout;
-        window.setTimeout = function(callback, delay) {
-            const stack = new Error().stack;
-            if (stack && (stack.includes('preloader') || stack.includes('forceHide'))) {
-                console.log('🚫 Blocked mobile preloader setTimeout');
-                return;
-            }
-            return originalSetTimeout.apply(this, arguments);
-        };
-    }
-})();
-</script>
-    <script>
-// EMERGENCY: Prevent infinite reload
-let reloadCount = sessionStorage.getItem('reloadCount') || 0;
-if (reloadCount > 2) {
-    console.error('🚨 Reload loop detected - stopping all reloads');
-    window.location.reload = function() { 
-        console.warn('Reload blocked to prevent loop'); 
-    };
-} else {
-    sessionStorage.setItem('reloadCount', parseInt(reloadCount) + 1);
-}
-setTimeout(() => sessionStorage.removeItem('reloadCount'), 5000);
-</script>
-    <style>
-/* EMERGENCY LAYOUT FIX */
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f8f9fa; }
-.container, .main-container { max-width: 1200px; margin: 0 auto; padding: 20px; width: 100%; }
-main, .content { padding: 40px 20px; min-height: 50vh; }
-.grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-@media (min-width: 768px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-img { max-width: 100%; height: auto; }
-.card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-</style>
-    <!-- Critical Performance Optimizations -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Critical Resource Preloading - Prioritized Order -->
-    <link rel="preload" href="styles.css" as="style" fetchpriority="high">
-    <link rel="preload" href="/images/carambola-golf-course-hero-1.webp" as="image" fetchpriority="high">
-    <link rel="preload" href="script.js" as="script" fetchpriority="high">
-    
-    <!-- Enhanced DNS/Connection Optimization -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="preconnect" href="https://www.googletagmanager.com">
-    <link rel="preconnect" href="https://www.google-analytics.com">
-    
-    <!-- Critical CSS Inline for Above-the-Fold Content -->
-    <style>
-        /* Critical above-the-fold styles for course page */
-        :root{--primary-navy:#1e3a5f;--secondary-navy:#2c5282;--accent-gold:#d4af37;--light-gold:#f4e7c1;--text-dark:#2d3748;--text-light:#ffffff;--bg-light:#f7fafc;--bg-cream:#fefcf7;--shadow-soft:rgba(30,58,95,0.1);--shadow-medium:rgba(30,58,95,0.2);--transition-fast:0.2s ease;--transition-medium:0.3s ease;--transition-slow:0.5s ease}
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Georgia','Times New Roman',serif;line-height:1.6;color:var(--text-dark);background-color:var(--bg-cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
-        .navbar{position:fixed;top:0;width:100%;background:rgba(30,58,95,0.95);backdrop-filter:blur(10px);z-index:1000;padding:0.8rem 0;transition:all var(--transition-medium);border-bottom:1px solid var(--accent-gold)}
-        .course-hero-carousel{height:80vh;position:relative;margin-top:80px;overflow:hidden;background:var(--primary-navy)}
-        .carousel-slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transform:translateX(100%);transition:all 0.8s cubic-bezier(0.4,0,0.2,1);z-index:1}
-        .carousel-slide.active{opacity:1;transform:translateX(0);z-index:2}
-    </style>
-    
-    <!-- Enhanced Performance & SEO Meta Tags -->
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="googlebot" content="index, follow, max-image-preview:large">
-    <meta name="theme-color" content="#1e3a5f">
-    <meta name="color-scheme" content="light">
-    <meta name="format-detection" content="telephone=yes">
-    
-    <!-- Enhanced SEO Meta Tags -->
-    <title>Championship Golf Course | Robert Trent Jones Sr. Design | Carambola Golf Club</title>
-    <meta name="description" content="Explore Carambola Golf Club's championship 18-hole course designed by legendary architect Robert Trent Jones Sr. Detailed hole descriptions, course statistics, and stunning Caribbean golf course photography in St. Croix, US Virgin Islands.">
-    <meta name="keywords" content="carambola golf course, robert trent jones sr, st croix golf holes, championship golf course, caribbean golf design, golf course architect, virgin islands golf course, tropical golf, carambola hole guide">
-    <meta name="author" content="Carambola Golf Club">
-    <meta name="copyright" content="Carambola Golf Club">
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="7 days">
-    <meta name="distribution" content="global">
-    <meta name="rating" content="general">
-    
-    <!-- Enhanced Geographic Tags -->
-    <meta name="geo.region" content="VI">
-    <meta name="geo.placename" content="St. Croix">
-    <meta name="geo.position" content="17.7537;-64.8059">
-    <meta name="ICBM" content="17.7537, -64.8059">
-    
-    <!-- Enhanced Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Championship Golf Course | Robert Trent Jones Sr. Design">
-    <meta property="og:description" content="Explore Carambola Golf Club's championship 18-hole course designed by legendary architect Robert Trent Jones Sr. Every hole offers unique challenges and spectacular Caribbean views.">
-    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-course-hero-1.webp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Carambola Golf Club Championship Course Overview">
-    <meta property="og:url" content="https://carambola.golf/course.html">
-    <meta property="og:site_name" content="Carambola Golf Club">
-    <meta property="og:locale" content="en_US">
-    
-    <!-- Enhanced Twitter Cards -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://carambola.golf/course.html">
-    <meta property="twitter:title" content="Championship Golf Course | Robert Trent Jones Sr. Design">
-    <meta property="twitter:description" content="Explore Carambola Golf Club's championship 18-hole course designed by legendary architect Robert Trent Jones Sr.">
-    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-course-hero-1.webp">
-    <meta property="twitter:image:alt" content="Carambola Golf Club Championship Course Overview">
-    <meta property="twitter:creator" content="@CarambolaGolf">
-    <meta property="twitter:site" content="@CarambolaGolf">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://carambola.golf/course.html">
-    
-    <!-- Enhanced Favicon and Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
-    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1e3a5f">
-    
-    <!-- External CSS with Performance Optimization -->
-    <link rel="stylesheet" href="styles.css" media="all">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" media="all">
-    
-    <!-- Optimized Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
-    
-    <!-- Enhanced Preload for Course Hero Carousel Images -->
-    <link rel="preload" href="/images/carambola-golf-course-hero-2.webp" as="image" fetchpriority="low">
-    <link rel="preload" href="/images/carambola-golf-course-hero-3.webp" as="image" fetchpriority="low">
-    <link rel="preload" href="/images/carambola-golf-course-hero-4.webp" as="image" fetchpriority="low">
-    
-    <!-- Enhanced Schema for Golf Course -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "SportsActivityLocation",
-        "name": "Carambola Golf Club Championship Course",
-        "description": "Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands. Features strategic bunkering, dramatic elevation changes, and spectacular ocean views.",
-        "url": "https://carambola.golf/course.html",
-        "sportsActivity": "Golf",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Estate River, Kingshill",
-            "addressLocality": "St. Croix",
-            "addressRegion": "VI",
-            "postalCode": "00850",
-            "addressCountry": "US"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "17.7537",
-            "longitude": "-64.8059"
-        },
-        "architect": {
-            "@type": "Person",
-            "name": "Robert Trent Jones Sr.",
-            "description": "Legendary golf course architect"
-        },
-        "numberOfHoles": 18,
-        "courseRating": 73.2,
-        "slopeRating": 131,
-        "totalYardage": 6843,
-        "par": 72,
-        "hasMap": "https://maps.google.com/maps?q=Carambola+Golf+Club,+Estate+River,+Kingshill,+St.+Croix,+VI",
-        "image": [
-            "https://carambola.golf/images/carambola-golf-course-hero-1.webp",
-            "https://carambola.golf/images/carambola-golf-course-hero-2.webp",
-            "https://carambola.golf/images/carambola-golf-hole-12.webp"
-        ]
-    }
-    </script>
-    
-    <!-- Enhanced Course-Specific Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "How many holes does Carambola Golf Club have?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Carambola Golf Club features 18 championship holes designed by Robert Trent Jones Sr., with a total yardage of 6,843 yards from the championship tees and a par of 72."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What is the course rating and slope rating?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "The course has a USGA course rating of 73.2 and slope rating of 131 from the championship tees, indicating a challenging but fair test of golf for players of all skill levels."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What makes Carambola's course design special?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Robert Trent Jones Sr.'s design features strategic water hazards on 12 holes, over 200 feet of elevation change, dramatic ocean views, and championship bunkering that rewards precision while showcasing St. Croix's natural beauty."
-                }
-            }
-        ]
-    }
-    </script>
-    
-    <!-- Enhanced Google Analytics with Course-Specific Tracking -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -242,460 +15,274 @@ img { max-width: 100%; height: auto; }
             enhanced_measurement: true,
             scroll_threshold: 90,
             send_page_view: true,
-            anonymize_ip: true,
-            allow_google_signals: false,
-            page_title: 'Championship Golf Course | Robert Trent Jones Sr. Design',
-            page_location: window.location.href,
-            content_group1: 'Course Information',
             custom_map: {
-                'hole_number': 'custom_parameter_1',
-                'course_section': 'custom_parameter_2',
-                'design_feature': 'custom_parameter_3'
+                'golf_course_section': 'custom_parameter_1',
+                'user_intent': 'custom_parameter_2',
+                'booking_stage': 'custom_parameter_3'
             }
         });
 
-        // Enhanced Course page specific tracking
-        function trackHoleInteraction(holeNumber, holeName, action = 'view') {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'hole_interaction', {
-                    event_category: 'Course Navigation',
-                    event_label: `Hole ${holeNumber} - ${holeName}`,
-                    hole_number: holeNumber,
-                    hole_name: holeName,
-                    interaction_type: action,
-                    non_interaction: action === 'view'
-                });
-            }
+        function trackGolfEvent(action, section, details = {}) {
+            gtag('event', action, {
+                event_category: 'Golf Course Interaction',
+                event_label: section,
+                golf_course_section: section,
+                ...details
+            });
         }
 
-        function trackCarouselInteraction(slideIndex, action) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'hero_carousel_interaction', {
-                    event_category: 'Hero Carousel',
-                    event_label: action,
-                    slide_index: slideIndex,
-                    interaction_type: action,
-                    page_section: 'course_hero'
-                });
-            }
-        }
-
-        function trackCourseFeatureInterest(feature) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'course_feature_interest', {
-                    event_category: 'Course Features',
-                    event_label: feature,
-                    design_feature: feature,
-                    page_location: window.location.pathname
-                });
-            }
-        }
-
-        function trackHoleCarouselInteraction(holeNumber, action) {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'hole_carousel_interaction', {
-                    event_category: 'Hole Gallery',
-                    event_label: `Hole ${holeNumber}`,
-                    hole_number: holeNumber,
-                    interaction_type: action,
-                    page_section: 'hole_gallery'
-                });
-            }
-        }
-
-        // Enhanced initialization with better error handling
-        function initializeCourseTracking() {
-            try {
-                // Track hole card interactions with enhanced error handling
-                const holeCards = document.querySelectorAll('.hole-card');
-                holeCards.forEach((card, index) => {
-                    try {
-                        const holeNumber = card.querySelector('.hole-number')?.textContent || (index + 1);
-                        const holeName = card.querySelector('h4')?.textContent || 'Unknown';
-                        
-                        card.addEventListener('click', function() {
-                            trackHoleInteraction(holeNumber, holeName, 'click');
-                        });
-
-                        // Enhanced scroll tracking with Intersection Observer
-                        if ('IntersectionObserver' in window) {
-                            const observer = new IntersectionObserver((entries) => {
-                                entries.forEach(entry => {
-                                    if (entry.isIntersecting) {
-                                        trackHoleInteraction(holeNumber, holeName, 'view');
-                                        observer.unobserve(entry.target);
-                                    }
-                                });
-                            }, { 
-                                threshold: 0.5,
-                                rootMargin: '0px 0px -10% 0px'
-                            });
-                            
-                            observer.observe(card);
-                        }
-                    } catch (error) {
-                        console.warn('Error setting up hole card tracking:', error);
-                    }
-                });
-
-                // Enhanced course features tracking
-                const featureCards = document.querySelectorAll('.feature-card');
-                featureCards.forEach(card => {
-                    try {
-                        card.addEventListener('click', function() {
-                            const feature = this.querySelector('h3')?.textContent || 'Unknown Feature';
-                            trackCourseFeatureInterest(feature);
-                        });
-                    } catch (error) {
-                        console.warn('Error setting up feature tracking:', error);
-                    }
-                });
-
-                // Enhanced CTA tracking from course page
-                const ctaButtons = document.querySelectorAll('.cta-button, .book-tee-time');
-                ctaButtons.forEach(button => {
-                    try {
-                        button.addEventListener('click', function() {
-                            gtag('event', 'course_booking_intent', {
-                                event_category: 'Booking Funnel',
-                                event_label: 'course_page_cta',
-                                value: 115,
-                                currency: 'USD',
-                                page_section: 'course_page'
-                            });
-                        });
-                    } catch (error) {
-                        console.warn('Error setting up CTA tracking:', error);
-                    }
-                });
-
-                // Track course page performance
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'course_page_loaded', {
-                        event_category: 'page_performance',
-                        event_label: 'course_page',
-                        non_interaction: true
-                    });
-                }
-            } catch (error) {
-                console.error('Course tracking initialization failed:', error);
-            }
-        }
-
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeCourseTracking);
-        } else {
-            initializeCourseTracking();
+        function trackBookingIntent(stage, method = '') {
+            gtag('event', 'booking_intent', {
+                event_category: 'Booking Funnel',
+                event_label: stage,
+                booking_stage: stage,
+                contact_method: method,
+                value: stage === 'tee_time_request' ? 115 : 0
+            });
         }
     </script>
     
-    <!-- Google Tag Manager with Enhanced Performance -->
-    <script>
-        (function(w,d,s,l,i){
-            w[l]=w[l]||[];
-            w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-            var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-            j.async=true;
-            j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;
-            j.setAttribute('fetchpriority', 'low');
-            f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','GTM-TT6N8MNJ');
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
     
-    <!-- Google Analytics Script with Enhanced Performance -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS" fetchpriority="low"></script>
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1e3a5f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Carambola Golf">
+    
+    <!-- DNS Prefetch for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    
+    <!-- SEO Meta Tags -->
+    <title>The Course | Carambola Golf Club | Robert Trent Jones Sr. Championship Design</title>
+    <meta name="description" content="Explore all 18 championship holes at Carambola Golf Club, designed by legendary architect Robert Trent Jones Sr. Discover hole-by-hole details, course statistics, and what makes this St. Croix golf course one of the Caribbean's finest.">
+    <meta name="keywords" content="carambola golf course, robert trent jones sr holes, st croix golf holes, virgin islands golf course, caribbean golf course design, championship golf holes, golf course layout, golf course statistics">
+    <meta name="author" content="Carambola Golf Club">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carambola.golf/course.html">
+    <meta property="og:title" content="The Course | Carambola Golf Club | Robert Trent Jones Sr. Championship Design">
+    <meta property="og:description" content="Explore all 18 championship holes at Carambola Golf Club, designed by legendary architect Robert Trent Jones Sr.">
+    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-hole-18.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Carambola Golf Club">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carambola.golf/course.html">
+    <meta property="twitter:title" content="The Course | Carambola Golf Club | Robert Trent Jones Sr. Championship Design">
+    <meta property="twitter:description" content="Explore all 18 championship holes at Carambola Golf Club, designed by legendary architect Robert Trent Jones Sr.">
+    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-hole-18.webp">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://carambola.golf/course.html">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Enhanced Modal with Better Accessibility -->
-    <div id="constructionModal" class="modal-overlay" role="dialog" aria-labelledby="modal-title" aria-describedby="modal-description" aria-hidden="true">
-        <div class="modal-content">
-            <div class="modal-header">
-                <i class="fas fa-golf-ball modal-icon" aria-hidden="true"></i>
-                <h2 id="modal-title">Ready to Play Our Course?</h2>
-            </div>
-            <div class="modal-body">
-                <p id="modal-description">Experience Robert Trent Jones Sr.'s masterpiece! Ready to book your championship golf experience?</p>
-                <p><strong>Call our Pro Shop to reserve your tee time:</strong></p>
-                <div class="contact-highlight">
-                    <i class="fas fa-phone" aria-hidden="true"></i>
-                    <a href="tel:+13407785638" aria-label="Call Carambola Golf Club Pro Shop">+1-340-778-5638</a>
-                </div>
-                <div class="contact-highlight">
-                    <i class="fas fa-envelope" aria-hidden="true"></i>
-                    <a href="mailto:info@carambola.golf" aria-label="Email Carambola Golf Club">info@carambola.golf</a>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="closeModal" class="modal-close-btn" aria-label="Close booking modal and continue to course page">
-                    <i class="fas fa-times" aria-hidden="true"></i> Continue to Course
-                </button>
-            </div>
-            <div class="golf-decoration" aria-hidden="true">
-                <i class="fas fa-golf-ball"></i>
-                <i class="fas fa-golf-ball"></i>
-                <i class="fas fa-golf-ball"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- Enhanced Navigation with Better Accessibility -->
+    <!-- Navigation -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="/" class="logo" aria-label="Carambola Golf Club Homepage">Carambola Golf Club</a>
-            <ul class="nav-links" role="menubar">
-                <li role="none"><a href="/" role="menuitem">Home</a></li>
-                <li role="none"><a href="/course.html" class="active" role="menuitem" aria-current="page">The Course</a></li>
-                <li role="none"><a href="/pricing.html" role="menuitem">Pricing</a></li>
-                <li role="none"><a href="/accommodations.html" role="menuitem">Accommodations</a></li>
-                <li role="none"><a href="/st-croix.html" role="menuitem">Experience St. Croix</a></li>
-                <li role="none"><a href="/contact.html" role="menuitem">Contact</a></li>
+            <a href="/" class="logo">Carambola Golf Club</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/course.html" class="active">The Course</a></li>
+                <li><a href="/pricing.html">Pricing</a></li>
+                <li><a href="/accommodations.html">Accommodations</a></li>
+                <li><a href="/st-croix.html">Experience St. Croix</a></li>
+                <li><a href="/contact.html">Contact</a></li>
             </ul>
-            <button class="mobile-menu" aria-label="Toggle mobile navigation menu" aria-expanded="false" aria-controls="nav-links">
-                <i class="fas fa-bars" aria-hidden="true"></i>
+            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
 
-    <!-- Enhanced Course Hero Carousel -->
-    <section class="course-hero-carousel" role="banner" aria-label="Course hero slideshow">
+    <!-- Course Hero Carousel -->
+    <section class="course-hero-carousel">
         <div class="carousel-container">
             <div class="carousel-slides">
                 <div class="carousel-slide active">
-                    <picture>
-                        <source srcset="/images/carambola-golf-course-hero-1.webp" type="image/webp">
-                        <img src="/images/carambola-golf-course-hero-1.jpg" 
-                             alt="Carambola Golf Club Championship Course Overview" 
-                             loading="eager"
-                             fetchpriority="high"
-                             width="1200" height="630">
-                    </picture>
+                    <img src="/images/carambola-golf-hole-18.webp" alt="Carambola Golf Club Hole 18 - Signature finishing hole with dramatic Caribbean views">
                     <div class="slide-content">
-                        <h1>Championship Golf Course</h1>
-                        <p>Robert Trent Jones Sr. masterpiece in tropical paradise</p>
+                        <h1>A Robert Trent Jones Sr. Masterpiece</h1>
+                        <p>Carved from the natural contours of St. Croix's northwestern coastline, Carambola Golf Club stands as one of Robert Trent Jones Sr.'s most celebrated Caribbean designs. Each hole presents a unique challenge while showcasing the legendary architect's philosophy of strategic golf course design.</p>
                     </div>
                 </div>
                 <div class="carousel-slide">
-                    <picture>
-                        <source srcset="/images/carambola-golf-course-hero-2.webp" type="image/webp">
-                        <img src="/images/carambola-golf-course-hero-2.jpg" 
-                             alt="Carambola Golf Club Signature Hole with Ocean Views" 
-                             loading="lazy"
-                             width="1200" height="630">
-                    </picture>
+                    <img src="/images/carambola-golf-hole-12.webp" alt="Carambola Golf Club Hole 12 - Strategic par 4 with elevated tee shot">
                     <div class="slide-content">
-                        <h2>Spectacular Ocean Views</h2>
-                        <p>Every hole offers breathtaking Caribbean vistas</p>
+                        <h2>Strategic Design Philosophy</h2>
+                        <p>Jones' masterful routing takes advantage of the island's natural topography, creating dramatic elevation changes, strategic bunkering, and spectacular ocean vistas. The course rewards precise shot-making while offering multiple tee options to accommodate golfers of every skill level.</p>
                     </div>
                 </div>
                 <div class="carousel-slide">
-                    <picture>
-                        <source srcset="/images/carambola-golf-course-hero-3.webp" type="image/webp">
-                        <img src="/images/carambola-golf-course-hero-3.jpg" 
-                             alt="Carambola Golf Club Strategic Bunkering and Design" 
-                             loading="lazy"
-                             width="1200" height="630">
-                    </picture>
+                    <img src="/images/carambola-golf-hole-1.webp" alt="Carambola Golf Club Hole 1 - Opening tee shot through tropical landscape">
                     <div class="slide-content">
-                        <h2>Strategic Design</h2>
-                        <p>Jones' legendary philosophy challenges every level of golfer</p>
-                    </div>
-                </div>
-                <div class="carousel-slide">
-                    <picture>
-                        <source srcset="/images/carambola-golf-course-hero-4.webp" type="image/webp">
-                        <img src="/images/carambola-golf-course-hero-4.jpg" 
-                             alt="Carambola Golf Club Pristine Greens and Fairways" 
-                             loading="lazy"
-                             width="1200" height="630">
-                    </picture>
-                    <div class="slide-content">
-                        <h2>Championship Conditions</h2>
-                        <p>Pristine fairways and greens maintained to perfection</p>
+                        <h2>Championship Golf in Paradise</h2>
+                        <p>From the opening tee shot to the dramatic finish at the 18th green, every hole at Carambola showcases the perfect marriage of challenging golf and breathtaking natural beauty that defines Caribbean golf at its finest.</p>
                     </div>
                 </div>
             </div>
-            
-            <!-- Enhanced Carousel Navigation -->
             <div class="carousel-nav">
-                <button class="carousel-btn prev" aria-label="Previous slide" type="button">
-                    <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                <button class="carousel-btn carousel-prev" aria-label="Previous slide">
+                    <i class="fas fa-chevron-left"></i>
                 </button>
-                <button class="carousel-btn next" aria-label="Next slide" type="button">
-                    <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                <button class="carousel-btn carousel-next" aria-label="Next slide">
+                    <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-            
-            <!-- Enhanced Carousel Dots -->
-            <div class="carousel-dots" role="tablist" aria-label="Slideshow navigation">
-                <button class="carousel-dot active" data-slide="0" role="tab" aria-label="Go to slide 1" aria-selected="true"></button>
-                <button class="carousel-dot" data-slide="1" role="tab" aria-label="Go to slide 2" aria-selected="false"></button>
-                <button class="carousel-dot" data-slide="2" role="tab" aria-label="Go to slide 3" aria-selected="false"></button>
-                <button class="carousel-dot" data-slide="3" role="tab" aria-label="Go to slide 4" aria-selected="false"></button>
+            <div class="carousel-dots">
+                <button class="carousel-dot active" aria-label="Go to slide 1"></button>
+                <button class="carousel-dot" aria-label="Go to slide 2"></button>
+                <button class="carousel-dot" aria-label="Go to slide 3"></button>
             </div>
-            
-            <!-- Enhanced Carousel Progress Bar -->
-            <div class="carousel-progress" role="progressbar" aria-label="Slideshow progress">
+            <div class="carousel-progress">
                 <div class="carousel-progress-bar"></div>
             </div>
         </div>
     </section>
 
-    <!-- Enhanced Course Overview -->
-    <section class="course-overview" aria-labelledby="overview-title">
+    <!-- Course Overview -->
+    <section class="course-overview">
         <div class="container">
             <div class="course-overview-content">
-                <h2 id="overview-title">A Robert Trent Jones Sr. Masterpiece</h2>
-                <p>Carved from the natural contours of St. Croix's northwestern coastline, Carambola Golf Club stands as one of Robert Trent Jones Sr.'s most celebrated Caribbean designs. Each hole presents a unique challenge while showcasing the legendary architect's philosophy of strategic golf course design.</p>
-                <p>Jones' masterful routing takes advantage of the island's natural topography, creating dramatic elevation changes, strategic bunkering, and spectacular ocean vistas. The course rewards precise shot-making while offering multiple tee options to accommodate golfers of every skill level.</p>
+                <h2>Championship Course Design</h2>
+                <p>Robert Trent Jones Sr.'s design philosophy is evident throughout Carambola's 18-hole championship layout. The master architect crafted each hole to challenge golfers while rewarding strategic thinking and precise execution.</p>
+                <p>The course winds through a lush tropical valley, taking advantage of natural elevation changes and incorporating the island's trade winds as a strategic element. From elevated tees to well-protected greens, every aspect of the design reflects Jones' legendary attention to both challenge and beauty.</p>
             </div>
         </div>
     </section>
 
-    <!-- Enhanced Course Statistics -->
-    <section class="course-stats" aria-labelledby="stats-title">
+    <!-- Course Statistics -->
+    <section class="course-stats">
         <div class="container">
-            <h2 class="section-title" id="stats-title">Course Specifications</h2>
+            <h2 class="section-title">Course Statistics</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <span class="stat-number" data-count="18" aria-label="18">18</span>
+                    <span class="stat-number">18</span>
                     <span class="stat-label">Championship Holes</span>
-                    <div class="stat-description">Robert Trent Jones Sr. designed layout featuring strategic challenges and natural beauty</div>
+                    <div class="stat-description">Robert Trent Jones Sr. masterpiece featuring strategic design and natural beauty</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number" data-count="72" aria-label="72">72</span>
+                    <span class="stat-number">72</span>
                     <span class="stat-label">Par</span>
-                    <div class="stat-description">Well-balanced layout with four par 3s, ten par 4s, and four par 5s</div>
+                    <div class="stat-description">Balanced layout with challenging yet fair scoring opportunities</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number" data-count="6843" aria-label="6,843">6,843</span>
+                    <span class="stat-number">6,843</span>
                     <span class="stat-label">Total Yards</span>
-                    <div class="stat-description">Championship length with five tee options ranging from 5,100 to 6,843 yards</div>
+                    <div class="stat-description">Championship length with multiple tee options for all skill levels</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number" data-count="73.2" aria-label="73.2">73.2</span>
+                    <span class="stat-number">73.2</span>
                     <span class="stat-label">Course Rating</span>
-                    <div class="stat-description">USGA rating from championship tees with slope rating of 131</div>
+                    <div class="stat-description">Challenging yet fair rating that tests all aspects of your game</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Enhanced Course Features -->
-    <section class="features" aria-labelledby="features-title">
+    <!-- Course Features -->
+    <section class="features">
         <div class="container">
-            <h2 class="section-title" id="features-title">Design Excellence</h2>
-            <div class="section-subtitle">Jones' signature elements create an unforgettable golf experience</div>
+            <h2 class="section-title">Course Highlights</h2>
+            <div class="section-subtitle">Discover what makes Carambola exceptional</div>
             <div class="features-grid">
                 <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">
-                        <i class="fas fa-water"></i>
-                    </div>
-                    <h3>Strategic Water Features</h3>
-                    <p>Jones masterfully incorporated natural and artificial water hazards that come into play on twelve holes, requiring precise shot placement and strategic course management throughout your round.</p>
-                </article>
-                <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">
+                    <div class="feature-icon">
                         <i class="fas fa-mountain"></i>
                     </div>
                     <h3>Dramatic Elevation Changes</h3>
-                    <p>The course features over 200 feet of elevation change, creating spectacular vistas and challenging lies that test every club in your bag while providing unforgettable golf experiences.</p>
+                    <p>Experience the thrill of elevated tee shots and approach shots that play downhill to well-protected greens. The natural topography creates memorable golf moments on every hole.</p>
                 </article>
                 <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">
-                        <i class="fas fa-bullseye"></i>
+                    <div class="feature-icon">
+                        <i class="fas fa-eye"></i>
                     </div>
-                    <h3>Championship Bunkering</h3>
-                    <p>Strategically placed bunkers reward accuracy and penalize wayward shots. Jones' signature deep bunkers and waste areas require both skill and course management to navigate successfully.</p>
+                    <h3>Spectacular Caribbean Views</h3>
+                    <p>Multiple holes offer breathtaking vistas of the Caribbean Sea and St. Croix's pristine coastline, creating a visual experience as memorable as the golf itself.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chess-knight"></i>
+                    </div>
+                    <h3>Strategic Bunkering</h3>
+                    <p>Jones' signature strategic bunker placement rewards precise shot-making while providing multiple routes to the green for golfers of different skill levels.</p>
                 </article>
             </div>
         </div>
     </section>
 
-    <!-- Enhanced Hole Gallery -->
-    <section class="hole-gallery" aria-labelledby="gallery-title">
+    <!-- Hole Gallery -->
+    <section class="hole-gallery">
         <div class="container">
-            <h2 class="section-title" id="gallery-title">18 Holes of Championship Golf</h2>
+            <h2 class="section-title">Signature Holes</h2>
             <div class="gallery-intro">
-                <p>Each hole at Carambola tells a unique story of Jones' design genius, offering distinct challenges while maintaining the seamless flow that defines championship golf. From dramatic ocean views to strategic water crossings, every hole provides a memorable experience in tropical paradise.</p>
+                <p>Explore the most memorable holes at Carambola Golf Club, each showcasing Robert Trent Jones Sr.'s masterful design and the natural beauty of St. Croix.</p>
             </div>
             <div class="gallery-grid">
-                <!-- Enhanced Hole 1 - Special Carousel -->
+                <!-- Hole 1 with Special Carousel -->
                 <article class="hole-card hole-1-special">
-                    <div class="hole-image-carousel" id="hole1Carousel" role="region" aria-label="Hole 1 image gallery">
+                    <div class="hole-image-carousel">
                         <div class="hole-carousel-slides">
                             <div class="hole-carousel-slide active">
-                                <picture>
-                                    <source srcset="/images/carambola-golf-hole-1-1.webp" type="image/webp">
-                                    <img src="/images/carambola-golf-hole-1-1.jpg" 
-                                         alt="Carambola Golf Club Hole 1 - Tee View" 
-                                         loading="lazy"
-                                         width="400" height="200">
-                                </picture>
+                                <img src="/images/carambola-golf-hole-1.webp" alt="Carambola Golf Club Hole 1 tee shot">
                             </div>
                             <div class="hole-carousel-slide">
-                                <picture>
-                                    <source srcset="/images/carambola-golf-hole-1-2.webp" type="image/webp">
-                                    <img src="/images/carambola-golf-hole-1-2.jpg" 
-                                         alt="Carambola Golf Club Hole 1 - Fairway View" 
-                                         loading="lazy"
-                                         width="400" height="200">
-                                </picture>
+                                <img src="/images/carambola-golf-hole-1-green.webp" alt="Carambola Golf Club Hole 1 green approach">
                             </div>
                             <div class="hole-carousel-slide">
-                                <picture>
-                                    <source srcset="/images/carambola-golf-hole-1-3.webp" type="image/webp">
-                                    <img src="/images/carambola-golf-hole-1-3.jpg" 
-                                         alt="Carambola Golf Club Hole 1 - Approach View" 
-                                         loading="lazy"
-                                         width="400" height="200">
-                                </picture>
-                            </div>
-                            <div class="hole-carousel-slide">
-                                <picture>
-                                    <source srcset="/images/carambola-golf-hole-1-4.webp" type="image/webp">
-                                    <img src="/images/carambola-golf-hole-1-4.jpg" 
-                                         alt="Carambola Golf Club Hole 1 - Green View" 
-                                         loading="lazy"
-                                         width="400" height="200">
-                                </picture>
-                            </div>
-                            <div class="hole-carousel-slide">
-                                <picture>
-                                    <source srcset="/images/carambola-golf-hole-1-5.webp" type="image/webp">
-                                    <img src="/images/carambola-golf-hole-1-5.jpg" 
-                                         alt="Carambola Golf Club Hole 1 - Aerial View" 
-                                         loading="lazy"
-                                         width="400" height="200">
-                                </picture>
+                                <img src="/images/carambola-golf-hole-1-fairway.webp" alt="Carambola Golf Club Hole 1 fairway view">
                             </div>
                         </div>
-                        <div class="hole-number">1</div>
-                        <button class="hole-carousel-play-btn" aria-label="Play hole 1 image slideshow" type="button">
-                            <i class="fas fa-play" aria-hidden="true"></i>
+                        <button class="hole-carousel-play-btn" aria-label="Play hole carousel">
+                            <i class="fas fa-play"></i>
                         </button>
                         <div class="hole-carousel-nav">
-                            <button class="hole-carousel-btn prev" aria-label="Previous image" type="button">
-                                <i class="fas fa-chevron-left" aria-hidden="true"></i>
+                            <button class="hole-carousel-btn hole-carousel-prev" aria-label="Previous image">
+                                <i class="fas fa-chevron-left"></i>
                             </button>
-                            <button class="hole-carousel-btn next" aria-label="Next image" type="button">
-                                <i class="fas fa-chevron-right" aria-hidden="true"></i>
+                            <button class="hole-carousel-btn hole-carousel-next" aria-label="Next image">
+                                <i class="fas fa-chevron-right"></i>
                             </button>
                         </div>
-                        <div class="hole-carousel-dots" role="tablist" aria-label="Image navigation">
-                            <button class="hole-carousel-dot active" data-slide="0" role="tab" aria-label="View image 1" aria-selected="true"></button>
-                            <button class="hole-carousel-dot" data-slide="1" role="tab" aria-label="View image 2" aria-selected="false"></button>
-                            <button class="hole-carousel-dot" data-slide="2" role="tab" aria-label="View image 3" aria-selected="false"></button>
-                            <button class="hole-carousel-dot" data-slide="3" role="tab" aria-label="View image 4" aria-selected="false"></button>
-                            <button class="hole-carousel-dot" data-slide="4" role="tab" aria-label="View image 5" aria-selected="false"></button>
+                        <div class="hole-carousel-dots">
+                            <button class="hole-carousel-dot active" aria-label="View image 1"></button>
+                            <button class="hole-carousel-dot" aria-label="View image 2"></button>
+                            <button class="hole-carousel-dot" aria-label="View image 3"></button>
                         </div>
                     </div>
+                    <div class="hole-number">1</div>
                     <div class="hole-info">
                         <h4>Opening Statement</h4>
-                        <div class="hole-description">A welcoming par 4 that eases players into the round while introducing Jones' strategic design philosophy. The fairway bunkers demand accuracy from the tee, while the elevated green rewards precise approach shots.</div>
+                        <p class="hole-description">A welcoming yet strategic opener that sets the tone for your round. The elevated tee provides stunning views while demanding accuracy off the tee to position for the approach to a well-protected green.</p>
                         <div class="hole-stats">
                             <div class="hole-stat">
                                 <span class="hole-stat-value">4</span>
@@ -706,21 +293,20 @@ img { max-width: 100%; height: auto; }
                                 <span class="hole-stat-label">Yards</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">15</span>
+                                <span class="hole-stat-value">10</span>
                                 <span class="hole-stat-label">Handicap</span>
                             </div>
                         </div>
                     </div>
                 </article>
 
-                <!-- Enhanced Hole 2 through 18 with better performance -->
+                <!-- Hole 12 -->
                 <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-2.webp')" role="img" aria-label="Carambola Golf Club Hole 2">
-                        <div class="hole-number">2</div>
-                    </div>
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-12.webp');"></div>
+                    <div class="hole-number">12</div>
                     <div class="hole-info">
-                        <h4>Precision Required</h4>
-                        <div class="hole-description">A demanding par 3 that requires accurate club selection. The green is protected by strategic bunkering and natural hazards, rewarding those who commit to their shot.</div>
+                        <h4>The Signature Hole</h4>
+                        <p class="hole-description">Carambola's most photographed hole features a dramatic elevated tee shot over a tropical valley to a green perched on the hillside. The Caribbean Sea provides a stunning backdrop for this unforgettable par 3.</p>
                         <div class="hole-stats">
                             <div class="hole-stat">
                                 <span class="hole-stat-value">3</span>
@@ -731,198 +317,51 @@ img { max-width: 100%; height: auto; }
                                 <span class="hole-stat-label">Yards</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">11</span>
+                                <span class="hole-stat-value">7</span>
                                 <span class="hole-stat-label">Handicap</span>
                             </div>
                         </div>
                     </div>
                 </article>
 
-                <!-- Continue with all 18 holes following the same enhanced pattern... -->
-                <!-- For brevity, I'll include a few more key holes to show the pattern -->
-
+                <!-- Hole 18 -->
                 <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-3.webp')" role="img" aria-label="Carambola Golf Club Hole 3">
-                        <div class="hole-number">3</div>
-                    </div>
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-18.webp');"></div>
+                    <div class="hole-number">18</div>
                     <div class="hole-info">
-                        <h4>Strategic Placement</h4>
-                        <div class="hole-description">This par 4 rewards strategic thinking. Players must decide between playing safe to the left or challenging the water hazard on the right for a better approach angle.</div>
+                        <h4>Dramatic Finish</h4>
+                        <p class="hole-description">A fitting finale to your round, this challenging par 4 demands both power and precision. The approach shot to the green, with the clubhouse and Caribbean beyond, creates a memorable conclusion to your Carambola experience.</p>
                         <div class="hole-stats">
                             <div class="hole-stat">
                                 <span class="hole-stat-value">4</span>
                                 <span class="hole-stat-label">Par</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">425</span>
+                                <span class="hole-stat-value">428</span>
                                 <span class="hole-stat-label">Yards</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">9</span>
+                                <span class="hole-stat-value">1</span>
                                 <span class="hole-stat-label">Handicap</span>
                             </div>
                         </div>
                     </div>
                 </article>
 
+                <!-- Additional Signature Holes -->
                 <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-4.webp')" role="img" aria-label="Carambola Golf Club Hole 4">
-                        <div class="hole-number">4</div>
-                    </div>
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-5.webp');"></div>
+                    <div class="hole-number">5</div>
                     <div class="hole-info">
-                        <h4>Elevation Challenge</h4>
-                        <div class="hole-description">A dramatic downhill par 5 offering multiple route options. The brave can try to reach the green in two, while the wise will lay up and enjoy the spectacular vista.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">542</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">13</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-5.webp')" role="img" aria-label="Carambola Golf Club Hole 5">
-                        <div class="hole-number">5</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Coastal Beauty</h4>
-                        <div class="hole-description">A medium-length par 4 running parallel to the coastline. The ever-present trade winds add complexity to club selection while ocean views provide stunning distraction.</div>
+                        <h4>Risk and Reward</h4>
+                        <p class="hole-description">This medium-length par 4 offers multiple strategic options. Aggressive players can challenge the corner to shorten the approach, while conservative play ensures a manageable angle to the green.</p>
                         <div class="hole-stats">
                             <div class="hole-stat">
                                 <span class="hole-stat-value">4</span>
                                 <span class="hole-stat-label">Par</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">368</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">18</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-6.webp')" role="img" aria-label="Carambola Golf Club Hole 6">
-                        <div class="hole-number">6</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Water Crossing</h4>
-                        <div class="hole-description">Jones' strategic use of water creates drama on this par 3. The carry over the lagoon is manageable, but precision is key to avoid the collection areas beyond the green.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">3</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">165</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">16</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-7.webp')" role="img" aria-label="Carambola Golf Club Hole 7">
-                        <div class="hole-number">7</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Ocean Vista</h4>
-                        <div class="hole-description">A challenging par 5 that showcases the natural beauty of St. Croix's coastline. Multiple strategic options reward course management while punishing aggressive play.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">578</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-8.webp')" role="img" aria-label="Carambola Golf Club Hole 8">
-                        <div class="hole-number">8</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Technical Precision</h4>
-                        <div class="hole-description">This par 4 demands technical precision from tee to green. The narrow fairway and well-protected green separate the skilled from the hopeful.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">445</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-9.webp')" role="img" aria-label="Carambola Golf Club Hole 9">
-                        <div class="hole-number">9</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Turn Toward Home</h4>
-                        <div class="hole-description">The final hole of the front nine provides a stern test. This uphill par 4 challenges every aspect of your game before the turn toward the clubhouse.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">412</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">8</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-10.webp')" role="img" aria-label="Carambola Golf Club Hole 10">
-                        <div class="hole-number">10</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Back Nine Begins</h4>
-                        <div class="hole-description">Starting the inward journey with a reachable par 5. Strategic bunkering and water hazards create risk-reward opportunities for every level of player.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">5</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">515</span>
+                                <span class="hole-stat-value">385</span>
                                 <span class="hole-stat-label">Yards</span>
                             </div>
                             <div class="hole-stat">
@@ -934,71 +373,22 @@ img { max-width: 100%; height: auto; }
                 </article>
 
                 <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-11.webp')" role="img" aria-label="Carambola Golf Club Hole 11">
-                        <div class="hole-number">11</div>
-                    </div>
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-8.webp');"></div>
+                    <div class="hole-number">8</div>
                     <div class="hole-info">
-                        <h4>Island Character</h4>
-                        <div class="hole-description">This par 4 embodies the essence of Caribbean golf. Native vegetation and natural contours frame a hole that rewards both power and finesse.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">385</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">14</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-12.webp')" role="img" aria-label="Carambola Golf Club Signature Hole 12">
-                        <div class="hole-number">12</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Signature Challenge</h4>
-                        <div class="hole-description">The course's signature hole offers breathtaking ocean views and a dramatic water carry. This par 3 exemplifies Jones' ability to create memorable golf holes that challenge players while showcasing natural beauty.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">3</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">187</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">3</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-13.webp')" role="img" aria-label="Carambola Golf Club Hole 13">
-                        <div class="hole-number">13</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Power and Placement</h4>
-                        <div class="hole-description">A long par 5 that demands both power and strategic placement. Multiple tee options accommodate all skill levels while maintaining the design integrity Jones intended.</div>
+                        <h4>Valley Challenge</h4>
+                        <p class="hole-description">A demanding par 5 that winds through the natural valley terrain. Length and accuracy are both essential to navigate the strategic bunkering and reach the green in regulation.</p>
                         <div class="hole-stats">
                             <div class="hole-stat">
                                 <span class="hole-stat-value">5</span>
                                 <span class="hole-stat-label">Par</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">612</span>
+                                <span class="hole-stat-value">542</span>
                                 <span class="hole-stat-label">Yards</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">2</span>
+                                <span class="hole-stat-value">3</span>
                                 <span class="hole-stat-label">Handicap</span>
                             </div>
                         </div>
@@ -1006,119 +396,22 @@ img { max-width: 100%; height: auto; }
                 </article>
 
                 <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-14.webp')" role="img" aria-label="Carambola Golf Club Hole 14">
-                        <div class="hole-number">14</div>
-                    </div>
+                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-15.webp');"></div>
+                    <div class="hole-number">15</div>
                     <div class="hole-info">
-                        <h4>Risk and Reward</h4>
-                        <div class="hole-description">Jones' genius shines in this risk-reward par 4. Players can choose the conservative route or challenge the water hazard for a shorter approach to the green.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">421</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">7</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-15.webp')" role="img" aria-label="Carambola Golf Club Hole 15">
-                        <div class="hole-number">15</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Natural Amphitheater</h4>
-                        <div class="hole-description">Nestled in a natural amphitheater, this par 4 provides drama and beauty in equal measure. The elevated tee shot reveals strategic options that unfold throughout the hole.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">396</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">10</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-16.webp')" role="img" aria-label="Carambola Golf Club Hole 16">
-                        <div class="hole-number">16</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Tropical Paradise</h4>
-                        <div class="hole-description">A picturesque par 3 surrounded by lush tropical vegetation. Precise club selection is crucial as the green is well-protected by strategic bunkering and natural hazards.</div>
+                        <h4>Ocean Views</h4>
+                        <p class="hole-description">This scenic par 3 showcases the best of Carambola's natural setting. With the Caribbean Sea as your backdrop, club selection becomes critical as trade winds add an extra element of challenge.</p>
                         <div class="hole-stats">
                             <div class="hole-stat">
                                 <span class="hole-stat-value">3</span>
                                 <span class="hole-stat-label">Par</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">156</span>
+                                <span class="hole-stat-value">165</span>
                                 <span class="hole-stat-label">Yards</span>
                             </div>
                             <div class="hole-stat">
-                                <span class="hole-stat-value">17</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-17.webp')" role="img" aria-label="Carambola Golf Club Hole 17">
-                        <div class="hole-number">17</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Championship Test</h4>
-                        <div class="hole-description">The penultimate hole provides a stern examination. This demanding par 4 requires precision and nerve as players prepare for the closing hole with championship implications.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">458</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">6</span>
-                                <span class="hole-stat-label">Handicap</span>
-                            </div>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="hole-card">
-                    <div class="hole-image" style="background-image: url('/images/carambola-golf-hole-18.webp')" role="img" aria-label="Carambola Golf Club Hole 18">
-                        <div class="hole-number">18</div>
-                    </div>
-                    <div class="hole-info">
-                        <h4>Grand Finale</h4>
-                        <div class="hole-description">A spectacular finishing hole that returns players to the clubhouse with unforgettable memories. Strategic bunkering and water hazards create a thrilling conclusion to your round in paradise.</div>
-                        <div class="hole-stats">
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">4</span>
-                                <span class="hole-stat-label">Par</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">437</span>
-                                <span class="hole-stat-label">Yards</span>
-                            </div>
-                            <div class="hole-stat">
-                                <span class="hole-stat-value">1</span>
+                                <span class="hole-stat-value">15</span>
                                 <span class="hole-stat-label">Handicap</span>
                             </div>
                         </div>
@@ -1128,144 +421,71 @@ img { max-width: 100%; height: auto; }
         </div>
     </section>
 
-    <!-- Enhanced Score Card Section -->
-    <section class="score-card-section" aria-labelledby="scorecard-title">
-        <div class="container">
-            <h2 class="section-title" id="scorecard-title">Official Score Card</h2>
-            <div class="section-subtitle">Track your round on our championship course</div>
+    <!-- Score Card Section -->
+    <section class="score-card-section">
+        <div class="container score-card-container">
+            <h2 class="section-title">Official Score Cards</h2>
+            <div class="section-subtitle">Complete hole-by-hole information and course statistics</div>
             
-            <div class="score-card-container">
-                <div class="score-card-wrapper">
-                    <!-- Enhanced Front Nine Card -->
-                    <div class="score-card-flip" id="frontNineCard" tabindex="0" role="button" aria-label="Front nine score card - click or press Enter to flip">
-                        <div class="score-card-inner">
-                            <div class="score-card-front">
-                                <div class="score-card-header">
-                                    <h3>Front Nine</h3>
-                                    <p>Holes 1-9</p>
-                                    <button class="flip-btn" aria-label="View back of front nine card" type="button">
-                                        <i class="fas fa-redo" aria-hidden="true"></i>
-                                        <span>Flip Card</span>
-                                    </button>
-                                </div>
-                                <div class="score-card-image">
-                                    <picture>
-                                        <source srcset="/images/carambola-score-card-front.webp" type="image/webp">
-                                        <img src="/images/carambola-score-card-front.jpg" 
-                                             alt="Carambola Golf Club Score Card Front Nine" 
-                                             loading="lazy"
-                                             width="400" height="300">
-                                    </picture>
-                                </div>
-                                <div class="score-card-info">
-                                    <div class="card-stats">
-                                        <div class="stat-item">
-                                            <span class="stat-value">36</span>
-                                            <span class="stat-label">Par</span>
-                                        </div>
-                                        <div class="stat-item">
-                                            <span class="stat-value">3,421</span>
-                                            <span class="stat-label">Championship Yards</span>
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="score-card-wrapper">
+                <!-- Front Nine Score Card -->
+                <div class="score-card-flip" tabindex="0" role="button" aria-label="Flip card to view back nine details">
+                    <div class="score-card-inner">
+                        <div class="score-card-front">
+                            <div class="score-card-header">
+                                <h3>Front Nine</h3>
+                                <p>Holes 1-9 | Par 36</p>
+                                <button class="flip-btn" aria-label="Flip to view details">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span>Details</span>
+                                </button>
                             </div>
-                            <div class="score-card-back">
-                                <div class="score-card-header">
-                                    <h3>Course Information</h3>
-                                    <p>Front Nine Details</p>
-                                    <button class="flip-btn" aria-label="View front of front nine card" type="button">
-                                        <i class="fas fa-undo" aria-hidden="true"></i>
-                                        <span>Flip Back</span>
-                                    </button>
-                                </div>
-                                <div class="score-card-image">
-                                    <picture>
-                                        <source srcset="/images/carambola-score-card-back.webp" type="image/webp">
-                                        <img src="/images/carambola-score-card-back.jpg" 
-                                             alt="Carambola Golf Club Score Card Information" 
-                                             loading="lazy"
-                                             width="400" height="300">
-                                    </picture>
-                                </div>
-                                <div class="score-card-info">
-                                    <div class="card-features">
-                                        <div class="feature-item">
-                                            <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
-                                            <span>Course Layout & Yardages</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-info-circle" aria-hidden="true"></i>
-                                            <span>Local Rules & Policies</span>
-                                        </div>
+                            <div class="score-card-image">
+                                <img src="/images/carambola-golf-scorecard-front.webp" alt="Carambola Golf Club Front Nine Score Card" loading="lazy">
+                            </div>
+                            <div class="score-card-info">
+                                <div class="card-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-value">36</span>
+                                        <span class="stat-label">Par</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">3,421</span>
+                                        <span class="stat-label">Yards</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">36.8</span>
+                                        <span class="stat-label">Rating</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Enhanced Back Nine Card -->
-                    <div class="score-card-flip" id="backNineCard" tabindex="0" role="button" aria-label="Back nine score card - click or press Enter to flip">
-                        <div class="score-card-inner">
-                            <div class="score-card-front">
-                                <div class="score-card-header">
-                                    <h3>Back Nine</h3>
-                                    <p>Holes 10-18</p>
-                                    <button class="flip-btn" aria-label="View back of back nine card" type="button">
-                                        <i class="fas fa-redo" aria-hidden="true"></i>
-                                        <span>Flip Card</span>
-                                    </button>
-                                </div>
-                                <div class="score-card-image">
-                                    <picture>
-                                        <source srcset="/images/carambola-score-card-front.webp" type="image/webp">
-                                        <img src="/images/carambola-score-card-front.jpg" 
-                                             alt="Carambola Golf Club Score Card Back Nine" 
-                                             loading="lazy"
-                                             width="400" height="300">
-                                    </picture>
-                                </div>
-                                <div class="score-card-info">
-                                    <div class="card-stats">
-                                        <div class="stat-item">
-                                            <span class="stat-value">36</span>
-                                            <span class="stat-label">Par</span>
-                                        </div>
-                                        <div class="stat-item">
-                                            <span class="stat-value">3,422</span>
-                                            <span class="stat-label">Championship Yards</span>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="score-card-back">
+                            <div class="score-card-header">
+                                <h3>Front Nine Features</h3>
+                                <p>Strategic challenges and memorable holes</p>
                             </div>
-                            <div class="score-card-back">
-                                <div class="score-card-header">
-                                    <h3>Course Policies</h3>
-                                    <p>Back Nine Details</p>
-                                    <button class="flip-btn" aria-label="View front of back nine card" type="button">
-                                        <i class="fas fa-undo" aria-hidden="true"></i>
-                                        <span>Flip Back</span>
-                                    </button>
-                                </div>
-                                <div class="score-card-image">
-                                    <picture>
-                                        <source srcset="/images/carambola-score-card-back.webp" type="image/webp">
-                                        <img src="/images/carambola-score-card-back.jpg" 
-                                             alt="Carambola Golf Club Score Card Policies" 
-                                             loading="lazy"
-                                             width="400" height="300">
-                                    </picture>
-                                </div>
-                                <div class="score-card-info">
-                                    <div class="card-features">
-                                        <div class="feature-item">
-                                            <i class="fas fa-stopwatch" aria-hidden="true"></i>
-                                            <span>Pace of Play Guidelines</span>
-                                        </div>
-                                        <div class="feature-item">
-                                            <i class="fas fa-flag" aria-hidden="true"></i>
-                                            <span>Pin Positions & Handicaps</span>
-                                        </div>
+                            <div class="score-card-info">
+                                <div class="card-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-flag"></i>
+                                        <span>Signature opening hole with elevated tee</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-water"></i>
+                                        <span>Strategic water hazards on holes 3 and 7</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-mountain"></i>
+                                        <span>Dramatic elevation changes throughout</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-eye"></i>
+                                        <span>Panoramic Caribbean views from hole 6</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-chess-knight"></i>
+                                        <span>Classic Jones strategic bunkering</span>
                                     </div>
                                 </div>
                             </div>
@@ -1273,34 +493,100 @@ img { max-width: 100%; height: auto; }
                     </div>
                 </div>
 
-                <!-- Enhanced Download Section -->
-                <div class="score-card-download">
-                    <div class="download-content">
-                        <h4>Download Score Card</h4>
-                        <p>Get a printable version for your round</p>
-                        <button class="download-btn" onclick="window.print()" aria-label="Print score card">
-                            <i class="fas fa-download" aria-hidden="true"></i>
-                            <span>Print Score Card</span>
-                        </button>
+                <!-- Back Nine Score Card -->
+                <div class="score-card-flip" tabindex="0" role="button" aria-label="Flip card to view back nine details">
+                    <div class="score-card-inner">
+                        <div class="score-card-front">
+                            <div class="score-card-header">
+                                <h3>Back Nine</h3>
+                                <p>Holes 10-18 | Par 36</p>
+                                <button class="flip-btn" aria-label="Flip to view details">
+                                    <i class="fas fa-sync-alt"></i>
+                                    <span>Details</span>
+                                </button>
+                            </div>
+                            <div class="score-card-image">
+                                <img src="/images/carambola-golf-scorecard-back.webp" alt="Carambola Golf Club Back Nine Score Card" loading="lazy">
+                            </div>
+                            <div class="score-card-info">
+                                <div class="card-stats">
+                                    <div class="stat-item">
+                                        <span class="stat-value">36</span>
+                                        <span class="stat-label">Par</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">3,422</span>
+                                        <span class="stat-label">Yards</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <span class="stat-value">36.4</span>
+                                        <span class="stat-label">Rating</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="score-card-back">
+                            <div class="score-card-header">
+                                <h3>Back Nine Highlights</h3>
+                                <p>Championship finishing holes</p>
+                            </div>
+                            <div class="score-card-info">
+                                <div class="card-features">
+                                    <div class="feature-item">
+                                        <i class="fas fa-camera"></i>
+                                        <span>Famous signature hole 12 with ocean views</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-wind"></i>
+                                        <span>Trade winds add strategic complexity</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-bullseye"></i>
+                                        <span>Demanding par 3s at holes 12 and 15</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-trophy"></i>
+                                        <span>Championship finishing stretch 16-18</span>
+                                    </div>
+                                    <div class="feature-item">
+                                        <i class="fas fa-home"></i>
+                                        <span>Dramatic 18th with clubhouse backdrop</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Download Section -->
+            <div class="score-card-download">
+                <div class="download-content">
+                    <h4>Download Official Score Cards</h4>
+                    <p>Get the complete scorecard with detailed hole information, yardages, and course tips</p>
+                    <button class="download-btn" onclick="trackGolfEvent('scorecard_download', 'course_page')">
+                        <i class="fas fa-download"></i>
+                        Download PDF Scorecard
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Enhanced Course CTA -->
-    <section class="course-cta" aria-labelledby="cta-title">
-        <div class="container">
-            <div class="cta-content">
-                <h2 id="cta-title">Experience Championship Golf</h2>
-                <p>Book your tee time and discover why Carambola is considered one of the Caribbean's finest golf courses.</p>
-                <button class="cta-button book-tee-time" aria-label="Reserve your golf round at Carambola">Reserve Your Round</button>
+    <!-- Course CTA -->
+    <section class="course-cta">
+        <div class="cta-content">
+            <h2>Ready to Experience Championship Golf?</h2>
+            <p>Book your tee time at Carambola Golf Club and discover why Robert Trent Jones Sr. considered this one of his finest designs. Every round offers the perfect blend of challenge and beauty in a tropical paradise setting.</p>
+            <div class="cta-buttons">
+                <button class="cta-button primary book-tee-time" onclick="trackBookingIntent('cta_click', 'course_page')">Book Tee Time</button>
+                <a href="/pricing.html" class="cta-button secondary">View Pricing</a>
             </div>
         </div>
     </section>
 
-    <!-- Enhanced Footer -->
-    <footer class="footer" role="contentinfo">
+    <!-- Footer -->
+    <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">Carambola Golf Club</div>
             <p>&copy; 2025 Carambola Golf Club. All rights reserved.</p>
@@ -1345,7 +631,7 @@ img { max-width: 100%; height: auto; }
                     <p>
                         <span id="footer-overall-status" class="footer-overall-status operational">All services operational</span>
                         <a href="/status.html" class="footer-status-indicator" aria-label="View detailed system status">
-                            <span class="footer-status-dot" aria-hidden="true"></span>
+                            <span class="footer-status-dot"></span>
                             <span class="footer-status-text">Live</span>
                         </a>
                     </p>
@@ -1354,11 +640,124 @@ img { max-width: 100%; height: auto; }
         </div>
     </footer>
 
-    <!-- Enhanced Scripts with Performance Optimization -->
-    <script defer src="script.js"></script>
-    <script defer src="footer-status.js"></script>
-    
-    <!-- Affiliate Program Tracking with Enhanced Performance -->
-    <script defer src="https://www.anrdoezrs.net/am/101520211/include/allCj/impressions/page/am.js" fetchpriority="low"></script>
+    <!-- Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi"></i>
+        <span>You're offline. Some features may be limited.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="footer-status.js"></script>
+
+    <!-- Enterprise Safety Script -->
+    <script>
+    // ENTERPRISE SAFETY SCRIPT - Minimal intervention
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🏢 Enterprise safety script loaded for course page');
+        
+        // Safety timeout for preloader (10 seconds max)
+        setTimeout(function() {
+            const preloader = document.querySelector('.preloader, #preloader');
+            if (preloader && getComputedStyle(preloader).display !== 'none') {
+                console.log('⚡ Safety: Preloader timeout reached');
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }
+        }, 10000);
+        
+        // Prevent multiple rapid navigations
+        let navigationBlocked = false;
+        const originalPushState = history.pushState;
+        const originalReplaceState = history.replaceState;
+        
+        history.pushState = function() {
+            if (navigationBlocked) return;
+            navigationBlocked = true;
+            setTimeout(() => navigationBlocked = false, 1000);
+            return originalPushState.apply(this, arguments);
+        };
+        
+        history.replaceState = function() {
+            if (navigationBlocked) return;
+            navigationBlocked = true;
+            setTimeout(() => navigationBlocked = false, 1000);
+            return originalReplaceState.apply(this, arguments);
+        };
+
+        // Initialize course page specific functionality
+        initializeCourseCarousels();
+        initializeScoreCards();
+        initializeCourseAnalytics();
+    });
+
+    // Course-specific carousel initialization
+    function initializeCourseCarousels() {
+        // Hero carousel functionality will be handled by script.js
+        console.log('🎠 Course carousels initialized');
+    }
+
+    // Score card flip functionality
+    function initializeScoreCards() {
+        const scoreCards = document.querySelectorAll('.score-card-flip');
+        scoreCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (e.target.closest('.flip-btn') || e.target.closest('.score-card-flip')) {
+                    this.classList.toggle('flipped');
+                    trackGolfEvent('scorecard_flip', 'course_page');
+                }
+            });
+
+            card.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.classList.toggle('flipped');
+                    trackGolfEvent('scorecard_flip', 'course_page');
+                }
+            });
+        });
+    }
+
+    // Enhanced course page analytics
+    function initializeCourseAnalytics() {
+        // Track course page engagement
+        gtag('event', 'page_view', {
+            event_category: 'Course Page',
+            event_label: 'course_details_view'
+        });
+
+        // Track scroll depth on course page
+        let maxScroll = 0;
+        window.addEventListener('scroll', function() {
+            const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+            if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                maxScroll = scrollPercent;
+                gtag('event', 'scroll', {
+                    event_category: 'Course Page Engagement',
+                    event_label: scrollPercent + '%',
+                    value: scrollPercent
+                });
+            }
+        });
+
+        // Track hole card interactions
+        document.querySelectorAll('.hole-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const holeNumber = this.querySelector('.hole-number')?.textContent || 'Unknown';
+                trackGolfEvent('hole_card_click', `hole_${holeNumber}`);
+            });
+        });
+
+        // Track CTA button clicks
+        document.querySelectorAll('.book-tee-time').forEach(button => {
+            button.addEventListener('click', function() {
+                trackBookingIntent('tee_time_request', 'course_page_cta');
+            });
+        });
+
+        console.log('📊 Course page analytics initialized');
+    }
+    </script>
 </body>
 </html>
