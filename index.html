@@ -1,54 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script>
-// SIMPLE PRELOADER TIMEOUT - Only fix, no breaking changes
-document.addEventListener('DOMContentLoaded', function() {
-    // Set a maximum preloader time of 10 seconds
-    setTimeout(function() {
-        const preloader = document.getElementById('preloader');
-        if (preloader && getComputedStyle(preloader).display !== 'none') {
-            console.log('⏰ Preloader timeout - force hiding after 10 seconds');
-            preloader.classList.add('hidden');
-            
-            // Extra safety - remove after animation
-            setTimeout(() => {
-                if (preloader && preloader.parentNode) {
-                    preloader.style.display = 'none';
-                }
-            }, 1000);
-        }
-    }, 10000);
-    
-    // Also fix any stuck modal
-    setTimeout(function() {
-        const modal = document.getElementById('constructionModal');
-        if (modal && modal.classList.contains('show')) {
-            console.log('⏰ Modal timeout - auto-hiding');
-            modal.classList.remove('show');
-        }
-    }, 15000);
-});
-</script>
-    <style>
-/* CLEAN MOBILE VIEWPORT FIX */
-@media screen and (max-width: 768px) {
-    body {
-        overflow-x: hidden;
-        -webkit-font-smoothing: antialiased;
-    }
-    
-    .hero {
-        height: auto;
-        min-height: 80vh;
-    }
-    
-    .container {
-        max-width: 100%;
-        overflow-x: hidden;
-    }
-}
-</style>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
@@ -636,7 +588,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="stat-description">Balanced layout with challenging yet fair scoring opportunities</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">6,843</span>
+                    <span class="stat-number">7,181</span>
                     <span class="stat-label">Total Yards</span>
                     <div class="stat-description">Championship length with multiple tee options for all skill levels</div>
                 </div>
@@ -852,6 +804,45 @@ document.addEventListener('DOMContentLoaded', function() {
     <!-- Scripts -->
     <script src="script.js"></script>
     <script src="footer-status.js"></script>
+    
+    <!-- Mobile Preloader Safety Script -->
+    <script>
+    // Enhanced mobile preloader safety - prevents hanging on mobile devices
+    document.addEventListener('DOMContentLoaded', function() {
+        const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const maxTimeout = isMobile ? 3000 : 6000; // Shorter timeout on mobile
+        
+        console.log('📱 Mobile preloader safety initialized', { isMobile, maxTimeout });
+        
+        // Force hide preloader after timeout
+        setTimeout(function() {
+            const preloader = document.querySelector('#preloader, .preloader');
+            if (preloader) {
+                console.log('🚨 Safety timeout: Force hiding preloader');
+                preloader.style.transition = 'opacity 0.3s ease';
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                
+                setTimeout(() => {
+                    if (preloader.parentNode) {
+                        preloader.parentNode.removeChild(preloader);
+                    }
+                }, 300);
+            }
+        }, maxTimeout);
+        
+        // Additional mobile safety - ultra-short timeout
+        if (isMobile) {
+            setTimeout(function() {
+                const preloader = document.querySelector('#preloader, .preloader');
+                if (preloader) {
+                    console.log('📱 Ultra safety: Removing preloader completely');
+                    preloader.remove();
+                }
+            }, 5000);
+        }
+    });
+    </script>
     
     <!-- Weather Widget Script -->
     <script>
