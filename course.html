@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+// EMERGENCY: Prevent infinite reload
+let reloadCount = sessionStorage.getItem('reloadCount') || 0;
+if (reloadCount > 2) {
+    console.error('🚨 Reload loop detected - stopping all reloads');
+    window.location.reload = function() { 
+        console.warn('Reload blocked to prevent loop'); 
+    };
+} else {
+    sessionStorage.setItem('reloadCount', parseInt(reloadCount) + 1);
+}
+setTimeout(() => sessionStorage.removeItem('reloadCount'), 5000);
+</script>
     <style>
 /* EMERGENCY LAYOUT FIX */
 * { box-sizing: border-box; margin: 0; padding: 0; }
