@@ -1,4 +1,5 @@
-// Carambola Golf Club JavaScript - Enhanced Performance Version with Video Hero, Carousel and Mobile Navigation
+// Carambola Golf Club JavaScript - Enhanced Performance Version with Complete Course Page Functionality
+// All optimizations and features included for production deployment
 (function() {
     'use strict';
 
@@ -142,6 +143,478 @@
             </div>
         `;
         document.body.appendChild(notification);
+    }
+
+    // Course Page Manager for enhanced course page functionality
+    class CoursePageManager {
+        constructor() {
+            this.isCoursePage = window.location.pathname.includes('course.html');
+            if (this.isCoursePage) {
+                this.init();
+            }
+        }
+
+        init() {
+            this.setupHoleCardInteractions();
+            this.setupHoleStatistics();
+            this.setupCourseNavigation();
+            this.setupLazyLoadingOptimizations();
+            this.trackCoursePageMetrics();
+            console.log('🏌️ Course page manager initialized');
+        }
+
+        setupHoleCardInteractions() {
+            document.querySelectorAll('.hole-card').forEach((card, index) => {
+                // Enhanced hover effects for hole cards
+                card.addEventListener('mouseenter', () => {
+                    this.highlightHoleCard(card, index);
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    this.unhighlightHoleCard(card);
+                });
+
+                // Click tracking for hole cards
+                card.addEventListener('click', () => {
+                    this.trackHoleCardClick(card, index);
+                });
+
+                // Keyboard navigation for hole cards
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.showHoleDetails(card, index);
+                    }
+                });
+            });
+        }
+
+        highlightHoleCard(card, index) {
+            const holeNumber = card.querySelector('.hole-number');
+            if (holeNumber) {
+                holeNumber.style.transform = 'scale(1.1)';
+                holeNumber.style.background = 'var(--primary-navy)';
+                holeNumber.style.color = 'var(--accent-gold)';
+            }
+
+            // Add subtle glow effect
+            card.style.boxShadow = '0 20px 50px rgba(30, 58, 95, 0.3)';
+        }
+
+        unhighlightHoleCard(card) {
+            const holeNumber = card.querySelector('.hole-number');
+            if (holeNumber) {
+                holeNumber.style.transform = '';
+                holeNumber.style.background = '';
+                holeNumber.style.color = '';
+            }
+
+            card.style.boxShadow = '';
+        }
+
+        trackHoleCardClick(card, index) {
+            const holeNumber = card.querySelector('.hole-number')?.textContent || 'unknown';
+            const holeName = card.querySelector('h4')?.textContent || 'unknown';
+            
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'hole_detail_view', {
+                    'event_category': 'course_exploration',
+                    'event_label': `hole_${holeNumber}`,
+                    'hole_name': holeName,
+                    'hole_index': index + 1,
+                    'page_location': window.location.pathname
+                });
+            }
+        }
+
+        showHoleDetails(card, index) {
+            // Could be enhanced to show a modal with detailed hole information
+            const holeNumber = card.querySelector('.hole-number')?.textContent;
+            console.log(`Showing details for hole ${holeNumber}`);
+            
+            // For now, just scroll the card into better view
+            card.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        }
+
+        setupHoleStatistics() {
+            const holes = document.querySelectorAll('.hole-card');
+            let totalPar = 0;
+            let totalYards = 0;
+            let par3Count = 0;
+            let par4Count = 0;
+            let par5Count = 0;
+
+            holes.forEach(hole => {
+                const parElement = hole.querySelector('.hole-stat-value');
+                const yardsElement = hole.querySelectorAll('.hole-stat-value')[1];
+                
+                if (parElement && yardsElement) {
+                    const par = parseInt(parElement.textContent);
+                    const yards = parseInt(yardsElement.textContent.replace(/,/g, ''));
+                    
+                    totalPar += par;
+                    totalYards += yards;
+                    
+                    if (par === 3) par3Count++;
+                    else if (par === 4) par4Count++;
+                    else if (par === 5) par5Count++;
+                }
+            });
+
+            // Store course statistics
+            this.courseStats = {
+                totalPar,
+                totalYards,
+                par3Count,
+                par4Count,
+                par5Count,
+                totalHoles: holes.length
+            };
+
+            // Update any dynamic statistics on the page
+            this.updateCourseStats();
+        }
+
+        updateCourseStats() {
+            // Update total yards in stats section if present
+            const totalYardsElement = document.querySelector('.stat-card .stat-number');
+            if (totalYardsElement && this.courseStats.totalYards) {
+                totalYardsElement.textContent = this.courseStats.totalYards.toLocaleString();
+            }
+
+            // Log course statistics
+            console.log('📊 Course Statistics:', this.courseStats);
+        }
+
+        setupCourseNavigation() {
+            // Add smooth scrolling between course sections
+            const courseLinks = document.querySelectorAll('a[href*="#"]');
+            courseLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (href.startsWith('#')) {
+                        e.preventDefault();
+                        const target = document.querySelector(href);
+                        if (target) {
+                            const navHeight = document.querySelector('.navbar')?.offsetHeight || 80;
+                            const targetPosition = target.offsetTop - navHeight - 20;
+                            
+                            window.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+        }
+
+        setupLazyLoadingOptimizations() {
+            // Enhanced lazy loading for hole images
+            const holeImages = document.querySelectorAll('.hole-image, .hole-carousel-slide img');
+            
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            
+                            // Add loading state
+                            img.style.opacity = '0.5';
+                            img.style.transition = 'opacity 0.3s ease';
+                            
+                            // Simulate loading complete (in real scenario, this would be onload)
+                            setTimeout(() => {
+                                img.style.opacity = '1';
+                                img.classList.add('loaded');
+                            }, 300);
+                            
+                            imageObserver.unobserve(img);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '50px'
+                });
+
+                holeImages.forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
+        }
+
+        trackCoursePageMetrics() {
+            // Track course page specific metrics
+            const coursePageMetrics = {
+                totalHoles: this.courseStats?.totalHoles || 18,
+                hasScoreCard: !!document.querySelector('.score-card-section'),
+                hasCarousel: !!document.querySelector('.course-hero-carousel'),
+                hasHoleGallery: !!document.querySelector('.hole-gallery')
+            };
+
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'course_page_view', {
+                    'event_category': 'course_exploration',
+                    'event_label': 'course_page_loaded',
+                    'course_features': JSON.stringify(coursePageMetrics),
+                    'page_location': window.location.pathname
+                });
+            }
+
+            // Track scroll depth specifically for course sections
+            this.setupCourseScrollTracking();
+        }
+
+        setupCourseScrollTracking() {
+            const courseSections = [
+                { name: 'hero', element: document.querySelector('.course-hero-carousel') },
+                { name: 'overview', element: document.querySelector('.course-overview') },
+                { name: 'stats', element: document.querySelector('.course-stats') },
+                { name: 'features', element: document.querySelector('.features') },
+                { name: 'hole_gallery', element: document.querySelector('.hole-gallery') },
+                { name: 'score_cards', element: document.querySelector('.score-card-section') }
+            ].filter(section => section.element);
+
+            if ('IntersectionObserver' in window) {
+                const sectionObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const sectionName = entry.target.dataset.sectionName;
+                            if (sectionName && typeof gtag !== 'undefined') {
+                                gtag('event', 'course_section_view', {
+                                    'event_category': 'course_exploration',
+                                    'event_label': sectionName,
+                                    'section_visibility': Math.round(entry.intersectionRatio * 100),
+                                    'page_location': window.location.pathname
+                                });
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.5
+                });
+
+                courseSections.forEach(section => {
+                    section.element.dataset.sectionName = section.name;
+                    sectionObserver.observe(section.element);
+                });
+            }
+        }
+
+        // Public method to get course statistics
+        getCourseStats() {
+            return this.courseStats;
+        }
+
+        // Public method to navigate to specific hole
+        goToHole(holeNumber) {
+            const holeCard = document.querySelector(`.hole-card:nth-child(${holeNumber})`);
+            if (holeCard) {
+                holeCard.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'center' 
+                });
+                
+                // Highlight the hole briefly
+                this.highlightHoleCard(holeCard, holeNumber - 1);
+                setTimeout(() => {
+                    this.unhighlightHoleCard(holeCard);
+                }, 2000);
+            }
+        }
+    }
+
+    // PDF Download Manager for Scorecards
+    class PDFDownloadManager {
+        constructor() {
+            this.init();
+        }
+
+        init() {
+            this.setupDownloadButtons();
+            console.log('📄 PDF Download manager initialized');
+        }
+
+        setupDownloadButtons() {
+            // Handle scorecard download buttons
+            document.querySelectorAll('.download-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.downloadScorecard();
+                });
+            });
+
+            // Handle any other PDF download links
+            document.querySelectorAll('[data-download="pdf"]').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const pdfType = link.dataset.pdfType || 'scorecard';
+                    this.downloadPDF(pdfType);
+                });
+            });
+        }
+
+        downloadScorecard() {
+            // Track the download attempt
+            this.trackDownload('scorecard', 'course_page');
+            
+            try {
+                // Option 1: Link to actual PDF file (most realistic for golf courses)
+                // Note: In production, place the PDF files in a /downloads/ directory:
+                // - /downloads/carambola-golf-scorecard.pdf
+                // - /downloads/carambola-course-guide.pdf
+                // - /downloads/carambola-pricing.pdf
+                const scorecardUrl = '/downloads/carambola-golf-scorecard.pdf';
+                
+                // Create a temporary link element for download
+                const link = document.createElement('a');
+                link.href = scorecardUrl;
+                link.download = 'Carambola-Golf-Club-Scorecard.pdf';
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                // Show success message
+                this.showDownloadNotification('Scorecard downloaded successfully!', 'success');
+                
+            } catch (error) {
+                console.error('PDF download failed:', error);
+                console.log('📄 Note: In production, ensure PDF files are placed in /downloads/ directory');
+                
+                // Fallback: Open print dialog for scorecard section
+                this.fallbackPrintScorecard();
+            }
+        }
+
+        fallbackPrintScorecard() {
+            // Show instruction message
+            this.showDownloadNotification('Opening print dialog - you can save as PDF from there.', 'info');
+            
+            // Prepare scorecard section for printing
+            const scorecardSection = document.querySelector('.score-card-section');
+            if (scorecardSection) {
+                // Add print-specific class
+                scorecardSection.classList.add('print-ready');
+                
+                // Flip all cards to front for printing
+                const scoreCardManager = window.scoreCardManager;
+                if (scoreCardManager) {
+                    scoreCardManager.flipAllToFront();
+                }
+                
+                // Trigger print after small delay
+                setTimeout(() => {
+                    window.print();
+                    
+                    // Clean up after print
+                    setTimeout(() => {
+                        scorecardSection.classList.remove('print-ready');
+                    }, 1000);
+                }, 500);
+            } else {
+                // Ultimate fallback: regular print
+                window.print();
+            }
+        }
+
+        downloadPDF(type) {
+            this.trackDownload(type, window.location.pathname);
+            
+            const pdfUrls = {
+                'scorecard': '/downloads/carambola-golf-scorecard.pdf',
+                'course_guide': '/downloads/carambola-course-guide.pdf',
+                'pricing': '/downloads/carambola-pricing.pdf'
+            };
+            
+            const url = pdfUrls[type];
+            if (url) {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `Carambola-Golf-Club-${type.replace('_', '-')}.pdf`;
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                this.showDownloadNotification(`${type.replace('_', ' ')} downloaded successfully!`, 'success');
+            } else {
+                this.showDownloadNotification('Download not available at this time.', 'error');
+            }
+        }
+
+        showDownloadNotification(message, type = 'info') {
+            // Remove any existing notifications
+            const existingNotification = document.querySelector('.download-notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `download-notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                    <span>${message}</span>
+                    <button class="notification-close" aria-label="Close notification">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Add notification styles
+            notification.style.cssText = `
+                position: fixed;
+                top: 100px;
+                right: 20px;
+                background: ${type === 'success' ? '#16a34a' : type === 'error' ? '#dc2626' : '#0284c7'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 10001;
+                animation: slideInRight 0.3s ease;
+                max-width: 350px;
+                min-width: 250px;
+            `;
+            
+            // Add to page
+            document.body.appendChild(notification);
+            
+            // Set up close button
+            const closeBtn = notification.querySelector('.notification-close');
+            closeBtn.addEventListener('click', () => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            });
+            
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.style.animation = 'slideOutRight 0.3s ease';
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 5000);
+        }
+
+        trackDownload(type, location) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'pdf_download', {
+                    'event_category': 'downloads',
+                    'event_label': type,
+                    'page_location': location,
+                    'value': 1
+                });
+            }
+            
+            console.log(`📄 PDF download tracked: ${type} from ${location}`);
+        }
     }
 
     // Score Card Flip Manager - Enhanced Functionality
@@ -1938,6 +2411,8 @@
             new TabManager();
             new CardInteractionManager();
             new OfflineManager();
+            new PDFDownloadManager(); // Add PDF download functionality
+            new CoursePageManager(); // Add course page specific functionality
             
             // Initialize video hero for home page
             if (document.querySelector('.hero-video')) {
@@ -1967,6 +2442,13 @@
             preloader.completeStep('video_carousel');
             preloader.completeStep('hole_carousel');
             preloader.completeStep('score_cards');
+            
+            // Store course page manager globally if on course page
+            if (window.location.pathname.includes('course.html')) {
+                setTimeout(() => {
+                    window.coursePageManager = new CoursePageManager();
+                }, 500);
+            }
             
             console.log('✅ Initialization complete!');
             
@@ -2099,6 +2581,75 @@
             if (scoreCardManager) {
                 scoreCardManager.resetAllCards();
             }
+        },
+
+        // Course page utilities
+        downloadScorecard: function() {
+            const pdfManager = new PDFDownloadManager();
+            pdfManager.downloadScorecard();
+        },
+
+        goToHole: function(holeNumber) {
+            const coursePageManager = window.coursePageManager;
+            if (coursePageManager) {
+                coursePageManager.goToHole(holeNumber);
+            } else {
+                // Fallback navigation
+                const holeCard = document.querySelector(`.hole-card:nth-child(${holeNumber})`);
+                if (holeCard) {
+                    holeCard.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                }
+            }
+        },
+
+        getCourseStats: function() {
+            const coursePageManager = window.coursePageManager;
+            return coursePageManager ? coursePageManager.getCourseStats() : null;
+        },
+
+        // Enhanced analytics utilities
+        trackCourseEvent: function(action, holeNumber = null, details = {}) {
+            if (typeof gtag !== 'undefined') {
+                const eventData = {
+                    'event_category': 'course_interaction',
+                    'event_label': action,
+                    'page_location': window.location.pathname,
+                    ...details
+                };
+                
+                if (holeNumber) {
+                    eventData.hole_number = holeNumber;
+                }
+                
+                gtag('event', action, eventData);
+            }
+        },
+
+        // Utility to refresh all course page components
+        refreshCoursePage: function() {
+            console.log('🔄 Refreshing course page components...');
+            
+            // Refresh score cards
+            this.resetScoreCards();
+            
+            // Re-initialize carousels
+            const carouselSlides = document.querySelectorAll('.carousel-slide');
+            carouselSlides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === 0) slide.classList.add('active');
+            });
+            
+            // Re-initialize hole carousel
+            const holeCarouselSlides = document.querySelectorAll('.hole-carousel-slide');
+            holeCarouselSlides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                if (index === 0) slide.classList.add('active');
+            });
+            
+            console.log('✅ Course page components refreshed');
         }
     };
 
