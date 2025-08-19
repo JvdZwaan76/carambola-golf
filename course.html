@@ -103,20 +103,40 @@
 
     <!-- Enterprise Safety Timeout -->
     <script>
-    // ENTERPRISE SAFETY SCRIPT - Preloader timeout only
+    // ENTERPRISE SAFETY SCRIPT - Enhanced mobile preloader timeout
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('🏢 Enterprise safety script loaded for course page');
+        console.log('🟢 Enterprise safety script loaded for course page');
         
-        // Safety timeout for preloader (10 seconds max)
+        // Enhanced safety timeout for preloader with mobile detection
+        const isMobile = window.innerWidth <= 768;
+        const maxTimeout = isMobile ? 3000 : 8000; // 3s mobile, 8s desktop
+        
         setTimeout(function() {
             const preloader = document.querySelector('.preloader, #preloader');
             if (preloader && getComputedStyle(preloader).display !== 'none') {
                 console.log('⏰ Safety: Preloader timeout reached');
                 preloader.style.opacity = '0';
                 preloader.style.visibility = 'hidden';
-                setTimeout(() => preloader.style.display = 'none', 500);
+                setTimeout(() => {
+                    preloader.style.display = 'none';
+                    // Force remove if still present
+                    if (preloader.parentNode) {
+                        preloader.parentNode.removeChild(preloader);
+                    }
+                }, 500);
             }
-        }, 10000);
+        }, maxTimeout);
+        
+        // Additional mobile-specific timeout
+        if (isMobile) {
+            setTimeout(function() {
+                const preloader = document.querySelector('.preloader, #preloader');
+                if (preloader) {
+                    console.log('📱 Mobile safety: Force removing preloader');
+                    preloader.remove();
+                }
+            }, 5000);
+        }
     });
     </script>
 </head>
@@ -215,12 +235,12 @@
                     <div class="stat-description">Balanced layout with challenging yet fair scoring opportunities</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">6,843</span>
+                    <span class="stat-number">7,181</span>
                     <span class="stat-label">Total Yards</span>
                     <div class="stat-description">Championship length with multiple tee options for all skill levels</div>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-number">73.2</span>
+                    <span class="stat-number">75.2</span>
                     <span class="stat-label">Course Rating</span>
                     <div class="stat-description">Challenging yet fair rating that tests all aspects of your game</div>
                 </div>
@@ -460,7 +480,7 @@
                                 </button>
                             </div>
                             <div class="score-card-image">
-                                <img src="/images/carambola-golf-scorecard-front.webp" alt="Carambola Golf Club Front Nine Score Card" loading="lazy">
+                                <img src="/images/carambola-score-card-front.webp" alt="Carambola Golf Club Front Nine Score Card" loading="lazy">
                             </div>
                             <div class="score-card-info">
                                 <div class="card-stats">
@@ -469,11 +489,11 @@
                                         <span class="stat-label">Par</span>
                                     </div>
                                     <div class="stat-item">
-                                        <span class="stat-value">3,421</span>
+                                        <span class="stat-value">3,759</span>
                                         <span class="stat-label">Yards</span>
                                     </div>
                                     <div class="stat-item">
-                                        <span class="stat-value">36.8</span>
+                                        <span class="stat-value">37.6</span>
                                         <span class="stat-label">Rating</span>
                                     </div>
                                 </div>
@@ -525,7 +545,7 @@
                                 </button>
                             </div>
                             <div class="score-card-image">
-                                <img src="/images/carambola-golf-scorecard-back.webp" alt="Carambola Golf Club Back Nine Score Card" loading="lazy">
+                                <img src="/images/carambola-score-card-back.webp" alt="Carambola Golf Club Back Nine Score Card" loading="lazy">
                             </div>
                             <div class="score-card-info">
                                 <div class="card-stats">
@@ -538,7 +558,7 @@
                                         <span class="stat-label">Yards</span>
                                     </div>
                                     <div class="stat-item">
-                                        <span class="stat-value">36.4</span>
+                                        <span class="stat-value">37.6</span>
                                         <span class="stat-label">Rating</span>
                                     </div>
                                 </div>
