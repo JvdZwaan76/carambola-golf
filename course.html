@@ -47,6 +47,13 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
+    <!-- Course Page Meta Data -->
+    <meta name="course-designer" content="Robert Trent Jones Sr.">
+    <meta name="course-holes" content="18">
+    <meta name="course-par" content="72">
+    <meta name="course-yards" content="7181">
+    <meta name="course-location" content="St. Croix, VI">
+    
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1e3a5f">
@@ -905,7 +912,7 @@
                 <div class="download-content">
                     <h4>Download Official Score Cards</h4>
                     <p>Get the complete scorecard with detailed hole information, yardages, and course tips for all 18 holes</p>
-                    <button class="download-btn" onclick="trackGolfEvent('scorecard_download', 'course_page')">
+                    <button class="download-btn" data-download="pdf" data-pdf-type="scorecard">
                         <i class="fas fa-download"></i>
                         Download PDF Scorecard
                     </button>
