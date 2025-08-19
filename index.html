@@ -30,6 +30,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 15000);
 });
 </script>
+    <style>
+/* CLEAN MOBILE VIEWPORT FIX */
+@media screen and (max-width: 768px) {
+    body {
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+    
+    .hero {
+        height: auto;
+        min-height: 80vh;
+    }
+    
+    .container {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}
+</style>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
