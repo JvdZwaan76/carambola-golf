@@ -1,6 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+// SIMPLE PRELOADER TIMEOUT - Only fix, no breaking changes
+document.addEventListener('DOMContentLoaded', function() {
+    // Set a maximum preloader time of 10 seconds
+    setTimeout(function() {
+        const preloader = document.getElementById('preloader');
+        if (preloader && getComputedStyle(preloader).display !== 'none') {
+            console.log('⏰ Preloader timeout - force hiding after 10 seconds');
+            preloader.classList.add('hidden');
+            
+            // Extra safety - remove after animation
+            setTimeout(() => {
+                if (preloader && preloader.parentNode) {
+                    preloader.style.display = 'none';
+                }
+            }, 1000);
+        }
+    }, 10000);
+    
+    // Also fix any stuck modal
+    setTimeout(function() {
+        const modal = document.getElementById('constructionModal');
+        if (modal && modal.classList.contains('show')) {
+            console.log('⏰ Modal timeout - auto-hiding');
+            modal.classList.remove('show');
+        }
+    }, 15000);
+});
+</script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
