@@ -498,9 +498,9 @@
                 <div class="weather-content">
                     <div class="weather-main">
                         <div class="temperature">
-                            <span id="current-temp">82Â°F</span>
+                            <span id="current-temp">82°F</span>
                             <div class="temp-range">
-                                <span id="high-temp">85Â°</span> / <span id="low-temp">78Â°</span>
+                                <span id="high-temp">85°</span> / <span id="low-temp">78°</span>
                             </div>
                         </div>
                         <div class="weather-details">
@@ -645,7 +645,7 @@
                 <div class="testimonial-quote">
                     "Carambola Golf Club represents the perfect marriage of Robert Trent Jones Sr.'s legendary design philosophy with the natural beauty of the Caribbean. Every hole is a masterpiece."
                 </div>
-                <div class="testimonial-author">â€" Golf Architecture Review</div>
+                <div class="testimonial-author">— Golf Architecture Review</div>
             </div>
         </div>
     </section>
@@ -811,7 +811,7 @@
         function updateWeather() {
             // This is placeholder data - in production, you'd fetch from OpenWeatherMap or similar
             const weatherData = {
-                temperature: Math.floor(Math.random() * 8) + 78, // 78-85Â°F
+                temperature: Math.floor(Math.random() * 8) + 78, // 78-85°F
                 high: Math.floor(Math.random() * 5) + 85,
                 low: Math.floor(Math.random() * 5) + 76,
                 condition: ['Sunny', 'Partly Sunny', 'Partly Cloudy'][Math.floor(Math.random() * 3)],
@@ -820,9 +820,9 @@
                 visibility: 10
             };
 
-            document.getElementById('current-temp').textContent = weatherData.temperature + 'Â°F';
-            document.getElementById('high-temp').textContent = weatherData.high + 'Â°';
-            document.getElementById('low-temp').textContent = weatherData.low + 'Â°';
+            document.getElementById('current-temp').textContent = weatherData.temperature + '°F';
+            document.getElementById('high-temp').textContent = weatherData.high + '°';
+            document.getElementById('low-temp').textContent = weatherData.low + '°';
             document.getElementById('weather-condition').textContent = weatherData.condition;
             document.getElementById('wind-speed').textContent = weatherData.windSpeed + ' mph';
             document.getElementById('humidity').textContent = weatherData.humidity + '%';
@@ -844,5 +844,8 @@
         // Update weather every 30 minutes
         setInterval(updateWeather, 30 * 60 * 1000);
     </script>
+    
+    <!-- Affiliate Program Tracking -->
+    <script src="https://www.anrdoezrs.net/am/101520211/include/allCj/impressions/page/am.js"></script>
 </body>
 </html>
