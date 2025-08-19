@@ -2,6 +2,38 @@
 <html lang="en">
 <head>
     <script>
+// MOBILE EMERGENCY FIX - Disable preloader on mobile completely
+(function() {
+    const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        console.log('🚨 Mobile detected - disabling preloader');
+        
+        // Prevent any preloader from showing
+        window.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.preloader, .loader, #preloader, [class*="preload"]').forEach(el => {
+                el.remove(); // Completely remove from DOM
+            });
+            
+            // Force show all content immediately
+            document.body.style.visibility = 'visible';
+            document.body.style.opacity = '1';
+        });
+        
+        // Override problematic preloader functions
+        const originalSetTimeout = window.setTimeout;
+        window.setTimeout = function(callback, delay) {
+            const stack = new Error().stack;
+            if (stack && (stack.includes('preloader') || stack.includes('forceHide'))) {
+                console.log('🚫 Blocked mobile preloader setTimeout');
+                return;
+            }
+            return originalSetTimeout.apply(this, arguments);
+        };
+    }
+})();
+</script>
+    <script>
 // EMERGENCY: Prevent infinite reload
 let reloadCount = sessionStorage.getItem('reloadCount') || 0;
 if (reloadCount > 2) {
