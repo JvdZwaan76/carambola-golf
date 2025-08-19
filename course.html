@@ -100,6 +100,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Enterprise Safety Timeout -->
+    <script>
+    // ENTERPRISE SAFETY SCRIPT - Preloader timeout only
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🏢 Enterprise safety script loaded for course page');
+        
+        // Safety timeout for preloader (10 seconds max)
+        setTimeout(function() {
+            const preloader = document.querySelector('.preloader, #preloader');
+            if (preloader && getComputedStyle(preloader).display !== 'none') {
+                console.log('⏰ Safety: Preloader timeout reached');
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            }
+        }, 10000);
+    });
+    </script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -649,115 +668,5 @@
     <!-- Scripts -->
     <script src="script.js"></script>
     <script src="footer-status.js"></script>
-
-    <!-- Enterprise Safety Script -->
-    <script>
-    // ENTERPRISE SAFETY SCRIPT - Minimal intervention
-    document.addEventListener('DOMContentLoaded', function() {
-        console.log('🏢 Enterprise safety script loaded for course page');
-        
-        // Safety timeout for preloader (10 seconds max)
-        setTimeout(function() {
-            const preloader = document.querySelector('.preloader, #preloader');
-            if (preloader && getComputedStyle(preloader).display !== 'none') {
-                console.log('⚡ Safety: Preloader timeout reached');
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
-                setTimeout(() => preloader.style.display = 'none', 500);
-            }
-        }, 10000);
-        
-        // Prevent multiple rapid navigations
-        let navigationBlocked = false;
-        const originalPushState = history.pushState;
-        const originalReplaceState = history.replaceState;
-        
-        history.pushState = function() {
-            if (navigationBlocked) return;
-            navigationBlocked = true;
-            setTimeout(() => navigationBlocked = false, 1000);
-            return originalPushState.apply(this, arguments);
-        };
-        
-        history.replaceState = function() {
-            if (navigationBlocked) return;
-            navigationBlocked = true;
-            setTimeout(() => navigationBlocked = false, 1000);
-            return originalReplaceState.apply(this, arguments);
-        };
-
-        // Initialize course page specific functionality
-        initializeCourseCarousels();
-        initializeScoreCards();
-        initializeCourseAnalytics();
-    });
-
-    // Course-specific carousel initialization
-    function initializeCourseCarousels() {
-        // Hero carousel functionality will be handled by script.js
-        console.log('🎠 Course carousels initialized');
-    }
-
-    // Score card flip functionality
-    function initializeScoreCards() {
-        const scoreCards = document.querySelectorAll('.score-card-flip');
-        scoreCards.forEach(card => {
-            card.addEventListener('click', function(e) {
-                if (e.target.closest('.flip-btn') || e.target.closest('.score-card-flip')) {
-                    this.classList.toggle('flipped');
-                    trackGolfEvent('scorecard_flip', 'course_page');
-                }
-            });
-
-            card.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.classList.toggle('flipped');
-                    trackGolfEvent('scorecard_flip', 'course_page');
-                }
-            });
-        });
-    }
-
-    // Enhanced course page analytics
-    function initializeCourseAnalytics() {
-        // Track course page engagement
-        gtag('event', 'page_view', {
-            event_category: 'Course Page',
-            event_label: 'course_details_view'
-        });
-
-        // Track scroll depth on course page
-        let maxScroll = 0;
-        window.addEventListener('scroll', function() {
-            const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-            if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
-                maxScroll = scrollPercent;
-                gtag('event', 'scroll', {
-                    event_category: 'Course Page Engagement',
-                    event_label: scrollPercent + '%',
-                    value: scrollPercent
-                });
-            }
-        });
-
-        // Track hole card interactions
-        document.querySelectorAll('.hole-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const holeNumber = this.querySelector('.hole-number')?.textContent || 'Unknown';
-                trackGolfEvent('hole_card_click', `hole_${holeNumber}`);
-            });
-        });
-
-        // Track CTA button clicks
-        document.querySelectorAll('.book-tee-time').forEach(button => {
-            button.addEventListener('click', function() {
-                trackBookingIntent('tee_time_request', 'course_page_cta');
-            });
-        });
-
-        console.log('📊 Course page analytics initialized');
-    }
-    </script>
 </body>
 </html>
