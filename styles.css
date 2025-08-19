@@ -1462,7 +1462,7 @@ img {
     letter-spacing: 0.5px;
 }
 
-/* Score Card Section - Integrated with Golf Theme */
+/* Score Card Section - Enhanced Responsiveness */
 .score-card-section {
     padding: 6rem 0;
     background: var(--bg-light);
@@ -1489,17 +1489,20 @@ img {
 
 .score-card-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
     gap: 3rem;
     margin-top: 4rem;
     margin-bottom: 4rem;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-/* Score Card Flip Container */
+/* Score Card Flip Container - Enhanced */
 .score-card-flip {
     background: transparent;
     width: 100%;
-    height: 500px;
+    height: 550px;
     perspective: 1000px;
     cursor: pointer;
     border-radius: 12px;
@@ -1517,7 +1520,7 @@ img {
     outline-offset: 4px;
 }
 
-/* Inner flip container */
+/* Inner flip container - Enhanced */
 .score-card-inner {
     position: relative;
     width: 100%;
@@ -1533,7 +1536,7 @@ img {
     transform: rotateY(180deg);
 }
 
-/* Front and back of cards */
+/* Front and back of cards - Enhanced */
 .score-card-front,
 .score-card-back {
     position: absolute;
@@ -1554,13 +1557,14 @@ img {
     background: linear-gradient(135deg, #ffffff 0%, #fefcf7 100%);
 }
 
-/* Score Card Header */
+/* Score Card Header - Enhanced */
 .score-card-header {
     padding: 2rem 2rem 1rem;
     background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-navy) 100%);
     color: var(--text-light);
     position: relative;
     text-align: center;
+    flex-shrink: 0;
 }
 
 .score-card-header::after {
@@ -1587,7 +1591,7 @@ img {
     font-style: italic;
 }
 
-/* Flip Button */
+/* Flip Button - Enhanced */
 .flip-btn {
     position: absolute;
     top: 1rem;
@@ -1625,12 +1629,13 @@ img {
     transform: rotate(180deg);
 }
 
-/* Score Card Image */
+/* Score Card Image - Enhanced */
 .score-card-image {
     flex: 1;
     position: relative;
     overflow: hidden;
     background: var(--bg-light);
+    min-height: 250px;
 }
 
 .score-card-image img {
@@ -1644,14 +1649,15 @@ img {
     transform: scale(1.05);
 }
 
-/* Score Card Info */
+/* Score Card Info - Enhanced */
 .score-card-info {
     padding: 2rem;
     background: white;
     border-top: 1px solid var(--light-gold);
+    flex-shrink: 0;
 }
 
-/* Card Stats */
+/* Card Stats - Enhanced */
 .card-stats {
     display: flex;
     justify-content: space-around;
@@ -1680,7 +1686,7 @@ img {
     font-weight: 600;
 }
 
-/* Card Features */
+/* Card Features - Enhanced */
 .card-features {
     display: flex;
     flex-direction: column;
@@ -1716,7 +1722,7 @@ img {
     font-size: 0.95rem;
 }
 
-/* Download Section */
+/* Download Section - Enhanced */
 .score-card-download {
     text-align: center;
     margin-top: 3rem;
@@ -1729,6 +1735,9 @@ img {
     transition: all var(--transition-medium);
     position: relative;
     overflow: hidden;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .score-card-download::before {
@@ -2020,20 +2029,6 @@ img {
     margin-bottom: 1.5rem;
     padding-top: 1rem;
     border-top: 1px solid #e2e8f0;
-}
-
-.feature-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.feature-item i {
-    color: var(--accent-gold);
-    margin-right: 0.5rem;
-    width: 16px;
 }
 
 .accommodation-actions {
@@ -3335,12 +3330,6 @@ img {
     margin-bottom: 2rem;
 }
 
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-}
-
 .feature-highlight {
     background: white;
     padding: 2rem;
@@ -3391,25 +3380,6 @@ img {
     margin-top: 2rem;
 }
 
-.stat-item {
-    text-align: center;
-}
-
-.stat-item .stat-number {
-    display: block;
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: var(--accent-gold);
-    margin-bottom: 0.5rem;
-}
-
-.stat-item .stat-label {
-    font-size: 0.9rem;
-    opacity: 0.9;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
 .sitemap-footer {
     background: var(--light-gold);
     padding: 2rem;
@@ -3435,8 +3405,38 @@ img {
     font-size: 0.9rem;
 }
 
+/* Enhanced Mobile Responsive Design */
+@media (max-width: 1200px) {
+    .score-card-wrapper {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2.5rem;
+        margin-top: 3rem;
+        margin-bottom: 3rem;
+    }
+}
+
 /* Mobile Responsive Weather Widget */
 @media (max-width: 768px) {
+    .mobile-menu {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--primary-navy);
+        flex-direction: column;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
     .weather-widget {
         padding: 2rem 0;
     }
@@ -3539,10 +3539,12 @@ img {
         gap: 2rem;
         margin-top: 3rem;
         margin-bottom: 3rem;
+        padding: 0 1rem;
     }
 
     .score-card-flip {
-        height: 450px;
+        height: 500px;
+        border-radius: 8px;
     }
 
     .score-card-header {
@@ -3551,6 +3553,10 @@ img {
 
     .score-card-header h3 {
         font-size: 1.4rem;
+    }
+
+    .score-card-header p {
+        font-size: 0.9rem;
     }
 
     .flip-btn {
@@ -3562,6 +3568,10 @@ img {
 
     .flip-btn span {
         display: none;
+    }
+
+    .score-card-image {
+        min-height: 200px;
     }
 
     .score-card-info {
@@ -3595,38 +3605,23 @@ img {
     .score-card-download {
         padding: 2rem 1.5rem;
         margin-top: 2rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
 
     .download-content h4 {
         font-size: 1.3rem;
     }
 
+    .download-content p {
+        font-size: 1rem;
+    }
+
     .download-btn {
         padding: 0.8rem 2rem;
         font-size: 0.9rem;
-    }
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .mobile-menu {
-        display: block;
-    }
-
-    .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--primary-navy);
-        flex-direction: column;
-        padding: 2rem;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    }
-
-    .nav-links.active {
-        display: flex;
+        width: 100%;
+        max-width: 300px;
     }
 
     /* Hero Section Mobile Fixes */
@@ -3864,30 +3859,6 @@ img {
         font-size: 0.9rem;
     }
 
-    /* Carousel mobile optimizations */
-    .carousel-nav {
-        padding: 0 0.5rem;
-    }
-
-    .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 0.9rem;
-    }
-
-    .slide-content {
-        padding: 2rem 0.5rem 1.5rem;
-    }
-
-    .carousel-dots {
-        gap: 0.3rem;
-    }
-
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
-    }
-
     /* Hole Carousel Mobile */
     .hole-carousel-play-btn {
         width: 50px;
@@ -4022,28 +3993,74 @@ img {
         font-size: 0.8rem;
     }
 
-    /* Carousel mobile optimizations */
-    .carousel-nav {
-        padding: 0 0.5rem;
+    /* Score Card Mobile Small Screens */
+    .score-card-flip {
+        height: 450px;
+        margin: 0 0.5rem;
     }
 
-    .carousel-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 0.9rem;
+    .score-card-header {
+        padding: 1.2rem 1rem 0.8rem;
     }
 
-    .slide-content {
-        padding: 2rem 0.5rem 1.5rem;
+    .score-card-header h3 {
+        font-size: 1.2rem;
     }
 
-    .carousel-dots {
-        gap: 0.3rem;
+    .score-card-header p {
+        font-size: 0.85rem;
     }
 
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
+    .flip-btn {
+        top: 0.5rem;
+        right: 0.5rem;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .score-card-image {
+        min-height: 180px;
+    }
+
+    .score-card-info {
+        padding: 1rem;
+    }
+
+    .card-stats {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .stat-value {
+        font-size: 1.8rem;
+    }
+
+    .feature-item {
+        padding: 0.6rem;
+    }
+
+    .feature-item span {
+        font-size: 0.85rem;
+    }
+
+    .score-card-download {
+        padding: 1.5rem 1rem;
+        margin: 2rem 0.5rem 0;
+    }
+
+    .download-content h4 {
+        font-size: 1.2rem;
+    }
+
+    .download-content p {
+        font-size: 0.95rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .download-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.85rem;
+        gap: 0.5rem;
     }
 
     /* Hole Carousel Mobile Small Screens */
@@ -4081,69 +4098,6 @@ img {
         left: 0.25rem;
     }
 
-    /* Score Card Mobile Small Screens */
-    .score-card-flip {
-        height: 400px;
-    }
-
-    .score-card-header {
-        padding: 1.2rem 1rem 0.8rem;
-    }
-
-    .score-card-header h3 {
-        font-size: 1.2rem;
-    }
-
-    .score-card-header p {
-        font-size: 0.9rem;
-    }
-
-    .flip-btn {
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.3rem 0.6rem;
-        font-size: 0.75rem;
-    }
-
-    .score-card-info {
-        padding: 1rem;
-    }
-
-    .card-stats {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .stat-value {
-        font-size: 1.8rem;
-    }
-
-    .feature-item {
-        padding: 0.6rem;
-    }
-
-    .feature-item span {
-        font-size: 0.85rem;
-    }
-
-    .score-card-download {
-        padding: 1.5rem 1rem;
-    }
-
-    .download-content h4 {
-        font-size: 1.2rem;
-    }
-
-    .download-content p {
-        font-size: 1rem;
-    }
-
-    .download-btn {
-        padding: 0.7rem 1.5rem;
-        font-size: 0.85rem;
-        gap: 0.5rem;
-    }
-
     /* Legal Pages Mobile Responsive */
     .legal-document {
         padding: 2rem;
@@ -4163,10 +4117,6 @@ img {
         gap: 2rem;
     }
     
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-    
     .sitemap-stats .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -4184,9 +4134,41 @@ img {
     .sitemap-footer {
         padding: 2rem 1rem;
     }
-    
-    .stat-item .stat-number {
-        font-size: 2rem;
+}
+
+/* Desktop Large Screen Optimizations */
+@media (min-width: 1400px) {
+    .score-card-wrapper {
+        max-width: 1200px;
+        gap: 4rem;
+    }
+
+    .score-card-flip {
+        height: 600px;
+    }
+
+    .score-card-header h3 {
+        font-size: 1.8rem;
+    }
+
+    .score-card-header p {
+        font-size: 1.1rem;
+    }
+
+    .score-card-image {
+        min-height: 300px;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+    }
+
+    .download-content h4 {
+        font-size: 1.7rem;
+    }
+
+    .download-content p {
+        font-size: 1.2rem;
     }
 }
 
@@ -4278,6 +4260,11 @@ html {
 
     .score-card-download {
         display: none;
+    }
+
+    .score-card-flip {
+        height: auto;
+        page-break-inside: avoid;
     }
 }
 
