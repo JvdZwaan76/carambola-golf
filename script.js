@@ -144,6 +144,202 @@
         document.body.appendChild(notification);
     }
 
+    // Score Card Flip Manager - Enhanced Functionality
+    class ScoreCardManager {
+        constructor() {
+            this.scoreCards = document.querySelectorAll('.score-card-flip');
+            this.init();
+        }
+
+        init() {
+            if (this.scoreCards.length === 0) return;
+
+            this.setupEventListeners();
+            this.setupAccessibility();
+            console.log('🎯 Score card flip functionality initialized');
+        }
+
+        setupEventListeners() {
+            this.scoreCards.forEach((card, index) => {
+                // Click event for flipping
+                card.addEventListener('click', (e) => {
+                    // Don't flip if clicking on the flip button specifically
+                    if (e.target.closest('.flip-btn')) {
+                        this.handleFlipButtonClick(card, e);
+                    } else {
+                        this.toggleCard(card);
+                    }
+                    this.trackInteraction('card_click', index + 1);
+                });
+
+                // Touch events for mobile
+                this.setupTouchEvents(card, index);
+
+                // Keyboard navigation
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        this.toggleCard(card);
+                        this.trackInteraction('keyboard_flip', index + 1);
+                    }
+                });
+
+                // Handle flip button separately
+                const flipBtn = card.querySelector('.flip-btn');
+                if (flipBtn) {
+                    flipBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.handleFlipButtonClick(card, e);
+                    });
+                }
+            });
+        }
+
+        setupTouchEvents(card, index) {
+            let touchStartTime = 0;
+            let touchStartX = 0;
+            let touchStartY = 0;
+
+            card.addEventListener('touchstart', (e) => {
+                touchStartTime = Date.now();
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            card.addEventListener('touchend', (e) => {
+                const touchEndTime = Date.now();
+                const touchEndX = e.changedTouches[0].clientX;
+                const touchEndY = e.changedTouches[0].clientY;
+                
+                const timeDiff = touchEndTime - touchStartTime;
+                const distanceX = Math.abs(touchEndX - touchStartX);
+                const distanceY = Math.abs(touchEndY - touchStartY);
+                
+                // Consider it a tap if it's quick and doesn't move much
+                if (timeDiff < 500 && distanceX < 50 && distanceY < 50) {
+                    // Don't flip if touching the flip button
+                    if (!e.target.closest('.flip-btn')) {
+                        this.toggleCard(card);
+                        this.trackInteraction('touch_flip', index + 1);
+                    }
+                }
+            }, { passive: true });
+        }
+
+        setupAccessibility() {
+            this.scoreCards.forEach((card) => {
+                // Ensure proper ARIA attributes
+                card.setAttribute('role', 'button');
+                card.setAttribute('aria-label', 'Flip card to view additional information');
+                
+                // Add tabindex if not present
+                if (!card.hasAttribute('tabindex')) {
+                    card.setAttribute('tabindex', '0');
+                }
+
+                // Update ARIA label based on flip state
+                this.updateAriaLabel(card);
+            });
+        }
+
+        toggleCard(card) {
+            const isFlipped = card.classList.contains('flipped');
+            
+            // Add visual feedback
+            card.classList.add('flipping');
+            
+            if (isFlipped) {
+                this.flipToFront(card);
+            } else {
+                this.flipToBack(card);
+            }
+
+            // Remove flipping class after animation
+            setTimeout(() => {
+                card.classList.remove('flipping');
+            }, 800);
+
+            this.updateAriaLabel(card);
+        }
+
+        flipToFront(card) {
+            card.classList.remove('flipped');
+            card.setAttribute('aria-expanded', 'false');
+            
+            // Update flip button icon if present
+            const flipBtn = card.querySelector('.flip-btn i');
+            if (flipBtn) {
+                flipBtn.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        flipToBack(card) {
+            card.classList.add('flipped');
+            card.setAttribute('aria-expanded', 'true');
+            
+            // Update flip button icon if present
+            const flipBtn = card.querySelector('.flip-btn i');
+            if (flipBtn) {
+                flipBtn.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        handleFlipButtonClick(card, event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            this.toggleCard(card);
+            
+            // Add visual feedback to button
+            const flipBtn = event.target.closest('.flip-btn');
+            if (flipBtn) {
+                flipBtn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    flipBtn.style.transform = '';
+                }, 150);
+            }
+        }
+
+        updateAriaLabel(card) {
+            const isFlipped = card.classList.contains('flipped');
+            const cardTitle = card.querySelector('.score-card-header h3')?.textContent || 'Score card';
+            
+            if (isFlipped) {
+                card.setAttribute('aria-label', `${cardTitle} - Showing details. Click to view score card.`);
+            } else {
+                card.setAttribute('aria-label', `${cardTitle} - Showing score card. Click to view details.`);
+            }
+        }
+
+        trackInteraction(action, cardNumber) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'scorecard_interaction', {
+                    'event_category': 'scorecard',
+                    'event_label': action,
+                    'card_number': cardNumber,
+                    'page_location': window.location.pathname
+                });
+            }
+        }
+
+        // Public method to flip all cards to front (useful for printing)
+        flipAllToFront() {
+            this.scoreCards.forEach(card => {
+                if (card.classList.contains('flipped')) {
+                    this.flipToFront(card);
+                }
+            });
+        }
+
+        // Public method to reset all cards
+        resetAllCards() {
+            this.scoreCards.forEach(card => {
+                card.classList.remove('flipped', 'flipping');
+                this.updateAriaLabel(card);
+            });
+        }
+    }
+
     // Enhanced Video Hero Manager
     class VideoHeroManager {
         constructor() {
@@ -473,7 +669,7 @@
                 });
             }
 
-            console.log('🌏 Hole carousel initialized');
+            console.log('🌟 Hole carousel initialized');
         }
 
         setupEventListeners() {
@@ -1694,7 +1890,7 @@
         
         console.log('🌴 Welcome to Carambola Golf Club! 🌴');
         console.log('🔧 Enhanced performance with mobile optimizations');
-        console.log('📧 For technical inquiries: jaspervdz@me.com');
+        console.log('🔧 For technical inquiries: jaspervdz@me.com');
         
         // Initialize preloader
         const preloader = new PreloaderManager();
@@ -1707,6 +1903,7 @@
         preloader.addStep('animations');
         preloader.addStep('video_carousel');
         preloader.addStep('hole_carousel');
+        preloader.addStep('score_cards');
         
         console.log('⚡ Starting initialization...');
         
@@ -1757,6 +1954,10 @@
                 new HoleCarouselManager();
             }
             
+            // Initialize score card functionality
+            const scoreCardManager = new ScoreCardManager();
+            window.scoreCardManager = scoreCardManager; // Make it globally accessible
+            
             // Setup additional functionality
             setupSmoothScrolling();
             setupExternalLinkTracking();
@@ -1765,6 +1966,7 @@
             
             preloader.completeStep('video_carousel');
             preloader.completeStep('hole_carousel');
+            preloader.completeStep('score_cards');
             
             console.log('✅ Initialization complete!');
             
@@ -1774,6 +1976,33 @@
             console.error('❌ Initialization error:', error);
             preloader.hide(); // Hide preloader even if there's an error
         }
+    });
+
+    // Handle window events that might affect components
+    window.addEventListener('resize', debounce(() => {
+        const scoreCardManager = window.scoreCardManager;
+        if (scoreCardManager && window.innerWidth !== window.lastWidth) {
+            // Only reset if width changed significantly
+            if (Math.abs(window.innerWidth - (window.lastWidth || 0)) > 100) {
+                scoreCardManager.resetAllCards();
+            }
+            window.lastWidth = window.innerWidth;
+        }
+    }, 250));
+
+    // Handle print events
+    window.addEventListener('beforeprint', () => {
+        const scoreCards = document.querySelectorAll('.score-card-flip');
+        scoreCards.forEach(card => {
+            card.classList.add('printing');
+        });
+    });
+
+    window.addEventListener('afterprint', () => {
+        const scoreCards = document.querySelectorAll('.score-card-flip');
+        scoreCards.forEach(card => {
+            card.classList.remove('printing');
+        });
     });
 
     // Handle orientation change
@@ -1789,21 +2018,10 @@
         });
     }, 100));
 
-    // Handle window resize
-    window.addEventListener('resize', debounce(() => {
-        // Recalculate any layout-dependent elements
-        const modals = document.querySelectorAll('.modal-overlay');
-        modals.forEach(modal => {
-            if (modal.classList.contains('show')) {
-                modal.style.height = window.innerHeight + 'px';
-            }
-        });
-    }, 250));
-
     // Console branding
     console.log('%c🌴 Welcome to Carambola Golf Club! 🌴', 'color: #d4af37; font-size: 16px; font-weight: bold;');
     console.log('%c⚡ Enhanced website with mobile-first performance', 'color: #1e3a5f; font-size: 12px;');
-    console.log('%c📧 Technical support: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%c🔧 Technical support: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
     window.CarambolaGolf = {
@@ -1866,6 +2084,21 @@
                 ...performanceMetrics.marks,
                 loadTime: performance.now() - performanceMetrics.startTime
             };
+        },
+
+        // Score card utilities
+        flipScoreCard: function(cardIndex) {
+            const scoreCardManager = window.scoreCardManager;
+            if (scoreCardManager && scoreCardManager.scoreCards[cardIndex]) {
+                scoreCardManager.toggleCard(scoreCardManager.scoreCards[cardIndex]);
+            }
+        },
+        
+        resetScoreCards: function() {
+            const scoreCardManager = window.scoreCardManager;
+            if (scoreCardManager) {
+                scoreCardManager.resetAllCards();
+            }
         }
     };
 
