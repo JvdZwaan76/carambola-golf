@@ -2,6 +2,13 @@
 (function() {
     'use strict';
 
+    // Prevent duplicate execution
+    if (window.CarambolaGolfInitialized) {
+        console.log('🟡 Script already initialized, skipping duplicate execution');
+        return;
+    }
+    window.CarambolaGolfInitialized = true;
+
     // Performance optimization: Use passive event listeners
     const supportsPassive = (() => {
         let supportsPassive = false;
@@ -84,7 +91,7 @@
                     scope: '/'
                 });
                 
-                console.log('ServiceWorker registration successful:', registration);
+                console.log('ServiceWorker registration successful');
                 
                 // Track service worker registration
                 if (typeof gtag !== 'undefined') {
@@ -673,7 +680,7 @@
             this.loadingSteps = [];
             this.completedSteps = 0;
             this.minimumShowTime = window.innerWidth <= 768 ? 800 : 1000; // Shorter on mobile
-            this.maximumShowTime = window.innerWidth <= 768 ? 5000 : 8000; // Max 5s on mobile, 8s desktop
+            this.maximumShowTime = window.innerWidth <= 768 ? 4000 : 6000; // Max 4s on mobile, 6s desktop
             this.startTime = performance.now();
             this.forceHideTimer = null;
         }
@@ -736,14 +743,14 @@
                     });
                 }
                 
-                console.log('Preloader hidden');
+                console.log('✅ Preloader hidden successfully');
             }
         }
 
         init() {
             // Force hide after maximum time regardless of completion
             this.forceHideTimer = setTimeout(() => {
-                console.log('Preloader force timeout reached');
+                console.log('⏰ Preloader safety timeout reached');
                 this.hide();
             }, this.maximumShowTime);
         }
@@ -1023,7 +1030,6 @@
                     !this.navbar.contains(e.target) && 
                     this.navLinks.classList.contains('active')) {
                     this.closeMobileMenu();
-                    console.log('📱 Mobile menu closed via outside click');
                 }
             });
 
@@ -1031,7 +1037,6 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && this.mobileMenuOpen) {
                     this.closeMobileMenu();
-                    console.log('📱 Mobile menu closed via escape key');
                 }
             });
 
@@ -1039,7 +1044,6 @@
             window.addEventListener('resize', debounce(() => {
                 if (window.innerWidth > 768 && this.mobileMenuOpen) {
                     this.closeMobileMenu();
-                    console.log('📱 Mobile menu closed due to window resize');
                 }
             }, 250));
 
@@ -1137,8 +1141,6 @@
                         'page_location': window.location.pathname
                     });
                 }
-                
-                console.log('📱 Mobile menu closed via link click');
             }
         }
 
@@ -1181,18 +1183,6 @@
                 }
             });
         }
-
-        // Public method to close menu programmatically
-        closeMenu() {
-            if (this.mobileMenuOpen) {
-                this.closeMobileMenu();
-            }
-        }
-
-        // Public method to check if mobile menu is open
-        isMobileMenuOpen() {
-            return this.mobileMenuOpen;
-        }
     }
 
     // Enhanced animation manager with Intersection Observer
@@ -1211,7 +1201,7 @@
             this.setupMainObserver();
             this.setupStatsObserver();
             this.observeElements();
-            console.log('✨ Core managers initialized');
+            console.log('✨ Animation manager initialized');
         }
 
         setupMainObserver() {
@@ -1703,8 +1693,8 @@
         performanceMetrics.mark('dom_ready');
         
         console.log('🌴 Welcome to Carambola Golf Club! 🌴');
-        console.log('Fixed preloader and enhanced performance');
-        console.log('For technical inquiries, contact: jaspervdz@me.com');
+        console.log('🔧 Enhanced performance with mobile optimizations');
+        console.log('📧 For technical inquiries: jaspervdz@me.com');
         
         // Initialize preloader
         const preloader = new PreloaderManager();
@@ -1718,7 +1708,7 @@
         preloader.addStep('video_carousel');
         preloader.addStep('hole_carousel');
         
-        console.log('Starting initialization...');
+        console.log('⚡ Starting initialization...');
         
         try {
             // Initialize preloader with mobile optimizations
@@ -1726,7 +1716,7 @@
             
             // Register service worker
             const swResult = await registerServiceWorker();
-            console.log('Service worker registration result:', swResult);
+            console.log('✅ Service worker ready');
             preloader.completeStep('service_worker');
             
             // Initialize image optimizer
@@ -1737,7 +1727,7 @@
             if (document.fonts) {
                 await document.fonts.ready;
             }
-            console.log('Fonts ready');
+            console.log('✅ Fonts ready');
             preloader.completeStep('fonts');
             
             // Initialize analytics
@@ -1754,19 +1744,16 @@
             
             // Initialize video hero for home page
             if (document.querySelector('.hero-video')) {
-                console.log('Video hero initialized');
                 new VideoHeroManager();
             }
             
             // Initialize carousel for course page
             if (document.querySelector('.course-hero-carousel')) {
-                console.log('Course carousel initialized');
                 new CarouselManager();
             }
             
             // Initialize hole 1 carousel
             if (document.querySelector('.hole-1-special .hole-image-carousel')) {
-                console.log('Hole carousel initialized');
                 new HoleCarouselManager();
             }
             
@@ -1779,13 +1766,12 @@
             preloader.completeStep('video_carousel');
             preloader.completeStep('hole_carousel');
             
-            console.log('Additional functionality setup complete');
-            console.log('Initialization complete!');
+            console.log('✅ Initialization complete!');
             
             performanceMetrics.mark('init_complete');
             
         } catch (error) {
-            console.error('Initialization error:', error);
+            console.error('❌ Initialization error:', error);
             preloader.hide(); // Hide preloader even if there's an error
         }
     });
@@ -1816,8 +1802,8 @@
 
     // Console branding
     console.log('%c🌴 Welcome to Carambola Golf Club! 🌴', 'color: #d4af37; font-size: 16px; font-weight: bold;');
-    console.log('%cEnhanced website with optimized performance, PWA features, and accessibility', 'color: #1e3a5f; font-size: 12px;');
-    console.log('%cFor technical inquiries, contact: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%c⚡ Enhanced website with mobile-first performance', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%c📧 Technical support: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
     window.CarambolaGolf = {
