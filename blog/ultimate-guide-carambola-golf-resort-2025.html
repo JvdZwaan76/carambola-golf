@@ -41,8 +41,12 @@
     
     <!-- Critical Resource Preloading -->
     <link rel="preload" href="/styles.css" as="style">
-    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image">
+    <link rel="preload" href="/images/carambola-golf-course-aerial-hero.webp" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
+    
+    <!-- DNS Prefetch for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
     <!-- SEO Meta Tags -->
     <title>Ultimate Guide to Carambola Golf Resort: St. Croix's Premier Championship Course for 2025</title>
@@ -66,10 +70,10 @@
     <meta property="og:url" content="https://carambola.golf/blog/ultimate-guide-carambola-golf-resort-2025.html">
     <meta property="og:title" content="Ultimate Guide to Carambola Golf Resort: St. Croix's Premier Championship Course for 2025">
     <meta property="og:description" content="Explore Carambola Golf Resort's championship course, insider tips, and St. Croix activities for your 2025 golf vacation. Complete guide to Robert Trent Jones Sr.'s masterpiece.">
-    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
+    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-course-aerial-hero.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    <meta property="og:image:alt" content="Aerial view of Carambola Golf Club championship course designed by Robert Trent Jones Sr. with Caribbean Sea views">
     <meta property="og:site_name" content="Carambola Golf Club">
     <meta property="og:locale" content="en_US">
     <meta property="article:author" content="Jasper van der Zwaan">
@@ -81,8 +85,8 @@
     <meta property="twitter:url" content="https://carambola.golf/blog/ultimate-guide-carambola-golf-resort-2025.html">
     <meta property="twitter:title" content="Ultimate Guide to Carambola Golf Resort: St. Croix's Premier Championship Course for 2025">
     <meta property="twitter:description" content="Explore Carambola Golf Resort's championship course, insider tips, and St. Croix activities for your 2025 golf vacation.">
-    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
-    <meta property="twitter:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-course-aerial-hero.webp">
+    <meta property="twitter:image:alt" content="Aerial view of Carambola Golf Club championship course designed by Robert Trent Jones Sr. with Caribbean Sea views">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/blog/ultimate-guide-carambola-golf-resort-2025.html">
@@ -104,12 +108,29 @@
         "@type": "BlogPosting",
         "headline": "Ultimate Guide to Carambola Golf Resort: St. Croix's Premier Championship Course for 2025",
         "description": "Comprehensive guide to Carambola Golf Resort featuring course details, insider tips, and vacation planning advice for the best golf experience in St. Croix, US Virgin Islands.",
-        "image": {
-            "@type": "ImageObject",
-            "url": "https://carambola.golf/images/carambola-golf-clubhouse.webp",
-            "width": 1200,
-            "height": 630
-        },
+        "image": [
+            {
+                "@type": "ImageObject",
+                "url": "https://carambola.golf/images/carambola-golf-course-aerial-hero.webp",
+                "width": 1920,
+                "height": 1080,
+                "caption": "Aerial view of Carambola Golf Club championship course designed by Robert Trent Jones Sr."
+            },
+            {
+                "@type": "ImageObject",
+                "url": "https://carambola.golf/images/carambola-golf-hole-ocean-view.webp",
+                "width": 800,
+                "height": 450,
+                "caption": "Championship golf hole at Carambola Golf Club featuring oceanfront fairway"
+            },
+            {
+                "@type": "ImageObject",
+                "url": "https://carambola.golf/images/carambola-golf-clubhouse-exterior.webp",
+                "width": 800,
+                "height": 450,
+                "caption": "Carambola Golf Club clubhouse and pro shop facility"
+            }
+        ],
         "author": {
             "@type": "Person",
             "name": "Jasper van der Zwaan",
@@ -209,12 +230,13 @@
     }
     </script>
     
-    <!-- Article styles -->
+    <!-- Article styles with image optimization -->
     <style>
     /* Article Page Styles */
     .article-hero {
         background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)),
-                    url('/images/carambola-golf-clubhouse.webp') center/cover;
+                    url('/images/carambola-golf-course-aerial-hero.webp') center/cover;
+        background-attachment: fixed;
         min-height: 60vh;
         display: flex;
         align-items: center;
@@ -224,6 +246,12 @@
         margin-top: 80px;
         padding: 4rem 2rem 2rem;
         position: relative;
+    }
+
+    /* Fallback for browsers that don't support WebP */
+    .no-webp .article-hero {
+        background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)),
+                    url('/images/carambola-golf-course-aerial-hero.jpg') center/cover;
     }
 
     .article-header {
@@ -276,6 +304,79 @@
         max-width: 700px;
         margin: 0 auto;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Optimized Article Image Styles */
+    .article-image {
+        margin: 3rem 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        background: #f8f9fa;
+        position: relative;
+    }
+
+    .article-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.3s ease;
+    }
+
+    .article-image:hover img {
+        transform: scale(1.02);
+    }
+
+    .image-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        color: white;
+        padding: 1.5rem 1.5rem 1rem;
+        font-size: 0.95rem;
+        line-height: 1.4;
+    }
+
+    /* Loading placeholder for images */
+    .image-placeholder {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        height: 300px;
+        border-radius: 8px;
+    }
+
+    @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    /* Responsive image containers */
+    .image-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 12px;
+        margin: 2rem 0;
+    }
+
+    .image-container.aspect-16-9 {
+        aspect-ratio: 16 / 9;
+    }
+
+    .image-container.aspect-4-3 {
+        aspect-ratio: 4 / 3;
+    }
+
+    .image-container img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
     }
 
     /* Breadcrumb Navigation */
@@ -635,6 +736,7 @@
         .article-hero {
             min-height: 50vh;
             padding: 3rem 1rem 2rem;
+            background-attachment: scroll; /* Better performance on mobile */
         }
 
         .article-meta {
@@ -681,6 +783,10 @@
         .breadcrumb-list {
             flex-wrap: wrap;
         }
+
+        .image-container {
+            margin: 1.5rem 0;
+        }
     }
 
     @media (max-width: 480px) {
@@ -704,6 +810,19 @@
             width: 60px;
             height: 60px;
             font-size: 1.5rem;
+        }
+    }
+
+    /* Reduce motion for accessibility */
+    @media (prefers-reduced-motion: reduce) {
+        .article-hero {
+            background-attachment: scroll;
+        }
+        
+        .article-image img,
+        .nav-item,
+        .share-btn {
+            transition: none;
         }
     }
     </style>
@@ -745,7 +864,7 @@
         </div>
     </section>
 
-    <!-- Article Hero -->
+    <!-- Article Hero with Optimized Background Image -->
     <section class="article-hero">
         <div class="article-header">
             <div class="article-meta">
@@ -790,6 +909,21 @@
 
             <p>Nestled on a former sugar plantation in the northwest hills of St. Croix, Carambola Golf Course opened in 1966 as part of a visionary development by Laurence Rockefeller. The course's architect, Robert Trent Jones Sr., called it one of his finest creations—and for good reason. Spanning 7,181 yards from the back tees, it weaves through undulating terrain, tropical foliage, and sparkling ponds, with the Caribbean Sea as your constant backdrop.</p>
 
+            <!-- Golfer Action Shot -->
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/carambola-golfer-teeing-off-tropical.webp" type="image/webp">
+                    <img src="/images/carambola-golfer-teeing-off-tropical.jpg" 
+                         alt="Golfer teeing off at sunrise on Carambola Golf Club championship course"
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    A golfer tees off at sunrise on Carambola's championship course, where every hole offers stunning Caribbean views and strategic challenges designed by Robert Trent Jones Sr.
+                </div>
+            </div>
+
             <p>What sets Carambola apart? Its "pleasantly testing" layout combines strategic bunkers, water hazards on multiple holes, and elevation changes that demand precision and creativity. Recent upgrades, including new equipment and improved greens that roll smoothly and challenge even low-handicappers, have golfers buzzing.</p>
 
             <p>Rated 4 stars by GOLF Magazine and praised on platforms like TripAdvisor for its "relaxing and enjoyable" vibe, the course often feels like your private oasis—deserted fairways mean no rush, just pure immersion in nature. Birdwatchers, bring binoculars: Pelicans, herons, and ducks frequent the ponds, adding to the serene, sustainable atmosphere we prioritize at Carambola.</p>
@@ -802,6 +936,21 @@
             <h2>Hole-by-Hole Highlights: What to Expect on the Course</h2>
 
             <p>Carambola Golf Course St. Croix isn't just about the views; it's a test of strategy and stamina. Here's a sneak peek at some standout holes:</p>
+
+            <!-- Ocean View Hole Image -->
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/carambola-golf-hole-ocean-view.webp" type="image/webp">
+                    <img src="/images/carambola-golf-hole-ocean-view.jpg" 
+                         alt="Championship golf hole at Carambola Golf Club featuring oceanfront fairway and tropical landscaping"
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    One of Carambola's signature oceanfront holes showcasing the dramatic Caribbean Sea views that make this Robert Trent Jones Sr. design truly special.
+                </div>
+            </div>
 
             <h3>Hole 1 (Par 4, 410 yards): The Welcome</h3>
             <p>A gentle opener downhill to a wide fairway, but beware the left-side bunker—set the tone with a solid drive.</p>
@@ -820,6 +969,21 @@
             <h2>Insider Tips for Your Best Round at Carambola Golf Resort</h2>
 
             <p>To maximize your experience:</p>
+
+            <!-- Clubhouse Image -->
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/carambola-golf-clubhouse-exterior.webp" type="image/webp">
+                    <img src="/images/carambola-golf-clubhouse-exterior.jpg" 
+                         alt="Carambola Golf Club clubhouse and pro shop facility in St. Croix US Virgin Islands"
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    The Carambola Golf Club clubhouse and pro shop, your starting point for an unforgettable Caribbean golf experience with full-service amenities and PGA instruction.
+                </div>
+            </div>
 
             <h3>Book Early</h3>
             <p>Tee times fill up during peak season (December-April). Call our Pro Shop at <a href="tel:+13407785638">+1-340-778-5638</a> or visit our site for reservations.</p>
@@ -841,6 +1005,21 @@
             <h2>Pair Your Golf Getaway with St. Croix's Top Vacation Activities</h2>
 
             <p>Why stop at golf? Carambola Golf Resort is the perfect base for a full St. Croix adventure. Here's how to blend your rounds with island highlights:</p>
+
+            <!-- Vacation Activities Image -->
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/st-croix-beach-golf-vacation.webp" type="image/webp">
+                    <img src="/images/st-croix-beach-golf-vacation.jpg" 
+                         alt="St. Croix beach and recreational activities perfect for golf vacation at Carambola Resort"
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    Perfect your Caribbean golf vacation by combining championship golf at Carambola with St. Croix's pristine beaches, snorkeling, and tropical adventures.
+                </div>
+            </div>
 
             <h3>Beach Bliss and Snorkeling</h3>
             <p>After golf, head to nearby beaches for world-class snorkeling—spot colorful reefs and sea turtles. Resorts like <a href="https://www.marriott.com/en-us/hotels/stxbr-carambola-beach-resort-st-croix-us-virgin-islands/overview/" target="_blank" rel="noopener">Carambola Beach Resort</a> offer private shores and hot tubs for post-round relaxation. For more, explore our <a href="/st-croix.html">St. Croix page</a>.</p>
@@ -1005,6 +1184,42 @@
     <script src="/script.js"></script>
     <script src="/footer-status.js"></script>
     
+    <!-- WebP Detection Script -->
+    <script>
+        // WebP detection for fallback support
+        function supportsWebP() {
+            return new Promise(resolve => {
+                const webP = new Image();
+                webP.onload = webP.onerror = () => resolve(webP.height === 2);
+                webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+            });
+        }
+
+        supportsWebP().then(supported => {
+            if (!supported) {
+                document.documentElement.classList.add('no-webp');
+            }
+        });
+
+        // Lazy loading enhancement for older browsers
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src || img.src;
+                        img.classList.remove('lazy');
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    </script>
+    
     <!-- Article-specific JavaScript -->
     <script>
         // Share functionality
@@ -1086,6 +1301,24 @@
             trackArticleInteraction('article_view', 'full_article', {
                 referrer: document.referrer,
                 entry_point: 'direct'
+            });
+
+            // Track image views when they come into viewport
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const alt = img.getAttribute('alt');
+                        trackArticleInteraction('image_viewed', alt || 'unknown_image', {
+                            image_src: img.src
+                        });
+                        imageObserver.unobserve(img);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('.article-image img').forEach(img => {
+                imageObserver.observe(img);
             });
 
             // Track FAQ interactions
