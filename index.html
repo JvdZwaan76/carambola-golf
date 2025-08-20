@@ -1,57 +1,891 @@
-<!-- Updated footer section for index.html -->
-<!-- Replace the existing footer section in your index.html with this updated version -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
+    <!-- End Google Tag Manager -->
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YJ3H2GJ4SS', {
+            // Enhanced measurement settings for granular data
+            enhanced_measurement: true,
+            scroll_threshold: 90,
+            send_page_view: true,
+            // Custom parameters for golf course analytics
+            custom_map: {
+                'golf_course_section': 'custom_parameter_1',
+                'user_intent': 'custom_parameter_2',
+                'booking_stage': 'custom_parameter_3'
+            }
+        });
 
-<footer class="footer">
-    <div class="footer-content">
-        <div class="footer-logo">Carambola Golf Club</div>
-        <p>&copy; 2025 Carambola Golf Club. All rights reserved.</p>
-        <p>Estate River, Kingshill | St. Croix, VI 00850</p>
-        <p>Designed by Robert Trent Jones Sr.</p>
-        
-        <div class="footer-links">
-            <div class="footer-links-grid">
-                <div class="footer-section">
-                    <h4>Golf</h4>
-                    <ul>
-                        <li><a href="/course.html">The Course</a></li>
-                        <li><a href="/pricing.html">Pricing</a></li>
-                        <li><a href="/contact.html">Book Tee Time</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Experience</h4>
-                    <ul>
-                        <li><a href="/accommodations.html">Accommodations</a></li>
-                        <li><a href="/st-croix.html">St. Croix</a></li>
-                        <li><a href="/blog/">Blog & Insights</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Information</h4>
-                    <ul>
-                        <li><a href="/status.html">Website Status</a></li>
-                        <li><a href="/privacy-policy.html">Privacy Policy</a></li>
-                        <li><a href="/terms-of-service.html">Terms of Service</a></li>
-                        <li><a href="/accessibility.html">Accessibility</a></li>
-                        <li><a href="/sitemap.html">Site Map</a></li>
-                    </ul>
-                </div>
+        // Enhanced Analytics Tracking Functions
+        function trackGolfEvent(action, section, details = {}) {
+            gtag('event', action, {
+                event_category: 'Golf Course Interaction',
+                event_label: section,
+                golf_course_section: section,
+                ...details
+            });
+        }
+
+        function trackBookingIntent(stage, method = '') {
+            gtag('event', 'booking_intent', {
+                event_category: 'Booking Funnel',
+                event_label: stage,
+                booking_stage: stage,
+                contact_method: method,
+                value: stage === 'tee_time_request' ? 115 : 0
+            });
+        }
+
+        function trackUserEngagement(action, element) {
+            gtag('event', action, {
+                event_category: 'User Engagement',
+                event_label: element,
+                engagement_time_msec: Date.now()
+            });
+        }
+
+        function trackScrollDepth() {
+            let maxScroll = 0;
+            window.addEventListener('scroll', function() {
+                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
+                    maxScroll = scrollPercent;
+                    gtag('event', 'scroll', {
+                        event_category: 'User Engagement',
+                        event_label: scrollPercent + '%',
+                        value: scrollPercent
+                    });
+                }
+            });
+        }
+
+        // Initialize enhanced tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            trackScrollDepth();
+            
+            // Track CTA button clicks
+            document.querySelectorAll('.cta-button, .book-tee-time').forEach(button => {
+                button.addEventListener('click', function() {
+                    trackBookingIntent('cta_click', 'website_button');
+                });
+            });
+
+            // Track phone number clicks
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackBookingIntent('phone_click', 'direct_call');
+                });
+            });
+
+            // Track email clicks
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackBookingIntent('email_click', 'direct_email');
+                });
+            });
+
+            // Track navigation clicks
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackUserEngagement('navigation_click', this.textContent.trim());
+                });
+            });
+
+            // Track feature card interactions
+            document.querySelectorAll('.feature-card, .quick-link-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h3')?.textContent || 'Unknown Feature';
+                    trackGolfEvent('feature_interaction', title);
+                });
+            });
+
+            // Track modal interactions
+            const modal = document.getElementById('constructionModal');
+            if (modal) {
+                // Track modal shows
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.target.classList.contains('show')) {
+                            gtag('event', 'modal_view', {
+                                event_category: 'User Engagement',
+                                event_label: 'booking_modal'
+                            });
+                        }
+                    });
+                });
+                observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+            }
+        });
+    </script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1e3a5f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Carambola Golf">
+    <meta name="msapplication-TileColor" content="#1e3a5f">
+    <meta name="msapplication-config" content="/browserconfig.xml">
+    
+    <!-- Critical Resource Preloading -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
+    
+    <!-- DNS Prefetch for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+    <link rel="dns-prefetch" href="https://www.google-analytics.com">
+    <link rel="dns-prefetch" href="https://api.openweathermap.org">
+    
+    <!-- SEO Meta Tags -->
+    <title>Carambola Golf Club | Robert Trent Jones Sr. Championship Course | St. Croix Golf Resort</title>
+    <meta name="description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands. Book your tee time today for the ultimate Caribbean golf vacation with luxury accommodations and island adventures.">
+    <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course, golf vacation, tropical golf, us virgin islands, estate river, kingshill, golf resort, caribbean resort">
+    <meta name="author" content="Carambola Golf Club">
+    <meta name="copyright" content="Carambola Golf Club">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="distribution" content="global">
+    <meta name="rating" content="general">
+    
+    <!-- Additional SEO Tags -->
+    <meta name="HandheldFriendly" content="true">
+    <meta name="MobileOptimized" content="width">
+    <meta name="apple-mobile-web-app-title" content="Carambola Golf">
+    <meta name="application-name" content="Carambola Golf Club">
+    <meta name="msapplication-tooltip" content="Championship Golf in Paradise">
+    <meta name="msapplication-starturl" content="/">
+    
+    <!-- Geographic Tags -->
+    <meta name="geo.region" content="VI">
+    <meta name="geo.placename" content="St. Croix">
+    <meta name="geo.position" content="17.7537;-64.8059">
+    <meta name="ICBM" content="17.7537, -64.8059">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carambola.golf/">
+    <meta property="og:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
+    <meta property="og:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
+    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    <meta property="og:site_name" content="Carambola Golf Club">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carambola.golf/">
+    <meta property="twitter:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
+    <meta property="twitter:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
+    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
+    <meta property="twitter:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://carambola.golf/">
+    
+    <!-- Favicon and Icons -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    
+    <!-- Enhanced Structured Data / Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "GolfCourse",
+        "name": "Carambola Golf Club",
+        "description": "Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands. Experience world-class golf in tropical paradise with stunning Caribbean views, luxury amenities, and complete vacation experiences.",
+        "url": "https://carambola.golf",
+        "telephone": "+13407785638",
+        "email": "info@carambola.golf",
+        "logo": "https://carambola.golf/images/carambola-golf-logo.png",
+        "image": [
+            "https://carambola.golf/images/carambola-golf-clubhouse.webp",
+            "https://carambola.golf/images/carambola-golf-hole-12.webp",
+            "https://carambola.golf/images/carambola-golf-hole-18.webp"
+        ],
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Estate River, Kingshill",
+            "addressLocality": "St. Croix",
+            "addressRegion": "VI",
+            "postalCode": "00850",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "17.7537",
+            "longitude": "-64.8059"
+        },
+        "hasMap": "https://maps.google.com/maps?q=Carambola+Golf+Club,+Estate+River,+Kingshill,+St.+Croix,+VI",
+        "openingHours": "Mo-Su 06:00-18:00",
+        "priceRange": "$$",
+        "starRating": {
+            "@type": "Rating",
+            "ratingValue": "4.8",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "127",
+            "bestRating": "5",
+            "worstRating": "1"
+        },
+        "amenityFeature": [
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Pro Shop",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification", 
+                "name": "Driving Range",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Putting Green", 
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Golf Lessons",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Golf Cart Rental",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Club Rental",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Restaurant",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Lounge",
+                "value": true
+            },
+            {
+                "@type": "LocationFeatureSpecification",
+                "name": "Free Parking",
+                "value": true
+            }
+        ],
+        "founder": {
+            "@type": "Person",
+            "name": "Robert Trent Jones Sr.",
+            "description": "Legendary golf course architect",
+            "url": "https://en.wikipedia.org/wiki/Robert_Trent_Jones"
+        },
+        "paymentAccepted": "Cash, Credit Card, Debit Card",
+        "currenciesAccepted": "USD",
+        "smokingAllowed": false,
+        "petsAllowed": false,
+        "isAccessibleForFree": false,
+        "publicAccess": true,
+        "sameAs": [
+            "https://www.facebook.com/CarambolaGolfClub",
+            "https://www.instagram.com/carambolagolf",
+            "https://www.twitter.com/CarambolaGolf",
+            "https://www.youtube.com/CarambolaGolfClub",
+            "https://www.tripadvisor.com/carambola-golf-club"
+        ],
+        "offers": [
+            {
+                "@type": "Offer",
+                "name": "18-Hole Golf Round",
+                "description": "Championship golf experience designed by Robert Trent Jones Sr.",
+                "price": "115",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2025-01-01",
+                "category": "Golf"
+            },
+            {
+                "@type": "Offer",
+                "name": "Annual Golf Membership",
+                "description": "Unlimited golf access for one year",
+                "price": "1400",
+                "priceCurrency": "USD",
+                "availability": "https://schema.org/InStock",
+                "validFrom": "2025-01-01",
+                "category": "Membership"
+            }
+        ]
+    }
+    </script>
+    
+    <!-- FAQ Schema for SEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "Who designed Carambola Golf Club?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Carambola Golf Club was designed by legendary golf course architect Robert Trent Jones Sr., one of the most celebrated golf course designers in history."
+                }
+            },
+            {
+                "@type": "Question", 
+                "name": "How do I book a tee time at Carambola Golf Club?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "To book a tee time at Carambola Golf Club, call our Pro Shop at +1-340-778-5638 or email info@carambola.golf. We recommend booking 24-48 hours in advance."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What are the green fees at Carambola Golf Club?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Visitor green fees are $115 for 18 holes with cart, $85 walking. Local residents (VI ID required) pay $75 for 18 holes with cart, $45 walking. Multi-round packages available."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Where is Carambola Golf Club located?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Carambola Golf Club is located at Estate River, Kingshill, St. Croix, VI 00850, approximately 20 minutes from Henry E. Rohlsen Airport."
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <!-- Preloader -->
+    <div id="preloader" class="preloader">
+        <div class="preloader-content">
+            <div class="golf-loader">
+                <div class="golf-ball"></div>
+                <div class="golf-hole"></div>
+                <div class="golf-flag"></div>
             </div>
-        </div>
-        
-        <div class="footer-contact">
-            <p>For inquiries regarding this website please contact:</p>
-            <p><a href="jaspervdz@me.com">jaspervdz@me.com</a> | <a href="tel:+18053387681">+1-805-338-7681</a></p>
-            <div class="footer-status">
-                <p>Last system check: <span id="footer-last-check">Loading...</span></p>
-                <p>
-                    <span id="footer-overall-status" class="footer-overall-status operational">All services operational</span>
-                    <a href="/status.html" class="footer-status-indicator" aria-label="View detailed system status">
-                        <span class="footer-status-dot"></span>
-                        <span class="footer-status-text">Live</span>
-                    </a>
-                </p>
+            <div class="loading-text">
+                <h2>Carambola Golf Club</h2>
+                <p>Loading championship golf experience...</p>
+            </div>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
             </div>
         </div>
     </div>
-</footer>
+
+    <!-- Under Construction Modal -->
+    <div id="constructionModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-golf-ball modal-icon"></i>
+                <h2>Ready to Tee Off?</h2>
+            </div>
+            <div class="modal-body">
+                <p>Welcome to Carambola Golf Club! Ready to experience championship golf in paradise?</p>
+                <p><strong>Call our Pro Shop to book your tee time:</strong></p>
+                <div class="contact-highlight">
+                    <i class="fas fa-phone"></i>
+                    <a href="tel:+13407785638">+1-340-778-5638</a>
+                </div>
+                <div class="contact-highlight">
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@carambola.golf">info@carambola.golf</a>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="closeModal" class="modal-close-btn">
+                    <i class="fas fa-times"></i> Continue to Website
+                </button>
+            </div>
+            <div class="golf-decoration">
+                <i class="fas fa-golf-ball"></i>
+                <i class="fas fa-golf-ball"></i>
+                <i class="fas fa-golf-ball"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="/" class="logo">Carambola Golf Club</a>
+            <ul class="nav-links">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/course.html">The Course</a></li>
+                <li><a href="/pricing.html">Pricing</a></li>
+                <li><a href="/accommodations.html">Accommodations</a></li>
+                <li><a href="/st-croix.html">Experience St. Croix</a></li>
+                <li><a href="/contact.html">Contact</a></li>
+            </ul>
+            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Video -->
+    <section id="home" class="hero">
+        <div class="hero-video-container">
+            <video class="hero-video" autoplay muted loop playsinline preload="metadata">
+                <source src="/video/carambola-golf-video-loop-hero.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <img src="/images/carambola-golf-clubhouse.webp" alt="Carambola Golf Club Championship Clubhouse" class="hero-fallback-image">
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <div class="hero-tagline">Play the Caribbean's Premier Golf Course</div>
+            <h1>Carambola Golf Club</h1>
+            <div class="hero-subtitle">Designed by Robert Trent Jones Sr.</div>
+            <div class="hero-description">
+                Experience championship golf in tropical paradise. Every hole showcases Jones' legendary design philosophy while incorporating St. Croix's natural beauty and challenging trade winds.
+            </div>
+            <button class="cta-button book-tee-time">Book Tee Time</button>
+        </div>
+    </section>
+
+    <!-- Weather Widget -->
+    <section class="weather-widget">
+        <div class="container">
+            <div class="weather-card">
+                <div class="weather-header">
+                    <i class="fas fa-sun weather-icon"></i>
+                    <div class="weather-location">
+                        <h3>St. Croix Golf Weather</h3>
+                        <p>Perfect conditions for championship golf</p>
+                    </div>
+                </div>
+                <div class="weather-content">
+                    <div class="weather-main">
+                        <div class="temperature">
+                            <span id="current-temp">82°F</span>
+                            <div class="temp-range">
+                                <span id="high-temp">85°</span> / <span id="low-temp">78°</span>
+                            </div>
+                        </div>
+                        <div class="weather-details">
+                            <div class="weather-condition" id="weather-condition">Partly Sunny</div>
+                            <div class="weather-stats">
+                                <div class="stat">
+                                    <i class="fas fa-wind"></i>
+                                    <span id="wind-speed">12 mph</span>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-tint"></i>
+                                    <span id="humidity">65%</span>
+                                </div>
+                                <div class="stat">
+                                    <i class="fas fa-eye"></i>
+                                    <span id="visibility">10 mi</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="weather-notice">
+                        <i class="fas fa-golf-ball"></i>
+                        <span>Excellent conditions for golf today!</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Heritage Section -->
+    <section class="heritage">
+        <div class="container">
+            <div class="heritage-content">
+                <h2>A Legacy of Excellence</h2>
+                <p>Welcome to Carambola Golf Club, where Robert Trent Jones Sr.'s masterful design meets the pristine beauty of St. Croix. Since opening, our championship course has challenged golfers with strategic bunkering, rolling fairways, and breathtaking Caribbean vistas.</p>
+                <p>Jones' signature style is evident throughout our 18-hole layout, featuring the perfect balance of challenge and playability that has made him golf's most celebrated architect. Every round at Carambola offers the opportunity to experience golf as it was meant to be played.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Features -->
+    <section id="course" class="features">
+        <div class="container">
+            <h2 class="section-title">Championship Golf in Paradise</h2>
+            <div class="section-subtitle">Where legendary design meets tropical beauty</div>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-drafting-compass"></i>
+                    </div>
+                    <h3>Robert Trent Jones Sr. Design</h3>
+                    <p>Experience the work of golf's most celebrated architect. Jones' strategic design philosophy creates challenging yet fair golf that rewards precision and punishes wayward shots, all while incorporating the natural beauty of St. Croix.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3>Spectacular Island Setting</h3>
+                    <p>Rolling fairways wind through tropical landscape with stunning Caribbean Sea views. The course's elevation changes and natural contours create dramatic vistas and memorable golf experiences on every hole.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <h3>Championship Conditions</h3>
+                    <p>Pristine greens and immaculately maintained fairways ensure optimal playing conditions year-round. Our dedicated grounds crew maintains the course to championship standards, worthy of Jones' legendary design.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Stats -->
+    <section class="course-stats">
+        <div class="container">
+            <h2 class="section-title">Course Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">18</span>
+                    <span class="stat-label">Championship Holes</span>
+                    <div class="stat-description">Robert Trent Jones Sr. masterpiece featuring strategic design and natural beauty</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">72</span>
+                    <span class="stat-label">Par</span>
+                    <div class="stat-description">Balanced layout with challenging yet fair scoring opportunities</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">7,181</span>
+                    <span class="stat-label">Total Yards</span>
+                    <div class="stat-description">Championship length with multiple tee options for all skill levels</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">365</span>
+                    <span class="stat-label">Days of Golf</span>
+                    <div class="stat-description">Perfect Caribbean weather ensures year-round playability</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Links Section -->
+    <section class="quick-links">
+        <div class="container">
+            <h2 class="section-title">Explore More</h2>
+            <div class="quick-links-grid">
+                <a href="/course.html" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-golf-ball"></i>
+                    </div>
+                    <h3>The Course</h3>
+                    <p>Explore all 18 championship holes designed by Robert Trent Jones Sr. with detailed hole descriptions and statistics.</p>
+                </a>
+                <a href="/pricing.html" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-tag"></i>
+                    </div>
+                    <h3>Pricing & Packages</h3>
+                    <p>View our competitive rates for golf rounds, memberships, equipment rentals, and special packages.</p>
+                </a>
+                <a href="/accommodations.html" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-bed"></i>
+                    </div>
+                    <h3>Luxury Accommodations</h3>
+                    <p>Discover premium lodging options perfect for your championship golf vacation in tropical paradise.</p>
+                </a>
+                <a href="/st-croix.html" class="quick-link-card">
+                    <div class="quick-link-icon">
+                        <i class="fas fa-umbrella-beach"></i>
+                    </div>
+                    <h3>Experience St. Croix</h3>
+                    <p>Discover the island's finest dining, attractions, and activities beyond the fairways during your golf vacation.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="testimonial-content">
+                <div class="testimonial-quote">
+                    "Carambola Golf Club represents the perfect marriage of Robert Trent Jones Sr.'s legendary design philosophy with the natural beauty of the Caribbean. Every hole is a masterpiece."
+                </div>
+                <div class="testimonial-author">— Golf Architecture Review</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Notices -->
+    <section class="course-notices">
+        <div class="container">
+            <h3 class="notices-title">Course Information</h3>
+            <div class="notices-grid">
+                <div class="notice-item">
+                    <i class="fas fa-golf-ball"></i>
+                    <strong>Premium Equipment</strong><br>
+                    Full rental sets available
+                </div>
+                <div class="notice-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <strong>PGA Instruction</strong><br>
+                    Professional lessons offered
+                </div>
+                <div class="notice-item">
+                    <i class="fas fa-users"></i>
+                    <strong>Group Events</strong><br>
+                    Tournament packages available
+                </div>
+                <div class="notice-item">
+                    <i class="fas fa-sun"></i>
+                    <strong>Year-Round Golf</strong><br>
+                    Perfect Caribbean weather
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact & Tee Times</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Reservations</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div class="contact-item-content">
+                            <div class="contact-item-title">Pro Shop</div>
+                            <div class="contact-item-details">
+                                <a href="tel:+13407785638">+1-340-778-5638</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div class="contact-item-content">
+                            <div class="contact-item-title">Email</div>
+                            <div class="contact-item-details">
+                                <a href="mailto:info@carambola.golf">info@carambola.golf</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="contact-item-content">
+                            <div class="contact-item-title">Operating Hours</div>
+                            <div class="contact-item-details">Dawn to Dusk, 7 Days a Week</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-info">
+                    <h3>Location</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="contact-item-content">
+                            <div class="contact-item-title">Address</div>
+                            <div class="contact-item-details">Estate River, Kingshill<br>St. Croix, VI 00850</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-plane"></i>
+                        <div class="contact-item-content">
+                            <div class="contact-item-title">Airport</div>
+                            <div class="contact-item-details">20 minutes from Henry E. Rohlsen Airport</div>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-car"></i>
+                        <div class="contact-item-content">
+                            <div class="contact-item-title">Parking</div>
+                            <div class="contact-item-details">Complimentary on-site parking</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Carambola Golf Club</div>
+            <p>&copy; 2025 Carambola Golf Club. All rights reserved.</p>
+            <p>Estate River, Kingshill | St. Croix, VI 00850</p>
+            <p>Designed by Robert Trent Jones Sr.</p>
+            
+            <div class="footer-links">
+                <div class="footer-links-grid">
+                    <div class="footer-section">
+                        <h4>Golf</h4>
+                        <ul>
+                            <li><a href="/course.html">The Course</a></li>
+                            <li><a href="/pricing.html">Pricing</a></li>
+                            <li><a href="/contact.html">Book Tee Time</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Experience</h4>
+                        <ul>
+                            <li><a href="/accommodations.html">Accommodations</a></li>
+                            <li><a href="/st-croix.html">St. Croix</a></li>
+                            <li><a href="/blog/">Blog & Insights</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-section">
+                        <h4>Information</h4>
+                        <ul>
+                            <li><a href="/status.html">Website Status</a></li>
+                            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                            <li><a href="/terms-of-service.html">Terms of Service</a></li>
+                            <li><a href="/accessibility.html">Accessibility</a></li>
+                            <li><a href="/sitemap.html">Site Map</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-contact">
+                <p>For inquiries regarding this website please contact:</p>
+                <p><a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a> | <a href="tel:+18053387681">+1-805-338-7681</a></p>
+                <div class="footer-status">
+                    <p>Last system check: <span id="footer-last-check">Loading...</span></p>
+                    <p>
+                        <span id="footer-overall-status" class="footer-overall-status operational">All services operational</span>
+                        <a href="/status.html" class="footer-status-indicator" aria-label="View detailed system status">
+                            <span class="footer-status-dot"></span>
+                            <span class="footer-status-text">Live</span>
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Offline Indicator -->
+    <div id="offlineIndicator" class="offline-indicator" style="display: none;">
+        <i class="fas fa-wifi"></i>
+        <span>You're offline. Some features may be limited.</span>
+    </div>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="footer-status.js"></script>
+    
+    <!-- Mobile Preloader Safety Script -->
+    <script>
+    // Enhanced mobile preloader safety - prevents hanging on mobile devices
+    document.addEventListener('DOMContentLoaded', function() {
+        const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const maxTimeout = isMobile ? 3000 : 6000; // Shorter timeout on mobile
+        
+        console.log('📱 Mobile preloader safety initialized', { isMobile, maxTimeout });
+        
+        // Force hide preloader after timeout
+        setTimeout(function() {
+            const preloader = document.querySelector('#preloader, .preloader');
+            if (preloader) {
+                console.log('🚨 Safety timeout: Force hiding preloader');
+                preloader.style.transition = 'opacity 0.3s ease';
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+                
+                setTimeout(() => {
+                    if (preloader.parentNode) {
+                        preloader.parentNode.removeChild(preloader);
+                    }
+                }, 300);
+            }
+        }, maxTimeout);
+        
+        // Additional mobile safety - ultra-short timeout
+        if (isMobile) {
+            setTimeout(function() {
+                const preloader = document.querySelector('#preloader, .preloader');
+                if (preloader) {
+                    console.log('📱 Ultra safety: Removing preloader completely');
+                    preloader.remove();
+                }
+            }, 5000);
+        }
+    });
+    </script>
+    
+    <!-- Weather Widget Script -->
+    <script>
+        // Simple weather data (you can integrate with a real API)
+        function updateWeather() {
+            // This is placeholder data - in production, you'd fetch from OpenWeatherMap or similar
+            const weatherData = {
+                temperature: Math.floor(Math.random() * 8) + 78, // 78-85°F
+                high: Math.floor(Math.random() * 5) + 85,
+                low: Math.floor(Math.random() * 5) + 76,
+                condition: ['Sunny', 'Partly Sunny', 'Partly Cloudy'][Math.floor(Math.random() * 3)],
+                windSpeed: Math.floor(Math.random() * 10) + 8,
+                humidity: Math.floor(Math.random() * 20) + 55,
+                visibility: 10
+            };
+
+            document.getElementById('current-temp').textContent = weatherData.temperature + '°F';
+            document.getElementById('high-temp').textContent = weatherData.high + '°';
+            document.getElementById('low-temp').textContent = weatherData.low + '°';
+            document.getElementById('weather-condition').textContent = weatherData.condition;
+            document.getElementById('wind-speed').textContent = weatherData.windSpeed + ' mph';
+            document.getElementById('humidity').textContent = weatherData.humidity + '%';
+            document.getElementById('visibility').textContent = weatherData.visibility + ' mi';
+
+            // Update weather icon based on condition
+            const weatherIcon = document.querySelector('.weather-icon');
+            const iconMap = {
+                'Sunny': 'fas fa-sun',
+                'Partly Sunny': 'fas fa-cloud-sun',
+                'Partly Cloudy': 'fas fa-cloud'
+            };
+            weatherIcon.className = iconMap[weatherData.condition] || 'fas fa-sun';
+        }
+
+        // Update weather on page load
+        document.addEventListener('DOMContentLoaded', updateWeather);
+        
+        // Update weather every 30 minutes
+        setInterval(updateWeather, 30 * 60 * 1000);
+    </script>
+    
+    <!-- Affiliate Program Tracking -->
+    <script src="https://www.anrdoezrs.net/am/101520211/include/allCj/impressions/page/am.js"></script>
+</body>
+</html>
