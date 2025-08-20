@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-    
+   
     <!-- Homepage -->
     <url>
         <loc>https://carambola.golf/</loc>
@@ -18,7 +18,7 @@
             <image:caption>Carambola Golf Club Championship Course - Hole 1</image:caption>
         </image:image>
     </url>
-    
+   
     <!-- Course Page -->
     <url>
         <loc>https://carambola.golf/course.html</loc>
@@ -34,7 +34,7 @@
             <image:caption>Carambola Golf Club Championship Hole 18</image:caption>
         </image:image>
     </url>
-    
+   
     <!-- Pricing Page -->
     <url>
         <loc>https://carambola.golf/pricing.html</loc>
@@ -46,7 +46,7 @@
             <image:caption>Carambola Golf Club Championship Hole 18</image:caption>
         </image:image>
     </url>
-    
+   
     <!-- Accommodations Page -->
     <url>
         <loc>https://carambola.golf/accommodations.html</loc>
@@ -62,7 +62,7 @@
             <image:caption>Renaissance St. Croix Carambola Beach Resort</image:caption>
         </image:image>
     </url>
-    
+   
     <!-- Experience St. Croix Page -->
     <url>
         <loc>https://carambola.golf/st-croix.html</loc>
@@ -74,7 +74,7 @@
             <image:caption>Buck Island Reef National Monument - St. Croix Attraction</image:caption>
         </image:image>
     </url>
-    
+   
     <!-- Contact Page -->
     <url>
         <loc>https://carambola.golf/contact.html</loc>
@@ -86,7 +86,7 @@
             <image:caption>Contact Carambola Golf Club for Tee Times</image:caption>
         </image:image>
     </url>
-    
+   
     <!-- Blog Section -->
     <!-- Blog Main Page -->
     <url>
@@ -96,10 +96,10 @@
         <priority>0.8</priority>
         <image:image>
             <image:loc>https://carambola.golf/images/carambola-golf-hole-18.webp</image:loc>
-            <image:caption>Carambola Golf Club Blog & Insights</image:caption>
+            <image:caption>Carambola Golf Club Blog</image:caption>
         </image:image>
     </url>
-    
+   
     <!-- Blog Articles -->
     <url>
         <loc>https://carambola.golf/blog/ultimate-guide-carambola-golf-resort-2025.html</loc>
@@ -120,7 +120,7 @@
             <news:keywords>carambola golf resort, st croix golf course, robert trent jones sr, virgin islands golf, caribbean golf vacation</news:keywords>
         </news:news>
     </url>
-    
+   
     <url>
         <loc>https://carambola.golf/blog/planning-perfect-st-croix-golf-vacation-2025.html</loc>
         <lastmod>2025-01-20</lastmod>
@@ -140,7 +140,7 @@
             <news:keywords>st croix golf vacation, carambola golf resort planning, virgin islands golf trip, caribbean golf vacation 2025</news:keywords>
         </news:news>
     </url>
-    
+   
     <url>
         <loc>https://carambola.golf/blog/st-croix-activities-dining-after-golf.html</loc>
         <lastmod>2025-01-20</lastmod>
@@ -156,11 +156,11 @@
                 <news:language>en</news:language>
             </news:publication>
             <news:publication_date>2025-01-15</news:publication_date>
-            <news:title>What to Do After Your Round at Carambola Golf Resort: Fine Dining and Activities in St. Croix</news:title>
+            <news:title>What to Do After Your Round at Carambola Golf Resort: Fine Dining &amp; Activities in St. Croix</news:title>
             <news:keywords>st croix activities, st croix restaurants, carambola golf resort activities, virgin islands dining</news:keywords>
         </news:news>
     </url>
-    
+   
     <!-- Legal Pages -->
     <url>
         <loc>https://carambola.golf/privacy-policy.html</loc>
@@ -168,28 +168,28 @@
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
-    
+   
     <url>
         <loc>https://carambola.golf/terms-of-service.html</loc>
         <lastmod>2025-01-20</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
-    
+   
     <url>
         <loc>https://carambola.golf/accessibility.html</loc>
         <lastmod>2025-01-20</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
-    
+   
     <url>
         <loc>https://carambola.golf/sitemap.html</loc>
         <lastmod>2025-01-20</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.4</priority>
     </url>
-    
+   
     <!-- Status Page -->
     <url>
         <loc>https://carambola.golf/status.html</loc>
@@ -197,7 +197,7 @@
         <changefreq>daily</changefreq>
         <priority>0.2</priority>
     </url>
-    
+   
     <!-- Offline Page -->
     <url>
         <loc>https://carambola.golf/offline.html</loc>
@@ -205,5 +205,4 @@
         <changefreq>yearly</changefreq>
         <priority>0.1</priority>
     </url>
-
 </urlset>
