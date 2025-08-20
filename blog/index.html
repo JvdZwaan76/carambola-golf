@@ -236,206 +236,48 @@
     <!-- Blog RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Carambola Golf Club Blog RSS Feed" href="https://carambola.golf/blog/rss.xml">
 
-    <!-- Enterprise Design System Styles -->
+    <!-- Blog-specific styles that extend the main design system -->
     <style>
-        /* CSS Custom Properties - Enterprise Design System */
-        :root {
-            --primary-navy: #1e3a5f;
-            --accent-gold: #d4af37;
-            --light-gold: #fef3c7;
-            --bg-cream: #fefdfb;
-            --bg-light: #f9fafb;
-            --text-dark: #1f2937;
-            --text-light: #ffffff;
-            --text-muted: #6b7280;
-            --border-light: #e5e7eb;
-            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-medium: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-strong: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            --transition-fast: 0.15s ease;
-            --transition-medium: 0.3s ease;
-            --transition-slow: 0.5s ease;
-            --border-radius: 8px;
-            --border-radius-lg: 12px;
-            --container-max: 1200px;
-            --container-padding: 2rem;
-        }
-
-        /* Reset and Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: var(--text-dark);
-            background-color: var(--bg-cream);
-        }
-
-        /* Skip Link for Accessibility */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 6px;
-            background: var(--primary-navy);
-            color: white;
-            padding: 8px;
-            text-decoration: none;
-            border-radius: 4px;
-            z-index: 9999;
-        }
-
-        .skip-link:focus {
-            top: 6px;
-        }
-
-        /* Container System */
-        .container {
-            max-width: var(--container-max);
-            margin: 0 auto;
-            padding: 0 var(--container-padding);
-        }
-
-        /* Navigation */
-        .navbar {
-            background: var(--primary-navy);
-            padding: 1rem 0;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            box-shadow: var(--shadow-medium);
-        }
-
-        .nav-container {
-            max-width: var(--container-max);
-            margin: 0 auto;
-            padding: 0 var(--container-padding);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            color: var(--accent-gold);
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-decoration: none;
-            transition: color var(--transition-medium);
-        }
-
-        .logo:hover,
-        .logo:focus {
-            color: #f4d03f;
-            outline: 2px solid var(--accent-gold);
-            outline-offset: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius);
-            transition: all var(--transition-medium);
+        /* Blog-specific hero with matching design system */
+        .blog-hero {
+            height: 90vh;
             position: relative;
-        }
-
-        .nav-links a:hover,
-        .nav-links a:focus {
-            color: var(--accent-gold);
-            background: rgba(212, 175, 55, 0.1);
-            outline: 2px solid var(--accent-gold);
-            outline-offset: 2px;
-        }
-
-        .nav-links a.active {
-            color: var(--accent-gold);
-            background: rgba(212, 175, 55, 0.15);
-        }
-
-        .mobile-menu {
-            display: none;
-            background: none;
-            border: 2px solid var(--accent-gold);
-            color: var(--accent-gold);
-            font-size: 1.25rem;
-            padding: 0.5rem;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: all var(--transition-medium);
-        }
-
-        .mobile-menu:hover,
-        .mobile-menu:focus {
-            background: var(--accent-gold);
-            color: var(--primary-navy);
-            outline: 2px solid var(--accent-gold);
-            outline-offset: 2px;
-        }
-
-        /* Page Hero Section */
-        .page-hero {
-            background: linear-gradient(135deg, var(--primary-navy) 0%, #2c5282 100%);
-            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             text-align: center;
-            padding: 8rem 0 4rem;
+            color: var(--text-light);
             margin-top: 80px;
-            position: relative;
+            padding-top: 2rem;
             overflow: hidden;
+            background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)),
+                        url('/images/carambola-golf-hole-18.webp') center/cover;
         }
 
-        .page-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('/images/carambola-golf-hole-18.webp') center/cover;
-            opacity: 0.1;
-            z-index: 0;
-        }
-
-        .page-hero-content {
+        .blog-hero-content {
             position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin: 0 auto;
+            z-index: 2;
+            max-width: 900px;
             padding: 0 2rem;
         }
 
-        .page-hero h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 300;
+        .blog-hero h1 {
+            font-size: clamp(3rem, 6vw, 5rem);
             margin-bottom: 1.5rem;
-            letter-spacing: -0.02em;
+            font-weight: 400;
+            line-height: 1.2;
         }
 
-        .page-hero p {
-            font-size: 1.25rem;
-            opacity: 0.9;
+        .blog-hero p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
             max-width: 600px;
-            margin: 0 auto 3rem;
-            line-height: 1.7;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
         }
 
-        /* Blog Credentials */
+        /* Blog credentials matching main site pattern */
         .blog-credentials {
             display: flex;
             justify-content: center;
@@ -472,35 +314,38 @@
             font-size: 0.95rem;
         }
 
-        /* Blog Overview Section */
+        /* Blog overview section matching heritage pattern */
         .blog-overview {
-            padding: 5rem 0;
-            background: white;
+            padding: 6rem 0;
+            background: var(--bg-cream);
         }
 
-        .blog-overview-content h2 {
-            color: var(--primary-navy);
-            font-size: 2.5rem;
-            font-weight: 300;
+        .blog-overview-content {
             text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .blog-overview-content p {
-            font-size: 1.125rem;
-            line-height: 1.8;
-            color: var(--text-muted);
             max-width: 800px;
-            margin: 0 auto 2rem;
-            text-align: center;
+            margin: 0 auto;
         }
 
-        /* Social Proof Section */
+        .blog-overview h2 {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            margin-bottom: 2rem;
+            color: var(--primary-navy);
+            font-weight: 400;
+        }
+
+        .blog-overview p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+
+        /* Social proof matching course stats pattern */
         .blog-social-proof {
             margin-top: 3rem;
             padding: 3rem;
             background: linear-gradient(135deg, #f8fffe 0%, #e8f5f3 100%);
-            border-radius: var(--border-radius-lg);
+            border-radius: 8px;
             border: 2px solid var(--light-gold);
         }
 
@@ -519,7 +364,7 @@
         .stat-number {
             display: block;
             font-size: 3rem;
-            font-weight: 700;
+            font-weight: bold;
             color: var(--primary-navy);
             line-height: 1;
             margin-bottom: 0.5rem;
@@ -527,7 +372,7 @@
 
         .stat-label {
             font-size: 0.95rem;
-            color: var(--text-muted);
+            color: #666;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             font-weight: 600;
@@ -539,7 +384,7 @@
             margin: 0 auto;
             padding: 2rem;
             background: white;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
             box-shadow: var(--shadow-soft);
         }
 
@@ -557,36 +402,30 @@
             font-size: 1rem;
         }
 
-        /* Featured Article Section */
+        /* Featured article matching the main site's feature card pattern */
         .featured-article {
-            padding: 5rem 0;
+            padding: 6rem 0;
             background: var(--bg-light);
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 300;
-            color: var(--primary-navy);
-            text-align: center;
-            margin-bottom: 3rem;
         }
 
         .featured-article-card {
             background: white;
-            border-radius: var(--border-radius-lg);
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--shadow-strong);
+            box-shadow: var(--shadow-medium);
             transition: all var(--transition-medium);
-            border: 1px solid var(--border-light);
+            border: 1px solid #e2e8f0;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 0;
             min-height: 500px;
+            transform: translateY(0);
+            will-change: transform;
         }
 
         .featured-article-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-strong);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
         }
 
         .featured-article-image {
@@ -613,7 +452,7 @@
             background: var(--accent-gold);
             color: var(--primary-navy);
             padding: 0.5rem 1rem;
-            border-radius: 20px;
+            border-radius: 3px;
             font-size: 0.875rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -636,7 +475,7 @@
             gap: 1.5rem;
             margin-bottom: 1.5rem;
             font-size: 0.875rem;
-            color: var(--text-muted);
+            color: #666;
             flex-wrap: wrap;
         }
 
@@ -644,7 +483,7 @@
             background: var(--primary-navy);
             color: white;
             padding: 0.25rem 0.75rem;
-            border-radius: 15px;
+            border-radius: 3px;
             font-weight: 600;
             font-size: 0.8rem;
             text-transform: uppercase;
@@ -660,7 +499,7 @@
 
         .featured-article-content h3 {
             font-size: 1.75rem;
-            font-weight: 600;
+            font-weight: 400;
             color: var(--primary-navy);
             margin-bottom: 1rem;
             line-height: 1.3;
@@ -669,15 +508,16 @@
         .featured-article-content p {
             font-size: 1rem;
             line-height: 1.7;
-            color: var(--text-muted);
+            color: #666;
             margin-bottom: 2rem;
         }
 
         .article-highlights {
-            background: var(--bg-light);
+            background: var(--light-gold);
             padding: 1.5rem;
-            border-radius: var(--border-radius);
+            border-radius: 8px;
             margin: 1.5rem 0;
+            border-left: 4px solid var(--accent-gold);
         }
 
         .article-highlights h4 {
@@ -694,7 +534,7 @@
 
         .article-highlights li {
             padding: 0.25rem 0;
-            color: var(--text-muted);
+            color: var(--primary-navy);
             position: relative;
             padding-left: 1.5rem;
         }
@@ -713,117 +553,50 @@
             flex-wrap: wrap;
         }
 
-        /* CTA Buttons */
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 1rem 2rem;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all var(--transition-medium);
-            border: 2px solid transparent;
-            cursor: pointer;
-            min-height: 48px;
-            justify-content: center;
-        }
-
-        .cta-button.primary {
-            background: var(--accent-gold);
-            color: var(--primary-navy);
-            border-color: var(--accent-gold);
-        }
-
-        .cta-button.primary:hover,
-        .cta-button.primary:focus {
-            background: #b8941f;
-            border-color: #b8941f;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-            outline: 2px solid var(--accent-gold);
-            outline-offset: 2px;
-        }
-
-        .cta-button.secondary {
-            background: transparent;
-            color: var(--primary-navy);
-            border-color: var(--primary-navy);
-        }
-
-        .cta-button.secondary:hover,
-        .cta-button.secondary:focus {
-            background: var(--primary-navy);
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-medium);
-            outline: 2px solid var(--primary-navy);
-            outline-offset: 2px;
-        }
-
-        /* Blog Categories */
+        /* Blog categories matching features pattern */
         .blog-categories {
-            padding: 5rem 0;
-            background: white;
+            padding: 6rem 0;
+            background: var(--bg-cream);
         }
 
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+            gap: 3rem;
+            margin-top: 4rem;
         }
 
         .category-card {
             background: white;
-            padding: 2.5rem;
+            padding: 3rem 2.5rem;
             text-align: center;
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-medium);
+            box-shadow: var(--shadow-soft);
             transition: all var(--transition-medium);
-            border: 2px solid var(--border-light);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .category-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--accent-gold);
-            transform: scaleX(0);
-            transition: transform var(--transition-medium);
+            border-top: 3px solid var(--accent-gold);
+            transform: translateY(0);
+            will-change: transform;
         }
 
         .category-card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-strong);
-            border-color: var(--accent-gold);
-        }
-
-        .category-card:hover::before {
-            transform: scaleX(1);
+            box-shadow: var(--shadow-medium);
         }
 
         .category-icon {
             font-size: 3rem;
-            color: var(--accent-gold);
+            color: var(--primary-navy);
             margin-bottom: 1.5rem;
         }
 
         .category-card h3 {
-            color: var(--primary-navy);
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            font-weight: 600;
+            color: var(--primary-navy);
+            font-weight: 400;
         }
 
         .category-card p {
-            color: var(--text-muted);
+            color: #666;
             line-height: 1.7;
             margin-bottom: 1.5rem;
         }
@@ -840,7 +613,7 @@
             font-weight: 500;
             transition: all var(--transition-medium);
             padding: 0.5rem;
-            border-radius: var(--border-radius);
+            border-radius: 3px;
             border: 1px solid transparent;
         }
 
@@ -853,9 +626,9 @@
             outline-offset: 1px;
         }
 
-        /* Latest Articles */
+        /* Latest articles matching gallery pattern */
         .latest-articles {
-            padding: 5rem 0;
+            padding: 6rem 0;
             background: var(--bg-light);
         }
 
@@ -868,16 +641,18 @@
 
         .article-card {
             background: white;
-            border-radius: var(--border-radius-lg);
+            border-radius: 8px;
             overflow: hidden;
-            box-shadow: var(--shadow-medium);
+            box-shadow: var(--shadow-soft);
             transition: all var(--transition-medium);
-            border: 1px solid var(--border-light);
+            border: 1px solid #e2e8f0;
+            transform: translateY(0);
+            will-change: transform;
         }
 
         .article-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-strong);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
         }
 
         .article-image {
@@ -905,7 +680,7 @@
             background: var(--accent-gold);
             color: var(--primary-navy);
             padding: 0.5rem 1rem;
-            border-radius: 20px;
+            border-radius: 3px;
             font-size: 0.8rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -918,7 +693,7 @@
 
         .article-content h3 {
             font-size: 1.25rem;
-            font-weight: 600;
+            font-weight: 400;
             color: var(--primary-navy);
             margin-bottom: 1rem;
             line-height: 1.4;
@@ -938,7 +713,7 @@
         }
 
         .article-content p {
-            color: var(--text-muted);
+            color: #666;
             line-height: 1.7;
             margin-bottom: 1.5rem;
         }
@@ -951,13 +726,13 @@
         }
 
         .topic-tag {
-            background: var(--bg-light);
+            background: var(--light-gold);
             color: var(--primary-navy);
             padding: 0.25rem 0.75rem;
-            border-radius: 15px;
+            border-radius: 3px;
             font-size: 0.8rem;
             font-weight: 500;
-            border: 1px solid var(--border-light);
+            border: 1px solid var(--accent-gold);
         }
 
         .read-more {
@@ -969,7 +744,7 @@
             gap: 0.5rem;
             transition: all var(--transition-medium);
             padding: 0.5rem;
-            border-radius: var(--border-radius);
+            border-radius: 3px;
         }
 
         .read-more:hover,
@@ -980,13 +755,11 @@
             outline-offset: 1px;
         }
 
-        /* Newsletter Section */
+        /* Newsletter matching CTA pattern */
         .newsletter-signup {
-            background: var(--primary-navy);
-            color: white;
             padding: 6rem 0;
-            position: relative;
-            overflow: hidden;
+            background: var(--primary-navy);
+            color: var(--text-light);
         }
 
         .newsletter-content {
@@ -994,20 +767,20 @@
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
-            max-width: var(--container-max);
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 var(--container-padding);
+            padding: 0 2rem;
         }
 
         .newsletter-info h2 {
             font-size: 2.5rem;
-            font-weight: 300;
             margin-bottom: 1.5rem;
-            color: white;
+            color: var(--accent-gold);
+            font-weight: 400;
         }
 
         .newsletter-info p {
-            font-size: 1.125rem;
+            font-size: 1.1rem;
             opacity: 0.9;
             line-height: 1.7;
             margin-bottom: 2rem;
@@ -1016,6 +789,7 @@
         .newsletter-benefits {
             list-style: none;
             margin: 2rem 0;
+            padding: 0;
         }
 
         .benefit-item {
@@ -1065,7 +839,7 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
             padding: 2.5rem;
-            border-radius: var(--border-radius-lg);
+            border-radius: 8px;
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -1077,7 +851,7 @@
             width: 100%;
             padding: 1rem 1.25rem;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: var(--border-radius);
+            border-radius: 3px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 1rem;
@@ -1104,10 +878,10 @@
             gap: 0.5rem;
         }
 
-        /* Content Hub */
+        /* Content hub matching quick links pattern */
         .content-hub {
+            padding: 6rem 0;
             background: var(--bg-light);
-            padding: 5rem 0;
         }
 
         .hub-grid {
@@ -1124,7 +898,7 @@
             align-items: center;
             gap: 0.75rem;
             font-size: 1.25rem;
-            font-weight: 600;
+            font-weight: 400;
         }
 
         .hub-section h3 i {
@@ -1143,14 +917,14 @@
         }
 
         .hub-links a {
-            color: var(--text-muted);
+            color: #666;
             text-decoration: none;
             transition: all var(--transition-medium);
             display: flex;
             align-items: center;
             gap: 0.75rem;
             padding: 0.75rem;
-            border-radius: var(--border-radius);
+            border-radius: 3px;
             border: 1px solid transparent;
         }
 
@@ -1171,46 +945,32 @@
             outline-offset: 1px;
         }
 
-        /* Final CTA Section */
+        /* Final CTA matching main site pattern */
         .blog-cta {
-            background: linear-gradient(135deg, var(--primary-navy) 0%, #2c5282 100%);
-            color: white;
-            padding: 6rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .blog-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('/images/carambola-golf-hole-18.webp') center/cover;
-            opacity: 0.1;
-            z-index: 0;
+            padding: 6rem 2rem;
+            background: var(--primary-navy);
+            color: var(--text-light);
+            margin: 0 auto;
         }
 
         .cta-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
+            text-align: center;
+            max-width: 700px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 2rem;
         }
 
-        .blog-cta h2 {
+        .cta-content h2 {
             font-size: 2.5rem;
-            font-weight: 300;
             margin-bottom: 1.5rem;
+            color: var(--accent-gold);
+            font-weight: 400;
         }
 
-        .blog-cta p {
-            font-size: 1.125rem;
+        .cta-content p {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
             opacity: 0.9;
-            margin-bottom: 2rem;
             line-height: 1.7;
         }
 
@@ -1265,110 +1025,8 @@
             color: var(--accent-gold);
         }
 
-        /* Footer */
-        .footer {
-            background: var(--primary-navy);
-            color: white;
-            padding: 4rem 0 2rem;
-        }
-
-        .footer-content {
-            max-width: var(--container-max);
-            margin: 0 auto;
-            padding: 0 var(--container-padding);
-        }
-
-        .footer-logo {
-            color: var(--accent-gold);
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .footer-links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
-        .footer-section h4 {
-            color: var(--accent-gold);
-            margin-bottom: 1rem;
-            font-size: 1.125rem;
-        }
-
-        .footer-section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .footer-section li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color var(--transition-medium);
-        }
-
-        .footer-section a:hover,
-        .footer-section a:focus {
-            color: var(--accent-gold);
-            outline: 2px solid var(--accent-gold);
-            outline-offset: 2px;
-        }
-
-        .footer-contact {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .footer-status {
-            margin-top: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-status-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(22, 163, 74, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            border: 1px solid rgba(22, 163, 74, 0.3);
-            text-decoration: none;
-            color: inherit;
-            transition: all var(--transition-medium);
-        }
-
-        .footer-status-indicator:hover,
-        .footer-status-indicator:focus {
-            background: rgba(22, 163, 74, 0.2);
-            outline: 2px solid rgba(22, 163, 74, 0.5);
-            outline-offset: 1px;
-        }
-
-        .footer-status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #16a34a;
-        }
-
-        /* Responsive Design */
+        /* Mobile responsive adjustments */
         @media (max-width: 1024px) {
-            .nav-links {
-                gap: 1.5rem;
-            }
-
             .featured-article-card {
                 grid-template-columns: 1fr;
                 min-height: auto;
@@ -1386,24 +1044,15 @@
         }
 
         @media (max-width: 768px) {
-            :root {
-                --container-padding: 1rem;
+            .blog-hero {
+                height: auto;
+                min-height: 80vh;
+                margin-top: 100px;
+                padding: 3rem 1rem 2rem;
             }
 
-            .mobile-menu {
-                display: flex;
-            }
-
-            .nav-links {
-                display: none;
-            }
-
-            .page-hero {
-                padding: 6rem 0 3rem;
-            }
-
-            .page-hero h1 {
-                font-size: clamp(2rem, 8vw, 2.5rem);
+            .blog-hero h1 {
+                font-size: clamp(2rem, 8vw, 3.5rem);
             }
 
             .blog-credentials {
@@ -1452,25 +1101,15 @@
                 width: 100%;
                 max-width: 300px;
             }
-
-            .footer-links-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .footer-status {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.5rem;
-            }
         }
 
         @media (max-width: 480px) {
-            .page-hero {
-                padding: 5rem 0 2rem;
+            .blog-hero {
+                padding: 2rem 0.5rem 1rem;
+                min-height: 70vh;
             }
 
-            .page-hero p {
+            .blog-hero p {
                 font-size: 1.125rem;
             }
 
@@ -1478,10 +1117,6 @@
                 flex-direction: column;
                 text-align: center;
                 padding: 1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
             }
 
             .featured-article-content,
@@ -1494,7 +1129,7 @@
                 padding: 2rem;
             }
 
-            .blog-cta h2 {
+            .cta-content h2 {
                 font-size: 2rem;
             }
 
@@ -1508,61 +1143,17 @@
             }
         }
 
-        /* High Contrast Mode Support */
-        @media (prefers-contrast: high) {
-            .cta-button:focus,
-            .nav-links a:focus,
-            .hub-links a:focus {
-                outline: 3px solid;
-                outline-offset: 2px;
-            }
-        }
-
-        /* Reduced Motion Support */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-
-            .page-hero::before {
-                animation: none;
-            }
-        }
-
-        /* Print Styles */
-        @media print {
-            .navbar,
-            .newsletter-signup,
-            .blog-cta,
-            .footer {
-                display: none;
-            }
-
-            .page-hero {
-                margin-top: 0;
-                background: white;
-                color: black;
-            }
-
-            body {
-                background: white;
-                color: black;
-            }
-        }
-
-        /* Focus Visible Support */
-        .cta-button:focus-visible,
-        .nav-links a:focus-visible,
-        input:focus-visible {
+        /* Focus styles for accessibility */
+        .cta-button:focus,
+        .category-links a:focus,
+        .hub-links a:focus,
+        .read-more:focus,
+        .article-content h3 a:focus {
             outline: 2px solid var(--accent-gold);
             outline-offset: 2px;
         }
 
-        /* Visually Hidden Class for Screen Readers */
+        /* Visually hidden class for screen readers */
         .visually-hidden {
             position: absolute;
             width: 1px;
@@ -1582,7 +1173,7 @@
     <!-- End Google Tag Manager (noscript) -->
 
     <!-- Skip to main content link for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="visually-hidden">Skip to main content</a>
 
     <!-- Navigation -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
@@ -1606,8 +1197,8 @@
     <!-- Main Content -->
     <main id="main-content">
         <!-- Blog Hero Section -->
-        <section class="page-hero" role="banner">
-            <div class="page-hero-content">
+        <section class="blog-hero" role="banner">
+            <div class="blog-hero-content">
                 <h1>Your Guide to Championship Golf in Paradise</h1>
                 <p>Expert golf tips, vacation guides, and insider knowledge for your perfect St. Croix golf experience</p>
                 
