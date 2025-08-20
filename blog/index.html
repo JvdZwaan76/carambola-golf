@@ -352,7 +352,7 @@
                         </ul>
                     </div>
                     <div class="article-actions">
-                        <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html" class="cta-button primary" onclick="trackBlogInteraction('featured_article_click', 'ultimate-guide-carambola-2025', {category: 'golf-guides', type: 'comprehensive-guide'})">
+                        <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html" class="cta-button primary" data-track-event="featured_article_click" data-track-article="ultimate-guide-carambola-2025" data-track-category="golf-guides">
                             Read Full Guide
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -592,7 +592,7 @@
                 </div>
             </div>
             <div class="cta-buttons">
-                <a href="/contact.html" class="cta-button primary" onclick="trackBlogInteraction('cta_click', 'book-tee-time', {source: 'blog-page'})">
+                <a href="/contact.html" class="cta-button primary" data-track-event="cta_click" data-track-article="book-tee-time" data-track-source="blog-page">
                     <i class="fas fa-golf-ball"></i>
                     Book Your Tee Time
                 </a>
@@ -1160,6 +1160,28 @@
                         link_text: this.textContent.trim(),
                         section: this.closest('.hub-section').querySelector('h3').textContent.trim()
                     });
+                });
+            });
+
+            // Fix CTA button tracking to not interfere with navigation
+            document.querySelectorAll('a[data-track-event]').forEach(link => {
+                link.addEventListener('click', function() {
+                    // Track the click without preventing navigation
+                    const event = this.getAttribute('data-track-event');
+                    const article = this.getAttribute('data-track-article');
+                    const category = this.getAttribute('data-track-category');
+                    const source = this.getAttribute('data-track-source');
+                    
+                    if (typeof trackBlogInteraction === 'function') {
+                        trackBlogInteraction(event, article, {
+                            category: category || 'navigation',
+                            type: 'comprehensive-guide',
+                            source: source || 'blog-page'
+                        });
+                    }
+                    
+                    // Let the link navigate normally - don't prevent default
+                    return true;
                 });
             });
         });
