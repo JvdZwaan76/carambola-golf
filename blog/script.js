@@ -11,14 +11,30 @@
     }
     window.CarambolaBlogInitialized = true;
 
-    // Blog-specific analytics tracking
-    function trackBlogEvent(action, article, details = {}) {
+    // Unified analytics tracking function - supports both trackBlogInteraction and trackBlogEvent calls
+    function trackBlogInteraction(action, article, details = {}) {
         if (typeof gtag !== 'undefined') {
             gtag('event', action, {
                 event_category: 'Blog Engagement',
                 event_label: article,
                 blog_category: details.category || 'general',
                 article_type: details.type || 'guide',
+                ...details
+            });
+        }
+    }
+
+    // Alias for backward compatibility
+    const trackBlogEvent = trackBlogInteraction;
+
+    // Article-specific tracking function for article pages
+    function trackArticleInteraction(action, section, details = {}) {
+        if (typeof gtag !== 'undefined') {
+            gtag('event', action, {
+                event_category: 'Article Engagement',
+                event_label: section,
+                article_title: details.article_title || document.title,
+                article_category: details.article_category || 'general',
                 ...details
             });
         }
@@ -79,7 +95,7 @@
             this.thresholds.forEach(threshold => {
                 if (progress >= threshold && !this.hitThresholds.has(threshold)) {
                     this.hitThresholds.add(threshold);
-                    trackBlogEvent('reading_progress', `${threshold}%`, {
+                    trackBlogInteraction('reading_progress', `${threshold}%`, {
                         article_title: document.title,
                         reading_depth: threshold
                     });
@@ -164,7 +180,7 @@
                 window.open(shareUrl, '_blank', 'width=600,height=400');
             }
             
-            trackBlogEvent('article_shared', platform, {
+            trackBlogInteraction('article_shared', platform, {
                 article_title: document.title,
                 share_method: platform
             });
@@ -174,7 +190,7 @@
             try {
                 await navigator.clipboard.writeText(window.location.href);
                 this.showCopySuccess();
-                trackBlogEvent('article_shared', 'copy_link', {
+                trackBlogInteraction('article_shared', 'copy_link', {
                     article_title: document.title
                 });
             } catch (err) {
@@ -381,7 +397,7 @@
                             behavior: 'smooth'
                         });
 
-                        trackBlogEvent('toc_navigation', targetId, {
+                        trackBlogInteraction('toc_navigation', targetId, {
                             article_title: document.title
                         });
                     }
@@ -456,7 +472,7 @@
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
 
-                trackBlogEvent('newsletter_signup', 'blog_form', {
+                trackBlogInteraction('newsletter_signup', 'blog_form', {
                     source: 'blog_newsletter_form',
                     has_name: !!name
                 });
@@ -505,6 +521,52 @@
         }
     }
 
+    // Global share functionality for article pages
+    function shareArticle(platform) {
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent(document.title);
+        const description = encodeURIComponent(
+            document.querySelector('meta[name="description"]')?.content || 
+            'Read this article from Carambola Golf Club'
+        );
+        
+        let shareUrl = '';
+        
+        switch(platform) {
+            case 'facebook':
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                break;
+            case 'twitter':
+                shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+                break;
+            case 'linkedin':
+                shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                break;
+            case 'email':
+                shareUrl = `mailto:?subject=${title}&body=Check out this article: ${url}`;
+                break;
+        }
+        
+        if (platform === 'email') {
+            window.location.href = shareUrl;
+        } else {
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        }
+        
+        // Track sharing - use trackArticleInteraction for article pages
+        if (document.querySelector('.article-body')) {
+            trackArticleInteraction('article_shared', platform, {
+                article_title: document.title,
+                share_method: platform
+            });
+        } else {
+            trackBlogInteraction('article_shared', platform, {
+                article_title: document.title,
+                share_method: platform
+            });
+        }
+    }
+
     // Blog-specific initialization
     document.addEventListener('DOMContentLoaded', function() {
         console.log('📚 Initializing Carambola Golf Blog features...');
@@ -517,7 +579,7 @@
             new NewsletterManager();
 
             // Track blog page view
-            trackBlogEvent('blog_page_view', window.location.pathname, {
+            trackBlogInteraction('blog_page_view', window.location.pathname, {
                 page_title: document.title,
                 referrer: document.referrer
             });
@@ -526,7 +588,7 @@
             document.querySelectorAll('a').forEach(link => {
                 if (link.href.includes('mailto:') || link.href.includes('tel:')) {
                     link.addEventListener('click', () => {
-                        trackBlogEvent('contact_click', link.href.split(':')[0], {
+                        trackBlogInteraction('contact_click', link.href.split(':')[0], {
                             link_text: link.textContent.trim()
                         });
                     });
@@ -546,7 +608,7 @@
             window.addEventListener('beforeunload', () => {
                 const timeOnPage = Math.round(maxTimeOnPage / 1000);
                 if (timeOnPage > 10) { // Only track if spent more than 10 seconds
-                    trackBlogEvent('time_on_page', `${timeOnPage}s`, {
+                    trackBlogInteraction('time_on_page', `${timeOnPage}s`, {
                         article_title: document.title,
                         engagement_time: timeOnPage
                     });
@@ -560,14 +622,13 @@
         }
     });
 
-    // Global blog utilities
+    // Global blog utilities - make functions available globally
     window.CarambolaBlog = {
-        trackEvent: trackBlogEvent,
+        trackEvent: trackBlogInteraction,
+        trackBlogInteraction: trackBlogInteraction,
+        trackArticleInteraction: trackArticleInteraction,
         
-        shareArticle: function(platform) {
-            const shareManager = new ShareManager();
-            shareManager.shareArticle(platform);
-        },
+        shareArticle: shareArticle,
         
         scrollToSection: function(sectionId) {
             const section = document.getElementById(sectionId);
@@ -582,5 +643,10 @@
             }
         }
     };
+
+    // Make functions globally available for HTML onclick handlers
+    window.trackBlogInteraction = trackBlogInteraction;
+    window.trackArticleInteraction = trackArticleInteraction;
+    window.shareArticle = shareArticle;
 
 })();
