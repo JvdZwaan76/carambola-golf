@@ -1,4 +1,4 @@
-// Carambola Golf Club Blog Footer Status
+// CARAMBOLA GOLF CLUB BLOG FOOTER STATUS - COMPLETE VERSION
 // Enhanced footer status system for blog pages with performance monitoring
 
 (function() {
@@ -18,7 +18,7 @@
         requestTimeout: 5000, // 5 seconds
         maxRetries: 3,
         retryDelay: 2000, // 2 seconds
-        enableStatusChecks: false // Set to true when API endpoint is ready - prevents console errors
+        enableStatusChecks: false // Set to true when API endpoint is ready
     };
 
     class BlogFooterStatus {
@@ -29,6 +29,7 @@
             this.retryCount = 0;
             this.lastUpdateTime = null;
             this.isOnline = navigator.onLine;
+            this.updateTimer = null;
             
             this.fallbackData = {
                 lastCheck: new Date().toISOString(),
@@ -48,6 +49,8 @@
         }
 
         init() {
+            console.log('📊 Initializing blog footer status system...');
+            
             // Only update status if API checks are enabled
             if (CONFIG.enableStatusChecks) {
                 this.updateFooterStatus();
@@ -84,6 +87,8 @@
                     this.updateFooterStatus();
                 }
             }, this.updateInterval);
+            
+            console.log('📊 Periodic updates scheduled every', this.updateInterval / 1000, 'seconds');
         }
 
         setupConnectivityListeners() {
@@ -107,7 +112,7 @@
 
             window.addEventListener('offline', () => {
                 this.isOnline = false;
-                console.log('❌ Connection lost');
+                console.log('⌐ Connection lost');
                 this.handleOfflineStatus();
             });
         }
@@ -128,6 +133,11 @@
             window.addEventListener('error', (event) => {
                 // Log errors for debugging but don't break functionality
                 console.warn('Page error detected:', event.error?.message);
+            });
+
+            // Handle unhandled promise rejections
+            window.addEventListener('unhandledrejection', (event) => {
+                console.warn('Unhandled promise rejection:', event.reason);
             });
         }
 
@@ -182,7 +192,6 @@
                         'Cache-Control': 'no-cache',
                         'X-Client': 'carambola-blog-footer'
                     },
-                    // Add credentials if needed for authenticated endpoints
                     credentials: 'omit'
                 });
 
@@ -309,13 +318,20 @@
             const lastCheckElement = document.getElementById('footer-last-check');
             if (lastCheckElement) {
                 try {
-                    const date = new Date(lastCheck);
-                    const timeAgo = this.getTimeAgo(date);
-                    lastCheckElement.textContent = timeAgo;
-                    lastCheckElement.setAttribute('title', date.toLocaleString());
-                    lastCheckElement.setAttribute('datetime', date.toISOString());
+                    if (lastCheck === 'Connection lost') {
+                        lastCheckElement.textContent = 'Connection lost';
+                        lastCheckElement.removeAttribute('datetime');
+                        lastCheckElement.setAttribute('title', 'No internet connection');
+                    } else {
+                        const date = new Date(lastCheck);
+                        const timeAgo = this.getTimeAgo(date);
+                        lastCheckElement.textContent = timeAgo;
+                        lastCheckElement.setAttribute('title', date.toLocaleString());
+                        lastCheckElement.setAttribute('datetime', date.toISOString());
+                    }
                 } catch (error) {
                     lastCheckElement.textContent = 'Unknown';
+                    console.warn('Error updating last check time:', error);
                 }
             }
         }
@@ -483,12 +499,21 @@
 
         trackStatusUpdate(type, details = {}) {
             // Track status updates for analytics
-            if (typeof window.trackBlogInteraction === 'function') {
-                window.trackBlogInteraction('status_update', type, {
-                    timestamp: new Date().toISOString(),
-                    page_url: window.location.pathname,
-                    ...details
-                });
+            try {
+                if (typeof window.trackBlogInteraction === 'function') {
+                    window.trackBlogInteraction('status_update', type, {
+                        timestamp: new Date().toISOString(),
+                        page_url: window.location.pathname,
+                        ...details
+                    });
+                }
+                
+                // Also track with main blog system if available
+                if (window.CarambolaBlog && window.CarambolaBlog.trackEvent) {
+                    window.CarambolaBlog.trackEvent('footer_status_update', type, details);
+                }
+            } catch (error) {
+                console.warn('Error tracking status update:', error);
             }
         }
 
@@ -525,17 +550,16 @@
                 overall: this.getCurrentStatus(),
                 lastUpdate: this.lastUpdateTime,
                 isOnline: this.isOnline,
-                retryCount: this.retryCount
+                retryCount: this.retryCount,
+                apiEnabled: CONFIG.enableStatusChecks
             };
         }
 
         destroy() {
             if (this.updateTimer) {
                 clearInterval(this.updateTimer);
+                this.updateTimer = null;
             }
-            
-            // Remove event listeners if needed
-            // (Browser will clean up when page unloads)
             
             console.log('📊 Blog footer status system destroyed');
         }
@@ -589,12 +613,22 @@
                 
                 link.addEventListener('click', (event) => {
                     // Track status page navigation from blog
-                    if (typeof window.trackBlogInteraction === 'function') {
-                        window.trackBlogInteraction('status_page_click', 'footer_status_link', {
-                            source_page: 'blog',
-                            page_location: window.location.pathname,
-                            user_agent: navigator.userAgent.substring(0, 100)
-                        });
+                    try {
+                        if (typeof window.trackBlogInteraction === 'function') {
+                            window.trackBlogInteraction('status_page_click', 'footer_status_link', {
+                                source_page: 'blog',
+                                page_location: window.location.pathname,
+                                user_agent: navigator.userAgent.substring(0, 100)
+                            });
+                        }
+                        
+                        if (window.CarambolaBlog && window.CarambolaBlog.trackEvent) {
+                            window.CarambolaBlog.trackEvent('status_page_navigation', 'footer_link', {
+                                source: 'blog_footer'
+                            });
+                        }
+                    } catch (error) {
+                        console.warn('Error tracking status page click:', error);
                     }
                 });
             });
@@ -665,12 +699,16 @@
                 if (roundedProgress >= lastReportedProgress + 25 && roundedProgress <= 100) {
                     lastReportedProgress = Math.floor(roundedProgress / 25) * 25;
                     
-                    if (typeof window.trackBlogInteraction === 'function') {
-                        window.trackBlogInteraction('reading_progress', `${lastReportedProgress}%`, {
-                            article_title: document.title,
-                            word_count: this.getWordCount(),
-                            timestamp: new Date().toISOString()
-                        });
+                    try {
+                        if (typeof window.trackBlogInteraction === 'function') {
+                            window.trackBlogInteraction('reading_progress', `${lastReportedProgress}%`, {
+                                article_title: document.title,
+                                word_count: this.getWordCount(),
+                                timestamp: new Date().toISOString()
+                            });
+                        }
+                    } catch (error) {
+                        console.warn('Error tracking reading progress:', error);
                     }
                 }
             };
@@ -742,7 +780,7 @@
             console.log('✅ Blog footer status initialized successfully');
             
         } catch (error) {
-            console.error('❌ Blog footer status initialization failed:', error);
+            console.error('⌐ Blog footer status initialization failed:', error);
             
             // Fallback: still show basic status
             const statusElement = document.getElementById('footer-overall-status');
