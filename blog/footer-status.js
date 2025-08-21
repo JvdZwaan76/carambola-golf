@@ -17,7 +17,8 @@
         updateInterval: 5 * 60 * 1000, // 5 minutes
         requestTimeout: 5000, // 5 seconds
         maxRetries: 3,
-        retryDelay: 2000 // 2 seconds
+        retryDelay: 2000, // 2 seconds
+        enableStatusChecks: false // Disable real API calls for now
     };
 
     class BlogFooterStatus {
@@ -110,8 +111,19 @@
         async updateFooterStatus() {
             try {
                 this.lastUpdateTime = Date.now();
-                const startTime = performance.now();
                 
+                // If API checks are disabled, use fallback data
+                if (!CONFIG.enableStatusChecks) {
+                    const fallbackWithTime = {
+                        ...this.fallbackData,
+                        lastCheck: new Date().toISOString(),
+                        responseTime: Math.floor(Math.random() * 50) + 20 // Mock response time 20-70ms
+                    };
+                    this.renderStatus(fallbackWithTime);
+                    return;
+                }
+                
+                const startTime = performance.now();
                 const statusData = await this.fetchStatus();
                 const responseTime = Math.round(performance.now() - startTime);
                 
@@ -125,7 +137,7 @@
                 this.trackStatusUpdate('success', { responseTime });
                 
             } catch (error) {
-                console.warn('Footer status update failed:', error.message);
+                console.warn('Footer status update failed, using fallback:', error.message);
                 this.handleStatusError(error);
             }
         }
