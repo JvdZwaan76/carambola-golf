@@ -966,8 +966,8 @@
     margin: 3rem 0;
     text-align: center;
     width: 100%;
-    /* CRITICAL FIX: Remove problematic overflow and add proper containment */
-    overflow: hidden;
+    /* CRITICAL FIX: Allow full width, remove container constraints */
+    max-width: none;
     position: relative;
     display: block;
     /* CRITICAL FIX: Clear any previous floated elements */
@@ -975,15 +975,24 @@
     /* CRITICAL FIX: Establish new block formatting context */
     contain: layout style;
     z-index: 1;
+    /* CRITICAL FIX: Break out of article content container for full width */
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+    /* CRITICAL FIX: Center content within full width */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .article-image img {
-    max-width: 100%;
+    max-width: 90%;
+    width: auto;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     display: block;
-    margin: 0 auto;
     /* CRITICAL FIX: Ensure image doesn't affect text flow */
     position: relative;
     z-index: 2;
