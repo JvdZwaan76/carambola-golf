@@ -4,7 +4,7 @@
 
     // Prevent duplicate execution
     if (window.CarambolaGolfInitialized) {
-        console.log('🟡 Script already initialized, skipping duplicate execution');
+        console.log('🟡 Main script already initialized, skipping duplicate execution');
         return;
     }
     window.CarambolaGolfInitialized = true;
@@ -1081,8 +1081,14 @@
 
             document.addEventListener('keydown', this.handleKeydown.bind(this));
 
+            // FIXED: Only attach modal to booking buttons, not all CTA buttons to avoid blog conflicts
             this.bookButtons.forEach(button => {
-                button.addEventListener('click', this.handleBookingClick.bind(this));
+                // Only attach to actual booking buttons, not blog CTA buttons
+                if (button.classList.contains('book-tee-time') || 
+                    button.textContent.toLowerCase().includes('book') ||
+                    button.href?.includes('contact')) {
+                    button.addEventListener('click', this.handleBookingClick.bind(this));
+                }
             });
 
             // Show modal on first visit with delay
@@ -1155,16 +1161,21 @@
         }
 
         handleBookingClick(e) {
-            e.preventDefault();
-            this.show();
-            
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'tee_time_intent', {
-                    'event_category': 'conversion',
-                    'event_label': 'book_tee_time_clicked',
-                    'value': 1,
-                    'page_location': window.location.pathname
-                });
+            // Only prevent default for actual booking buttons
+            if (e.target.classList.contains('book-tee-time') || 
+                e.target.textContent.toLowerCase().includes('book') ||
+                e.target.href?.includes('contact')) {
+                e.preventDefault();
+                this.show();
+                
+                if (typeof gtag !== 'undefined') {
+                    gtag('event', 'tee_time_intent', {
+                        'event_category': 'conversion',
+                        'event_label': 'book_tee_time_clicked',
+                        'value': 1,
+                        'page_location': window.location.pathname
+                    });
+                }
             }
         }
 
@@ -1206,7 +1217,8 @@
         }
 
         init() {
-            if (this.mobileMenuBtn && this.navLinks) {
+            // FIXED: Only initialize if not already handled by blog script
+            if (this.mobileMenuBtn && this.navLinks && !window.CarambolaBlogInitialized) {
                 this.mobileMenuBtn.addEventListener('click', this.toggleMobileMenu.bind(this));
                 this.navLinks.addEventListener('click', this.handleLinkClick.bind(this));
                 this.setupMobileMenuEnhancements();
@@ -1968,12 +1980,12 @@
             preloader.completeStep('hole_carousel');
             preloader.completeStep('score_cards');
             
-            console.log('✅ Initialization complete!');
+            console.log('✅ Main script initialization complete!');
             
             performanceMetrics.mark('init_complete');
             
         } catch (error) {
-            console.error('❌ Initialization error:', error);
+            console.error('❌ Main script initialization error:', error);
             preloader.hide(); // Hide preloader even if there's an error
         }
     });
