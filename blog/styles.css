@@ -1,4 +1,4 @@
-/* CARAMBOLA GOLF CLUB BLOG STYLES - COMPLETE VERSION */
+/* CARAMBOLA GOLF CLUB BLOG STYLES - FIXED VERSION */
 /* Enterprise integration with main design system */
 
 /* ==========================================================================
@@ -762,7 +762,7 @@
 }
 
 /* ==========================================================================
-   ARTICLE PAGE STYLES - FIXED IMAGE LAYOUT ISSUES
+   ARTICLE PAGE STYLES - FIXED IMAGE ISSUES
    ========================================================================== */
 
 /* Article Hero - Dynamic backgrounds for different articles */
@@ -887,8 +887,7 @@
     font-size: 1.1rem;
     line-height: 1.8;
     color: #333;
-    /* CRITICAL FIX: Ensure proper flow and clearing */
-    overflow: hidden;
+    overflow: visible;
     position: relative;
 }
 
@@ -899,7 +898,6 @@
     font-weight: 400;
     border-bottom: 2px solid var(--light-gold);
     padding-bottom: 0.5rem;
-    /* CRITICAL FIX: Clear any floated elements */
     clear: both;
 }
 
@@ -908,7 +906,6 @@
     font-size: 1.5rem;
     margin: 2.5rem 0 1rem 0;
     font-weight: 500;
-    /* CRITICAL FIX: Clear any floated elements */
     clear: both;
 }
 
@@ -917,24 +914,20 @@
     font-size: 1.2rem;
     margin: 2rem 0 0.8rem 0;
     font-weight: 600;
-    /* CRITICAL FIX: Clear any floated elements */
     clear: both;
 }
 
 .article-body p {
     margin-bottom: 1.5rem;
     color: #555;
-    /* CRITICAL FIX: Ensure paragraphs clear floated images */
     clear: both;
     position: relative;
-    z-index: 1;
 }
 
 .article-body ul,
 .article-body ol {
     margin: 1.5rem 0;
     padding-left: 2rem;
-    /* CRITICAL FIX: Clear any floated elements */
     clear: both;
 }
 
@@ -961,49 +954,37 @@
     border-bottom-color: var(--primary-navy);
 }
 
-/* CRITICAL FIX: Article Images - Fixed Layout Issues */
+/* FIXED: Article Images - Simplified and Working */
 .article-image {
+    /* FIXED: Simple, clean image container */
     margin: 3rem 0;
     text-align: center;
     width: 100%;
-    /* CRITICAL FIX: Allow full width, remove container constraints */
-    max-width: none;
-    position: relative;
     display: block;
-    /* CRITICAL FIX: Clear any previous floated elements */
     clear: both;
-    /* CRITICAL FIX: Establish new block formatting context */
-    contain: layout style;
-    z-index: 1;
-    /* CRITICAL FIX: Break out of article content container for full width */
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-    width: 100vw;
-    /* CRITICAL FIX: Center content within full width */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    position: relative;
+    background: #f8f9fa;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
 .article-image img {
-    max-width: 90%;
-    width: auto;
+    /* FIXED: Allow images to display at full resolution */
+    width: 100%;
     height: auto;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
     display: block;
-    /* CRITICAL FIX: Ensure image doesn't affect text flow */
-    position: relative;
-    z-index: 2;
+    border-radius: 12px;
+    /* REMOVED: height constraints that were cropping images */
+    object-fit: contain; /* CHANGED: from cover to contain to show full image */
+    background: white;
 }
 
 .article-image picture {
     display: block;
     width: 100%;
-    /* CRITICAL FIX: Ensure picture element behaves properly */
     position: relative;
-    z-index: 2;
 }
 
 .image-caption {
@@ -1011,20 +992,15 @@
     color: #666;
     font-style: italic;
     margin-top: 1rem;
-    padding: 0 1rem;
+    padding: 1rem 2rem;
     text-align: center;
     line-height: 1.5;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    /* CRITICAL FIX: Ensure caption clears image */
-    clear: both;
-    position: relative;
-    z-index: 3;
+    background: rgba(248, 249, 250, 0.8);
+    border-radius: 0 0 12px 12px;
+    margin-top: 0;
 }
 
-/* CRITICAL FIX: Ensure content after images flows properly */
+/* FIXED: Ensure content after images flows properly */
 .article-image + p,
 .article-image + h2,
 .article-image + h3,
@@ -1035,7 +1011,6 @@
     clear: both;
     margin-top: 2rem;
     position: relative;
-    z-index: 1;
 }
 
 /* Highlight Boxes */
@@ -1045,10 +1020,8 @@
     border-left: 4px solid var(--accent-gold);
     border-radius: 0 8px 8px 0;
     margin: 2rem 0;
-    /* CRITICAL FIX: Ensure highlight boxes clear properly */
     clear: both;
     position: relative;
-    z-index: 1;
 }
 
 .highlight-box h4 {
@@ -1080,10 +1053,8 @@
     border-radius: 12px;
     margin: 3rem 0;
     border: 2px solid var(--light-gold);
-    /* CRITICAL FIX: Ensure author bio clears properly */
     clear: both;
     position: relative;
-    z-index: 1;
 }
 
 .author-info {
@@ -1184,10 +1155,8 @@
     text-align: center;
     box-shadow: 0 4px 15px var(--shadow-soft);
     border: 2px solid var(--light-gold);
-    /* CRITICAL FIX: Ensure share section clears properly */
     clear: both;
     position: relative;
-    z-index: 1;
 }
 
 .share-title {
@@ -1250,10 +1219,8 @@
     border-radius: 12px;
     margin: 3rem 0;
     border: 2px solid var(--light-gold);
-    /* CRITICAL FIX: Ensure FAQ section clears properly */
     clear: both;
     position: relative;
-    z-index: 1;
 }
 
 .faq-title {
@@ -1608,14 +1575,15 @@
         flex-wrap: wrap;
     }
 
-    /* CRITICAL FIX: Mobile image fixes */
+    /* FIXED: Mobile image adjustments */
     .article-image {
         margin: 2rem 0;
+        border-radius: 8px;
     }
 
     .image-caption {
-        padding: 0 0.5rem;
-        margin-top: 0.75rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
     }
 }
 
@@ -1672,14 +1640,15 @@
         font-size: 1.5rem;
     }
 
-    /* CRITICAL FIX: Very small screen image fixes */
+    /* FIXED: Very small screen image adjustments */
     .article-image {
         margin: 1.5rem 0;
+        border-radius: 6px;
     }
 
     .image-caption {
-        font-size: 0.85rem;
-        margin-top: 0.5rem;
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
     }
 }
 
