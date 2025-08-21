@@ -1,5 +1,5 @@
-// CARAMBOLA GOLF CLUB BLOG - COMPLETE FIXED SCRIPT
-// Clean, functional blog JavaScript without conflicts
+// CARAMBOLA GOLF CLUB BLOG - FIXED SCRIPT
+// Clean, functional blog JavaScript without conflicts - FIXED TRACKING LOOPS
 
 (function() {
     'use strict';
@@ -17,7 +17,20 @@
         trackingEnabled: true,
         debugMode: false,
         mobileBreakpoint: 768,
-        version: '2.1.0'
+        version: '2.0.1',
+        // FIXED: Add tracking control flags
+        readingProgressEnabled: true,
+        scrollTrackingThrottle: 500, // Increased throttle time
+        maxProgressTracking: 100 // Prevent over-tracking
+    };
+
+    // FIXED: Global tracking state to prevent loops
+    const trackingState = {
+        readingProgressActive: false,
+        lastProgressReported: 0,
+        progressMilestones: new Set(),
+        scrollTrackingId: null,
+        isTracking: false
     };
 
     // Utility functions
@@ -30,20 +43,38 @@
             }
         },
 
-        debounce: (func, wait) => {
+        // FIXED: Better debounce with cleanup
+        debounce: (func, wait, immediate = false) => {
             let timeout;
             return function executedFunction(...args) {
                 const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
+                    timeout = null;
+                    if (!immediate) func(...args);
                 };
+                const callNow = immediate && !timeout;
                 clearTimeout(timeout);
                 timeout = setTimeout(later, wait);
+                if (callNow) func(...args);
+            };
+        },
+
+        // FIXED: Throttle with immediate execution control
+        throttle: (func, delay) => {
+            let inThrottle;
+            return function(...args) {
+                if (!inThrottle) {
+                    func.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, delay);
+                }
             };
         },
 
         trackEvent: (action, category, details = {}) => {
-            if (!BLOG_CONFIG.trackingEnabled) return;
+            if (!BLOG_CONFIG.trackingEnabled || trackingState.isTracking) return;
+            
+            // FIXED: Prevent recursive tracking
+            trackingState.isTracking = true;
             
             try {
                 // Google Analytics 4 tracking
@@ -63,6 +94,11 @@
                 utils.log('Tracked:', action, category, details);
             } catch (error) {
                 console.warn('Tracking error:', error);
+            } finally {
+                // FIXED: Always reset tracking flag
+                setTimeout(() => {
+                    trackingState.isTracking = false;
+                }, 100);
             }
         },
 
@@ -131,26 +167,6 @@
         }
     };
 
-    // Wait for main script to finish if it's loading
-    function waitForMainScript() {
-        return new Promise((resolve) => {
-            if (window.CarambolaGolfInitialized) {
-                console.log('✅ Main script ready, proceeding with blog init');
-                resolve();
-            } else {
-                // Wait up to 3 seconds for main script
-                let attempts = 0;
-                const checkInterval = setInterval(() => {
-                    attempts++;
-                    if (window.CarambolaGolfInitialized || attempts > 30) {
-                        clearInterval(checkInterval);
-                        resolve();
-                    }
-                }, 100);
-            }
-        });
-    }
-
     // Mobile menu functionality
     function setupMobileMenu() {
         const mobileMenuButton = document.querySelector('.mobile-menu');
@@ -215,7 +231,7 @@
         utils.log('Mobile menu setup complete');
     }
 
-    // FIXED: Featured Article CTA functionality with conflict resolution
+    // Featured Article CTA functionality
     function setupFeaturedCTA() {
         const selectors = [
             '#featured-article-cta',
@@ -238,7 +254,7 @@
         }
 
         if (!ctaButton) {
-            console.warn('⚠️ Featured CTA button not found with selectors:', selectors);
+            console.warn('⚠️ Featured CTA button not found');
             return null;
         }
 
@@ -256,42 +272,20 @@
         utils.log('CTA button validation passed:', {
             tag: ctaButton.tagName,
             href: ctaButton.href,
-            text: ctaButton.textContent.trim(),
-            hasOnclick: !!ctaButton.getAttribute('onclick')
+            text: ctaButton.textContent.trim()
         });
 
-        // CRITICAL FIX: Remove any conflicting onclick handlers
-        if (ctaButton.getAttribute('onclick')) {
-            console.log('🔧 Removing conflicting onclick attribute');
-            ctaButton.removeAttribute('onclick');
-        }
-
-        // Remove any existing event listeners by cloning the node
-        const newButton = ctaButton.cloneNode(true);
-        ctaButton.parentNode.replaceChild(newButton, ctaButton);
-        ctaButton = newButton;
-
-        // Clean click handler - allow normal navigation
+        // Clean click handler - let normal navigation work
         ctaButton.addEventListener('click', function(e) {
             utils.log('Featured CTA clicked:', this.href);
             
-            // Track the click with both systems
+            // Track the click
             utils.trackEvent('featured_article_click', 'navigation', {
                 href: this.href,
                 text: this.textContent.trim(),
                 source: 'blog_index',
                 selector_used: selectorUsed
             });
-
-            // Also track with gtag directly for safety
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'featured_article_click', {
-                    event_category: 'Blog Engagement',
-                    event_label: 'ultimate-guide-carambola-2025',
-                    blog_category: 'golf-guides',
-                    click_source: 'blog_script'
-                });
-            }
 
             // Don't prevent default - allow normal navigation
             utils.log('Navigation proceeding to:', this.href);
@@ -301,31 +295,11 @@
         ctaButton.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-2px)';
             this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
-            this.style.transition = 'all 0.3s ease';
         });
 
         ctaButton.addEventListener('mouseleave', function() {
             this.style.transform = '';
             this.style.boxShadow = '';
-        });
-
-        // Enhanced accessibility
-        ctaButton.addEventListener('focus', function() {
-            this.style.outline = '2px solid var(--accent-gold)';
-            this.style.outlineOffset = '2px';
-        });
-
-        ctaButton.addEventListener('blur', function() {
-            this.style.outline = '';
-            this.style.outlineOffset = '';
-        });
-
-        // Add keyboard support
-        ctaButton.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                this.click();
-            }
         });
 
         utils.log('Featured CTA setup complete');
@@ -522,67 +496,116 @@
         utils.log(`Setup ${otherCTAs.length} other CTA buttons`);
     }
 
-    // Reading progress tracking
+    // FIXED: Reading progress tracking with proper controls
     function setupReadingProgress() {
+        // FIXED: Check if reading progress is already active
+        if (trackingState.readingProgressActive || !BLOG_CONFIG.readingProgressEnabled) {
+            utils.log('Reading progress tracking skipped - already active or disabled');
+            return;
+        }
+
         const article = document.querySelector('.article-body, .blog-overview-content, .featured-article-content');
         if (!article) {
             utils.log('No article content found for reading progress');
             return;
         }
 
-        let maxProgress = 0;
+        // FIXED: Mark as active to prevent multiple instances
+        trackingState.readingProgressActive = true;
+
         const milestones = [25, 50, 75, 90];
-        const reportedMilestones = new Set();
+        let maxProgress = 0;
 
         const trackProgress = () => {
-            const articleRect = article.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            const scrollTop = window.pageYOffset;
+            // FIXED: Prevent tracking if already processing
+            if (trackingState.isTracking) {
+                return;
+            }
 
-            // Calculate reading progress
-            const articleTop = article.offsetTop;
-            const articleHeight = article.offsetHeight;
-            
-            if (scrollTop >= articleTop && scrollTop <= articleTop + articleHeight) {
-                const progress = Math.round(((scrollTop - articleTop + windowHeight / 3) / articleHeight) * 100);
-                const clampedProgress = Math.min(100, Math.max(0, progress));
+            try {
+                const articleRect = article.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                // Calculate reading progress
+                const articleTop = article.offsetTop;
+                const articleHeight = article.offsetHeight;
+                const scrollTop = window.pageYOffset;
+                
+                if (scrollTop >= articleTop && scrollTop <= articleTop + articleHeight) {
+                    const progress = Math.round(((scrollTop - articleTop + windowHeight / 3) / articleHeight) * 100);
+                    const clampedProgress = Math.min(BLOG_CONFIG.maxProgressTracking, Math.max(0, progress));
 
-                if (clampedProgress > maxProgress) {
-                    maxProgress = clampedProgress;
+                    if (clampedProgress > maxProgress) {
+                        maxProgress = clampedProgress;
 
-                    // Report milestones
-                    milestones.forEach(milestone => {
-                        if (clampedProgress >= milestone && !reportedMilestones.has(milestone)) {
-                            reportedMilestones.add(milestone);
-                            utils.trackEvent('reading_progress', `${milestone}%`, { 
-                                progress: milestone,
-                                article_section: getCurrentSection()
-                            });
-                            utils.log(`Reading milestone: ${milestone}%`);
-                        }
-                    });
+                        // FIXED: Report milestones with better control
+                        milestones.forEach(milestone => {
+                            if (clampedProgress >= milestone && !trackingState.progressMilestones.has(milestone)) {
+                                trackingState.progressMilestones.add(milestone);
+                                
+                                // FIXED: Only track if not already tracking
+                                if (!trackingState.isTracking) {
+                                    utils.trackEvent('reading_progress', `${milestone}%`, { 
+                                        progress: milestone,
+                                        article_section: getCurrentSection(),
+                                        timestamp: Date.now()
+                                    });
+                                    utils.log(`Reading milestone: ${milestone}%`);
+                                }
+                            }
+                        });
+                    }
                 }
+            } catch (error) {
+                console.warn('Reading progress tracking error:', error);
             }
         };
 
         const getCurrentSection = () => {
-            const headers = document.querySelectorAll('h2, h3');
-            const scrollPosition = window.pageYOffset + 200;
-            
-            for (let i = headers.length - 1; i >= 0; i--) {
-                if (headers[i].offsetTop <= scrollPosition) {
-                    return headers[i].textContent.trim();
+            try {
+                const headers = document.querySelectorAll('h2, h3');
+                const scrollPosition = window.pageYOffset + 200;
+                
+                for (let i = headers.length - 1; i >= 0; i--) {
+                    if (headers[i].offsetTop <= scrollPosition) {
+                        return headers[i].textContent.trim();
+                    }
                 }
+                return 'Introduction';
+            } catch (error) {
+                return 'Unknown';
             }
-            return 'Introduction';
         };
 
-        // Throttled scroll listener
-        const throttledTrackProgress = utils.debounce(trackProgress, 250);
-        window.addEventListener('scroll', throttledTrackProgress, { passive: true });
+        // FIXED: Better throttled scroll listener with cleanup
+        const throttledTrackProgress = utils.throttle(trackProgress, BLOG_CONFIG.scrollTrackingThrottle);
+        
+        // FIXED: Store reference for cleanup
+        trackingState.scrollTrackingId = Date.now();
+        const currentTrackingId = trackingState.scrollTrackingId;
+        
+        const scrollHandler = (event) => {
+            // FIXED: Check if this handler is still valid
+            if (trackingState.scrollTrackingId !== currentTrackingId) {
+                return; // This handler is outdated
+            }
+            throttledTrackProgress();
+        };
 
-        utils.log('Reading progress tracking setup');
+        window.addEventListener('scroll', scrollHandler, { passive: true });
+
+        // FIXED: Cleanup function
+        const cleanup = () => {
+            window.removeEventListener('scroll', scrollHandler);
+            trackingState.readingProgressActive = false;
+            trackingState.scrollTrackingId = null;
+            utils.log('Reading progress tracking cleaned up');
+        };
+
+        // FIXED: Auto cleanup on page unload
+        window.addEventListener('beforeunload', cleanup);
+
+        utils.log('Reading progress tracking setup with throttle:', BLOG_CONFIG.scrollTrackingThrottle);
     }
 
     // Image lazy loading enhancement
@@ -659,14 +682,17 @@
             }, 1000);
         });
 
-        // Track time on page
+        // FIXED: Track time on page without interfering with other tracking
         let startTime = Date.now();
         window.addEventListener('beforeunload', () => {
-            const timeSpent = Math.round((Date.now() - startTime) / 1000);
-            utils.trackEvent('time_on_page', 'engagement', {
-                seconds: timeSpent,
-                page_type: getPageType()
-            });
+            // FIXED: Prevent tracking during unload if other tracking is active
+            if (!trackingState.isTracking) {
+                const timeSpent = Math.round((Date.now() - startTime) / 1000);
+                utils.trackEvent('time_on_page', 'engagement', {
+                    seconds: timeSpent,
+                    page_type: getPageType()
+                });
+            }
         });
 
         function getPageType() {
@@ -676,29 +702,29 @@
         }
     }
 
-    // Enhanced initialization function
-    async function initializeBlog() {
+    // Main initialization function
+    function initializeBlog() {
         utils.log('Initializing blog functionality...');
 
         try {
-            // Wait for main script to finish
-            await waitForMainScript();
+            // FIXED: Initialize tracking state
+            trackingState.readingProgressActive = false;
+            trackingState.lastProgressReported = 0;
+            trackingState.progressMilestones.clear();
+            trackingState.isTracking = false;
 
-            // Setup all components with enhanced error handling
+            // Setup all components
             setupMobileMenu();
-            
-            // CRITICAL: Setup featured CTA with conflict resolution
             const featuredCTA = setupFeaturedCTA();
-            if (featuredCTA) {
-                console.log('✅ Featured CTA initialized successfully');
-            } else {
-                console.warn('⚠️ Featured CTA could not be initialized');
-            }
-            
             setupShareButtons();
             setupNewsletterForm();
             setupOtherCTAs();
-            setupReadingProgress();
+            
+            // FIXED: Only setup reading progress if not already active
+            if (!trackingState.readingProgressActive) {
+                setupReadingProgress();
+            }
+            
             setupImageLazyLoading();
             setupExternalLinkTracking();
             setupPerformanceMonitoring();
@@ -709,8 +735,7 @@
                 referrer: document.referrer || 'direct',
                 user_agent: navigator.userAgent.substring(0, 100),
                 viewport: `${window.innerWidth}x${window.innerHeight}`,
-                blog_version: BLOG_CONFIG.version,
-                main_script_loaded: !!window.CarambolaGolfInitialized
+                blog_version: BLOG_CONFIG.version
             });
 
             // Mark as initialized
@@ -721,9 +746,16 @@
                 window.blogDebug = {
                     utils,
                     config: BLOG_CONFIG,
+                    trackingState,
                     testCTA: () => featuredCTA?.click(),
                     showNotification: utils.showNotification,
-                    trackEvent: utils.trackEvent
+                    trackEvent: utils.trackEvent,
+                    resetReadingProgress: () => {
+                        trackingState.readingProgressActive = false;
+                        trackingState.progressMilestones.clear();
+                        trackingState.isTracking = false;
+                        console.log('Reading progress reset');
+                    }
                 };
                 console.log('🛠 Blog debug mode enabled');
             }
@@ -741,33 +773,39 @@
         }
     }
 
-    // Enhanced DOM ready check with fallback
-    function whenReady(callback) {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', callback);
-            // Fallback timeout
-            setTimeout(callback, 5000);
-        } else {
-            // DOM already loaded, but wait a bit for other scripts
-            setTimeout(callback, 100);
-        }
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeBlog);
+    } else {
+        // DOM already loaded
+        setTimeout(initializeBlog, 100);
     }
 
-    // Initialize when ready
-    whenReady(initializeBlog);
-
-    // Global utility functions and API
+    // FIXED: Global utility functions and API with better tracking control
     window.CarambolaBlog = {
         trackEvent: utils.trackEvent,
         showNotification: utils.showNotification,
         config: BLOG_CONFIG,
         version: BLOG_CONFIG.version,
         
+        // FIXED: Add tracking state access
+        getTrackingState: () => ({ ...trackingState }),
+        
         // Public methods
         refreshTracking: () => {
-            utils.trackEvent('manual_refresh', 'user_action', {
-                timestamp: Date.now()
-            });
+            if (!trackingState.isTracking) {
+                utils.trackEvent('manual_refresh', 'user_action', {
+                    timestamp: Date.now()
+                });
+            }
+        },
+
+        // FIXED: Method to reset reading progress if needed
+        resetReadingProgress: () => {
+            trackingState.readingProgressActive = false;
+            trackingState.progressMilestones.clear();
+            trackingState.isTracking = false;
+            console.log('🔄 Reading progress tracking reset');
         }
     };
 
@@ -830,9 +868,9 @@ function shareArticle(platform) {
     }
 }
 
-// Article-specific tracking function for inline use
+// FIXED: Article-specific tracking function with loop prevention
 function trackArticleInteraction(action, section, details = {}) {
-    if (window.CarambolaBlog) {
+    if (window.CarambolaBlog && !window.CarambolaBlog.getTrackingState().isTracking) {
         window.CarambolaBlog.trackEvent(action, section, {
             ...details,
             article_title: document.title,
@@ -841,24 +879,4 @@ function trackArticleInteraction(action, section, details = {}) {
     }
 }
 
-// Enhanced global trackBlogInteraction function
-window.trackBlogInteraction = function(action, article, details = {}) {
-    console.log('🎯 Blog interaction tracked:', action, article, details);
-    
-    if (typeof gtag !== 'undefined') {
-        gtag('event', action, {
-            event_category: 'Blog Engagement',
-            event_label: article,
-            blog_category: details.category || 'general',
-            article_type: details.type || 'guide',
-            ...details
-        });
-    }
-    
-    // Also track with blog utils if available
-    if (window.CarambolaBlog && window.CarambolaBlog.trackEvent) {
-        window.CarambolaBlog.trackEvent(action, article, details);
-    }
-};
-
-console.log('🎯 Carambola Blog Script loaded');
+console.log('🎯 Carambola Blog Script loaded - FIXED VERSION');
