@@ -950,6 +950,8 @@
 .article-image {
     margin: 2rem 0;
     text-align: center;
+    max-width: 100%;
+    overflow: visible;
 }
 
 .article-image img {
@@ -957,14 +959,23 @@
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: 0 auto;
 }
 
 .image-caption {
     font-size: 0.9rem;
     color: #666;
     font-style: italic;
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
+    padding: 0 1rem;
     text-align: center;
+    line-height: 1.5;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    clear: both;
 }
 
 /* Highlight Boxes */
@@ -1186,12 +1197,21 @@
 }
 
 .faq-question {
-    background: var(--primary-navy);
-    color: white;
+    background: var(--primary-navy) !important;
+    color: white !important;
     padding: 1.5rem;
     font-weight: 600;
     margin: 0;
     font-size: 1.1rem;
+    border: none;
+    text-align: left;
+}
+
+.faq-question h3 {
+    color: white !important;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .faq-answer {
@@ -1199,6 +1219,24 @@
     color: #555;
     line-height: 1.7;
     margin: 0;
+    background: white;
+}
+
+.faq-answer p {
+    margin: 0;
+    color: #555;
+    line-height: 1.7;
+}
+
+.faq-answer a {
+    color: var(--primary-navy);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-gold);
+}
+
+.faq-answer a:hover {
+    color: var(--accent-gold);
+    border-bottom-color: var(--primary-navy);
 }
 
 /* ==========================================================================
