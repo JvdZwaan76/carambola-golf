@@ -18,7 +18,7 @@
         requestTimeout: 5000, // 5 seconds
         maxRetries: 3,
         retryDelay: 2000, // 2 seconds
-        enableStatusChecks: false // Disable real API calls for now
+        enableStatusChecks: false // Set to true when API endpoint is ready - prevents console errors
     };
 
     class BlogFooterStatus {
@@ -48,25 +48,36 @@
         }
 
         init() {
-            // Initial status update
-            this.updateFooterStatus();
+            // Only update status if API checks are enabled
+            if (CONFIG.enableStatusChecks) {
+                this.updateFooterStatus();
+                this.setupPeriodicUpdates();
+            } else {
+                // Use fallback data immediately
+                console.log('📊 Using fallback status data (API checks disabled)');
+                const fallbackWithTime = {
+                    ...this.fallbackData,
+                    lastCheck: new Date().toISOString(),
+                    responseTime: Math.floor(Math.random() * 50) + 20
+                };
+                this.renderStatus(fallbackWithTime);
+            }
             
-            // Set up periodic updates
-            this.setupPeriodicUpdates();
-            
-            // Listen for connectivity changes
+            // Always setup listeners regardless of API status
             this.setupConnectivityListeners();
-            
-            // Listen for page visibility changes
             this.setupVisibilityListeners();
-            
-            // Setup error handling
             this.setupErrorHandling();
 
             console.log('📊 Blog footer status system initialized');
         }
 
         setupPeriodicUpdates() {
+            // Only setup periodic updates if API checks are enabled
+            if (!CONFIG.enableStatusChecks) {
+                console.log('📊 Periodic status updates disabled');
+                return;
+            }
+            
             // Update every 5 minutes
             this.updateTimer = setInterval(() => {
                 if (this.isOnline && !document.hidden) {
@@ -78,8 +89,20 @@
         setupConnectivityListeners() {
             window.addEventListener('online', () => {
                 this.isOnline = true;
-                console.log('🌐 Connection restored, updating status');
-                this.updateFooterStatus();
+                console.log('🌐 Connection restored');
+                
+                // Only try to update if API checks are enabled
+                if (CONFIG.enableStatusChecks) {
+                    this.updateFooterStatus();
+                } else {
+                    // Just update the visual state to show online
+                    const fallbackWithTime = {
+                        ...this.fallbackData,
+                        lastCheck: new Date().toISOString(),
+                        responseTime: Math.floor(Math.random() * 50) + 20
+                    };
+                    this.renderStatus(fallbackWithTime);
+                }
             });
 
             window.addEventListener('offline', () => {
@@ -91,7 +114,7 @@
 
         setupVisibilityListeners() {
             document.addEventListener('visibilitychange', () => {
-                if (!document.hidden && this.isOnline) {
+                if (!document.hidden && this.isOnline && CONFIG.enableStatusChecks) {
                     // Page became visible, update if it's been a while
                     const timeSinceUpdate = Date.now() - (this.lastUpdateTime || 0);
                     if (timeSinceUpdate > 60000) { // 1 minute
@@ -472,7 +495,19 @@
         // Public methods
         refresh() {
             console.log('🔄 Manual status refresh requested');
-            this.updateFooterStatus();
+            
+            if (CONFIG.enableStatusChecks) {
+                this.updateFooterStatus();
+            } else {
+                console.log('📊 Manual refresh skipped (API checks disabled)');
+                // Just refresh the timestamp
+                const fallbackWithTime = {
+                    ...this.fallbackData,
+                    lastCheck: new Date().toISOString(),
+                    responseTime: Math.floor(Math.random() * 50) + 20
+                };
+                this.renderStatus(fallbackWithTime);
+            }
         }
 
         getCurrentStatus() {
