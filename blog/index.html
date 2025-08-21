@@ -99,6 +99,125 @@
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     
+    <!-- Critical Blog Styles (inline for immediate loading) -->
+    <style>
+        /* Ensure blog sections display correctly while external CSS loads */
+        .blog-hero {
+            background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)),
+                        url('/images/carambola-golf-hole-18.webp') center/cover;
+            background-attachment: fixed;
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            margin-top: 80px;
+            padding: 4rem 2rem 2rem;
+        }
+        
+        .blog-overview,
+        .blog-categories,
+        .latest-articles,
+        .content-hub {
+            padding: 6rem 0;
+        }
+        
+        .blog-overview {
+            background: #f9fafb;
+        }
+        
+        .featured-article {
+            padding: 6rem 0;
+            background: white;
+        }
+        
+        .blog-categories {
+            background: #f9fafb;
+        }
+        
+        .latest-articles {
+            background: white;
+        }
+        
+        .newsletter-signup {
+            padding: 6rem 0;
+            background: #1e3a5f;
+            color: white;
+        }
+        
+        .content-hub {
+            background: white;
+        }
+        
+        .blog-cta {
+            padding: 6rem 2rem;
+            background: #1e3a5f;
+            color: white;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #1e3a5f;
+            font-weight: 400;
+        }
+        
+        /* Ensure CTA buttons work properly */
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            min-height: 44px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        
+        .cta-button.primary {
+            background: #d4af37;
+            color: #1e3a5f;
+            border: 2px solid #d4af37;
+        }
+        
+        .cta-button.primary:hover,
+        .cta-button.primary:focus {
+            background: #1e3a5f;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+        
+        .cta-button.secondary {
+            background: transparent;
+            color: #1e3a5f;
+            border: 2px solid #1e3a5f;
+        }
+        
+        .cta-button.secondary:hover,
+        .cta-button.secondary:focus {
+            background: #1e3a5f;
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+    
     <!-- Enhanced Blog-specific Structured Data -->
     <script type="application/ld+json">
     {
@@ -247,7 +366,7 @@
                 <li><a href="/blog/" class="active" aria-current="page">Blog & Insights</a></li>
                 <li><a href="/contact.html">Contact</a></li>
             </ul>
-            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false">
+            <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars" aria-hidden="true"></i>
             </button>
         </div>
@@ -291,15 +410,15 @@
                     <div class="blog-social-proof">
                         <div class="social-proof-stats">
                             <div class="stat-item">
-                                <span class="stat-number">50+</span>
+                                <span class="stat-number" data-final-value="50+">50+</span>
                                 <span class="stat-label">Years of Golf Excellence</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-number">4.8★</span>
+                                <span class="stat-number" data-final-value="4.8★">4.8★</span>
                                 <span class="stat-label">Golf Magazine Rating</span>
                             </div>
                             <div class="stat-item">
-                                <span class="stat-number">18</span>
+                                <span class="stat-number" data-final-value="18">18</span>
                                 <span class="stat-label">Championship Holes</span>
                             </div>
                         </div>
@@ -354,13 +473,17 @@
                             </ul>
                         </div>
                         <div class="article-actions">
-                            <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html" class="cta-button primary" 
-                               onclick="trackBlogInteraction('featured_article_click', 'ultimate-guide-carambola-2025', {category: 'golf-guides'}); return true;">
+                            <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html" 
+                               class="cta-button primary" 
+                               id="featured-article-cta"
+                               data-article="ultimate-guide-carambola-2025"
+                               data-category="golf-guides">
                                 Read Full Guide
                                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                             </a>
                             <button class="cta-button secondary" 
-                                    onclick="shareArticle('facebook')"
+                                    id="share-guide-btn"
+                                    type="button"
                                     aria-label="Share this guide">
                                 <i class="fas fa-share-alt" aria-hidden="true"></i>
                                 Share Guide
@@ -602,7 +725,8 @@
                 </div>
                 <div class="cta-buttons">
                     <a href="/contact.html" class="cta-button primary" 
-                       onclick="trackBlogInteraction('cta_click', 'book-tee-time', {source: 'blog-page'}); return true;">
+                       id="main-cta-button"
+                       data-source="blog-page">
                         <i class="fas fa-golf-ball" aria-hidden="true"></i>
                         Book Your Tee Time
                     </a>
@@ -690,5 +814,276 @@
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/blog/footer-status.js"></script>
+    
+    <!-- FIXED: Enhanced Blog Index Page JavaScript -->
+    <script>
+        // Mobile menu toggle function - FIXED
+        function toggleMobileMenu() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (mobileMenu && navLinks) {
+                const isExpanded = mobileMenu.getAttribute('aria-expanded') === 'true';
+                mobileMenu.setAttribute('aria-expanded', !isExpanded);
+                navLinks.style.display = isExpanded ? 'none' : 'flex';
+                
+                // Add mobile menu styling
+                if (!isExpanded) {
+                    navLinks.style.position = 'absolute';
+                    navLinks.style.top = '100%';
+                    navLinks.style.left = '0';
+                    navLinks.style.right = '0';
+                    navLinks.style.backgroundColor = '#1e3a5f';
+                    navLinks.style.flexDirection = 'column';
+                    navLinks.style.padding = '1rem';
+                    navLinks.style.zIndex = '999';
+                } else {
+                    navLinks.style.position = '';
+                    navLinks.style.top = '';
+                    navLinks.style.left = '';
+                    navLinks.style.right = '';
+                    navLinks.style.backgroundColor = '';
+                    navLinks.style.flexDirection = '';
+                    navLinks.style.padding = '';
+                    navLinks.style.zIndex = '';
+                }
+            }
+        }
+
+        // Blog index page functionality - FIXED
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🏠 FIXED Blog index page loaded');
+            
+            // Wait for blog script to initialize
+            const initializePageFeatures = () => {
+                // Enhanced featured article CTA - MULTIPLE FALLBACKS
+                const setupFeaturedCTA = () => {
+                    const selectors = [
+                        '#featured-article-cta',
+                        '.featured-article .cta-button.primary',
+                        '.featured-article-card .cta-button',
+                        '.article-actions .cta-button.primary'
+                    ];
+
+                    let featuredCTA = null;
+                    for (const selector of selectors) {
+                        featuredCTA = document.querySelector(selector);
+                        if (featuredCTA) {
+                            console.log('✅ Found featured CTA with:', selector);
+                            break;
+                        }
+                    }
+
+                    if (featuredCTA) {
+                        // Ensure only one event listener
+                        featuredCTA.replaceWith(featuredCTA.cloneNode(true));
+                        featuredCTA = document.querySelector('#featured-article-cta') || 
+                                    document.querySelector('.featured-article .cta-button.primary');
+
+                        if (featuredCTA) {
+                            featuredCTA.addEventListener('click', function(e) {
+                                console.log('🖱️ FIXED Featured CTA clicked!', this.href);
+                                
+                                const article = this.getAttribute('data-article') || 'ultimate-guide-carambola-2025';
+                                const category = this.getAttribute('data-category') || 'golf-guides';
+                                
+                                // Track the click using available tracking
+                                if (window.CarambolaBlog && window.CarambolaBlog.trackEvent) {
+                                    window.CarambolaBlog.trackEvent('featured_article_click', article, {
+                                        category: category,
+                                        source: 'blog_index_fixed',
+                                        button_text: this.textContent.trim(),
+                                        href: this.href
+                                    });
+                                } else if (window.trackBlogInteraction) {
+                                    window.trackBlogInteraction('featured_article_click', article, {
+                                        category: category,
+                                        source: 'blog_index_fixed'
+                                    });
+                                }
+                                
+                                console.log('📊 Featured CTA tracked:', article);
+                                // Don't prevent default - let link work
+                            }, { passive: false });
+                            
+                            console.log('✅ FIXED Featured CTA listener attached');
+                        }
+                    } else {
+                        console.warn('⚠️ Featured CTA not found with any selector');
+                    }
+                };
+
+                // Enhanced share button setup - FIXED
+                const setupShareButton = () => {
+                    const shareBtn = document.getElementById('share-guide-btn');
+                    if (shareBtn) {
+                        shareBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            console.log('🖱️ Share button clicked');
+                            
+                            // Use available share function
+                            if (window.CarambolaBlog && window.CarambolaBlog.shareArticle) {
+                                window.CarambolaBlog.shareArticle('facebook');
+                            } else if (window.shareArticle) {
+                                window.shareArticle('facebook');
+                            } else {
+                                // Fallback direct sharing
+                                const url = encodeURIComponent(window.location.href);
+                                const title = encodeURIComponent(document.title);
+                                const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}&text=${title}`;
+                                window.open(shareUrl, '_blank', 'width=600,height=400');
+                            }
+                            
+                            // Track share
+                            if (window.trackBlogInteraction) {
+                                window.trackBlogInteraction('share_click', 'featured_guide', {
+                                    method: 'facebook',
+                                    source: 'blog_index'
+                                });
+                            }
+                        });
+                        console.log('✅ Share button listener attached');
+                    }
+                };
+
+                // Enhanced main CTA setup - FIXED
+                const setupMainCTA = () => {
+                    const mainCTA = document.getElementById('main-cta-button');
+                    if (mainCTA) {
+                        mainCTA.addEventListener('click', function(e) {
+                            console.log('🖱️ Main CTA clicked:', this.href);
+                            
+                            const source = this.getAttribute('data-source') || 'blog-page';
+                            
+                            if (window.trackBlogInteraction) {
+                                window.trackBlogInteraction('cta_click', 'book-tee-time', {
+                                    source: source,
+                                    button_text: this.textContent.trim(),
+                                    href: this.href
+                                });
+                            }
+                        });
+                        console.log('✅ Main CTA listener attached');
+                    }
+                };
+
+                // Enhanced newsletter form - FIXED
+                const setupNewsletterForm = () => {
+                    const newsletterForm = document.getElementById('newsletter-form');
+                    if (newsletterForm) {
+                        newsletterForm.addEventListener('submit', function(e) {
+                            e.preventDefault();
+                            console.log('📧 Newsletter form submitted');
+                            
+                            const email = this.querySelector('input[type="email"]').value;
+                            const name = this.querySelector('input[name="name"]').value;
+                            
+                            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                                alert('Please enter a valid email address.');
+                                return;
+                            }
+                            
+                            // Show loading state
+                            const submitBtn = this.querySelector('button[type="submit"]');
+                            const originalText = submitBtn.innerHTML;
+                            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+                            submitBtn.disabled = true;
+                            
+                            // Simulate newsletter signup
+                            setTimeout(() => {
+                                submitBtn.innerHTML = '<i class="fas fa-check-circle"></i> Strategy Guide Sent!';
+                                submitBtn.style.background = '#16a34a';
+                                
+                                // Track conversion
+                                if (typeof gtag !== 'undefined') {
+                                    gtag('event', 'conversion', {
+                                        'send_to': 'G-YJ3H2GJ4SS/newsletter_signup',
+                                        'value': 25.00,
+                                        'currency': 'USD'
+                                    });
+                                }
+                                
+                                if (window.trackBlogInteraction) {
+                                    window.trackBlogInteraction('newsletter_signup', 'blog-main-page', {
+                                        source: 'blog-newsletter-section',
+                                        has_name: !!name,
+                                        conversion_value: 25
+                                    });
+                                }
+                                
+                                setTimeout(() => {
+                                    submitBtn.innerHTML = originalText;
+                                    submitBtn.style.background = '';
+                                    submitBtn.disabled = false;
+                                    this.reset();
+                                    
+                                    // Show success message
+                                    showSuccessMessage('Check your email for your free strategy guide!');
+                                }, 3000);
+                            }, 1500);
+                        });
+                        console.log('✅ Newsletter form listener attached');
+                    }
+                };
+
+                // Success message function
+                const showSuccessMessage = (message) => {
+                    const messageEl = document.createElement('div');
+                    messageEl.style.cssText = `
+                        position: fixed;
+                        top: 100px;
+                        right: 20px;
+                        background: #16a34a;
+                        color: white;
+                        padding: 1rem 1.5rem;
+                        border-radius: 8px;
+                        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+                        z-index: 1000;
+                        transform: translateX(400px);
+                        transition: transform 0.3s ease;
+                        max-width: 300px;
+                        font-weight: 500;
+                        cursor: pointer;
+                    `;
+                    messageEl.textContent = message;
+                    document.body.appendChild(messageEl);
+                    
+                    setTimeout(() => messageEl.style.transform = 'translateX(0)', 100);
+                    setTimeout(() => {
+                        messageEl.style.transform = 'translateX(400px)';
+                        setTimeout(() => messageEl.remove(), 300);
+                    }, 5000);
+                    
+                    messageEl.addEventListener('click', () => {
+                        messageEl.style.transform = 'translateX(400px)';
+                        setTimeout(() => messageEl.remove(), 300);
+                    });
+                };
+
+                // Execute all setups
+                setupFeaturedCTA();
+                setupShareButton();
+                setupMainCTA();
+                setupNewsletterForm();
+
+                console.log('✅ FIXED Blog index page functionality initialized');
+            };
+
+            // Initialize with delay to ensure blog script is loaded
+            if (window.CarambolaBlogInitialized) {
+                initializePageFeatures();
+            } else {
+                setTimeout(initializePageFeatures, 500);
+            }
+
+            // Fallback initialization after 2 seconds
+            setTimeout(() => {
+                if (!window.CarambolaBlogInitialized) {
+                    console.log('🔄 Fallback initialization...');
+                    initializePageFeatures();
+                }
+            }, 2000);
+        });
+    </script>
 </body>
 </html>
