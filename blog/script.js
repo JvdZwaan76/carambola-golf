@@ -1,4 +1,4 @@
-// CARAMBOLA GOLF CLUB BLOG - COMPLETE SCRIPT
+// CARAMBOLA GOLF CLUB BLOG - COMPLETE FIXED SCRIPT
 // Clean, functional blog JavaScript without conflicts
 
 (function() {
@@ -17,7 +17,7 @@
         trackingEnabled: true,
         debugMode: false,
         mobileBreakpoint: 768,
-        version: '2.0.0'
+        version: '2.1.0'
     };
 
     // Utility functions
@@ -131,6 +131,26 @@
         }
     };
 
+    // Wait for main script to finish if it's loading
+    function waitForMainScript() {
+        return new Promise((resolve) => {
+            if (window.CarambolaGolfInitialized) {
+                console.log('✅ Main script ready, proceeding with blog init');
+                resolve();
+            } else {
+                // Wait up to 3 seconds for main script
+                let attempts = 0;
+                const checkInterval = setInterval(() => {
+                    attempts++;
+                    if (window.CarambolaGolfInitialized || attempts > 30) {
+                        clearInterval(checkInterval);
+                        resolve();
+                    }
+                }, 100);
+            }
+        });
+    }
+
     // Mobile menu functionality
     function setupMobileMenu() {
         const mobileMenuButton = document.querySelector('.mobile-menu');
@@ -195,7 +215,7 @@
         utils.log('Mobile menu setup complete');
     }
 
-    // Featured Article CTA functionality
+    // FIXED: Featured Article CTA functionality with conflict resolution
     function setupFeaturedCTA() {
         const selectors = [
             '#featured-article-cta',
@@ -218,7 +238,7 @@
         }
 
         if (!ctaButton) {
-            console.warn('⚠️ Featured CTA button not found');
+            console.warn('⚠️ Featured CTA button not found with selectors:', selectors);
             return null;
         }
 
@@ -236,20 +256,42 @@
         utils.log('CTA button validation passed:', {
             tag: ctaButton.tagName,
             href: ctaButton.href,
-            text: ctaButton.textContent.trim()
+            text: ctaButton.textContent.trim(),
+            hasOnclick: !!ctaButton.getAttribute('onclick')
         });
 
-        // Clean click handler - let normal navigation work
+        // CRITICAL FIX: Remove any conflicting onclick handlers
+        if (ctaButton.getAttribute('onclick')) {
+            console.log('🔧 Removing conflicting onclick attribute');
+            ctaButton.removeAttribute('onclick');
+        }
+
+        // Remove any existing event listeners by cloning the node
+        const newButton = ctaButton.cloneNode(true);
+        ctaButton.parentNode.replaceChild(newButton, ctaButton);
+        ctaButton = newButton;
+
+        // Clean click handler - allow normal navigation
         ctaButton.addEventListener('click', function(e) {
             utils.log('Featured CTA clicked:', this.href);
             
-            // Track the click
+            // Track the click with both systems
             utils.trackEvent('featured_article_click', 'navigation', {
                 href: this.href,
                 text: this.textContent.trim(),
                 source: 'blog_index',
                 selector_used: selectorUsed
             });
+
+            // Also track with gtag directly for safety
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'featured_article_click', {
+                    event_category: 'Blog Engagement',
+                    event_label: 'ultimate-guide-carambola-2025',
+                    blog_category: 'golf-guides',
+                    click_source: 'blog_script'
+                });
+            }
 
             // Don't prevent default - allow normal navigation
             utils.log('Navigation proceeding to:', this.href);
@@ -259,11 +301,31 @@
         ctaButton.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-2px)';
             this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+            this.style.transition = 'all 0.3s ease';
         });
 
         ctaButton.addEventListener('mouseleave', function() {
             this.style.transform = '';
             this.style.boxShadow = '';
+        });
+
+        // Enhanced accessibility
+        ctaButton.addEventListener('focus', function() {
+            this.style.outline = '2px solid var(--accent-gold)';
+            this.style.outlineOffset = '2px';
+        });
+
+        ctaButton.addEventListener('blur', function() {
+            this.style.outline = '';
+            this.style.outlineOffset = '';
+        });
+
+        // Add keyboard support
+        ctaButton.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.click();
+            }
         });
 
         utils.log('Featured CTA setup complete');
@@ -614,14 +676,25 @@
         }
     }
 
-    // Main initialization function
-    function initializeBlog() {
+    // Enhanced initialization function
+    async function initializeBlog() {
         utils.log('Initializing blog functionality...');
 
         try {
-            // Setup all components
+            // Wait for main script to finish
+            await waitForMainScript();
+
+            // Setup all components with enhanced error handling
             setupMobileMenu();
+            
+            // CRITICAL: Setup featured CTA with conflict resolution
             const featuredCTA = setupFeaturedCTA();
+            if (featuredCTA) {
+                console.log('✅ Featured CTA initialized successfully');
+            } else {
+                console.warn('⚠️ Featured CTA could not be initialized');
+            }
+            
             setupShareButtons();
             setupNewsletterForm();
             setupOtherCTAs();
@@ -636,7 +709,8 @@
                 referrer: document.referrer || 'direct',
                 user_agent: navigator.userAgent.substring(0, 100),
                 viewport: `${window.innerWidth}x${window.innerHeight}`,
-                blog_version: BLOG_CONFIG.version
+                blog_version: BLOG_CONFIG.version,
+                main_script_loaded: !!window.CarambolaGolfInitialized
             });
 
             // Mark as initialized
@@ -651,7 +725,7 @@
                     showNotification: utils.showNotification,
                     trackEvent: utils.trackEvent
                 };
-                console.log('🐛 Blog debug mode enabled');
+                console.log('🛠 Blog debug mode enabled');
             }
 
             console.log('✅ Carambola Blog initialized successfully');
@@ -667,13 +741,20 @@
         }
     }
 
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeBlog);
-    } else {
-        // DOM already loaded
-        setTimeout(initializeBlog, 100);
+    // Enhanced DOM ready check with fallback
+    function whenReady(callback) {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', callback);
+            // Fallback timeout
+            setTimeout(callback, 5000);
+        } else {
+            // DOM already loaded, but wait a bit for other scripts
+            setTimeout(callback, 100);
+        }
     }
+
+    // Initialize when ready
+    whenReady(initializeBlog);
 
     // Global utility functions and API
     window.CarambolaBlog = {
@@ -759,5 +840,25 @@ function trackArticleInteraction(action, section, details = {}) {
         });
     }
 }
+
+// Enhanced global trackBlogInteraction function
+window.trackBlogInteraction = function(action, article, details = {}) {
+    console.log('🎯 Blog interaction tracked:', action, article, details);
+    
+    if (typeof gtag !== 'undefined') {
+        gtag('event', action, {
+            event_category: 'Blog Engagement',
+            event_label: article,
+            blog_category: details.category || 'general',
+            article_type: details.type || 'guide',
+            ...details
+        });
+    }
+    
+    // Also track with blog utils if available
+    if (window.CarambolaBlog && window.CarambolaBlog.trackEvent) {
+        window.CarambolaBlog.trackEvent(action, article, details);
+    }
+};
 
 console.log('🎯 Carambola Blog Script loaded');
