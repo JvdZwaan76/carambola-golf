@@ -115,7 +115,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     
-    <!-- External CSS - OPTIMIZED: Updated separation for blog supplements -->
+    <!-- FIXED: Proper CSS loading order - Main styles first, then blog supplements -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -335,7 +335,7 @@
             </div>
         </section>
 
-        <!-- Featured Article - OPTIMIZED: Enhanced for better CTA tracking -->
+        <!-- Featured Article -->
         <section class="featured-article">
             <div class="container">
                 <h2 class="section-title">Featured Guide</h2>
@@ -374,12 +374,10 @@
                                 <li>Why Carambola ranks among the Caribbean's best</li>
                             </ul>
                         </div>
-                        <!-- OPTIMIZED: Enhanced CTA for better tracking -->
                         <div class="article-actions">
                             <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html" 
                                class="cta-button primary"
-                               id="featured-article-cta"
-                               data-article="ultimate-guide-carambola-golf-resort-2025">
+                               id="featured-article-cta">
                                 Read Full Guide
                                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                             </a>
@@ -539,8 +537,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- OPTIMIZED: Enhanced form for better tracking -->
-                <form class="newsletter-form" id="newsletter-form" data-form-type="blog-index">
+                <form class="newsletter-form" id="newsletter-form">
                     <div class="form-group">
                         <label for="newsletter-email" class="visually-hidden">Email Address</label>
                         <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required>
@@ -710,7 +707,7 @@
         </div>
     </footer>
 
-    <!-- Scripts - OPTIMIZED: Updated script loading order -->
+    <!-- FIXED: Proper script loading order - Main script, then blog supplements, then status -->
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/footer-status.js"></script>
