@@ -1367,6 +1367,24 @@
     font-weight: 600;
 }
 
+/* FAQ HEADER TEXT COLOR FIX - Ensure white text on blue background */
+.faq-section .faq-item .faq-question,
+.faq-section .faq-item .faq-question h3,
+.article-body .faq-section .faq-item .faq-question,
+.article-body .faq-section .faq-item .faq-question h3,
+.article-content .faq-section .faq-item .faq-question,
+.article-content .faq-section .faq-item .faq-question h3 {
+    color: white !important;
+    background: var(--primary-navy, #1e3a5f) !important;
+}
+
+/* Extra specific targeting for FAQ headers */
+html body .faq-section .faq-question,
+html body .faq-section .faq-question h3 {
+    color: white !important;
+    background-color: #1e3a5f !important;
+}
+
 .faq-answer {
     padding: 1.5rem;
     color: #555;
