@@ -18,7 +18,8 @@
         requestTimeout: 5000, // 5 seconds
         maxRetries: 3,
         retryDelay: 2000, // 2 seconds
-        enableStatusChecks: false // Set to true when API endpoint is ready
+        enableStatusChecks: false, // Set to true when API endpoint is ready
+        enableBlogIntegration: true // Enhanced blog integration features
     };
 
     class BlogFooterStatus {
@@ -30,6 +31,7 @@
             this.lastUpdateTime = null;
             this.isOnline = navigator.onLine;
             this.updateTimer = null;
+            this.isBlogPage = document.querySelector('.blog-page, .article-body') !== null;
             
             this.fallbackData = {
                 lastCheck: new Date().toISOString(),
@@ -51,6 +53,12 @@
         init() {
             console.log('📊 Initializing blog footer status system...');
             
+            // Wait for blog supplements to be ready if on blog page
+            if (this.isBlogPage && !window.CarambolaBlogSupplementsInitialized) {
+                setTimeout(() => this.init(), 500);
+                return;
+            }
+            
             // Only update status if API checks are enabled
             if (CONFIG.enableStatusChecks) {
                 this.updateFooterStatus();
@@ -71,7 +79,126 @@
             this.setupVisibilityListeners();
             this.setupErrorHandling();
 
+            // Blog-specific enhancements
+            if (CONFIG.enableBlogIntegration && this.isBlogPage) {
+                this.setupBlogIntegration();
+            }
+
             console.log('📊 Blog footer status system initialized');
+        }
+
+        setupBlogIntegration() {
+            // Add blog-specific status indicators
+            this.addBlogStatusElements();
+            
+            // Monitor blog performance
+            this.setupBlogPerformanceMonitoring();
+            
+            // Track status interactions on blog
+            this.setupBlogStatusTracking();
+            
+            console.log('📊 Blog-specific status enhancements enabled');
+        }
+
+        addBlogStatusElements() {
+            const footer = document.querySelector('.footer-status');
+            if (!footer) return;
+
+            // Add blog service status if not present
+            if (!footer.querySelector('.blog-service-status')) {
+                const blogStatus = document.createElement('div');
+                blogStatus.className = 'blog-service-status';
+                blogStatus.innerHTML = `
+                    <p style="font-size: 0.8rem; opacity: 0.8; margin: 0.25rem 0; color: inherit;">
+                        Blog service: <span data-blog-status="blog" data-status-text class="operational" aria-label="Blog service status">Online</span>
+                        • Reading progress: <span class="blog-performance-info" aria-label="Blog performance status">Active</span>
+                    </p>
+                `;
+                
+                footer.appendChild(blogStatus);
+            }
+        }
+
+        setupBlogPerformanceMonitoring() {
+            // Monitor blog-specific metrics
+            if ('performance' in window) {
+                // Track blog script loading
+                const blogScriptLoad = performance.getEntriesByName('/blog/script.js')[0];
+                if (blogScriptLoad) {
+                    const loadTime = Math.round(blogScriptLoad.duration);
+                    this.updateBlogPerformance('script_load', loadTime);
+                }
+
+                // Monitor reading progress if available
+                if (window.CarambolaBlogSupplements) {
+                    setInterval(() => {
+                        const state = window.CarambolaBlogSupplements.getState();
+                        this.updateBlogPerformance('engagement', {
+                            scroll: state.engagement.maxScroll,
+                            interactions: state.engagement.interactions,
+                            reading_time: Date.now() - state.engagement.startTime
+                        });
+                    }, 30000); // Every 30 seconds
+                }
+            }
+        }
+
+        updateBlogPerformance(metric, data) {
+            const perfElement = document.querySelector('.blog-performance-info');
+            if (!perfElement) return;
+
+            switch (metric) {
+                case 'script_load':
+                    if (data < 100) {
+                        perfElement.textContent = 'Fast';
+                        perfElement.style.color = '#10b981';
+                    } else if (data < 300) {
+                        perfElement.textContent = 'Good';
+                        perfElement.style.color = '#f59e0b';
+                    } else {
+                        perfElement.textContent = 'Slow';
+                        perfElement.style.color = '#ef4444';
+                    }
+                    break;
+                case 'engagement':
+                    if (data.scroll > 50 && data.interactions > 3) {
+                        perfElement.textContent = 'Engaged';
+                        perfElement.style.color = '#10b981';
+                    } else {
+                        perfElement.textContent = 'Active';
+                        perfElement.style.color = '#6b7280';
+                    }
+                    break;
+            }
+        }
+
+        setupBlogStatusTracking() {
+            // Track status page clicks from blog
+            const statusLinks = document.querySelectorAll('a[href*="status.html"], a[href*="/status"]');
+            
+            statusLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    try {
+                        // Track with blog tracking if available
+                        if (typeof window.trackBlogInteraction === 'function') {
+                            window.trackBlogInteraction('status_page_click', 'footer_status_link', {
+                                source_page: 'blog',
+                                page_location: window.location.pathname,
+                                user_agent: navigator.userAgent.substring(0, 100)
+                            });
+                        }
+                        
+                        // Track with blog supplements if available
+                        if (window.CarambolaBlogSupplements && window.CarambolaBlogSupplements.track) {
+                            window.CarambolaBlogSupplements.track('status_page_navigation', 'footer_link', {
+                                source: 'blog_footer'
+                            });
+                        }
+                    } catch (error) {
+                        console.warn('Error tracking status page click:', error);
+                    }
+                });
+            });
         }
 
         setupPeriodicUpdates() {
@@ -112,7 +239,7 @@
 
             window.addEventListener('offline', () => {
                 this.isOnline = false;
-                console.log('⌐ Connection lost');
+                console.log('❌ Connection lost');
                 this.handleOfflineStatus();
             });
         }
@@ -133,12 +260,34 @@
             window.addEventListener('error', (event) => {
                 // Log errors for debugging but don't break functionality
                 console.warn('Page error detected:', event.error?.message);
+                
+                // Update blog service status if error relates to blog
+                if (event.error?.message?.includes('blog') || event.filename?.includes('blog')) {
+                    this.updateBlogServiceStatus('degraded');
+                }
             });
 
             // Handle unhandled promise rejections
             window.addEventListener('unhandledrejection', (event) => {
                 console.warn('Unhandled promise rejection:', event.reason);
             });
+        }
+
+        updateBlogServiceStatus(status) {
+            const blogStatusElement = document.querySelector('[data-blog-status="blog"]');
+            if (blogStatusElement) {
+                blogStatusElement.classList.remove('operational', 'degraded', 'down');
+                blogStatusElement.classList.add(status);
+                
+                const statusText = {
+                    'operational': 'Online',
+                    'degraded': 'Limited',
+                    'down': 'Offline'
+                };
+                
+                blogStatusElement.textContent = statusText[status] || 'Unknown';
+                blogStatusElement.setAttribute('aria-label', `Blog service: ${statusText[status]}`);
+            }
         }
 
         async updateFooterStatus() {
@@ -263,10 +412,16 @@
             // Use fallback data for display
             this.renderStatus(this.fallbackData);
             
+            // Update blog service status if error occurred
+            if (this.isBlogPage) {
+                this.updateBlogServiceStatus('degraded');
+            }
+            
             // Track error
             this.trackStatusUpdate('error', { 
                 error: error.message, 
-                retryCount: this.retryCount 
+                retryCount: this.retryCount,
+                isBlogPage: this.isBlogPage
             });
 
             // Retry logic with exponential backoff
@@ -296,6 +451,11 @@
             };
             
             this.renderStatus(offlineData);
+            
+            // Update blog service status
+            if (this.isBlogPage) {
+                this.updateBlogServiceStatus('degraded');
+            }
         }
 
         renderStatus(statusData) {
@@ -500,17 +660,19 @@
         trackStatusUpdate(type, details = {}) {
             // Track status updates for analytics
             try {
-                if (typeof window.trackBlogInteraction === 'function') {
+                // Track with blog tracking if available and on blog page
+                if (this.isBlogPage && typeof window.trackBlogInteraction === 'function') {
                     window.trackBlogInteraction('status_update', type, {
                         timestamp: new Date().toISOString(),
                         page_url: window.location.pathname,
+                        page_type: 'blog',
                         ...details
                     });
                 }
                 
-                // Also track with main blog system if available
-                if (window.CarambolaBlog && window.CarambolaBlog.trackEvent) {
-                    window.CarambolaBlog.trackEvent('footer_status_update', type, details);
+                // Also track with blog supplements if available
+                if (window.CarambolaBlogSupplements && window.CarambolaBlogSupplements.track) {
+                    window.CarambolaBlogSupplements.track('footer_status_update', type, details);
                 }
             } catch (error) {
                 console.warn('Error tracking status update:', error);
@@ -551,7 +713,9 @@
                 lastUpdate: this.lastUpdateTime,
                 isOnline: this.isOnline,
                 retryCount: this.retryCount,
-                apiEnabled: CONFIG.enableStatusChecks
+                apiEnabled: CONFIG.enableStatusChecks,
+                isBlogPage: this.isBlogPage,
+                blogIntegration: CONFIG.enableBlogIntegration
             };
         }
 
@@ -565,222 +729,19 @@
         }
     }
 
-    // Blog-specific status enhancement
-    class BlogStatusEnhancer {
-        constructor() {
-            this.setupBlogStatusFeatures();
-        }
-
-        setupBlogStatusFeatures() {
-            // Add blog-specific status indicators if they don't exist
-            this.addBlogStatusElements();
-            
-            // Setup status page link enhancement
-            this.enhanceStatusPageLink();
-            
-            // Add blog reading status
-            this.addReadingStatus();
-            
-            // Setup performance monitoring
-            this.setupPerformanceMonitoring();
-        }
-
-        addBlogStatusElements() {
-            const footer = document.querySelector('.footer-status');
-            if (!footer) return;
-
-            // Add blog service status if not present
-            if (!footer.querySelector('.blog-service-status')) {
-                const blogStatus = document.createElement('div');
-                blogStatus.className = 'blog-service-status';
-                blogStatus.innerHTML = `
-                    <p style="font-size: 0.8rem; opacity: 0.8; margin: 0.25rem 0; color: inherit;">
-                        Blog service: <span data-blog-status="blog" data-status-text class="operational" aria-label="Blog service status">Online</span>
-                    </p>
-                `;
-                
-                footer.appendChild(blogStatus);
-            }
-        }
-
-        enhanceStatusPageLink() {
-            const statusLinks = document.querySelectorAll('a[href*="status.html"], a[href*="/status"]');
-            
-            statusLinks.forEach(link => {
-                // Add accessibility attributes
-                link.setAttribute('aria-label', 'View detailed system status page');
-                link.setAttribute('title', 'View detailed system status and uptime history');
-                
-                link.addEventListener('click', (event) => {
-                    // Track status page navigation from blog
-                    try {
-                        if (typeof window.trackBlogInteraction === 'function') {
-                            window.trackBlogInteraction('status_page_click', 'footer_status_link', {
-                                source_page: 'blog',
-                                page_location: window.location.pathname,
-                                user_agent: navigator.userAgent.substring(0, 100)
-                            });
-                        }
-                        
-                        if (window.CarambolaBlog && window.CarambolaBlog.trackEvent) {
-                            window.CarambolaBlog.trackEvent('status_page_navigation', 'footer_link', {
-                                source: 'blog_footer'
-                            });
-                        }
-                    } catch (error) {
-                        console.warn('Error tracking status page click:', error);
-                    }
-                });
-            });
-        }
-
-        addReadingStatus() {
-            // Add reading time and progress to footer on article pages
-            const articleBody = document.querySelector('.article-body');
-            if (articleBody) {
-                const footer = document.querySelector('.footer-status');
-                if (footer && !footer.querySelector('.reading-status')) {
-                    const readingStatus = document.createElement('div');
-                    readingStatus.className = 'reading-status';
-                    
-                    // Calculate reading time
-                    const wordCount = this.getWordCount();
-                    const readingTime = Math.ceil(wordCount / 200); // 200 words per minute
-                    
-                    readingStatus.innerHTML = `
-                        <p style="font-size: 0.8rem; opacity: 0.8; margin: 0.25rem 0; color: inherit;">
-                            <i class="fas fa-clock" aria-hidden="true"></i> 
-                            ${readingTime} min read • 
-                            <span id="reading-progress" aria-label="Reading progress">0%</span> complete
-                        </p>
-                    `;
-                    
-                    footer.appendChild(readingStatus);
-                    
-                    // Update reading progress
-                    this.trackReadingProgress();
-                }
-            }
-        }
-
-        getWordCount() {
-            const article = document.querySelector('.article-body');
-            if (!article) return 0;
-            
-            const text = article.textContent || article.innerText || '';
-            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
-            return words.length;
-        }
-
-        trackReadingProgress() {
-            const progressElement = document.getElementById('reading-progress');
-            const article = document.querySelector('.article-body');
-            
-            if (!progressElement || !article) return;
-
-            let lastReportedProgress = 0;
-
-            const updateProgress = () => {
-                const articleTop = article.offsetTop;
-                const articleHeight = article.offsetHeight;
-                const windowHeight = window.innerHeight;
-                const scrollTop = window.pageYOffset;
-
-                const progress = Math.min(
-                    100,
-                    Math.max(0, ((scrollTop - articleTop + windowHeight / 3) / articleHeight) * 100)
-                );
-
-                const roundedProgress = Math.round(progress);
-                progressElement.textContent = `${roundedProgress}%`;
-                progressElement.setAttribute('aria-label', `Reading progress: ${roundedProgress} percent complete`);
-
-                // Track reading milestones
-                if (roundedProgress >= lastReportedProgress + 25 && roundedProgress <= 100) {
-                    lastReportedProgress = Math.floor(roundedProgress / 25) * 25;
-                    
-                    try {
-                        if (typeof window.trackBlogInteraction === 'function') {
-                            window.trackBlogInteraction('reading_progress', `${lastReportedProgress}%`, {
-                                article_title: document.title,
-                                word_count: this.getWordCount(),
-                                timestamp: new Date().toISOString()
-                            });
-                        }
-                    } catch (error) {
-                        console.warn('Error tracking reading progress:', error);
-                    }
-                }
-            };
-
-            // Throttled scroll listener
-            let ticking = false;
-            const handleScroll = () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        updateProgress();
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-            };
-
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            updateProgress(); // Initial update
-        }
-
-        setupPerformanceMonitoring() {
-            // Monitor page performance metrics
-            if ('performance' in window && 'getEntriesByType' in window.performance) {
-                window.addEventListener('load', () => {
-                    setTimeout(() => {
-                        this.reportPerformanceMetrics();
-                    }, 1000);
-                });
-            }
-        }
-
-        reportPerformanceMetrics() {
-            try {
-                const navigation = performance.getEntriesByType('navigation')[0];
-                if (navigation) {
-                    const metrics = {
-                        loadTime: Math.round(navigation.loadEventEnd - navigation.fetchStart),
-                        domContentLoaded: Math.round(navigation.domContentLoadedEventEnd - navigation.fetchStart),
-                        firstByte: Math.round(navigation.responseStart - navigation.fetchStart)
-                    };
-
-                    if (typeof window.trackBlogInteraction === 'function') {
-                        window.trackBlogInteraction('page_performance', 'load_metrics', {
-                            ...metrics,
-                            page_type: document.querySelector('.article-body') ? 'article' : 'blog_index',
-                            timestamp: new Date().toISOString()
-                        });
-                    }
-                }
-            } catch (error) {
-                console.warn('Performance monitoring error:', error);
-            }
-        }
-    }
-
     // Initialize when DOM is ready
     function initializeBlogFooterStatus() {
         try {
             // Initialize main blog footer status
             const blogFooterStatus = new BlogFooterStatus();
             
-            // Initialize blog-specific enhancements
-            const blogStatusEnhancer = new BlogStatusEnhancer();
-            
             // Make status manager globally available
             window.BlogFooterStatus = blogFooterStatus;
-            window.BlogStatusEnhancer = blogStatusEnhancer;
             
             console.log('✅ Blog footer status initialized successfully');
             
         } catch (error) {
-            console.error('⌐ Blog footer status initialization failed:', error);
+            console.error('❌ Blog footer status initialization failed:', error);
             
             // Fallback: still show basic status
             const statusElement = document.getElementById('footer-overall-status');
@@ -819,6 +780,14 @@
                 return window.BlogFooterStatus.getDetailedStatus();
             }
             return { overall: 'unknown' };
+        },
+
+        // Blog-specific utilities
+        getBlogPerformance: function() {
+            if (window.CarambolaBlogSupplements) {
+                return window.CarambolaBlogSupplements.getState();
+            }
+            return null;
         }
     };
 
