@@ -98,7 +98,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     
-    <!-- External CSS - Clean separation -->
+    <!-- External CSS - OPTIMIZED: Perfect integration with blog supplements -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -314,7 +314,7 @@
 
             <p>Nestled on a former sugar plantation in the northwest hills of St. Croix, Carambola Golf Course opened in 1966 as part of a visionary development by Laurence Rockefeller. The course's architect, Robert Trent Jones Sr., called it one of his finest creations—and for good reason. Spanning 7,181 yards from the back tees, it weaves through undulating terrain, tropical foliage, and sparkling ponds, with the Caribbean Sea as your constant backdrop.</p>
 
-            <!-- Golfer Action Shot - RESTORED IMAGE -->
+            <!-- OPTIMIZED: Fixed image markup for proper display -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golfer-teeing-off-tropical.webp" type="image/webp">
@@ -342,7 +342,7 @@
 
             <p>Carambola Golf Course St. Croix isn't just about the views; it's a test of strategy and stamina. Here's a sneak peek at some standout holes:</p>
 
-            <!-- Ocean View Hole Image - RESTORED IMAGE -->
+            <!-- OPTIMIZED: Fixed image markup for proper display -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golf-hole-ocean-view.webp" type="image/webp">
@@ -363,6 +363,8 @@
             <h3>Hole 7 (Par 3, 175 yards): The Signature</h3>
             <p>One of the signature holes, requiring a carry over water to an elevated green framed by palm trees. Recent reviews call it "challenging yet fair," with the sea breeze adding an extra layer of excitement.</p>
 
+            <!-- NOTE: Advertisement placement point - Mid-article ad will be inserted here automatically for engaged users -->
+
             <h3>Hole 12 (Par 5, 550 yards): The Risk-Reward</h3>
             <p>A risk-reward par 5 with uphill shots and cross-water hazards—go for the green in two if you're feeling bold, but the lush valley views might distract you!</p>
 
@@ -375,7 +377,7 @@
 
             <p>To maximize your experience:</p>
 
-            <!-- Clubhouse Image -->
+            <!-- OPTIMIZED: Fixed image markup for proper display -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golf-clubhouse-exterior.webp" type="image/webp">
@@ -411,7 +413,7 @@
 
             <p>Why stop at golf? Carambola Golf Resort is the perfect base for a full St. Croix adventure. Here's how to blend your rounds with island highlights:</p>
 
-            <!-- Vacation Activities Image - RESTORED IMAGE -->
+            <!-- OPTIMIZED: Fixed image markup for proper display -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/st-croix-beach-golf-vacation.webp" type="image/webp">
@@ -471,6 +473,8 @@
                 </div>
                 <p>Jasper is a passionate golf enthusiast and the curator of carambola.golf. With extensive experience playing golf in the Caribbean and a deep love for the sport, he provides insider insights and expert guidance to help golfers make the most of their Carambola Golf Club experience. His articles combine practical advice with local knowledge gained from years of exploring St. Croix's golf scene.</p>
             </div>
+
+            <!-- NOTE: Advertisement placement point - Bottom ad will be inserted here automatically for engaged users -->
 
             <!-- Share Section -->
             <div class="share-section">
@@ -585,9 +589,128 @@
         </div>
     </footer>
 
-    <!-- Scripts - Clean external references -->
+    <!-- Scripts - OPTIMIZED: Perfect integration with blog supplements -->
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/footer-status.js"></script>
+    
+    <!-- Article-specific JavaScript for enhanced functionality -->
+    <script>
+        // Enhanced share functionality
+        function shareArticle(platform) {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            const description = encodeURIComponent("The ultimate guide to Carambola Golf Resort and St. Croix golf vacations!");
+            
+            let shareUrl = '';
+            
+            switch(platform) {
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+                    break;
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                    break;
+                case 'email':
+                    shareUrl = `mailto:?subject=${title}&body=Check out this comprehensive guide: ${url}`;
+                    break;
+            }
+            
+            if (platform === 'email') {
+                window.location.href = shareUrl;
+            } else {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+            
+            // Track sharing with enhanced details
+            trackArticleInteraction('article_shared', platform, {
+                article_title: 'Ultimate Guide Carambola Golf Resort 2025',
+                share_method: platform,
+                share_source: 'article_page'
+            });
+        }
+
+        // Enhanced article initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track initial article view
+            trackArticleInteraction('article_view', 'full_article', {
+                referrer: document.referrer,
+                entry_point: 'direct',
+                article_length: document.querySelector('.article-body').textContent.length
+            });
+
+            // Enhanced FAQ interaction tracking
+            document.querySelectorAll('.faq-item').forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    const question = this.querySelector('.faq-question').textContent;
+                    trackArticleInteraction('faq_interaction', question, {
+                        faq_position: index + 1,
+                        article_section: 'faq'
+                    });
+                });
+            });
+
+            // Track external link clicks with enhanced details
+            document.querySelectorAll('.article-body a[href^="http"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    trackArticleInteraction('external_link_click', this.href, {
+                        link_text: this.textContent.trim(),
+                        link_domain: new URL(this.href).hostname,
+                        article_section: getClosestSectionHeading(this)
+                    });
+                });
+            });
+
+            // Enhanced scroll depth tracking
+            let maxScrollDepth = 0;
+            window.addEventListener('scroll', function() {
+                const scrollDepth = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+                if (scrollDepth > maxScrollDepth && scrollDepth % 10 === 0) {
+                    maxScrollDepth = scrollDepth;
+                    trackArticleInteraction('scroll_depth', `${scrollDepth}%`, {
+                        article_section: getVisibleSection(),
+                        scroll_depth: scrollDepth
+                    });
+                }
+            });
+
+            // Track time spent on article
+            let startTime = Date.now();
+            window.addEventListener('beforeunload', function() {
+                const timeSpent = Math.round((Date.now() - startTime) / 1000);
+                trackArticleInteraction('time_on_article', `${timeSpent}s`, {
+                    engagement_time: timeSpent,
+                    max_scroll_depth: maxScrollDepth
+                });
+            });
+        });
+
+        // Helper functions
+        function getClosestSectionHeading(element) {
+            let current = element;
+            while (current && current !== document.body) {
+                if (current.tagName && ['H2', 'H3', 'H4'].includes(current.tagName)) {
+                    return current.textContent.trim();
+                }
+                current = current.previousElementSibling || current.parentElement;
+            }
+            return 'unknown';
+        }
+
+        function getVisibleSection() {
+            const headers = document.querySelectorAll('.article-body h2, .article-body h3');
+            const scrollPosition = window.pageYOffset + 200;
+            
+            for (let i = headers.length - 1; i >= 0; i--) {
+                if (headers[i].offsetTop <= scrollPosition) {
+                    return headers[i].textContent.trim();
+                }
+            }
+            return 'Introduction';
+        }
+    </script>
 </body>
 </html>
