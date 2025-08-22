@@ -41,7 +41,6 @@
     
     <!-- Critical Resource Preloading -->
     <link rel="preload" href="/styles.css" as="style">
-    <link rel="preload" href="/blog/styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-course-aerial-hero.webp" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
@@ -98,7 +97,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     
-    <!-- FIXED: Proper CSS loading order - Main styles first, then blog supplements -->
+    <!-- CSS Loading Order: Main styles first, then blog supplements -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -270,7 +269,7 @@
     </section>
 
     <!-- Article Hero with Optimized Background Image -->
-    <section class="article-hero">
+    <section class="article-hero" style="background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)), url('/images/carambola-golf-course-aerial-hero.webp') center/cover;">
         <div class="article-header">
             <div class="article-meta">
                 <span class="article-category">Golf Guides</span>
@@ -314,7 +313,7 @@
 
             <p>Nestled on a former sugar plantation in the northwest hills of St. Croix, Carambola Golf Course opened in 1966 as part of a visionary development by Laurence Rockefeller. The course's architect, Robert Trent Jones Sr., called it one of his finest creations—and for good reason. Spanning 7,181 yards from the back tees, it weaves through undulating terrain, tropical foliage, and sparkling ponds, with the Caribbean Sea as your constant backdrop.</p>
 
-            <!-- FIXED: Golfer Action Shot - Proper image structure -->
+            <!-- Images will be inserted by blog supplements -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golfer-teeing-off-tropical.webp" type="image/webp">
@@ -342,7 +341,7 @@
 
             <p>Carambola Golf Course St. Croix isn't just about the views; it's a test of strategy and stamina. Here's a sneak peek at some standout holes:</p>
 
-            <!-- FIXED: Ocean View Hole Image - Proper image structure -->
+            <!-- Images will be inserted by blog supplements -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golf-hole-ocean-view.webp" type="image/webp">
@@ -375,7 +374,7 @@
 
             <p>To maximize your experience:</p>
 
-            <!-- FIXED: Clubhouse Image - Proper image structure -->
+            <!-- Images will be inserted by blog supplements -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golf-clubhouse-exterior.webp" type="image/webp">
@@ -411,7 +410,7 @@
 
             <p>Why stop at golf? Carambola Golf Resort is the perfect base for a full St. Croix adventure. Here's how to blend your rounds with island highlights:</p>
 
-            <!-- FIXED: Vacation Activities Image - Proper image structure -->
+            <!-- Images will be inserted by blog supplements -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/st-croix-beach-golf-vacation.webp" type="image/webp">
@@ -585,7 +584,7 @@
         </div>
     </footer>
 
-    <!-- FIXED: Proper script loading order - Main script, then blog supplements, then status -->
+    <!-- Scripts: Main site first, then blog supplements, then footer status -->
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/footer-status.js"></script>
