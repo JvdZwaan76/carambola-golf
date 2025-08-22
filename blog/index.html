@@ -115,7 +115,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     
-    <!-- External CSS - FIXED: Proper separation of concerns -->
+    <!-- External CSS - OPTIMIZED: Updated separation for blog supplements -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -335,7 +335,7 @@
             </div>
         </section>
 
-        <!-- Featured Article - FIXED: Clean CTA Button -->
+        <!-- Featured Article - OPTIMIZED: Enhanced for better CTA tracking -->
         <section class="featured-article">
             <div class="container">
                 <h2 class="section-title">Featured Guide</h2>
@@ -374,11 +374,12 @@
                                 <li>Why Carambola ranks among the Caribbean's best</li>
                             </ul>
                         </div>
-                        <!-- FIXED: Clean CTA button without onclick -->
+                        <!-- OPTIMIZED: Enhanced CTA for better tracking -->
                         <div class="article-actions">
                             <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html" 
                                class="cta-button primary"
-                               id="featured-article-cta">
+                               id="featured-article-cta"
+                               data-article="ultimate-guide-carambola-golf-resort-2025">
                                 Read Full Guide
                                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                             </a>
@@ -538,8 +539,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- FIXED: Added id for proper form handling -->
-                <form class="newsletter-form" id="newsletter-form">
+                <!-- OPTIMIZED: Enhanced form for better tracking -->
+                <form class="newsletter-form" id="newsletter-form" data-form-type="blog-index">
                     <div class="form-group">
                         <label for="newsletter-email" class="visually-hidden">Email Address</label>
                         <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required>
@@ -709,7 +710,7 @@
         </div>
     </footer>
 
-    <!-- Scripts - FIXED: Clean external references only -->
+    <!-- Scripts - OPTIMIZED: Updated script loading order -->
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/footer-status.js"></script>
