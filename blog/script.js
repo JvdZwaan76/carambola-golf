@@ -345,6 +345,166 @@
         utils.log(`Image handling setup for ${images.length} images`);
     }
 
+    // Newsletter form enhancement
+    function setupNewsletterForm() {
+        const form = document.getElementById('newsletter-form');
+        if (!form) return;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const emailInput = document.getElementById('newsletter-email');
+            const nameInput = document.getElementById('newsletter-name');
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            if (!emailInput || !emailInput.value.trim()) {
+                showFormMessage('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            // Add loading state
+            const originalText = submitButton.innerHTML;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
+            submitButton.disabled = true;
+            
+            // Track subscription attempt
+            utils.safeTrack('newsletter_signup', 'engagement', {
+                email_provided: !!emailInput.value,
+                name_provided: !!nameInput.value.trim(),
+                source: 'blog_footer'
+            });
+            
+            // Simulate form submission (replace with actual endpoint)
+            setTimeout(() => {
+                showFormMessage('Thank you! Check your email for the free strategy guide.', 'success');
+                form.reset();
+                
+                // Reset button
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                
+                utils.safeTrack('newsletter_success', 'conversion', {
+                    source: 'blog_footer'
+                });
+            }, 2000);
+        });
+
+        utils.log('Newsletter form enhanced');
+    }
+
+    function showFormMessage(message, type) {
+        const form = document.getElementById('newsletter-form');
+        if (!form) return;
+        
+        // Remove existing messages
+        const existingMessage = form.querySelector('.form-message');
+        if (existingMessage) {
+            existingMessage.remove();
+        }
+        
+        // Create new message
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `form-message form-message-${type}`;
+        messageDiv.style.cssText = `
+            padding: 1rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            ${type === 'success' ? 
+                'background: rgba(40, 167, 69, 0.1); color: #28a745; border: 1px solid rgba(40, 167, 69, 0.3);' :
+                'background: rgba(220, 53, 69, 0.1); color: #dc3545; border: 1px solid rgba(220, 53, 69, 0.3);'
+            }
+        `;
+        messageDiv.textContent = message;
+        
+        form.appendChild(messageDiv);
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                messageDiv.remove();
+            }
+        }, 5000);
+    }
+
+    // Article meta enhancements
+    function setupArticleEnhancements() {
+        // Add reading time to article meta if missing
+        const articleMeta = document.querySelector('.article-meta');
+        const readingTime = document.querySelector('.article-reading-time, .reading-time');
+        
+        if (articleMeta && !readingTime) {
+            const article = document.querySelector('.article-body');
+            if (article) {
+                const wordCount = getWordCount(article);
+                const estimatedTime = Math.ceil(wordCount / 200); // 200 words per minute
+                
+                const timeElement = document.createElement('span');
+                timeElement.className = 'reading-time';
+                timeElement.innerHTML = `<i class="fas fa-clock"></i> ${estimatedTime} min read`;
+                
+                articleMeta.appendChild(timeElement);
+            }
+        }
+
+        // Enhanced social sharing
+        const shareButtons = document.querySelectorAll('.share-btn');
+        shareButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const platform = button.classList.contains('facebook') ? 'facebook' :
+                               button.classList.contains('twitter') ? 'twitter' :
+                               button.classList.contains('linkedin') ? 'linkedin' : 'email';
+                
+                utils.safeTrack('social_share', platform, {
+                    article_title: document.title,
+                    page_url: window.location.href
+                });
+            });
+        });
+
+        utils.log('Article enhancements setup');
+    }
+
+    function getWordCount(element) {
+        const text = element.textContent || element.innerText || '';
+        const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+        return words.length;
+    }
+
+    // Performance monitoring
+    function setupPerformanceMonitoring() {
+        if ('performance' in window && 'getEntriesByType' in window.performance) {
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    reportPerformanceMetrics();
+                }, 1000);
+            });
+        }
+    }
+
+    function reportPerformanceMetrics() {
+        try {
+            const navigation = performance.getEntriesByType('navigation')[0];
+            if (navigation) {
+                const metrics = {
+                    loadTime: Math.round(navigation.loadEventEnd - navigation.fetchStart),
+                    domContentLoaded: Math.round(navigation.domContentLoadedEventEnd - navigation.fetchStart),
+                    firstByte: Math.round(navigation.responseStart - navigation.fetchStart)
+                };
+
+                utils.safeTrack('page_performance', 'load_metrics', {
+                    ...metrics,
+                    page_type: document.querySelector('.article-body') ? 'article' : 'blog_index',
+                    timestamp: new Date().toISOString()
+                });
+            }
+        } catch (error) {
+            console.warn('Performance monitoring error:', error);
+        }
+    }
+
     // Cleanup function
     function setupCleanup() {
         window.addEventListener('beforeunload', () => {
@@ -357,6 +517,31 @@
                 });
             }
         });
+    }
+
+    // External API for manual control
+    function createPublicAPI() {
+        window.CarambolaBlogSupplements = {
+            // Force engagement and show ads
+            forceEngagement: () => {
+                state.engagement.qualified = true;
+                placeAdvertisements();
+                utils.log('Engagement forced, ads displayed');
+            },
+            
+            // Get current state
+            getState: () => ({
+                engagement: { ...state.engagement },
+                ads: { ...state.ads },
+                readingProgress: { ...state.readingProgress }
+            }),
+            
+            // Manual tracking
+            track: utils.safeTrack,
+            
+            // Check if user is engaged
+            isEngaged: utils.isUserEngaged
+        };
     }
 
     // Main initialization
@@ -373,14 +558,20 @@
             setupReadingProgress();
             setupEngagementTracking();
             setupImageHandling();
+            setupNewsletterForm();
+            setupArticleEnhancements();
+            setupPerformanceMonitoring();
             setupCleanup();
+            createPublicAPI();
 
             // Mark as initialized
             window.CarambolaBlogSupplementsInitialized = true;
 
             // Track initialization
             utils.safeTrack('blog_supplements_loaded', 'system', {
-                version: CONFIG.version
+                version: CONFIG.version,
+                page_type: document.querySelector('.article-body') ? 'article' : 'blog_index',
+                user_agent: navigator.userAgent.substring(0, 100)
             });
 
             console.log('✅ Blog supplements initialized successfully');
