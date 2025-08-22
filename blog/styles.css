@@ -1173,6 +1173,8 @@
 .author-avatar {
     width: 80px;
     height: 80px;
+    min-width: 80px; /* Prevent stretching */
+    min-height: 80px; /* Prevent stretching */
     border-radius: 50%;
     background: var(--accent-gold);
     display: flex;
@@ -1181,6 +1183,11 @@
     font-size: 2rem;
     color: var(--primary-navy);
     font-weight: bold;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.author-details {
+    flex: 1;
 }
 
 .author-details h4 {
@@ -1275,10 +1282,12 @@
 }
 
 .share-buttons {
-    display: flex;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    flex-wrap: wrap;
+    max-width: 500px;
+    margin: 0 auto;
+    justify-items: center;
 }
 
 .share-btn {
@@ -1289,10 +1298,14 @@
     text-decoration: none;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     transition: all var(--transition-medium);
     font-size: 0.9rem;
     cursor: pointer;
+    width: 100%;
+    max-width: 220px;
+    min-height: 44px;
 }
 
 .share-btn.facebook {
@@ -1808,13 +1821,15 @@ html body .faq-section .faq-question h3 {
     }
 
     .share-buttons {
-        flex-direction: column;
-        align-items: center;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        max-width: 280px;
     }
 
     .share-btn {
-        width: 200px;
+        width: 100%;
         justify-content: center;
+        padding: 0.9rem 1.5rem;
     }
 
     .breadcrumb-nav {
@@ -1876,7 +1891,20 @@ html body .faq-section .faq-question h3 {
     .author-avatar {
         width: 60px;
         height: 60px;
+        min-width: 60px;
+        min-height: 60px;
         font-size: 1.5rem;
+    }
+    
+    /* Share buttons for very small screens */
+    .share-buttons {
+        max-width: 250px;
+        gap: 0.5rem;
+    }
+    
+    .share-btn {
+        padding: 0.8rem 1.2rem;
+        font-size: 0.85rem;
     }
     
     /* Advertisement responsive */
