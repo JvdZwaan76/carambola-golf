@@ -333,26 +333,4 @@
 }
 
 @keyframes blogSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Utility classes */
-.blog-hidden {
-    display: none !important;
-}
-
-.blog-fade-in {
-    animation: blogFadeIn 0.6s ease-out;
-}
-
-@keyframes blogFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+    0% { transform:
