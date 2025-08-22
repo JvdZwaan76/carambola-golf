@@ -1,671 +1,539 @@
-// CARAMBOLA GOLF CLUB BLOG - COMPLETE SCRIPT
-// Clean, functional blog JavaScript without conflicts
+// CARAMBOLA GOLF CLUB BLOG - SUPPLEMENTARY SCRIPT
+// Blog-specific functionality that loads after main script.js
+// FIXED: Tracking loops and adds advertising for engaged users
 
 (function() {
     'use strict';
 
-    console.log('🎯 Carambola Blog Script - Loading...');
+    console.log('📝 Blog supplementary script loading...');
 
-    // Prevent multiple initialization
-    if (window.CarambolaBlogInitialized) {
-        console.log('🟡 Blog already initialized, skipping');
+    // Prevent multiple initialization of blog supplements
+    if (window.CarambolaBlogSupplementsInitialized) {
+        console.log('🟡 Blog supplements already initialized');
         return;
     }
 
-    // Configuration
-    const BLOG_CONFIG = {
-        trackingEnabled: true,
+    // Blog supplement configuration
+    const BLOG_SUPPLEMENT_CONFIG = {
+        version: '1.0.0',
         debugMode: false,
-        mobileBreakpoint: 768,
-        version: '2.0.0'
+        
+        // FIXED: Tracking control settings
+        trackingThrottle: 1000, // 1 second minimum between tracking events
+        maxTrackingEvents: 50, // Maximum tracking events per session
+        
+        // Engagement settings for ads
+        engagementRequirements: {
+            minTimeOnPage: 30000, // 30 seconds
+            minScrollPercent: 25, // 25% scroll
+            minInteractions: 1 // At least 1 interaction
+        },
+        
+        // Ad placement settings
+        adPlacements: {
+            enabled: true,
+            midArticle: true,
+            bottomArticle: true,
+            trackClicks: true
+        }
     };
 
-    // Utility functions
-    const utils = {
-        isMobile: () => window.innerWidth <= BLOG_CONFIG.mobileBreakpoint,
+    // FIXED: Global state management to prevent tracking loops
+    const blogState = {
+        trackingEvents: 0,
+        lastTrackingTime: 0,
+        isTracking: false,
         
+        // Reading progress state
+        readingProgress: {
+            active: false,
+            maxProgress: 0,
+            reportedMilestones: new Set(),
+            lastUpdate: 0
+        },
+        
+        // Engagement tracking
+        engagement: {
+            startTime: Date.now(),
+            interactions: 0,
+            maxScroll: 0,
+            qualified: false
+        },
+        
+        // Ad state
+        ads: {
+            placed: false,
+            midArticleShown: false,
+            bottomArticleShown: false,
+            clicksTracked: 0
+        }
+    };
+
+    // Utility functions for blog supplements
+    const blogUtils = {
         log: (...args) => {
-            if (BLOG_CONFIG.debugMode) {
-                console.log('🎯 Blog:', ...args);
+            if (BLOG_SUPPLEMENT_CONFIG.debugMode) {
+                console.log('📝 Blog Supplement:', ...args);
             }
         },
 
-        debounce: (func, wait) => {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
+        // FIXED: Safe tracking function with loop prevention
+        safeTrack: (action, category, details = {}) => {
+            const now = Date.now();
+            
+            // Prevent tracking loops
+            if (blogState.isTracking) {
+                blogUtils.log('Tracking blocked - already in progress');
+                return false;
+            }
+            
+            // Throttle tracking events
+            if (now - blogState.lastTrackingTime < BLOG_SUPPLEMENT_CONFIG.trackingThrottle) {
+                blogUtils.log('Tracking throttled');
+                return false;
+            }
+            
+            // Limit total tracking events
+            if (blogState.trackingEvents >= BLOG_SUPPLEMENT_CONFIG.maxTrackingEvents) {
+                blogUtils.log('Tracking limit reached');
+                return false;
+            }
+            
+            blogState.isTracking = true;
+            blogState.lastTrackingTime = now;
+            blogState.trackingEvents++;
+            
+            try {
+                // Use existing tracking functions if available
+                if (window.CarambolaBlog && typeof window.CarambolaBlog.trackEvent === 'function') {
+                    window.CarambolaBlog.trackEvent(action, category, {
+                        ...details,
+                        blog_supplement: true,
+                        timestamp: now
+                    });
+                } else if (typeof window.trackBlogInteraction === 'function') {
+                    window.trackBlogInteraction(action, category, details);
+                }
+                
+                blogUtils.log('Tracked:', action, category);
+                return true;
+            } catch (error) {
+                console.warn('Blog supplement tracking error:', error);
+                return false;
+            } finally {
+                // Always reset tracking flag
+                setTimeout(() => {
+                    blogState.isTracking = false;
+                }, 100);
+            }
+        },
+
+        // Throttle function
+        throttle: (func, delay) => {
+            let timeoutId;
+            let lastExecTime = 0;
+            
+            return function (...args) {
+                const currentTime = Date.now();
+                
+                if (currentTime - lastExecTime > delay) {
+                    func.apply(this, args);
+                    lastExecTime = currentTime;
+                } else {
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(() => {
+                        func.apply(this, args);
+                        lastExecTime = Date.now();
+                    }, delay - (currentTime - lastExecTime));
+                }
             };
         },
 
-        trackEvent: (action, category, details = {}) => {
-            if (!BLOG_CONFIG.trackingEnabled) return;
+        // Check if user is engaged enough to see ads
+        isUserEngaged: () => {
+            const timeOnPage = Date.now() - blogState.engagement.startTime;
+            const scrollPercent = blogState.engagement.maxScroll;
+            const interactions = blogState.engagement.interactions;
             
-            try {
-                // Google Analytics 4 tracking
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', action, {
-                        event_category: category,
-                        blog_version: BLOG_CONFIG.version,
-                        ...details
+            const requirements = BLOG_SUPPLEMENT_CONFIG.engagementRequirements;
+            
+            return timeOnPage >= requirements.minTimeOnPage &&
+                   scrollPercent >= requirements.minScrollPercent &&
+                   interactions >= requirements.minInteractions;
+        },
+
+        // Create advertising element
+        createAdElement: (placement, adCode) => {
+            const adContainer = document.createElement('div');
+            adContainer.className = `blog-advertisement blog-ad-${placement}`;
+            adContainer.setAttribute('data-placement', placement);
+            adContainer.setAttribute('data-ad-tracked', 'false');
+            adContainer.innerHTML = adCode;
+            
+            // Add click tracking
+            const adLink = adContainer.querySelector('a');
+            if (adLink && BLOG_SUPPLEMENT_CONFIG.adPlacements.trackClicks) {
+                adLink.addEventListener('click', () => {
+                    blogState.ads.clicksTracked++;
+                    blogUtils.safeTrack('ad_click', 'advertising', {
+                        placement: placement,
+                        total_clicks: blogState.ads.clicksTracked,
+                        engagement_level: blogUtils.getEngagementLevel()
                     });
-                }
-
-                // Custom tracking function
-                if (typeof window.trackBlogInteraction === 'function') {
-                    window.trackBlogInteraction(action, category, details);
-                }
-
-                utils.log('Tracked:', action, category, details);
-            } catch (error) {
-                console.warn('Tracking error:', error);
+                });
             }
+            
+            return adContainer;
         },
 
-        validateEmail: (email) => {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        },
-
-        showNotification: (message, type = 'info', duration = 5000) => {
-            const notification = document.createElement('div');
-            notification.className = `blog-notification blog-notification--${type}`;
-            notification.innerHTML = `
-                <div class="blog-notification__content">
-                    <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
-                    <span>${message}</span>
-                    <button class="blog-notification__close" aria-label="Close notification">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `;
-
-            // Notification styles
-            notification.style.cssText = `
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                background: ${type === 'success' ? '#16a34a' : type === 'error' ? '#dc2626' : '#1e3a5f'};
-                color: white;
-                padding: 1rem 1.5rem;
-                border-radius: 8px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-                z-index: 1000;
-                transform: translateX(400px);
-                transition: transform 0.3s ease;
-                max-width: 350px;
-                font-weight: 500;
-                font-family: inherit;
-            `;
-
-            document.body.appendChild(notification);
-
-            // Show notification
-            setTimeout(() => notification.style.transform = 'translateX(0)', 100);
-
-            // Auto-hide
-            const autoHide = setTimeout(() => hideNotification(), duration);
-
-            // Close button handler
-            const closeButton = notification.querySelector('.blog-notification__close');
-            closeButton.addEventListener('click', () => {
-                clearTimeout(autoHide);
-                hideNotification();
-            });
-
-            function hideNotification() {
-                notification.style.transform = 'translateX(400px)';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, 300);
-            }
-
-            utils.log('Notification shown:', message, type);
-            return notification;
+        // Get user engagement level
+        getEngagementLevel: () => {
+            const timeOnPage = Date.now() - blogState.engagement.startTime;
+            const scrollPercent = blogState.engagement.maxScroll;
+            
+            if (timeOnPage > 120000 && scrollPercent > 75) return 'high';
+            if (timeOnPage > 60000 && scrollPercent > 50) return 'medium';
+            if (timeOnPage > 30000 && scrollPercent > 25) return 'basic';
+            return 'low';
         }
     };
 
-    // Mobile menu functionality
-    function setupMobileMenu() {
-        const mobileMenuButton = document.querySelector('.mobile-menu');
-        const navLinks = document.querySelector('.nav-links');
-        
-        if (!mobileMenuButton || !navLinks) {
-            utils.log('Mobile menu elements not found');
+    // FIXED: Reading progress with proper state management
+    function setupImprovedReadingProgress() {
+        // Skip if reading progress is already active
+        if (blogState.readingProgress.active) {
+            blogUtils.log('Reading progress already active');
             return;
         }
 
-        const toggleMenu = () => {
-            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-            const newState = !isExpanded;
-            
-            mobileMenuButton.setAttribute('aria-expanded', newState);
-            
-            if (newState) {
-                navLinks.classList.add('mobile-menu-open');
-            } else {
-                navLinks.classList.remove('mobile-menu-open');
-            }
-            
-            utils.log('Mobile menu toggled:', newState);
-            utils.trackEvent('mobile_menu_toggle', 'navigation', { expanded: newState });
-        };
-
-        // Button click handler
-        mobileMenuButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleMenu();
-        });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenuButton.contains(e.target) && !navLinks.contains(e.target)) {
-                if (mobileMenuButton.getAttribute('aria-expanded') === 'true') {
-                    mobileMenuButton.setAttribute('aria-expanded', 'false');
-                    navLinks.classList.remove('mobile-menu-open');
-                    utils.log('Mobile menu closed (outside click)');
-                }
-            }
-        });
-
-        // Close menu on escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mobileMenuButton.getAttribute('aria-expanded') === 'true') {
-                mobileMenuButton.setAttribute('aria-expanded', 'false');
-                navLinks.classList.remove('mobile-menu-open');
-                utils.log('Mobile menu closed (escape key)');
-            }
-        });
-
-        // Close menu on window resize
-        window.addEventListener('resize', utils.debounce(() => {
-            if (window.innerWidth > BLOG_CONFIG.mobileBreakpoint) {
-                mobileMenuButton.setAttribute('aria-expanded', 'false');
-                navLinks.classList.remove('mobile-menu-open');
-            }
-        }, 250));
-
-        utils.log('Mobile menu setup complete');
-    }
-
-    // Featured Article CTA functionality
-    function setupFeaturedCTA() {
-        const selectors = [
-            '#featured-article-cta',
-            '.featured-article .cta-button.primary',
-            '.featured-article-card .cta-button',
-            'a[href*="ultimate-guide-carambola-golf-resort"]'
-        ];
-
-        let ctaButton = null;
-        let selectorUsed = '';
-        
-        // Find the CTA button
-        for (const selector of selectors) {
-            ctaButton = document.querySelector(selector);
-            if (ctaButton) {
-                selectorUsed = selector;
-                utils.log('Found featured CTA:', selector);
-                break;
-            }
-        }
-
-        if (!ctaButton) {
-            console.warn('⚠️ Featured CTA button not found');
-            return null;
-        }
-
-        // Validate it's a proper link
-        if (ctaButton.tagName !== 'A') {
-            console.error('❌ CTA is not an anchor tag:', ctaButton.tagName);
-            return null;
-        }
-
-        if (!ctaButton.href) {
-            console.error('❌ CTA has no href attribute');
-            return null;
-        }
-
-        utils.log('CTA button validation passed:', {
-            tag: ctaButton.tagName,
-            href: ctaButton.href,
-            text: ctaButton.textContent.trim()
-        });
-
-        // Clean click handler - let normal navigation work
-        ctaButton.addEventListener('click', function(e) {
-            utils.log('Featured CTA clicked:', this.href);
-            
-            // Track the click
-            utils.trackEvent('featured_article_click', 'navigation', {
-                href: this.href,
-                text: this.textContent.trim(),
-                source: 'blog_index',
-                selector_used: selectorUsed
-            });
-
-            // Don't prevent default - allow normal navigation
-            utils.log('Navigation proceeding to:', this.href);
-        });
-
-        // Add visual feedback
-        ctaButton.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-2px)';
-            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
-        });
-
-        ctaButton.addEventListener('mouseleave', function() {
-            this.style.transform = '';
-            this.style.boxShadow = '';
-        });
-
-        utils.log('Featured CTA setup complete');
-        return ctaButton;
-    }
-
-    // Share functionality
-    function setupShareButtons() {
-        const shareButtons = document.querySelectorAll('[data-share], .share-btn');
-        
-        shareButtons.forEach((button, index) => {
-            button.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const platform = this.dataset.share || 
-                               this.className.split(' ').find(cls => cls.includes('facebook') || cls.includes('twitter') || cls.includes('linkedin') || cls.includes('email')) ||
-                               'unknown';
-                
-                utils.log('Share button clicked:', platform);
-                
-                const url = encodeURIComponent(window.location.href);
-                const title = encodeURIComponent(document.title);
-                const description = encodeURIComponent('Check out this guide from Carambola Golf Club!');
-                
-                let shareUrl = '';
-                
-                switch(platform) {
-                    case 'facebook':
-                        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-                        break;
-                    case 'twitter':
-                        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-                        break;
-                    case 'linkedin':
-                        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-                        break;
-                    case 'email':
-                        shareUrl = `mailto:?subject=${title}&body=Check out this article: ${decodeURIComponent(url)}`;
-                        break;
-                    default:
-                        console.warn('Unknown share platform:', platform);
-                        return;
-                }
-                
-                if (platform === 'email') {
-                    window.location.href = shareUrl;
-                } else {
-                    const shareWindow = window.open(shareUrl, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
-                    
-                    // Check if popup was blocked
-                    if (!shareWindow || shareWindow.closed || typeof shareWindow.closed === 'undefined') {
-                        utils.showNotification('Please allow popups to share this article.', 'error');
-                    }
-                }
-                
-                utils.trackEvent('share_click', platform, {
-                    url: window.location.href,
-                    title: document.title
-                });
-            });
-        });
-
-        utils.log(`Setup ${shareButtons.length} share buttons`);
-    }
-
-    // Newsletter form functionality
-    function setupNewsletterForm() {
-        const newsletterForm = document.getElementById('newsletter-form');
-        if (!newsletterForm) {
-            utils.log('Newsletter form not found');
-            return;
-        }
-
-        newsletterForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            utils.log('Newsletter form submitted');
-            
-            const emailInput = this.querySelector('input[type="email"]');
-            const nameInput = this.querySelector('input[name="name"]');
-            const submitButton = this.querySelector('button[type="submit"]');
-            
-            if (!emailInput || !submitButton) {
-                console.error('Missing form elements');
-                return;
-            }
-            
-            const email = emailInput.value.trim();
-            const name = nameInput ? nameInput.value.trim() : '';
-            
-            // Validate email
-            if (!email) {
-                utils.showNotification('Please enter your email address.', 'error');
-                emailInput.focus();
-                return;
-            }
-            
-            if (!utils.validateEmail(email)) {
-                utils.showNotification('Please enter a valid email address.', 'error');
-                emailInput.focus();
-                return;
-            }
-            
-            // Show loading state
-            const originalText = submitButton.innerHTML;
-            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Subscribing...';
-            submitButton.disabled = true;
-            submitButton.classList.add('loading');
-            
-            // Track subscription attempt
-            utils.trackEvent('newsletter_signup_attempt', 'engagement', {
-                has_name: !!name,
-                email_domain: email.split('@')[1]
-            });
-            
-            // Simulate subscription (replace with actual API call)
-            setTimeout(() => {
-                // Success state
-                submitButton.innerHTML = '<i class="fas fa-check-circle"></i> Strategy Guide Sent!';
-                submitButton.style.background = '#16a34a';
-                submitButton.classList.remove('loading');
-                
-                // Track successful subscription
-                utils.trackEvent('newsletter_signup_success', 'conversion', {
-                    value: 25,
-                    currency: 'USD',
-                    has_name: !!name
-                });
-                
-                // Google Analytics conversion
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'conversion', {
-                        'send_to': 'G-YJ3H2GJ4SS/newsletter_signup',
-                        'value': 25.00,
-                        'currency': 'USD'
-                    });
-                }
-                
-                // Show success notification
-                utils.showNotification('Check your email for your free strategy guide!', 'success');
-                
-                // Reset form after delay
-                setTimeout(() => {
-                    submitButton.innerHTML = originalText;
-                    submitButton.style.background = '';
-                    submitButton.disabled = false;
-                    this.reset();
-                }, 3000);
-                
-            }, 1500);
-        });
-
-        // Real-time email validation
-        const emailInput = newsletterForm.querySelector('input[type="email"]');
-        if (emailInput) {
-            emailInput.addEventListener('blur', function() {
-                const email = this.value.trim();
-                if (email && !utils.validateEmail(email)) {
-                    this.style.borderColor = '#dc2626';
-                } else {
-                    this.style.borderColor = '';
-                }
-            });
-        }
-
-        utils.log('Newsletter form setup complete');
-    }
-
-    // Other CTA buttons tracking
-    function setupOtherCTAs() {
-        const otherCTAs = document.querySelectorAll('.cta-button:not(#featured-article-cta)');
-        
-        otherCTAs.forEach((button, index) => {
-            if (button.href) {
-                button.addEventListener('click', function() {
-                    utils.log('Other CTA clicked:', this.href);
-                    
-                    const buttonText = this.textContent.trim();
-                    const isBooking = buttonText.toLowerCase().includes('book');
-                    const isExplore = buttonText.toLowerCase().includes('explore');
-                    const isContact = this.href.includes('/contact');
-                    
-                    const category = isBooking || isContact ? 'booking' : 
-                                   isExplore ? 'explore' : 'other';
-                    
-                    utils.trackEvent('cta_click', category, {
-                        text: buttonText,
-                        href: this.href,
-                        position: index + 1
-                    });
-                });
-            }
-        });
-
-        utils.log(`Setup ${otherCTAs.length} other CTA buttons`);
-    }
-
-    // Reading progress tracking
-    function setupReadingProgress() {
-        const article = document.querySelector('.article-body, .blog-overview-content, .featured-article-content');
+        const article = document.querySelector('.article-body');
         if (!article) {
-            utils.log('No article content found for reading progress');
+            blogUtils.log('No article found for reading progress');
             return;
         }
 
-        let maxProgress = 0;
+        blogState.readingProgress.active = true;
+        
+        // Create progress bar
+        const progressBar = document.createElement('div');
+        progressBar.className = 'reading-progress-bar';
+        progressBar.innerHTML = '<div class="reading-progress-fill"></div>';
+        document.body.appendChild(progressBar);
+        
+        const progressFill = progressBar.querySelector('.reading-progress-fill');
         const milestones = [25, 50, 75, 90];
-        const reportedMilestones = new Set();
 
-        const trackProgress = () => {
-            const articleRect = article.getBoundingClientRect();
-            const windowHeight = window.innerHeight;
-            const documentHeight = document.documentElement.scrollHeight;
-            const scrollTop = window.pageYOffset;
+        const updateProgress = () => {
+            if (blogState.isTracking) return; // Prevent tracking conflicts
 
-            // Calculate reading progress
-            const articleTop = article.offsetTop;
-            const articleHeight = article.offsetHeight;
-            
-            if (scrollTop >= articleTop && scrollTop <= articleTop + articleHeight) {
-                const progress = Math.round(((scrollTop - articleTop + windowHeight / 3) / articleHeight) * 100);
-                const clampedProgress = Math.min(100, Math.max(0, progress));
+            try {
+                const articleRect = article.getBoundingClientRect();
+                const articleTop = article.offsetTop;
+                const articleHeight = article.offsetHeight;
+                const windowHeight = window.innerHeight;
+                const scrollTop = window.pageYOffset;
 
-                if (clampedProgress > maxProgress) {
-                    maxProgress = clampedProgress;
+                // Calculate progress
+                const viewportProgress = Math.max(0, Math.min(100, 
+                    ((scrollTop - articleTop + windowHeight * 0.3) / articleHeight) * 100
+                ));
 
-                    // Report milestones
+                const roundedProgress = Math.round(viewportProgress);
+
+                // Update progress bar
+                progressFill.style.width = `${roundedProgress}%`;
+
+                // Update engagement tracking
+                blogState.engagement.maxScroll = Math.max(blogState.engagement.maxScroll, roundedProgress);
+
+                // Track milestones (FIXED: with proper throttling)
+                if (roundedProgress > blogState.readingProgress.maxProgress) {
+                    blogState.readingProgress.maxProgress = roundedProgress;
+
                     milestones.forEach(milestone => {
-                        if (clampedProgress >= milestone && !reportedMilestones.has(milestone)) {
-                            reportedMilestones.add(milestone);
-                            utils.trackEvent('reading_progress', `${milestone}%`, { 
+                        if (roundedProgress >= milestone && 
+                            !blogState.readingProgress.reportedMilestones.has(milestone)) {
+                            
+                            blogState.readingProgress.reportedMilestones.add(milestone);
+                            
+                            // FIXED: Use safe tracking
+                            blogUtils.safeTrack('reading_progress', `${milestone}%`, {
                                 progress: milestone,
-                                article_section: getCurrentSection()
+                                engagement_level: blogUtils.getEngagementLevel(),
+                                time_on_page: Date.now() - blogState.engagement.startTime
                             });
-                            utils.log(`Reading milestone: ${milestone}%`);
                         }
                     });
                 }
+            } catch (error) {
+                console.warn('Reading progress error:', error);
             }
         };
 
-        const getCurrentSection = () => {
-            const headers = document.querySelectorAll('h2, h3');
-            const scrollPosition = window.pageYOffset + 200;
+        // FIXED: Properly throttled scroll handler
+        const throttledUpdate = blogUtils.throttle(updateProgress, 500);
+        
+        window.addEventListener('scroll', throttledUpdate, { passive: true });
+        
+        blogUtils.log('Improved reading progress setup complete');
+    }
+
+    // Engagement tracking
+    function setupEngagementTracking() {
+        // Track user interactions
+        const trackInteraction = blogUtils.throttle(() => {
+            blogState.engagement.interactions++;
             
-            for (let i = headers.length - 1; i >= 0; i--) {
-                if (headers[i].offsetTop <= scrollPosition) {
-                    return headers[i].textContent.trim();
+            // Check if user becomes engaged
+            if (!blogState.engagement.qualified && blogUtils.isUserEngaged()) {
+                blogState.engagement.qualified = true;
+                blogUtils.safeTrack('user_engaged', 'engagement', {
+                    time_to_engage: Date.now() - blogState.engagement.startTime,
+                    interactions: blogState.engagement.interactions,
+                    scroll_percent: blogState.engagement.maxScroll
+                });
+                
+                // Place ads for engaged users
+                if (BLOG_SUPPLEMENT_CONFIG.adPlacements.enabled) {
+                    placeAdvertisements();
                 }
             }
-            return 'Introduction';
-        };
+        }, 2000);
 
-        // Throttled scroll listener
-        const throttledTrackProgress = utils.debounce(trackProgress, 250);
-        window.addEventListener('scroll', throttledTrackProgress, { passive: true });
-
-        utils.log('Reading progress tracking setup');
-    }
-
-	// Image lazy loading enhancement - FIXED VERSION
-	function setupImageLazyLoading() {
-	    if ('IntersectionObserver' in window) {
-	        const observedImages = new Set(); // Track observed images
+        // Track various interaction types
+        document.addEventListener('click', trackInteraction, { passive: true });
+        document.addEventListener('keydown', trackInteraction, { passive: true });
         
-	        const imageObserver = new IntersectionObserver((entries, observer) => {
-	            entries.forEach(entry => {
-	                if (entry.isIntersecting && !observedImages.has(entry.target)) {
-	                    const img = entry.target;
-	                    observedImages.add(img); // Mark as tracked
-                    
-	                    // Track image view (only once)
-	                    utils.trackEvent('image_viewed', 'engagement', {
-	                        src: img.src,
-	                        alt: img.alt || 'no-alt'
-	                    });
-                    
-	                    observer.unobserve(img); // Stop observing this image
-	                }
-	            });
-	        }, {
-	            rootMargin: '50px 0px',
-	            threshold: 0.1
-	        });
-
-	        // Observe images
-	        document.querySelectorAll('img').forEach(img => {
-	            if (!observedImages.has(img)) {
-	                imageObserver.observe(img);
-	            }
-	        });
-
-	        utils.log('Image lazy loading setup');
-	    }
-	}
-
-    // External link tracking
-    function setupExternalLinkTracking() {
-        const externalLinks = document.querySelectorAll('a[href^="http"]:not([href*="carambola.golf"])');
-        
-        externalLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                utils.trackEvent('external_link_click', 'outbound', {
-                    url: this.href,
-                    text: this.textContent.trim(),
-                    domain: new URL(this.href).hostname
-                });
-                utils.log('External link clicked:', this.href);
-            });
-        });
-
-        utils.log(`Setup tracking for ${externalLinks.length} external links`);
-    }
-
-    // Performance monitoring
-    function setupPerformanceMonitoring() {
-        // Page load performance
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                if ('performance' in window && 'getEntriesByType' in performance) {
-                    const navigation = performance.getEntriesByType('navigation')[0];
-                    if (navigation) {
-                        const metrics = {
-                            loadTime: Math.round(navigation.loadEventEnd - navigation.fetchStart),
-                            domContentLoaded: Math.round(navigation.domContentLoadedEventEnd - navigation.fetchStart),
-                            firstByte: Math.round(navigation.responseStart - navigation.fetchStart)
-                        };
-
-                        utils.trackEvent('page_performance', 'timing', {
-                            ...metrics,
-                            page_type: getPageType()
-                        });
-
-                        utils.log('Performance metrics:', metrics);
-                    }
+        // Track time-based engagement
+        setTimeout(() => {
+            if (blogUtils.isUserEngaged() && !blogState.engagement.qualified) {
+                blogState.engagement.qualified = true;
+                if (BLOG_SUPPLEMENT_CONFIG.adPlacements.enabled) {
+                    placeAdvertisements();
                 }
-            }, 1000);
-        });
+            }
+        }, BLOG_SUPPLEMENT_CONFIG.engagementRequirements.minTimeOnPage);
 
-        // Track time on page
-        let startTime = Date.now();
-        window.addEventListener('beforeunload', () => {
-            const timeSpent = Math.round((Date.now() - startTime) / 1000);
-            utils.trackEvent('time_on_page', 'engagement', {
-                seconds: timeSpent,
-                page_type: getPageType()
+        blogUtils.log('Engagement tracking setup complete');
+    }
+
+    // Advertisement placement for engaged users
+    function placeAdvertisements() {
+        if (blogState.ads.placed || !BLOG_SUPPLEMENT_CONFIG.adPlacements.enabled) {
+            return;
+        }
+
+        const article = document.querySelector('.article-body');
+        if (!article) return;
+
+        const adCode = `<a href="https://www.tkqlhce.com/click-101520211-16945650" target="_top"><img src="https://www.ftjcfx.com/image-101520211-16945650" width="970" height="250" alt="Cobra KING Tour Black Irons" border="0"/></a>`;
+
+        // Place mid-article ad
+        if (BLOG_SUPPLEMENT_CONFIG.adPlacements.midArticle && !blogState.ads.midArticleShown) {
+            const midPoint = placeMidArticleAd(article, adCode);
+            if (midPoint) {
+                blogState.ads.midArticleShown = true;
+                blogUtils.safeTrack('ad_displayed', 'advertising', {
+                    placement: 'mid_article',
+                    engagement_level: blogUtils.getEngagementLevel()
+                });
+            }
+        }
+
+        // Place bottom ad
+        if (BLOG_SUPPLEMENT_CONFIG.adPlacements.bottomArticle && !blogState.ads.bottomArticleShown) {
+            const bottomAd = placeBottomArticleAd(article, adCode);
+            if (bottomAd) {
+                blogState.ads.bottomArticleShown = true;
+                blogUtils.safeTrack('ad_displayed', 'advertising', {
+                    placement: 'bottom_article',
+                    engagement_level: blogUtils.getEngagementLevel()
+                });
+            }
+        }
+
+        blogState.ads.placed = true;
+        blogUtils.log('Advertisements placed for engaged user');
+    }
+
+    // Place mid-article advertisement
+    function placeMidArticleAd(article, adCode) {
+        // Find second H2 or middle of article
+        const headings = article.querySelectorAll('h2');
+        let insertionPoint = null;
+
+        if (headings.length >= 2) {
+            insertionPoint = headings[1];
+        } else {
+            // Find middle paragraph
+            const paragraphs = article.querySelectorAll('p');
+            const middleIndex = Math.floor(paragraphs.length / 2);
+            if (paragraphs[middleIndex]) {
+                insertionPoint = paragraphs[middleIndex];
+            }
+        }
+
+        if (insertionPoint) {
+            const adElement = blogUtils.createAdElement('mid', adCode);
+            insertionPoint.parentNode.insertBefore(adElement, insertionPoint.nextSibling);
+            
+            // Animate in
+            setTimeout(() => {
+                adElement.classList.add('visible');
+            }, 500);
+            
+            return adElement;
+        }
+        
+        return null;
+    }
+
+    // Place bottom article advertisement
+    function placeBottomArticleAd(article, adCode) {
+        // Place before author bio or at end of article
+        const authorBio = document.querySelector('.author-bio');
+        const shareSection = document.querySelector('.share-section');
+        
+        let insertionPoint = authorBio || shareSection;
+        
+        if (insertionPoint) {
+            const adElement = blogUtils.createAdElement('bottom', adCode);
+            insertionPoint.parentNode.insertBefore(adElement, insertionPoint);
+            
+            // Animate in
+            setTimeout(() => {
+                adElement.classList.add('visible');
+            }, 500);
+            
+            return adElement;
+        }
+        
+        return null;
+    }
+
+    // Enhanced image loading with lazy loading
+    function setupEnhancedImageHandling() {
+        const images = document.querySelectorAll('.article-image img');
+        
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        
+                        // Track image view
+                        blogUtils.safeTrack('image_viewed', 'content', {
+                            src: img.src.split('/').pop(),
+                            alt: img.alt || 'no-alt-text'
+                        });
+                        
+                        // Add loaded class for styling
+                        img.classList.add('image-loaded');
+                        
+                        imageObserver.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.1
+            });
+
+            images.forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        blogUtils.log(`Enhanced image handling setup for ${images.length} images`);
+    }
+
+    // Performance monitoring for blog supplements
+    function setupPerformanceMonitoring() {
+        // Monitor script performance
+        const startTime = performance.now();
+        
+        window.addEventListener('load', () => {
+            const endTime = performance.now();
+            const loadTime = Math.round(endTime - startTime);
+            
+            blogUtils.safeTrack('blog_supplement_performance', 'timing', {
+                load_time: loadTime,
+                tracking_events: blogState.trackingEvents,
+                ads_placed: blogState.ads.placed
             });
         });
 
-        function getPageType() {
-            if (document.querySelector('.article-body')) return 'article';
-            if (document.querySelector('.blog-hero')) return 'blog_index';
-            return 'other';
+        // Monitor memory usage (if available)
+        if ('memory' in performance) {
+            setInterval(() => {
+                if (blogState.trackingEvents < BLOG_SUPPLEMENT_CONFIG.maxTrackingEvents) {
+                    const memory = performance.memory;
+                    blogUtils.log('Memory usage:', {
+                        used: Math.round(memory.usedJSHeapSize / 1048576),
+                        total: Math.round(memory.totalJSHeapSize / 1048576)
+                    });
+                }
+            }, 30000); // Every 30 seconds
         }
     }
 
+    // Cleanup function
+    function setupCleanup() {
+        window.addEventListener('beforeunload', () => {
+            // Final engagement tracking
+            if (blogState.engagement.qualified) {
+                const finalEngagement = {
+                    total_time: Date.now() - blogState.engagement.startTime,
+                    max_scroll: blogState.engagement.maxScroll,
+                    interactions: blogState.engagement.interactions,
+                    ads_clicked: blogState.ads.clicksTracked,
+                    reading_progress: blogState.readingProgress.maxProgress
+                };
+                
+                blogUtils.safeTrack('session_end', 'engagement', finalEngagement);
+            }
+            
+            blogUtils.log('Blog supplement session ended');
+        });
+    }
+
     // Main initialization function
-    function initializeBlog() {
-        utils.log('Initializing blog functionality...');
+    function initializeBlogSupplements() {
+        blogUtils.log('Initializing blog supplements...');
 
         try {
-            // Setup all components
-            setupMobileMenu();
-            const featuredCTA = setupFeaturedCTA();
-            setupShareButtons();
-            setupNewsletterForm();
-            setupOtherCTAs();
-            setupReadingProgress();
-            setupImageLazyLoading();
-            setupExternalLinkTracking();
-            setupPerformanceMonitoring();
-
-            // Track page load
-            utils.trackEvent('page_load', 'blog', {
-                page_type: document.querySelector('.article-body') ? 'article' : 'index',
-                referrer: document.referrer || 'direct',
-                user_agent: navigator.userAgent.substring(0, 100),
-                viewport: `${window.innerWidth}x${window.innerHeight}`,
-                blog_version: BLOG_CONFIG.version
-            });
-
-            // Mark as initialized
-            window.CarambolaBlogInitialized = true;
-
-            // Add debugging helpers
-            if (BLOG_CONFIG.debugMode) {
-                window.blogDebug = {
-                    utils,
-                    config: BLOG_CONFIG,
-                    testCTA: () => featuredCTA?.click(),
-                    showNotification: utils.showNotification,
-                    trackEvent: utils.trackEvent
-                };
-                console.log('🐛 Blog debug mode enabled');
+            // Wait for main blog script to be ready
+            if (!window.CarambolaBlogInitialized) {
+                setTimeout(initializeBlogSupplements, 500);
+                return;
             }
 
-            console.log('✅ Carambola Blog initialized successfully');
+            // Setup all blog supplement features
+            setupImprovedReadingProgress();
+            setupEngagementTracking();
+            setupEnhancedImageHandling();
+            setupPerformanceMonitoring();
+            setupCleanup();
+
+            // Mark as initialized
+            window.CarambolaBlogSupplementsInitialized = true;
+
+            // Track initialization
+            blogUtils.safeTrack('blog_supplements_loaded', 'system', {
+                version: BLOG_SUPPLEMENT_CONFIG.version,
+                features_enabled: {
+                    reading_progress: true,
+                    engagement_tracking: true,
+                    advertisements: BLOG_SUPPLEMENT_CONFIG.adPlacements.enabled,
+                    enhanced_images: true
+                }
+            });
+
+            console.log('✅ Blog supplements initialized successfully');
 
         } catch (error) {
-            console.error('❌ Blog initialization error:', error);
+            console.error('❌ Blog supplements initialization error:', error);
             
-            // Track initialization error
-            utils.trackEvent('initialization_error', 'error', {
+            blogUtils.safeTrack('blog_supplements_error', 'error', {
                 error_message: error.message,
                 error_stack: error.stack?.substring(0, 200)
             });
@@ -674,95 +542,30 @@
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeBlog);
+        document.addEventListener('DOMContentLoaded', initializeBlogSupplements);
     } else {
-        // DOM already loaded
-        setTimeout(initializeBlog, 100);
+        initializeBlogSupplements();
     }
 
-    // Global utility functions and API
-    window.CarambolaBlog = {
-        trackEvent: utils.trackEvent,
-        showNotification: utils.showNotification,
-        config: BLOG_CONFIG,
-        version: BLOG_CONFIG.version,
-        
-        // Public methods
-        refreshTracking: () => {
-            utils.trackEvent('manual_refresh', 'user_action', {
-                timestamp: Date.now()
-            });
-        }
-    };
+    // Expose utilities for debugging
+    if (BLOG_SUPPLEMENT_CONFIG.debugMode) {
+        window.BlogSupplementDebug = {
+            state: blogState,
+            config: BLOG_SUPPLEMENT_CONFIG,
+            utils: blogUtils,
+            forceEngagement: () => {
+                blogState.engagement.qualified = true;
+                placeAdvertisements();
+            },
+            resetTracking: () => {
+                blogState.trackingEvents = 0;
+                blogState.lastTrackingTime = 0;
+                blogState.isTracking = false;
+                console.log('🔄 Blog supplement tracking reset');
+            }
+        };
+    }
+
+    console.log('📝 Blog supplement script loaded');
 
 })();
-
-// Global functions for backwards compatibility and inline handlers
-function toggleMobileMenu() {
-    const mobileMenu = document.querySelector('.mobile-menu');
-    if (mobileMenu) {
-        mobileMenu.click();
-    } else {
-        console.warn('Mobile menu button not found');
-    }
-}
-
-// Enhanced share function for inline handlers
-function shareArticle(platform) {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    
-    let shareUrl = '';
-    
-    switch(platform) {
-        case 'facebook':
-            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-            break;
-        case 'twitter':
-            shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-            break;
-        case 'linkedin':
-            shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-            break;
-        case 'email':
-            shareUrl = `mailto:?subject=${title}&body=Check out this article: ${decodeURIComponent(url)}`;
-            break;
-        default:
-            console.warn('Unknown share platform:', platform);
-            return;
-    }
-    
-    if (platform === 'email') {
-        window.location.href = shareUrl;
-    } else {
-        const shareWindow = window.open(shareUrl, '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes');
-        
-        if (!shareWindow || shareWindow.closed || typeof shareWindow.closed === 'undefined') {
-            if (window.CarambolaBlog) {
-                window.CarambolaBlog.showNotification('Please allow popups to share this article.', 'error');
-            }
-        }
-    }
-    
-    // Track the share
-    if (window.CarambolaBlog) {
-        window.CarambolaBlog.trackEvent('share_click', platform, {
-            url: window.location.href,
-            title: document.title,
-            method: 'inline_function'
-        });
-    }
-}
-
-// Article-specific tracking function for inline use
-function trackArticleInteraction(action, section, details = {}) {
-    if (window.CarambolaBlog) {
-        window.CarambolaBlog.trackEvent(action, section, {
-            ...details,
-            article_title: document.title,
-            timestamp: Date.now()
-        });
-    }
-}
-
-console.log('🎯 Carambola Blog Script loaded');
