@@ -57,7 +57,6 @@
     
     <!-- Critical Resource Preloading -->
     <link rel="preload" href="/styles.css" as="style">
-    <link rel="preload" href="/blog/styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-hole-18.webp" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
@@ -115,7 +114,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     
-    <!-- FIXED: Proper CSS loading order - Main styles first, then blog supplements -->
+    <!-- CSS Loading Order: Main styles first, then blog supplements -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -277,7 +276,7 @@
     <!-- Main Content -->
     <main id="main-content">
         <!-- Blog Hero Section -->
-        <section class="blog-hero" role="banner">
+        <section class="blog-hero" role="banner" style="background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)), url('/images/carambola-golf-hole-18.webp') center/cover;">
             <div class="blog-hero-content">
                 <h1>Your Guide to Championship Golf in Paradise</h1>
                 <p>Expert golf tips, vacation guides, and insider knowledge for your perfect St. Croix golf experience</p>
@@ -707,7 +706,7 @@
         </div>
     </footer>
 
-    <!-- FIXED: Proper script loading order - Main script, then blog supplements, then status -->
+    <!-- Scripts: Main site first, then blog supplements, then footer status -->
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/footer-status.js"></script>
