@@ -996,6 +996,7 @@
 .article-header {
     max-width: 900px;
     margin: 0 auto;
+    padding: 0 2rem;
 }
 
 .article-meta {
@@ -1006,6 +1007,7 @@
     margin-bottom: 2rem;
     font-size: 0.95rem;
     flex-wrap: wrap;
+    padding: 0 1rem;
 }
 
 .article-category {
@@ -1041,6 +1043,7 @@
     font-weight: 400;
     line-height: 1.2;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    padding: 0 1rem;
 }
 
 .article-excerpt {
@@ -1050,6 +1053,7 @@
     max-width: 700px;
     margin: 0 auto;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    padding: 0 1rem;
 }
 
 /* Breadcrumb Navigation */
@@ -1134,7 +1138,7 @@
     margin-bottom: 0.5rem;
 }
 
-/* Author Bio - Using blog-specific variables */
+/* Author Bio - Enhanced with Profile Picture */
 .author-bio {
     background: var(--blog-bg-light, #f8f9fa);
     padding: 2.5rem;
@@ -1157,8 +1161,8 @@
 .author-avatar {
     width: 80px;
     height: 80px;
-    min-width: 80px; /* Prevent stretching */
-    min-height: 80px; /* Prevent stretching */
+    min-width: 80px;
+    min-height: 80px;
     border-radius: 50%;
     background: var(--blog-accent-gold, #d4af37);
     display: flex;
@@ -1167,7 +1171,26 @@
     font-size: 2rem;
     color: var(--blog-primary-navy, #1e3a5f);
     font-weight: bold;
-    flex-shrink: 0; /* Prevent shrinking */
+    flex-shrink: 0;
+    overflow: hidden;
+    border: 3px solid var(--blog-accent-gold, #d4af37);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Picture Styling */
+.author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Fallback initials when no image */
+.author-avatar:not(:has(img))::before {
+    content: attr(data-initials);
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--blog-primary-navy, #1e3a5f);
 }
 
 .author-details {
@@ -1184,6 +1207,7 @@
 .author-title {
     color: #666;
     font-style: italic;
+    font-size: 0.95rem;
 }
 
 .author-bio p {
@@ -1761,48 +1785,48 @@ html body .faq-section .faq-question h3 {
     }
     
     .article-content {
-        padding: 3rem 2rem !important; /* Increased side padding */
+        padding: 3rem 1.5rem !important; /* Better mobile padding */
     }
     
     .article-content .article-body {
-        padding: 3rem 2rem !important; /* Increased padding, force override */
+        padding: 3rem 2rem !important; /* Generous mobile padding */
         max-width: 100% !important;
         margin: 0 !important;
     }
 
     /* CRITICAL: Blog Component Padding Fixes */
     .author-bio {
-        padding: 2.5rem 2rem !important; /* Increased from 2.5rem */
-        margin: 3rem 1rem !important; /* Add side margins to prevent edge touching */
+        padding: 2rem 1.5rem !important; /* Better mobile padding */
+        margin: 3rem 1rem !important; /* Prevent edge touching */
     }
     
     .share-section {
-        padding: 2rem 2rem !important; /* Increased padding */
-        margin: 3rem 1rem !important; /* Add side margins */
+        padding: 2rem 1.5rem !important; /* Better mobile padding */
+        margin: 3rem 1rem !important; /* Prevent edge touching */
     }
     
     .faq-section {
-        padding: 3rem 2rem !important; /* Increased padding */
-        margin: 3rem 1rem !important; /* Add side margins */
+        padding: 2rem 1.5rem !important; /* Better mobile padding */
+        margin: 3rem 1rem !important; /* Prevent edge touching */
     }
     
     .faq-question,
     .faq-answer {
-        padding: 1.5rem 2rem !important; /* Increased horizontal padding */
+        padding: 1.5rem 1.5rem !important; /* More generous padding */
     }
     
     .highlight-box {
-        padding: 2rem 2rem !important; /* Increased padding */
-        margin: 2rem 1rem !important; /* Add side margins */
+        padding: 2rem 1.5rem !important; /* Better mobile padding */
+        margin: 2rem 1rem !important; /* Prevent edge touching */
     }
 
     /* Article Hero Mobile - Better Content Spacing */
     .article-hero {
-        padding: 4rem 2rem 3rem !important; /* Increased side padding */
+        padding: 4rem 1.5rem 3rem !important; /* Better mobile padding */
     }
     
     .article-header {
-        padding: 0 1rem !important; /* Additional inner padding */
+        padding: 0 1rem !important; /* Prevent content touching edges */
         max-width: 100% !important;
     }
     
@@ -1816,13 +1840,13 @@ html body .faq-section .faq-question h3 {
 
     /* Blog Hero Mobile - Better Spacing */
     .blog-hero {
-        padding: 4rem 2rem 3rem !important; /* Increased side padding */
+        padding: 4rem 1.5rem 3rem !important; /* Better mobile padding */
         background-attachment: scroll;
         min-height: 50vh;
     }
     
     .blog-hero-content {
-        padding: 0 1rem !important; /* Additional inner padding */
+        padding: 0 1rem !important; /* Prevent content touching edges */
     }
 
     .blog-hero h1 {
@@ -1836,14 +1860,14 @@ html body .faq-section .faq-question h3 {
 
     /* Breadcrumb Mobile Spacing */
     .breadcrumb-nav {
-        padding: 0 2rem !important; /* Increased from 1.5rem */
+        padding: 0 2rem !important; /* Better mobile padding */
     }
 
     /* Newsletter and CTA Sections */
     .newsletter-content {
         grid-template-columns: 1fr;
         gap: 3rem;
-        padding: 0 2rem !important; /* Additional container padding */
+        padding: 0 1.5rem !important; /* Better container padding */
     }
     
     .newsletter-form {
@@ -1851,11 +1875,11 @@ html body .faq-section .faq-question h3 {
     }
     
     .blog-cta {
-        padding: 6rem 2rem !important; /* Increased side padding */
+        padding: 6rem 1.5rem !important; /* Better mobile padding */
     }
     
     .cta-content {
-        padding: 2rem 1rem !important; /* Additional inner padding */
+        padding: 2rem 1rem !important; /* Better inner padding */
     }
 
     .cta-buttons {
@@ -1881,13 +1905,13 @@ html body .faq-section .faq-question h3 {
     }
     
     .featured-article-content {
-        padding: 2.5rem 2rem !important; /* Increased padding */
+        padding: 2.5rem 1.5rem !important; /* Better mobile padding */
     }
 
     .article-actions {
         flex-direction: column;
         gap: 1rem;
-        padding: 0 1.5rem !important; /* Container padding */
+        padding: 0 1rem !important; /* Container padding */
     }
 
     /* Categories and Cards Mobile */
@@ -1901,17 +1925,17 @@ html body .faq-section .faq-question h3 {
     
     .category-card,
     .article-card {
-        padding: 2rem 1.8rem !important; /* Increased padding */
+        padding: 2rem 1.5rem !important; /* Better mobile padding */
         margin: 0 0.5rem !important; /* Side margins */
     }
     
     .article-card .article-content {
-        padding: 1.8rem !important; /* Increased padding */
+        padding: 1.5rem !important; /* Better mobile padding */
     }
 
     /* Hub Sections */
     .hub-section {
-        padding: 1.8rem !important; /* Increased padding */
+        padding: 1.5rem !important; /* Better mobile padding */
         background: rgba(255, 255, 255, 0.5);
         border-radius: 8px;
         margin: 0 0.5rem !important; /* Prevent edge touching */
@@ -1921,7 +1945,7 @@ html body .faq-section .faq-question h3 {
     .blog-social-proof {
         grid-template-columns: 1fr;
         gap: 2rem;
-        padding: 0 1.5rem !important; /* Container padding */
+        padding: 0 1rem !important; /* Container padding */
     }
 
     .social-proof-stats {
@@ -1931,8 +1955,8 @@ html body .faq-section .faq-question h3 {
     }
 
     .stat-item {
-        padding: 1.5rem !important; /* Increased padding */
-        margin: 0 1rem !important; /* Side margins */
+        padding: 1.5rem !important; /* Better mobile padding */
+        margin: 0 0.5rem !important; /* Side margins */
     }
 
     /* Credential Items Mobile */
@@ -1940,7 +1964,7 @@ html body .faq-section .faq-question h3 {
         flex-direction: column;
         text-align: center;
         gap: 0.5rem;
-        padding: 1rem 1.5rem !important; /* Increased padding */
+        padding: 1rem 1.5rem !important; /* Better mobile padding */
         margin: 0 0.5rem !important; /* Prevent touching edges */
     }
 
@@ -1985,18 +2009,18 @@ html body .faq-section .faq-question h3 {
     .section-title {
         font-size: 2rem;
         margin-bottom: 2rem;
-        padding: 0 1.5rem !important; /* Prevent title touching edges */
+        padding: 0 1rem !important; /* Prevent title touching edges */
     }
 
     /* Article Navigation Mobile */
     .nav-content {
         grid-template-columns: 1fr;
         gap: 1.5rem;
-        padding: 0 1.5rem !important; /* Increased padding */
+        padding: 0 1.5rem !important; /* Better mobile padding */
     }
     
     .nav-item {
-        padding: 1.5rem !important; /* Increased padding */
+        padding: 1.5rem !important; /* Better mobile padding */
         margin: 0 0.5rem !important; /* Prevent touching edges */
     }
 
@@ -2011,21 +2035,21 @@ html body .faq-section .faq-question h3 {
     .share-btn {
         width: 100%;
         justify-content: center;
-        padding: 1rem 1.5rem !important; /* Increased padding */
+        padding: 1rem 1.5rem !important; /* Better mobile padding */
         margin: 0.25rem 0 !important; /* Vertical spacing */
         min-height: 48px !important; /* Larger touch target */
     }
 
     /* Blog Advertisement Mobile Enhancement */
     .blog-advertisement {
-        padding: 2rem 1.5rem !important; /* Increased padding */
+        padding: 2rem 1.5rem !important; /* Better mobile padding */
         margin: 3rem 1rem !important; /* Better margins */
         border-radius: 12px;
     }
 
     .blog-advertisement::before {
         top: 0.75rem;
-        right: 1.5rem;
+        right: 1rem;
         font-size: 0.7rem;
     }
 
@@ -2037,7 +2061,7 @@ html body .faq-section .faq-question h3 {
     /* Trust Signals Mobile */
     .cta-trust-signals,
     .cta-urgency {
-        padding: 0 1.5rem !important; /* Container padding */
+        padding: 0 1rem !important; /* Container padding */
         flex-direction: column;
         gap: 1rem;
         text-align: center;
@@ -2045,9 +2069,32 @@ html body .faq-section .faq-question h3 {
 
     .urgency-item,
     .trust-item {
-        padding: 0.8rem !important; /* Increased padding */
+        padding: 0.8rem !important; /* Better mobile padding */
         font-size: 0.9rem; /* Slightly larger text */
         margin: 0.5rem !important; /* Better spacing */
+    }
+
+    /* Author Bio Mobile Enhancements */
+    .author-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .author-avatar {
+        width: 100px;
+        height: 100px;
+        min-width: 100px;
+        min-height: 100px;
+        margin: 0 auto;
+    }
+
+    .author-details {
+        text-align: center;
+    }
+
+    .author-title {
+        font-size: 0.9rem;
     }
 }
 
@@ -2059,7 +2106,7 @@ html body .faq-section .faq-question h3 {
 
     /* Article Content - More Generous Spacing */
     .article-content {
-        padding: 2.5rem 1.5rem !important; /* Increased padding */
+        padding: 2.5rem 1rem !important; /* More generous mobile padding */
     }
     
     .article-content .article-body {
@@ -2069,17 +2116,17 @@ html body .faq-section .faq-question h3 {
 
     /* Critical Component Padding Fixes */
     .author-bio {
-        padding: 2rem 1.5rem !important; /* Increased padding */
+        padding: 2rem 1.5rem !important; /* Better small mobile padding */
         margin: 2.5rem 0.5rem !important; /* Better margins */
     }
     
     .share-section {
-        padding: 2rem 1.5rem !important; /* Increased padding */
+        padding: 2rem 1.5rem !important; /* Better small mobile padding */
         margin: 2.5rem 0.5rem !important; /* Better margins */
     }
     
     .faq-section {
-        padding: 2.5rem 1.5rem !important; /* Increased padding */
+        padding: 2.5rem 1.5rem !important; /* Better small mobile padding */
         margin: 2.5rem 0.5rem !important; /* Better margins */
     }
     
@@ -2089,13 +2136,13 @@ html body .faq-section .faq-question h3 {
     }
     
     .highlight-box {
-        padding: 1.8rem 1.5rem !important; /* Increased padding */
+        padding: 1.8rem 1.5rem !important; /* Better small mobile padding */
         margin: 2rem 0.5rem !important; /* Better margins */
     }
 
     /* Article Hero Small Mobile - Enhanced Spacing */
     .article-hero {
-        padding: 3rem 1.5rem 2.5rem !important; /* Increased padding */
+        padding: 3rem 1rem 2.5rem !important; /* Better small mobile padding */
         margin-top: 90px;
         min-height: 45vh;
     }
@@ -2122,7 +2169,7 @@ html body .faq-section .faq-question h3 {
 
     /* Blog Hero Enhanced */
     .blog-hero {
-        padding: 3rem 1.5rem 2rem !important; /* Increased padding */
+        padding: 3rem 1rem 2rem !important; /* Better small mobile padding */
         min-height: 45vh;
     }
 
@@ -2142,19 +2189,19 @@ html body .faq-section .faq-question h3 {
 
     /* Navigation and Breadcrumbs */
     .breadcrumb-nav {
-        padding: 0 1.5rem !important; /* Increased padding */
+        padding: 0 1.5rem !important; /* Better small mobile padding */
     }
 
     /* Section Titles and Content */
     .section-title {
         font-size: clamp(1.5rem, 6vw, 2rem);
-        padding: 0 1.5rem !important; /* Increased padding */
+        padding: 0 1.5rem !important; /* Better padding */
         margin-bottom: 1.5rem;
     }
 
     /* CTA and Newsletter Sections */
     .blog-cta {
-        padding: 4rem 1.5rem !important; /* Increased padding */
+        padding: 4rem 1rem !important; /* Better small mobile padding */
     }
 
     .cta-content {
@@ -2186,7 +2233,7 @@ html body .faq-section .faq-question h3 {
 
     /* Newsletter Enhanced */
     .newsletter-content {
-        padding: 0 1.5rem !important; /* Increased padding */
+        padding: 0 1rem !important; /* Better container padding */
     }
 
     .newsletter-form {
@@ -2201,11 +2248,22 @@ html body .faq-section .faq-question h3 {
 
     /* Author Avatar Adjustment */
     .author-avatar {
-        width: 60px;
-        height: 60px;
-        min-width: 60px;
-        min-height: 60px;
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+        min-height: 80px;
         font-size: 1.5rem;
+    }
+
+    .author-info {
+        flex-direction: row;
+        text-align: left;
+        gap: 1rem;
+    }
+
+    .author-details {
+        text-align: left;
+        flex: 1;
     }
 
     /* Share Buttons Enhanced */
@@ -2225,7 +2283,7 @@ html body .faq-section .faq-question h3 {
     /* Categories and Cards Small Mobile */
     .category-card,
     .article-card {
-        padding: 1.8rem 1.5rem !important; /* Increased padding */
+        padding: 1.8rem 1.5rem !important; /* Better small mobile padding */
         margin: 0 0.5rem !important; /* Prevent edge touching */
     }
 
@@ -2235,13 +2293,13 @@ html body .faq-section .faq-question h3 {
 
     /* Hub Sections */
     .hub-section {
-        padding: 1.5rem !important; /* Increased padding */
+        padding: 1.5rem !important; /* Better padding */
         margin: 0 0.5rem !important; /* Prevent edge touching */
     }
 
     /* Blog Advertisement Small Mobile */
     .blog-advertisement {
-        padding: 1.5rem !important; /* Increased padding */
+        padding: 1.5rem !important; /* Better padding */
         margin: 2.5rem 0.5rem !important; /* Better margins */
         border-radius: 8px;
     }
@@ -2252,19 +2310,19 @@ html body .faq-section .faq-question h3 {
     }
 
     .stat-item {
-        padding: 1.25rem !important; /* Increased padding */
+        padding: 1.25rem !important; /* Better padding */
         margin: 0 0.5rem !important; /* Prevent edge touching */
     }
 
     /* Trust Signals and Urgency Small Mobile */
     .cta-trust-signals,
     .cta-urgency {
-        padding: 0 1.5rem !important; /* Container padding */
+        padding: 0 1rem !important; /* Container padding */
     }
 
     .urgency-item,
     .trust-item {
-        padding: 0.8rem !important; /* Increased padding */
+        padding: 0.8rem !important; /* Better padding */
         font-size: 0.9rem; /* Slightly larger text */
         margin: 0.5rem !important; /* Better spacing */
     }
