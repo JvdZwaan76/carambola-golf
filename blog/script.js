@@ -1,46 +1,44 @@
-// CARAMBOLA GOLF CLUB - FIXED BLOG SUPPLEMENTS
-// Immediate ad display for testing, then engagement-based
+// CARAMBOLA GOLF CLUB BLOG SUPPLEMENTS - OPTIMIZED VERSION
+// Only adds blog-specific functionality without overriding main site - CONFLICT-FREE
 
 (function() {
     'use strict';
 
-    // Prevent duplicate initialization
+    // Prevent duplicate initialization and conflicts
     if (window.CarambolaBlogSupplementsInitialized) {
         console.log('🟡 Blog supplements already initialized');
         return;
     }
 
-    // TESTING MODE: Set to true for immediate ads, false for engagement-based
-    const TESTING_MODE = true;
-
-    // Simplified configuration for testing
+    // Lightweight configuration - Optimized for performance
     const CONFIG = {
         version: '2.1.0',
-        debugMode: true, // Enable for testing
+        debugMode: false,
         
-        // Relaxed engagement requirements for testing
+        // Engagement requirements for ads - Mobile optimized
         engagementRequirements: {
-            minTimeOnPage: TESTING_MODE ? 0 : 10000, // 0 for testing, 10 seconds normally
-            minScrollPercent: TESTING_MODE ? 0 : 10, // 0 for testing, 10% normally  
-            minInteractions: TESTING_MODE ? 0 : 0    // 0 for both testing and normal
+            minTimeOnPage: 20000, // Reduced to 20 seconds for mobile
+            minScrollPercent: 20, // Reduced to 20% scroll for mobile
+            minInteractions: 1 // At least 1 interaction
         },
         
-        // Tracking throttling
-        trackingThrottle: 2000,
-        maxTrackingEvents: 25
+        // Tracking throttling - Optimized
+        trackingThrottle: 1500, // Reduced for better responsiveness
+        maxTrackingEvents: 30 // Slightly increased limit
     };
 
-    // State management
+    // State management - Enhanced
     const state = {
         trackingEvents: 0,
         lastTrackingTime: 0,
         isTracking: false,
+        isMobile: window.innerWidth <= 768,
         
         engagement: {
             startTime: Date.now(),
             interactions: 0,
             maxScroll: 0,
-            qualified: TESTING_MODE // Start qualified if testing
+            qualified: false
         },
         
         readingProgress: {
@@ -55,15 +53,21 @@
         }
     };
 
-    // Utility functions
+    // Utility functions - Enhanced with mobile detection
     const utils = {
         log: (...args) => {
             if (CONFIG.debugMode) {
-                console.log('📚 Blog Fixed:', ...args);
+                console.log('📚 Blog:', ...args);
             }
         },
 
-        // Safe tracking with throttling
+        // Mobile detection
+        isMobile: () => {
+            return window.innerWidth <= 768 || 
+                   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        },
+
+        // Enhanced safe tracking with mobile optimizations
         safeTrack: (action, category, details = {}) => {
             const now = Date.now();
             
@@ -78,10 +82,13 @@
             state.trackingEvents++;
             
             try {
+                // Use existing tracking if available - with conflict prevention
                 if (typeof window.trackBlogInteraction === 'function') {
                     window.trackBlogInteraction(action, category, {
                         ...details,
-                        blog_supplement_fixed: true
+                        blog_supplement: true,
+                        is_mobile: state.isMobile,
+                        viewport_width: window.innerWidth
                     });
                 }
                 utils.log('Tracked:', action, category);
@@ -96,21 +103,24 @@
             }
         },
 
-        // Check user engagement
+        // Enhanced engagement detection with mobile considerations
         isUserEngaged: () => {
-            if (TESTING_MODE) return true; // Always engaged in testing mode
-            
             const timeOnPage = Date.now() - state.engagement.startTime;
             const scrollPercent = state.engagement.maxScroll;
             const interactions = state.engagement.interactions;
             
             const req = CONFIG.engagementRequirements;
-            return timeOnPage >= req.minTimeOnPage &&
-                   scrollPercent >= req.minScrollPercent &&
+            
+            // Adjust requirements for mobile
+            const adjustedTimeReq = state.isMobile ? req.minTimeOnPage * 0.8 : req.minTimeOnPage;
+            const adjustedScrollReq = state.isMobile ? req.minScrollPercent * 0.8 : req.minScrollPercent;
+            
+            return timeOnPage >= adjustedTimeReq &&
+                   scrollPercent >= adjustedScrollReq &&
                    interactions >= req.minInteractions;
         },
 
-        // Throttle utility
+        // Enhanced throttle utility with better mobile performance
         throttle: (func, delay) => {
             let timeoutId;
             let lastExecTime = 0;
@@ -129,177 +139,24 @@
                     }, delay - (currentTime - lastExecTime));
                 }
             };
+        },
+
+        // Mobile-optimized intersection observer
+        createObserver: (callback, options = {}) => {
+            const defaultOptions = {
+                rootMargin: state.isMobile ? '20px 0px' : '50px 0px',
+                threshold: state.isMobile ? 0.05 : 0.1,
+                ...options
+            };
+
+            if ('IntersectionObserver' in window) {
+                return new IntersectionObserver(callback, defaultOptions);
+            }
+            return null;
         }
     };
 
-    // Advertisement placement - FIXED VERSION
-    function placeAdvertisements() {
-        if (state.ads.placed) {
-            utils.log('Ads already placed, skipping');
-            return;
-        }
-
-        utils.log('Placing advertisements...');
-
-        const article = document.querySelector('.article-body');
-        if (!article) {
-            utils.log('No article body found');
-            return;
-        }
-
-        // Commission Junction ad code
-        const adCode = `
-            <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_top" rel="noopener">
-                <img src="https://www.ftjcfx.com/image-101520211-16945650" 
-                     width="970" height="250" 
-                     alt="Premium Golf Equipment" 
-                     border="0"
-                     style="max-width: 100%; height: auto; display: block; margin: 0 auto;">
-            </a>`;
-
-        let adsPlaced = 0;
-
-        // Place mid-article ad
-        const midAd = placeMidArticleAd(article, adCode);
-        if (midAd) {
-            adsPlaced++;
-            utils.log('Mid-article ad placed');
-            utils.safeTrack('ad_displayed', 'advertising', {
-                placement: 'mid_article'
-            });
-        }
-
-        // Place bottom ad  
-        const bottomAd = placeBottomArticleAd(article, adCode);
-        if (bottomAd) {
-            adsPlaced++;
-            utils.log('Bottom article ad placed');
-            utils.safeTrack('ad_displayed', 'advertising', {
-                placement: 'bottom_article'
-            });
-        }
-
-        if (adsPlaced > 0) {
-            state.ads.placed = true;
-            utils.log(`Successfully placed ${adsPlaced} advertisements`);
-        } else {
-            utils.log('No advertisements were placed');
-        }
-    }
-
-    function placeMidArticleAd(article, adCode) {
-        // Find a good insertion point - after second paragraph or first H2
-        const headings = article.querySelectorAll('h2');
-        const paragraphs = article.querySelectorAll('p');
-        let insertionPoint = null;
-
-        // Try to find the second H2 heading
-        if (headings.length >= 2) {
-            insertionPoint = headings[1];
-            utils.log('Inserting mid-ad after second H2');
-        } 
-        // Otherwise use a paragraph in the middle
-        else if (paragraphs.length >= 3) {
-            const middleIndex = Math.min(2, Math.floor(paragraphs.length / 2));
-            insertionPoint = paragraphs[middleIndex];
-            utils.log(`Inserting mid-ad after paragraph ${middleIndex + 1}`);
-        }
-
-        if (insertionPoint) {
-            const adElement = createAdElement('mid', adCode);
-            
-            // Insert after the element
-            if (insertionPoint.nextSibling) {
-                insertionPoint.parentNode.insertBefore(adElement, insertionPoint.nextSibling);
-            } else {
-                insertionPoint.parentNode.appendChild(adElement);
-            }
-            
-            // Make visible immediately in testing mode
-            if (TESTING_MODE) {
-                adElement.classList.add('visible');
-                utils.log('Mid-ad made immediately visible (testing mode)');
-            } else {
-                setTimeout(() => {
-                    adElement.classList.add('visible');
-                }, 500);
-            }
-            
-            return adElement;
-        }
-        
-        utils.log('No suitable insertion point found for mid-article ad');
-        return null;
-    }
-
-    function placeBottomArticleAd(article, adCode) {
-        // Find insertion point before author bio or share section
-        const authorBio = document.querySelector('.author-bio');
-        const shareSection = document.querySelector('.share-section');
-        const faqSection = document.querySelector('.faq-section');
-        
-        let insertionPoint = authorBio || shareSection || faqSection;
-        
-        if (insertionPoint) {
-            const adElement = createAdElement('bottom', adCode);
-            insertionPoint.parentNode.insertBefore(adElement, insertionPoint);
-            
-            // Make visible immediately in testing mode
-            if (TESTING_MODE) {
-                adElement.classList.add('visible');
-                utils.log('Bottom ad made immediately visible (testing mode)');
-            } else {
-                setTimeout(() => {
-                    adElement.classList.add('visible');
-                }, 800);
-            }
-            
-            return adElement;
-        }
-        
-        // Fallback: append to end of article
-        const adElement = createAdElement('bottom', adCode);
-        article.appendChild(adElement);
-        
-        if (TESTING_MODE) {
-            adElement.classList.add('visible');
-            utils.log('Bottom ad appended to article and made visible (testing mode)');
-        }
-        
-        return adElement;
-    }
-
-    function createAdElement(placement, adCode) {
-        const adContainer = document.createElement('div');
-        adContainer.className = `blog-advertisement blog-ad-${placement}`;
-        
-        // In testing mode, start visible
-        if (TESTING_MODE) {
-            adContainer.style.opacity = '1';
-            adContainer.style.visibility = 'visible';
-        }
-        
-        adContainer.innerHTML = adCode;
-        
-        // Add click tracking
-        const adLink = adContainer.querySelector('a');
-        if (adLink) {
-            adLink.addEventListener('click', () => {
-                state.ads.clicksTracked++;
-                utils.safeTrack('ad_click', 'advertising', {
-                    placement: placement,
-                    total_clicks: state.ads.clicksTracked,
-                    testing_mode: TESTING_MODE
-                });
-                utils.log(`Ad clicked: ${placement}`);
-            });
-        }
-        
-        utils.log(`Created ${placement} ad element`);
-        return adContainer;
-    }
-
-    // Reading progress tracker
+    // Enhanced reading progress tracker with mobile optimizations
     function setupReadingProgress() {
         if (state.readingProgress.active) return;
         
@@ -308,14 +165,15 @@
 
         state.readingProgress.active = true;
 
-        // Create progress bar
+        // Create mobile-optimized progress bar
         const progressBar = document.createElement('div');
         progressBar.className = 'reading-progress-bar';
         progressBar.innerHTML = '<div class="reading-progress-fill"></div>';
+        progressBar.style.height = state.isMobile ? '3px' : '4px'; // Thinner on mobile
         document.body.appendChild(progressBar);
         
         const progressFill = progressBar.querySelector('.reading-progress-fill');
-        const milestones = [25, 50, 75, 90];
+        const milestones = state.isMobile ? [25, 50, 75] : [25, 50, 75, 90]; // Fewer milestones on mobile
 
         const updateProgress = utils.throttle(() => {
             try {
@@ -334,7 +192,7 @@
                 // Update engagement
                 state.engagement.maxScroll = Math.max(state.engagement.maxScroll, roundedProgress);
 
-                // Track milestones
+                // Track milestones with mobile optimization
                 if (roundedProgress > state.readingProgress.maxProgress) {
                     state.readingProgress.maxProgress = roundedProgress;
 
@@ -344,7 +202,9 @@
                             
                             state.readingProgress.reportedMilestones.add(milestone);
                             utils.safeTrack('reading_progress', `${milestone}%`, {
-                                progress: milestone
+                                progress: milestone,
+                                article_height: articleHeight,
+                                viewport_height: windowHeight
                             });
                         }
                     });
@@ -352,139 +212,8 @@
             } catch (error) {
                 console.warn('Reading progress error:', error);
             }
-        }, 1000);
+        }, state.isMobile ? 1500 : 1000); // Longer throttle on mobile
 
         window.addEventListener('scroll', updateProgress, { passive: true });
         utils.log('Reading progress initialized');
     }
-
-    // Engagement tracking
-    function setupEngagementTracking() {
-        const trackInteraction = utils.throttle(() => {
-            state.engagement.interactions++;
-            
-            if (!state.engagement.qualified && utils.isUserEngaged()) {
-                state.engagement.qualified = true;
-                utils.safeTrack('user_engaged', 'engagement', {
-                    time_to_engage: Date.now() - state.engagement.startTime
-                });
-                
-                // Show ads for engaged users (unless already shown in testing mode)
-                if (!state.ads.placed) {
-                    placeAdvertisements();
-                }
-            }
-        }, 3000);
-
-        // Track interactions
-        document.addEventListener('click', trackInteraction, { passive: true });
-        document.addEventListener('keydown', trackInteraction, { passive: true });
-        
-        // Time-based engagement check
-        if (!TESTING_MODE) {
-            setTimeout(() => {
-                if (utils.isUserEngaged() && !state.engagement.qualified) {
-                    state.engagement.qualified = true;
-                    if (!state.ads.placed) {
-                        placeAdvertisements();
-                    }
-                }
-            }, CONFIG.engagementRequirements.minTimeOnPage);
-        }
-
-        utils.log('Engagement tracking initialized');
-    }
-
-    // Enhanced image handling
-    function setupImageHandling() {
-        const images = document.querySelectorAll('.article-image img');
-        
-        if ('IntersectionObserver' in window) {
-            const imageObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        
-                        utils.safeTrack('image_viewed', 'content', {
-                            src: img.src.split('/').pop() || 'unknown'
-                        });
-                        
-                        img.classList.add('blog-fade-in');
-                        imageObserver.unobserve(img);
-                    }
-                });
-            }, {
-                rootMargin: '50px 0px',
-                threshold: 0.1
-            });
-
-            images.forEach(img => {
-                imageObserver.observe(img);
-            });
-        }
-
-        utils.log(`Image handling setup for ${images.length} images`);
-    }
-
-    // Main initialization
-    function initializeBlogSupplements() {
-        try {
-            utils.log('Starting blog supplements initialization...');
-
-            // Initialize features
-            setupReadingProgress();
-            setupEngagementTracking();
-            setupImageHandling();
-
-            // In testing mode, place ads immediately
-            if (TESTING_MODE) {
-                utils.log('TESTING MODE: Placing ads immediately');
-                setTimeout(() => {
-                    placeAdvertisements();
-                }, 1000); // Wait 1 second for DOM to be ready
-            }
-
-            // Mark as initialized
-            window.CarambolaBlogSupplementsInitialized = true;
-
-            // Track initialization
-            utils.safeTrack('blog_supplements_loaded', 'system', {
-                version: CONFIG.version,
-                testing_mode: TESTING_MODE
-            });
-
-            console.log('✅ Blog supplements initialized successfully');
-
-        } catch (error) {
-            console.error('❌ Blog supplements initialization error:', error);
-        }
-    }
-
-    // Initialize when DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeBlogSupplements);
-    } else {
-        initializeBlogSupplements();
-    }
-
-    // Debug utilities
-    if (CONFIG.debugMode) {
-        window.BlogSupplementDebug = {
-            state: state,
-            config: CONFIG,
-            utils: utils,
-            placeAds: () => {
-                utils.log('Manual ad placement triggered');
-                placeAdvertisements();
-            },
-            clearAds: () => {
-                document.querySelectorAll('.blog-advertisement').forEach(ad => ad.remove());
-                state.ads.placed = false;
-                utils.log('All ads cleared');
-            }
-        };
-        
-        utils.log('Debug utilities available at window.BlogSupplementDebug');
-    }
-
-})();
