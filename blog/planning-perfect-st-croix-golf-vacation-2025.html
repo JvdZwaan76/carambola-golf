@@ -324,6 +324,19 @@
 
             <p>Securing your spot at <a href="/course.html">Carambola Golf Course St. Croix</a> is straightforward, but early planning pays off in 2025's high-demand season. Green fees are value-packed: $110 for 18 holes with cart ($80 walking), or $80/$60 for 9 holes—affordable compared to mainland resorts. Book tee times via our Pro Shop at <a href="tel:+13407785638">+1-340-778-5638</a> or online at <a href="/contact.html">carambola.golf</a>—aim for mornings to beat the heat and enjoy cooler breezes. For full details, visit our <a href="/pricing.html">pricing page</a>.</p>
 
+            <!-- STATIC ADVERTISEMENT - MID ARTICLE -->
+            <div class="static-advertisement static-ad-mid">
+                <div class="ad-wrapper">
+                    <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-16945650" 
+                             width="970" 
+                             height="250" 
+                             alt="Cobra KING Tour Black Irons - Perfect Equipment for Your St. Croix Golf Vacation" 
+                             loading="lazy">
+                    </a>
+                </div>
+            </div>
+
             <h3>Package Options & Savings</h3>
             <ul>
                 <li><strong>Multi-Round Packages:</strong> Save 15% on 3+ rounds</li>
@@ -374,8 +387,35 @@
 
             <p>This can save time at the airport and let you focus on enjoying Carambola's pristine greens—many golfers swear by it for stress-free travel!</p>
 
-            <!-- Article images will be inserted automatically by blog supplements -->
-            
+            <h2>Essential Packing Guide for Your St. Croix Golf Adventure</h2>
+
+            <p>Packing smart for your Caribbean golf vacation ensures you're prepared for both on-course performance and island exploration. St. Croix's tropical climate and trade winds require specific considerations for optimal comfort and play.</p>
+
+            <h3>Golf-Specific Essentials</h3>
+            <ul>
+                <li><strong>Sun Protection:</strong> SPF 30+ sunscreen, wide-brimmed hat, and UV-protective golf shirts</li>
+                <li><strong>Lightweight Gear:</strong> Moisture-wicking polo shirts and breathable shorts</li>
+                <li><strong>Rain Preparedness:</strong> Compact golf umbrella and lightweight rain jacket</li>
+                <li><strong>Extra Accessories:</strong> Multiple gloves (humidity affects grip), extra tees, and ball markers</li>
+                <li><strong>Comfortable Footwear:</strong> Golf shoes with excellent grip for tropical conditions</li>
+            </ul>
+
+            <h3>Island Life Essentials</h3>
+            <p>Beyond golf, pack for beach relaxation, water activities, and casual dining. Lightweight, breathable fabrics work best in the tropical climate. Don't forget reef-safe sunscreen for snorkeling and beach activities—protecting St. Croix's marine environment is essential.</p>
+
+            <!-- STATIC ADVERTISEMENT - BOTTOM -->
+            <div class="static-advertisement static-ad-bottom">
+                <div class="ad-wrapper">
+                    <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-16945650" 
+                             width="970" 
+                             height="250" 
+                             alt="Cobra KING Tour Black Irons - Upgrade Your Game for Caribbean Golf Excellence" 
+                             loading="lazy">
+                    </a>
+                </div>
+            </div>
+
             <!-- FAQ Section -->
             <div class="faq-section">
                 <h2 class="faq-title">Frequently Asked Questions About St. Croix Golf Vacations</h2>
@@ -413,8 +453,8 @@
                         <img src="/images/Jasper-2022-Profile-Pic.jpg" 
                              alt="Jasper van der Zwaan - Golf Tourism Expert and Caribbean Travel Specialist" 
                              loading="lazy"
-                             width="80"
-                             height="80"
+                             width="100"
+                             height="100"
                              onload="this.classList.add('loaded')"
                              onerror="this.style.display='none';">
                     </div>
@@ -600,6 +640,20 @@
                     if (typeof trackArticleInteraction === 'function') {
                         trackArticleInteraction('external_link_click', this.href, {
                             link_text: this.textContent.trim()
+                        });
+                    }
+                });
+            });
+
+            // Track advertisement clicks with enhanced context
+            document.querySelectorAll('.static-advertisement a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (typeof trackArticleInteraction === 'function') {
+                        trackArticleInteraction('advertisement_click', 'cobra_golf_equipment', {
+                            ad_position: this.closest('.static-ad-mid') ? 'mid-article' : 'bottom-article',
+                            destination_url: this.href,
+                            article_context: 'vacation_planning',
+                            user_intent: 'golf_equipment_shopping'
                         });
                     }
                 });
