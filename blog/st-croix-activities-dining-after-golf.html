@@ -321,6 +321,19 @@
 
             <p><strong><a href="https://www.cheeseburgersinparadise.com/" target="_blank" rel="noopener">Cheeseburgers in Paradise</a> (Christiansted):</strong> For a more casual post-golf meal, this beachfront restaurant offers excellent burgers, fresh seafood, and tropical drinks with your toes in the sand. It's perfect for watching the sunset after an afternoon round.</p>
 
+            <!-- STATIC ADVERTISEMENT - MID ARTICLE -->
+            <div class="static-advertisement static-ad-mid">
+                <div class="ad-wrapper">
+                    <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-16945650" 
+                             width="970" 
+                             height="250" 
+                             alt="Cobra KING Tour Black Irons - Complement Your St. Croix Golf Experience with Premium Equipment" 
+                             loading="lazy">
+                    </a>
+                </div>
+            </div>
+
             <h3>Local Specialties to Try</h3>
             <ul>
                 <li><strong>Kallaloo:</strong> Traditional Caribbean soup with leafy greens and seafood</li>
@@ -413,6 +426,25 @@
             <h3>Cultural Events and Festivals</h3>
             <p>Depending on your visit timing, you might experience local festivals, art walks, or cultural celebrations that showcase St. Croix's vibrant community spirit. Check the <a href="https://www.visitusvi.com/" target="_blank" rel="noopener">official USVI tourism website</a> for current event calendars for concerts, art gallery openings, and seasonal celebrations.</p>
 
+            <h2>Creating the Perfect Post-Golf Itinerary</h2>
+
+            <p>To maximize your St. Croix experience, consider planning themed days that combine complementary activities. A cultural day might include historic Christiansted exploration followed by rum distillery tours and dinner at Savant Restaurant. An adventure day could feature morning snorkeling at Buck Island, afternoon beach time, and sunset dining at Cheeseburgers in Paradise.</p>
+
+            <p>For the ultimate relaxation day, start with a leisurely breakfast, enjoy spa services at your resort, explore local markets, and finish with waterfront dining as you watch the Caribbean sunset paint the sky in brilliant colors.</p>
+
+            <!-- STATIC ADVERTISEMENT - BOTTOM -->
+            <div class="static-advertisement static-ad-bottom">
+                <div class="ad-wrapper">
+                    <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-16945650" 
+                             width="970" 
+                             height="250" 
+                             alt="Cobra KING Tour Black Irons - Elevate Every Aspect of Your Caribbean Golf Adventure" 
+                             loading="lazy">
+                    </a>
+                </div>
+            </div>
+
             <!-- FAQ Section -->
             <div class="faq-section">
                 <h2 class="faq-title">Frequently Asked Questions About St. Croix Activities</h2>
@@ -450,8 +482,8 @@
                         <img src="/images/Jasper-2022-Profile-Pic.jpg" 
                              alt="Jasper van der Zwaan - Golf Tourism Expert and St. Croix Travel Specialist" 
                              loading="lazy"
-                             width="80"
-                             height="80"
+                             width="100"
+                             height="100"
                              onload="this.classList.add('loaded')"
                              onerror="this.style.display='none';">
                     </div>
@@ -637,6 +669,20 @@
                     if (typeof trackArticleInteraction === 'function') {
                         trackArticleInteraction('external_link_click', this.href, {
                             link_text: this.textContent.trim()
+                        });
+                    }
+                });
+            });
+
+            // Track advertisement clicks with activity context
+            document.querySelectorAll('.static-advertisement a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (typeof trackArticleInteraction === 'function') {
+                        trackArticleInteraction('advertisement_click', 'cobra_golf_equipment', {
+                            ad_position: this.closest('.static-ad-mid') ? 'mid-article' : 'bottom-article',
+                            destination_url: this.href,
+                            article_context: 'activities_dining',
+                            user_intent: 'complement_vacation_activities'
                         });
                     }
                 });
