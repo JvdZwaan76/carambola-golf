@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="blog-page">
+<html lang="en">
 <head>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
@@ -22,26 +22,6 @@
             }
         });
 
-        // Enhanced global trackBlogInteraction function
-        window.trackBlogInteraction = function(action, article, details = {}) {
-            console.log('🎯 Blog interaction tracked:', action, article, details);
-            
-            if (typeof gtag !== 'undefined') {
-                gtag('event', action, {
-                    event_category: 'Blog Engagement',
-                    event_label: article,
-                    article_category: details.category || 'golf-guides',
-                    article_type: details.type || 'guide',
-                    ...details
-                });
-            }
-            
-            // Also track with blog utils if available
-            if (window.CarambolaBlog && window.CarambolaBlog.trackEvent) {
-                window.CarambolaBlog.trackEvent(action, article, details);
-            }
-        };
-
         // Article-specific analytics tracking
         function trackArticleInteraction(action, section, details = {}) {
             gtag('event', action, {
@@ -59,17 +39,16 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
-    <!-- Critical Resource Preloading -->
+    <!-- Critical Resource Preloading - Optimized Order -->
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/blog/styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-course-aerial-hero.webp" as="image">
+    <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
     <!-- DNS Prefetch for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
     
     <!-- SEO Meta Tags -->
     <title>Ultimate Guide to Carambola Golf Resort: St. Croix's Premier Championship Course for 2025</title>
@@ -119,8 +98,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     
     <!-- CSS Loading Order: Main styles first, then blog supplements -->
     <link rel="stylesheet" href="/styles.css">
@@ -161,8 +138,7 @@
             "@type": "Person",
             "name": "Jasper van der Zwaan",
             "url": "https://carambola.golf/blog/",
-            "jobTitle": "Golf Tourism Expert",
-            "knowsAbout": ["Golf Course Design", "Caribbean Travel", "Vacation Planning"]
+            "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
         },
         "publisher": {
             "@type": "Organization",
@@ -258,29 +234,26 @@
     }
     </script>
 </head>
-<body class="blog-page">
+<body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Skip to main content link for accessibility -->
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-
     <!-- Navigation -->
     <nav class="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="/" class="logo" aria-label="Carambola Golf Club Home">Carambola Golf Club</a>
+            <a href="/" class="logo">Carambola Golf Club</a>
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/course.html">The Course</a></li>
                 <li><a href="/pricing.html">Pricing</a></li>
                 <li><a href="/accommodations.html">Accommodations</a></li>
                 <li><a href="/st-croix.html">Experience St. Croix</a></li>
-                <li><a href="/blog/" class="active" aria-current="page">Blog & Insights</a></li>
+                <li><a href="/blog/" class="active">Blog & Insights</a></li>
                 <li><a href="/contact.html">Contact</a></li>
             </ul>
             <button class="mobile-menu" aria-label="Toggle mobile menu" aria-expanded="false">
-                <i class="fas fa-bars" aria-hidden="true"></i>
+                <i class="fas fa-bars"></i>
             </button>
         </div>
     </nav>
@@ -299,20 +272,20 @@
     </section>
 
     <!-- Article Hero with Optimized Background Image -->
-    <section class="article-hero" style="background-image: url('/images/carambola-golf-course-aerial-hero.webp');">
+    <section class="article-hero" style="background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)), url('/images/carambola-golf-course-aerial-hero.webp') center/cover;">
         <div class="article-header">
             <div class="article-meta">
                 <span class="article-category">Golf Guides</span>
                 <span class="article-date">
-                    <i class="fas fa-calendar" aria-hidden="true"></i>
-                    <time datetime="2025-01-15">January 15, 2025</time>
+                    <i class="fas fa-calendar"></i>
+                    January 15, 2025
                 </span>
                 <span class="article-reading-time">
-                    <i class="fas fa-clock" aria-hidden="true"></i>
+                    <i class="fas fa-clock"></i>
                     8 min read
                 </span>
                 <span class="article-author">
-                    <i class="fas fa-user" aria-hidden="true"></i>
+                    <i class="fas fa-user"></i>
                     Jasper van der Zwaan
                 </span>
             </div>
@@ -322,7 +295,7 @@
     </section>
 
     <!-- Article Content -->
-    <main id="main-content" class="article-content">
+    <main class="article-content">
         <article class="article-body">
             <p>Are you dreaming of trading your winter blues for turquoise seas, lush tropical valleys, and a round of golf that challenges your skills while soothing your soul? Look no further than Carambola Golf Resort in St. Croix, US Virgin Islands—a hidden gem where championship-level play meets Caribbean paradise.</p>
 
@@ -343,7 +316,7 @@
 
             <p>Nestled on a former sugar plantation in the northwest hills of St. Croix, Carambola Golf Course opened in 1966 as part of a visionary development by Laurence Rockefeller. The course's architect, Robert Trent Jones Sr., called it one of his finest creations—and for good reason. Spanning 7,181 yards from the back tees, it weaves through undulating terrain, tropical foliage, and sparkling ponds, with the Caribbean Sea as your constant backdrop.</p>
 
-            <!-- First Image - Fixed Layout -->
+            <!-- Images will be inserted by blog supplements -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golfer-teeing-off-tropical.webp" type="image/webp">
@@ -367,11 +340,34 @@
                 <p>Download our scorecard from the <a href="/course.html">Course Details page</a> to preview the layout. With multiple tee options, it's accessible for all skill levels—perfect for family outings or corporate events. For current rates, check our <a href="/pricing.html">pricing page</a>.</p>
             </div>
 
+            <!-- Static Advertisement - Mid Article -->
+            <div class="blog-advertisement blog-ad-mid">
+                <div style="text-align: center; padding: 2rem 1rem; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border: 2px solid #d4af37; border-radius: 12px; margin: 3rem auto; max-width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                    <h4 style="color: #1e3a5f; margin: 0 0 1rem 0; font-size: 1.3rem; font-weight: 600;">
+                        🏌️ Ready to Experience Championship Golf?
+                    </h4>
+                    <p style="color: #666; margin: 0 0 1.5rem 0; line-height: 1.6; font-size: 1rem;">
+                        Book your tee time at Carambola Golf Club and experience Robert Trent Jones Sr.'s masterpiece. 
+                        Green fees start at just $80 for walking, $110 with cart.
+                    </p>
+                    <a href="/contact.html" 
+                       style="background: #d4af37; color: #1e3a5f; padding: 1rem 2rem; 
+                              border-radius: 8px; text-decoration: none; font-weight: 600; 
+                              display: inline-block; transition: all 0.3s ease;
+                              box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+                              border: 2px solid #d4af37;"
+                       onmouseover="this.style.background='#1e3a5f'; this.style.color='white';"
+                       onmouseout="this.style.background='#d4af37'; this.style.color='#1e3a5f';">
+                        Book Your Tee Time Now
+                    </a>
+                </div>
+            </div>
+
             <h2>Hole-by-Hole Highlights: What to Expect on the Course</h2>
 
             <p>Carambola Golf Course St. Croix isn't just about the views; it's a test of strategy and stamina. Here's a sneak peek at some standout holes:</p>
 
-            <!-- Second Image - Advertisement placement will happen here automatically -->
+            <!-- Images will be inserted by blog supplements -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golf-hole-ocean-view.webp" type="image/webp">
@@ -404,7 +400,7 @@
 
             <p>To maximize your experience:</p>
 
-            <!-- Third Image -->
+            <!-- Images will be inserted by blog supplements -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/carambola-golf-clubhouse-exterior.webp" type="image/webp">
@@ -440,7 +436,7 @@
 
             <p>Why stop at golf? Carambola Golf Resort is the perfect base for a full St. Croix adventure. Here's how to blend your rounds with island highlights:</p>
 
-            <!-- Fourth Image -->
+            <!-- Images will be inserted by blog supplements -->
             <div class="article-image">
                 <picture>
                     <source srcset="/images/st-croix-beach-golf-vacation.webp" type="image/webp">
@@ -485,14 +481,22 @@
 
                 <div class="faq-item">
                     <h3 class="faq-question">Can I book lessons or events at Carambola Golf Club?</h3>
-                    <p class="faq-answer">Yes, Carambola offers PGA-certified instruction and hosts group events. Our professionals specialize in Caribbean golf conditions including trade wind play. Contact the Pro Shop at <a href="tel:+13407785638">+1-340-778-5638</a> for details and booking.</p>
+                    <p class="faq-answer">Yes, Carambola offers PGA-certified instruction and hosts group events. Our professionals specialize in Caribbean golf conditions including trade wind play. Contact the Pro Shop at +1-340-778-5638 for details and booking.</p>
                 </div>
             </div>
 
-            <!-- Author Bio -->
+            <!-- Enhanced Author Bio with Profile Picture -->
             <div class="author-bio">
                 <div class="author-info">
-                    <div class="author-avatar">JZ</div>
+                    <div class="author-avatar" data-initials="JZ">
+                        <img src="/images/Jasper-2022-Profile-Pic.jpg" 
+                             alt="Jasper van der Zwaan - Golf Tourism Expert" 
+                             loading="lazy"
+                             width="80"
+                             height="80"
+                             onload="this.classList.add('loaded')"
+                             onerror="this.style.display='none';">
+                    </div>
                     <div class="author-details">
                         <h4>Jasper van der Zwaan</h4>
                         <p class="author-title">Curator of carambola.golf and lifelong golf enthusiast</p>
@@ -505,20 +509,20 @@
             <div class="share-section">
                 <h3 class="share-title">Share This Guide</h3>
                 <div class="share-buttons">
-                    <a href="#" class="share-btn facebook" onclick="shareArticle('facebook'); return false;" aria-label="Share on Facebook">
-                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                    <a href="#" class="share-btn facebook" onclick="shareArticle('facebook'); return false;">
+                        <i class="fab fa-facebook-f"></i>
                         Share on Facebook
                     </a>
-                    <a href="#" class="share-btn twitter" onclick="shareArticle('twitter'); return false;" aria-label="Share on Twitter">
-                        <i class="fab fa-twitter" aria-hidden="true"></i>
+                    <a href="#" class="share-btn twitter" onclick="shareArticle('twitter'); return false;">
+                        <i class="fab fa-twitter"></i>
                         Share on Twitter
                     </a>
-                    <a href="#" class="share-btn linkedin" onclick="shareArticle('linkedin'); return false;" aria-label="Share on LinkedIn">
-                        <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                    <a href="#" class="share-btn linkedin" onclick="shareArticle('linkedin'); return false;">
+                        <i class="fab fa-linkedin-in"></i>
                         Share on LinkedIn
                     </a>
-                    <a href="#" class="share-btn email" onclick="shareArticle('email'); return false;" aria-label="Share via Email">
-                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                    <a href="#" class="share-btn email" onclick="shareArticle('email'); return false;">
+                        <i class="fas fa-envelope"></i>
                         Share via Email
                     </a>
                 </div>
@@ -531,7 +535,7 @@
         <div class="nav-content">
             <a href="/blog/" class="nav-item">
                 <div class="nav-label">
-                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    <i class="fas fa-arrow-left"></i>
                     Back to Blog
                 </div>
                 <div class="nav-title">View All Articles & Insights</div>
@@ -539,7 +543,7 @@
             <a href="/blog/planning-perfect-st-croix-golf-vacation-2025.html" class="nav-item">
                 <div class="nav-label">
                     Next Article
-                    <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    <i class="fas fa-arrow-right"></i>
                 </div>
                 <div class="nav-title">Insider Tips for Planning Your Perfect 2025 St. Croix Golf Vacation</div>
             </a>
@@ -552,19 +556,13 @@
             <h2>Ready to Experience Championship Golf in Paradise?</h2>
             <p>Let this guide help you plan the perfect golf vacation at Carambola Golf Club. From course strategy to island adventures, we're here to make your St. Croix experience unforgettable.</p>
             <div class="cta-buttons">
-                <a href="/contact.html" class="cta-button primary" onclick="trackArticleInteraction('cta_click', 'book-tee-time', {source: 'ultimate-guide-article'})">
-                    <i class="fas fa-golf-ball" aria-hidden="true"></i>
-                    Book Your Tee Time
-                </a>
-                <a href="/course.html" class="cta-button secondary">
-                    <i class="fas fa-map" aria-hidden="true"></i>
-                    Explore Our Course
-                </a>
+                <a href="/contact.html" class="cta-button primary" onclick="trackArticleInteraction('cta_click', 'book-tee-time', {source: 'ultimate-guide-article'})">Book Your Tee Time</a>
+                <a href="/course.html" class="cta-button secondary">Explore Our Course</a>
             </div>
         </div>
     </section>
 
-    <!-- Footer with Status Integration -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-logo">Carambola Golf Club</div>
@@ -603,18 +601,15 @@
                 </div>
             </div>
             
-            <!-- Enhanced Footer Contact with Status Integration -->
             <div class="footer-contact">
                 <p>For inquiries regarding this website please contact:</p>
                 <p><a href="mailto:jaspervdz@me.com">jaspervdz@me.com</a> | <a href="tel:+18053387681">+1-805-338-7681</a></p>
-                
-                <!-- Footer Status Integration -->
                 <div class="footer-status">
                     <p>Last system check: <span id="footer-last-check">Loading...</span></p>
                     <p>
-                        <span id="footer-overall-status" class="footer-overall-status operational" aria-live="polite">All services operational</span>
+                        <span id="footer-overall-status" class="footer-overall-status operational">All services operational</span>
                         <a href="/status.html" class="footer-status-indicator" aria-label="View detailed system status">
-                            <span class="footer-status-dot" aria-hidden="true"></span>
+                            <span class="footer-status-dot"></span>
                             <span class="footer-status-text">Live</span>
                         </a>
                     </p>
@@ -672,7 +667,7 @@
             }
         }
 
-        // Initialize article tracking when DOM is ready
+        // Initialize article tracking
         document.addEventListener('DOMContentLoaded', function() {
             // Track article view
             if (typeof trackArticleInteraction === 'function') {
