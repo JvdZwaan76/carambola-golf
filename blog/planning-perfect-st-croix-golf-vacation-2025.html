@@ -39,9 +39,11 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
-    <!-- Critical Resource Preloading -->
+    <!-- Critical Resource Preloading - Optimized Order -->
     <link rel="preload" href="/styles.css" as="style">
+    <link rel="preload" href="/blog/styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-hole-12.webp" as="image">
+    <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
     <!-- SEO Meta Tags -->
@@ -116,7 +118,8 @@
             "name": "Jasper van der Zwaan",
             "url": "https://carambola.golf/blog/",
             "jobTitle": "Golf Tourism Expert",
-            "knowsAbout": ["Golf Course Strategy", "Caribbean Travel", "Vacation Planning"]
+            "knowsAbout": ["Golf Course Strategy", "Caribbean Travel", "Vacation Planning"],
+            "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
         },
         "publisher": {
             "@type": "Organization",
@@ -403,10 +406,18 @@
                 </div>
             </div>
 
-            <!-- Author Bio -->
+            <!-- Enhanced Author Bio with Profile Picture -->
             <div class="author-bio">
                 <div class="author-info">
-                    <div class="author-avatar">JZ</div>
+                    <div class="author-avatar" data-initials="JZ">
+                        <img src="/images/Jasper-2022-Profile-Pic.jpg" 
+                             alt="Jasper van der Zwaan - Golf Tourism Expert and Caribbean Travel Specialist" 
+                             loading="lazy"
+                             width="80"
+                             height="80"
+                             onload="this.classList.add('loaded')"
+                             onerror="this.style.display='none';">
+                    </div>
                     <div class="author-details">
                         <h4>Jasper van der Zwaan</h4>
                         <p class="author-title">Golf Tourism Expert & Caribbean Travel Specialist</p>
@@ -565,26 +576,32 @@
             }
             
             // Track sharing
-            trackArticleInteraction('article_shared', platform, {
-                article_title: 'Planning Perfect St. Croix Golf Vacation 2025',
-                share_method: platform
-            });
+            if (typeof trackArticleInteraction === 'function') {
+                trackArticleInteraction('article_shared', platform, {
+                    article_title: 'Planning Perfect St. Croix Golf Vacation 2025',
+                    share_method: platform
+                });
+            }
         }
 
         // Initialize article tracking
         document.addEventListener('DOMContentLoaded', function() {
             // Track article view
-            trackArticleInteraction('article_view', 'full_article', {
-                referrer: document.referrer,
-                entry_point: 'direct'
-            });
+            if (typeof trackArticleInteraction === 'function') {
+                trackArticleInteraction('article_view', 'full_article', {
+                    referrer: document.referrer,
+                    entry_point: 'direct'
+                });
+            }
 
             // Track external link clicks
             document.querySelectorAll('.article-body a[href^="http"]').forEach(link => {
                 link.addEventListener('click', function() {
-                    trackArticleInteraction('external_link_click', this.href, {
-                        link_text: this.textContent.trim()
-                    });
+                    if (typeof trackArticleInteraction === 'function') {
+                        trackArticleInteraction('external_link_click', this.href, {
+                            link_text: this.textContent.trim()
+                        });
+                    }
                 });
             });
         });
