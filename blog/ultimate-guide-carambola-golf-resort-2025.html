@@ -340,25 +340,15 @@
                 <p>Download our scorecard from the <a href="/course.html">Course Details page</a> to preview the layout. With multiple tee options, it's accessible for all skill levels—perfect for family outings or corporate events. For current rates, check our <a href="/pricing.html">pricing page</a>.</p>
             </div>
 
-            <!-- Static Advertisement - Mid Article -->
-            <div class="blog-advertisement blog-ad-mid">
-                <div style="text-align: center; padding: 2rem 1rem; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border: 2px solid #d4af37; border-radius: 12px; margin: 3rem auto; max-width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                    <h4 style="color: #1e3a5f; margin: 0 0 1rem 0; font-size: 1.3rem; font-weight: 600;">
-                        🏌️ Ready to Experience Championship Golf?
-                    </h4>
-                    <p style="color: #666; margin: 0 0 1.5rem 0; line-height: 1.6; font-size: 1rem;">
-                        Book your tee time at Carambola Golf Club and experience Robert Trent Jones Sr.'s masterpiece. 
-                        Green fees start at just $80 for walking, $110 with cart.
-                    </p>
-                    <a href="/contact.html" 
-                       style="background: #d4af37; color: #1e3a5f; padding: 1rem 2rem; 
-                              border-radius: 8px; text-decoration: none; font-weight: 600; 
-                              display: inline-block; transition: all 0.3s ease;
-                              box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-                              border: 2px solid #d4af37;"
-                       onmouseover="this.style.background='#1e3a5f'; this.style.color='white';"
-                       onmouseout="this.style.background='#d4af37'; this.style.color='#1e3a5f';">
-                        Book Your Tee Time Now
+            <!-- STATIC ADVERTISEMENT - MID ARTICLE -->
+            <div class="static-advertisement static-ad-mid">
+                <div class="ad-wrapper">
+                    <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-16945650" 
+                             width="970" 
+                             height="250" 
+                             alt="Cobra KING Tour Black Irons - Premium Golf Equipment for Championship Performance" 
+                             loading="lazy">
                     </a>
                 </div>
             </div>
@@ -465,6 +455,19 @@
 
             <p>St. Croix's 340 acres of oceanfront playground make it ideal for multi-activity trips—golf in the morning, beach vibes in the afternoon.</p>
 
+            <!-- STATIC ADVERTISEMENT - BOTTOM -->
+            <div class="static-advertisement static-ad-bottom">
+                <div class="ad-wrapper">
+                    <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-16945650" 
+                             width="970" 
+                             height="250" 
+                             alt="Cobra KING Tour Black Irons - Elevate Your Golf Game with Tour-Proven Equipment" 
+                             loading="lazy">
+                    </a>
+                </div>
+            </div>
+
             <!-- FAQ Section -->
             <div class="faq-section">
                 <h2 class="faq-title">Frequently Asked Questions About Carambola Golf Resort</h2>
@@ -490,10 +493,10 @@
                 <div class="author-info">
                     <div class="author-avatar" data-initials="JZ">
                         <img src="/images/Jasper-2022-Profile-Pic.jpg" 
-                             alt="Jasper van der Zwaan - Golf Tourism Expert" 
+                             alt="Jasper van der Zwaan - Golf Tourism Expert and Caribbean Travel Specialist" 
                              loading="lazy"
-                             width="80"
-                             height="80"
+                             width="100"
+                             height="100"
                              onload="this.classList.add('loaded')"
                              onerror="this.style.display='none';">
                     </div>
@@ -683,6 +686,18 @@
                     if (typeof trackArticleInteraction === 'function') {
                         trackArticleInteraction('external_link_click', this.href, {
                             link_text: this.textContent.trim()
+                        });
+                    }
+                });
+            });
+
+            // Track advertisement clicks
+            document.querySelectorAll('.static-advertisement a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (typeof trackArticleInteraction === 'function') {
+                        trackArticleInteraction('advertisement_click', 'cobra_golf_equipment', {
+                            ad_position: this.closest('.static-ad-mid') ? 'mid-article' : 'bottom-article',
+                            destination_url: this.href
                         });
                     }
                 });
