@@ -55,9 +55,11 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Carambola Golf Blog">
     
-    <!-- Critical Resource Preloading -->
+    <!-- Critical Resource Preloading - Optimized Order -->
     <link rel="preload" href="/styles.css" as="style">
+    <link rel="preload" href="/blog/styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-hole-18.webp" as="image">
+    <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
     <!-- DNS Prefetch for Performance -->
@@ -162,7 +164,8 @@
                 "dateModified": "2025-01-15",
                 "author": {
                     "@type": "Person",
-                    "name": "Jasper van der Zwaan"
+                    "name": "Jasper van der Zwaan",
+                    "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
                 },
                 "image": "https://carambola.golf/images/carambola-golf-clubhouse.webp",
                 "url": "https://carambola.golf/blog/ultimate-guide-carambola-golf-resort-2025.html"
@@ -175,7 +178,8 @@
                 "dateModified": "2025-01-15",
                 "author": {
                     "@type": "Person",
-                    "name": "Jasper van der Zwaan"
+                    "name": "Jasper van der Zwaan",
+                    "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
                 },
                 "image": "https://carambola.golf/images/carambola-golf-hole-12.webp",
                 "url": "https://carambola.golf/blog/planning-perfect-st-croix-golf-vacation-2025.html"
@@ -188,7 +192,8 @@
                 "dateModified": "2025-01-15",
                 "author": {
                     "@type": "Person",
-                    "name": "Jasper van der Zwaan"
+                    "name": "Jasper van der Zwaan",
+                    "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
                 },
                 "image": "https://carambola.golf/images/carambola-attraction-buck-island.webp",
                 "url": "https://carambola.golf/blog/st-croix-activities-dining-after-golf.html"
@@ -276,7 +281,7 @@
     <!-- Main Content -->
     <main id="main-content">
         <!-- Blog Hero Section -->
-        <section class="blog-hero" role="banner" style="background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)), url('/images/carambola-golf-hole-18.webp') center/cover;">
+        <section class="blog-hero" role="banner">
             <div class="blog-hero-content">
                 <h1>Your Guide to Championship Golf in Paradise</h1>
                 <p>Expert golf tips, vacation guides, and insider knowledge for your perfect St. Croix golf experience</p>
@@ -373,10 +378,12 @@
                                 <li>Why Carambola ranks among the Caribbean's best</li>
                             </ul>
                         </div>
+                        <!-- Optimized CTA button -->
                         <div class="article-actions">
                             <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html" 
                                class="cta-button primary"
-                               id="featured-article-cta">
+                               id="featured-article-cta"
+                               onclick="trackBlogInteraction('featured_article_click', 'ultimate-guide', {source: 'blog-homepage'})">
                                 Read Full Guide
                                 <i class="fas fa-arrow-right" aria-hidden="true"></i>
                             </a>
@@ -462,7 +469,9 @@
                                 <span class="topic-tag">Golf Strategy</span>
                             </div>
                             <div class="article-actions">
-                                <a href="/blog/planning-perfect-st-croix-golf-vacation-2025.html" class="read-more">
+                                <a href="/blog/planning-perfect-st-croix-golf-vacation-2025.html" 
+                                   class="read-more"
+                                   onclick="trackBlogInteraction('article_click', 'vacation-planning', {source: 'blog-homepage'})">
                                     Read Guide <i class="fas fa-arrow-right" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -490,7 +499,9 @@
                                 <span class="topic-tag">Water Sports</span>
                             </div>
                             <div class="article-actions">
-                                <a href="/blog/st-croix-activities-dining-after-golf.html" class="read-more">
+                                <a href="/blog/st-croix-activities-dining-after-golf.html" 
+                                   class="read-more"
+                                   onclick="trackBlogInteraction('article_click', 'activities-dining', {source: 'blog-homepage'})">
                                     Read Guide <i class="fas fa-arrow-right" aria-hidden="true"></i>
                                 </a>
                             </div>
@@ -536,7 +547,8 @@
                         </div>
                     </div>
                 </div>
-                <form class="newsletter-form" id="newsletter-form">
+                <!-- Optimized form with proper handling -->
+                <form class="newsletter-form" id="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
                     <div class="form-group">
                         <label for="newsletter-email" class="visually-hidden">Email Address</label>
                         <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required>
@@ -622,7 +634,9 @@
                     </div>
                 </div>
                 <div class="cta-buttons">
-                    <a href="/contact.html" class="cta-button primary book-tee-time">
+                    <a href="/contact.html" 
+                       class="cta-button primary book-tee-time"
+                       onclick="trackBlogInteraction('cta_click', 'book-tee-time', {source: 'blog-homepage'})">
                         <i class="fas fa-golf-ball" aria-hidden="true"></i>
                         Book Your Tee Time
                     </a>
@@ -710,5 +724,115 @@
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/footer-status.js"></script>
+    
+    <!-- Blog Homepage JavaScript -->
+    <script>
+        // Share functionality for social sharing
+        function shareArticle(platform) {
+            const url = encodeURIComponent('https://carambola.golf/blog/');
+            const title = encodeURIComponent('Expert Golf & St. Croix Travel Guides | Carambola Golf Club Blog');
+            const description = encodeURIComponent("Discover championship golf tips and Caribbean vacation guides!");
+            
+            let shareUrl = '';
+            
+            switch(platform) {
+                case 'social':
+                case 'facebook':
+                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                    break;
+                case 'twitter':
+                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+                    break;
+                case 'linkedin':
+                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                    break;
+                case 'email':
+                    shareUrl = `mailto:?subject=${title}&body=Check out these expert golf guides: ${url}`;
+                    break;
+            }
+            
+            if (platform === 'email') {
+                window.location.href = shareUrl;
+            } else {
+                window.open(shareUrl, '_blank', 'width=600,height=400');
+            }
+            
+            // Track sharing
+            if (typeof trackBlogInteraction === 'function') {
+                trackBlogInteraction('blog_shared', platform, {
+                    source: 'blog-homepage',
+                    share_method: platform
+                });
+            }
+        }
+
+        // Newsletter form handling
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('newsletter-email').value;
+            const name = document.getElementById('newsletter-name').value;
+            
+            // Track newsletter signup
+            if (typeof trackBlogInteraction === 'function') {
+                trackBlogInteraction('newsletter_signup', 'blog-homepage', {
+                    has_name: !!name,
+                    email_domain: email.split('@')[1] || 'unknown'
+                });
+            }
+            
+            // Show success message (you can customize this)
+            const button = event.target.querySelector('button[type="submit"]');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Thank You!';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.disabled = false;
+                document.getElementById('newsletter-form').reset();
+            }, 3000);
+            
+            console.log('Newsletter signup:', { email, name });
+        }
+
+        // Initialize homepage tracking
+        document.addEventListener('DOMContentLoaded', function() {
+            // Track page view
+            if (typeof trackBlogInteraction === 'function') {
+                trackBlogInteraction('blog_homepage_view', 'initial_load', {
+                    referrer: document.referrer,
+                    user_agent: navigator.userAgent.substring(0, 100)
+                });
+            }
+
+            // Track category card clicks
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function(event) {
+                    // Only track if not clicking on a link
+                    if (event.target.tagName !== 'A') {
+                        const categoryTitle = this.querySelector('h3').textContent;
+                        if (typeof trackBlogInteraction === 'function') {
+                            trackBlogInteraction('category_card_click', categoryTitle.toLowerCase().replace(/ /g, '_'), {
+                                source: 'blog-homepage'
+                            });
+                        }
+                    }
+                });
+            });
+
+            // Track external link clicks
+            document.querySelectorAll('a[href^="http"]:not([href*="carambola.golf"])').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (typeof trackBlogInteraction === 'function') {
+                        trackBlogInteraction('external_link_click', this.href, {
+                            link_text: this.textContent.trim(),
+                            source: 'blog-homepage'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
