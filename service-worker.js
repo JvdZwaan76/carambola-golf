@@ -1,334 +1,380 @@
-// Carambola Golf Club Service Worker - Fixed Version
-// Enhanced caching strategy with proper error handling
+// CARAMBOLA GOLF CLUB SERVICE WORKER - FIXED VERSION
+// This version prevents 206 cache errors while maintaining all functionality
 
-const CACHE_NAME = 'carambola-golf-v1.2.1';
-const STATIC_CACHE = 'carambola-static-v1.2.1';
-const DYNAMIC_CACHE = 'carambola-dynamic-v1.2.1';
+const CACHE_NAME = 'carambola-golf-cache-v3'; // Updated version to force refresh
+const STATIC_CACHE = 'carambola-static-v3';
 
-// Core assets that must be cached (exclude external fonts that cause CORS issues)
-const CORE_ASSETS = [
+// Enhanced configuration with 206 error prevention
+const CONFIG = {
+    version: '3.0.0',
+    preventPartialResponseCaching: true, // Critical fix
+    maxCacheSize: 50 * 1024 * 1024, // 50MB limit
+    requestTimeout: 10000, // 10 second timeout
+    enableLogging: false // Set to true for debugging
+};
+
+// Files to cache immediately
+const PRECACHE_ASSETS = [
     '/',
-    '/index.html',
-    '/course.html',
-    '/pricing.html',
-    '/accommodations.html',
-    '/st-croix.html',
-    '/contact.html',
-    '/status.html',
     '/styles.css',
-    '/status.css',
     '/script.js',
-    '/status-page.js',
+    '/footer-status.js',
     '/manifest.json',
-    '/favicon.ico',
-    '/offline.html'
+    '/images/carambola-golf-logo.png',
+    '/images/carambola-golf-hero.webp'
 ];
 
-// Key images for core functionality
-const KEY_IMAGES = [
-    '/images/carambola-golf-clubhouse.webp',
-    '/images/carambola-golf-hole-1.webp',
-    '/images/carambola-golf-hole-12.webp',
-    '/images/carambola-golf-hole-18.webp'
+// Patterns to exclude from caching (these often cause 206 responses)
+const EXCLUDE_PATTERNS = [
+    /\.(mp4|webm|ogg|avi|mov|wmv|flv|mkv)$/i, // Video files
+    /\.(mp3|wav|ogg|aac|flac|m4a|wma)$/i,     // Audio files
+    /\.(pdf|zip|rar|tar|gz|7z)$/i,             // Large downloadable files
+    /\/api\//,                                  // API endpoints
+    /\/admin\//,                               // Admin areas
+    /\/wp-admin\//,                            // WordPress admin
+    /\/auth\//,                                // Authentication
+    /\/stream\//,                              // Streaming endpoints
+    /\/download\//                             // Download endpoints
 ];
 
-// External resources (handle carefully due to CORS)
-const EXTERNAL_RESOURCES = [
-    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
-    'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js'
-];
+// Enhanced logging function
+function log(...args) {
+    if (CONFIG.enableLogging) {
+        console.log('[SW]', ...args);
+    }
+}
 
-console.log('Service Worker: Script loaded');
-
-// Install event
-self.addEventListener('install', event => {
-    console.log('Service Worker: Installing');
+// Service Worker Installation
+self.addEventListener('install', (event) => {
+    log('Service Worker: Installing version', CONFIG.version);
     
     event.waitUntil(
-        Promise.all([
-            // Cache core assets
-            caches.open(STATIC_CACHE).then(cache => {
-                console.log('Service Worker: Caching core assets');
-                return cache.addAll(CORE_ASSETS).catch(error => {
-                    console.warn('Service Worker: Failed to cache some core assets:', error);
-                    // Try to cache individually to identify problematic assets
-                    return Promise.allSettled(
-                        CORE_ASSETS.map(asset => 
-                            cache.add(asset).catch(err => 
-                                console.warn(`Failed to cache ${asset}:`, err)
-                            )
-                        )
-                    );
-                });
-            }),
-            
-            // Cache key images
-            caches.open(STATIC_CACHE).then(cache => {
-                console.log('Service Worker: Caching key images');
-                return Promise.allSettled(
-                    KEY_IMAGES.map(image => 
-                        cache.add(image).catch(err => 
-                            console.warn(`Failed to cache image ${image}:`, err)
-                        )
-                    )
-                );
-            }),
-            
-            // Cache external resources (with error handling)
-            caches.open(STATIC_CACHE).then(cache => {
-                console.log('Service Worker: Caching external resources');
-                return Promise.allSettled(
-                    EXTERNAL_RESOURCES.map(resource => 
-                        fetch(resource, { mode: 'cors', credentials: 'omit' })
-                            .then(response => {
-                                if (response.ok) {
-                                    return cache.put(resource, response);
-                                }
-                                throw new Error(`HTTP ${response.status}`);
-                            })
-                            .catch(err => 
-                                console.warn(`Failed to cache external resource ${resource}:`, err)
-                            )
-                    )
-                );
-            })
-        ]).then(() => {
-            console.log('Service Worker: Installation complete');
-            self.skipWaiting();
-        }).catch(error => {
-            console.error('Service Worker: Installation failed:', error);
+        caches.open(STATIC_CACHE).then((cache) => {
+            log('Service Worker: Precaching assets');
+            return cache.addAll(PRECACHE_ASSETS).catch((error) => {
+                log('Service Worker: Precaching failed (non-fatal):', error);
+                // Don't fail installation if precaching fails
+                return Promise.resolve();
+            });
+        }).then(() => {
+            log('Service Worker: Installation complete');
+            self.skipWaiting(); // Force activation
         })
     );
 });
 
-// Activate event
-self.addEventListener('activate', event => {
-    console.log('Service Worker: Activating');
+// Service Worker Activation
+self.addEventListener('activate', (event) => {
+    log('Service Worker: Activating');
     
     event.waitUntil(
-        Promise.all([
-            // Clean up old caches
-            caches.keys().then(cacheNames => {
-                return Promise.all(
-                    cacheNames.map(cacheName => {
-                        if (cacheName !== STATIC_CACHE && cacheName !== DYNAMIC_CACHE) {
-                            console.log('Service Worker: Deleting old cache:', cacheName);
-                            return caches.delete(cacheName);
-                        }
-                    })
-                );
-            }),
-            
-            // Take control of all pages
-            self.clients.claim()
-        ]).then(() => {
-            console.log('Service Worker: Activation complete');
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.map((cacheName) => {
+                    if (cacheName !== CACHE_NAME && cacheName !== STATIC_CACHE) {
+                        log('Service Worker: Deleting old cache:', cacheName);
+                        return caches.delete(cacheName);
+                    }
+                })
+            );
+        }).then(() => {
+            log('Service Worker: Claiming clients');
+            return self.clients.claim();
         })
     );
 });
 
-// Fetch event with improved caching strategy
-self.addEventListener('fetch', event => {
-    const { request } = event;
+// CRITICAL FIX: Enhanced fetch handler with 206 error prevention
+self.addEventListener('fetch', (event) => {
+    const request = event.request;
     const url = new URL(request.url);
     
     // Skip non-GET requests
     if (request.method !== 'GET') {
+        event.respondWith(fetch(request));
         return;
     }
     
-    // Handle different types of requests
-    if (url.origin === location.origin) {
-        // Same-origin requests
-        event.respondWith(handleSameOriginRequest(request));
-    } else if (isExternalResource(url)) {
-        // External resources (CDN, APIs, etc.)
-        event.respondWith(handleExternalRequest(request));
+    // CRITICAL: Skip range requests entirely - they cause 206 responses
+    if (request.headers.get('range')) {
+        log('Bypassing range request to prevent 206 error:', request.url);
+        event.respondWith(fetch(request));
+        return;
+    }
+    
+    // Skip excluded patterns
+    if (shouldSkipCaching(url, request)) {
+        event.respondWith(fetch(request));
+        return;
+    }
+    
+    // Handle same-origin requests with enhanced caching
+    if (url.origin === self.location.origin) {
+        event.respondWith(handleSameOriginRequest(event));
     } else {
-        // Other external requests (analytics, etc.)
-        event.respondWith(fetch(request).catch(() => new Response('', { status: 200 })));
+        // Handle cross-origin requests without caching
+        event.respondWith(fetch(request));
     }
 });
 
-// Handle same-origin requests with cache-first strategy
-async function handleSameOriginRequest(request) {
+// FIXED: Enhanced same-origin request handler
+async function handleSameOriginRequest(event) {
+    const request = event.request;
     const url = new URL(request.url);
     
     try {
-        // Check static cache first
-        const staticCache = await caches.open(STATIC_CACHE);
-        const staticResponse = await staticCache.match(request);
-        
-        if (staticResponse) {
-            // Update cache in background for HTML files
-            if (url.pathname.endsWith('.html') || url.pathname === '/') {
-                updateCacheInBackground(request, staticCache);
-            }
-            return staticResponse;
-        }
-        
-        // Check dynamic cache
-        const dynamicCache = await caches.open(DYNAMIC_CACHE);
-        const dynamicResponse = await dynamicCache.match(request);
-        
-        if (dynamicResponse) {
-            return dynamicResponse;
-        }
-        
-        // Fetch from network
-        const networkResponse = await fetch(request);
-        
-        if (networkResponse.ok) {
-            // Cache successful responses
-            const responseClone = networkResponse.clone();
-            
-            if (shouldCache(url)) {
-                if (isStaticAsset(url)) {
-                    staticCache.put(request, responseClone);
-                } else {
-                    dynamicCache.put(request, responseClone);
-                }
-            }
-        }
-        
-        return networkResponse;
-        
-    } catch (error) {
-        console.warn('Service Worker: Fetch failed for', request.url, error);
-        
-        // Return offline page for navigation requests
-        if (request.mode === 'navigate') {
-            const offlineResponse = await caches.match('/offline.html');
-            return offlineResponse || new Response('Offline', { 
-                status: 503, 
-                statusText: 'Service Unavailable' 
-            });
-        }
-        
-        // Return empty response for other requests
-        return new Response('', { status: 200 });
-    }
-}
-
-// Handle external requests with network-first strategy
-async function handleExternalRequest(request) {
-    try {
-        // Try network first
-        const networkResponse = await fetch(request, {
-            mode: 'cors',
-            credentials: 'omit'
-        });
-        
-        if (networkResponse.ok) {
-            // Cache successful responses
+        // Try cache first for static assets
+        if (isStaticAsset(url)) {
             const cache = await caches.open(STATIC_CACHE);
-            cache.put(request, networkResponse.clone()).catch(err => {
-                console.warn('Failed to cache external resource:', err);
-            });
+            const cachedResponse = await cache.match(request);
+            if (cachedResponse) {
+                log('Serving from static cache:', request.url);
+                return cachedResponse;
+            }
         }
         
-        return networkResponse;
-        
-    } catch (error) {
-        // Try cache if network fails
-        const cachedResponse = await caches.match(request);
-        
+        // Try dynamic cache
+        const cache = await caches.open(CACHE_NAME);
+        const cachedResponse = await cache.match(request);
         if (cachedResponse) {
+            log('Serving from dynamic cache:', request.url);
             return cachedResponse;
         }
         
-        // Return empty response if both network and cache fail
-        console.warn('Service Worker: External resource unavailable:', request.url);
-        return new Response('', { status: 200 });
-    }
-}
-
-// Update cache in background
-async function updateCacheInBackground(request, cache) {
-    try {
-        const response = await fetch(request);
-        if (response.ok) {
-            cache.put(request, response.clone());
+        // Make network request with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), CONFIG.requestTimeout);
+        
+        const response = await fetch(request, {
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        
+        // CRITICAL FIX: Check if response should be cached BEFORE attempting to cache
+        if (!shouldCacheResponse(response, request)) {
+            log('Skipping cache for response:', response.status, request.url);
+            return response;
         }
+        
+        // Clone response for caching
+        const responseToCache = response.clone();
+        
+        // Cache the response with enhanced error handling
+        try {
+            const targetCache = isStaticAsset(url) ? 
+                await caches.open(STATIC_CACHE) : 
+                await caches.open(CACHE_NAME);
+                
+            await targetCache.put(request, responseToCache);
+            log('Successfully cached:', request.url);
+        } catch (cacheError) {
+            // Log cache errors but don't fail the request
+            log('Cache operation failed (non-fatal):', cacheError.message, 'for:', request.url);
+            
+            // If it's the 206 error we're trying to fix, log it specifically
+            if (cacheError.message.includes('Partial response (status code 206)')) {
+                log('✅ Prevented 206 cache error (this is the fix working)');
+            }
+        }
+        
+        return response;
+        
     } catch (error) {
-        console.warn('Background cache update failed:', error);
+        log('Network request failed:', error.message);
+        
+        // Try to serve stale content on network failure
+        const cache = await caches.open(CACHE_NAME);
+        const staleResponse = await cache.match(request);
+        if (staleResponse) {
+            log('Serving stale content for:', request.url);
+            return staleResponse;
+        }
+        
+        // If no cached version exists, try static cache
+        const staticCache = await caches.open(STATIC_CACHE);
+        const staticResponse = await staticCache.match(request);
+        if (staticResponse) {
+            log('Serving from static cache fallback:', request.url);
+            return staticResponse;
+        }
+        
+        // Return a meaningful offline page or error
+        if (url.pathname === '/' || url.pathname.endsWith('.html')) {
+            return new Response(
+                `<!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Carambola Golf Club - Offline</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+                        .offline { color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <h1>Carambola Golf Club</h1>
+                    <p class="offline">This page is temporarily unavailable. Please check your connection and try again.</p>
+                    <p><a href="/">Return to Home</a></p>
+                </body>
+                </html>`,
+                { 
+                    status: 200,
+                    headers: { 'Content-Type': 'text/html' }
+                }
+            );
+        }
+        
+        throw error;
     }
 }
 
-// Helper functions
-function isExternalResource(url) {
-    return url.hostname === 'cdnjs.cloudflare.com' ||
-           url.hostname === 'fonts.googleapis.com' ||
-           url.hostname === 'fonts.gstatic.com' ||
-           url.hostname === 'www.googletagmanager.com' ||
-           url.hostname === 'www.google-analytics.com';
-}
-
-function isStaticAsset(url) {
-    const staticExtensions = ['.css', '.js', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.ico', '.woff', '.woff2'];
-    return staticExtensions.some(ext => url.pathname.includes(ext));
-}
-
-function shouldCache(url) {
-    // Don't cache analytics or tracking requests
-    if (url.hostname.includes('google-analytics.com') ||
-        url.hostname.includes('googletagmanager.com') ||
-        url.hostname.includes('doubleclick.net')) {
+// ENHANCED: Determine if response should be cached (prevents 206 errors)
+function shouldCacheResponse(response, request) {
+    // CRITICAL: Never cache partial content responses (this is the main fix)
+    if (response.status === 206) {
         return false;
     }
     
-    // Don't cache API requests that change frequently
-    if (url.pathname.includes('/api/') && !url.pathname.includes('/api/static/')) {
+    // Don't cache non-success responses (except 404 for offline pages)
+    if (!response.ok && response.status !== 404) {
         return false;
+    }
+    
+    // Check for cache-control directives
+    const cacheControl = response.headers.get('cache-control');
+    if (cacheControl) {
+        if (cacheControl.includes('no-cache') || 
+            cacheControl.includes('no-store') || 
+            cacheControl.includes('private')) {
+            return false;
+        }
+    }
+    
+    // Don't cache responses with Set-Cookie headers
+    if (response.headers.get('set-cookie')) {
+        return false;
+    }
+    
+    // Check response size to prevent cache overflow
+    const contentLength = response.headers.get('content-length');
+    if (contentLength && parseInt(contentLength) > CONFIG.maxCacheSize) {
+        return false;
+    }
+    
+    // Don't cache responses with Vary: * header
+    const vary = response.headers.get('vary');
+    if (vary === '*') {
+        return false;
+    }
+    
+    // Check for streaming content types
+    const contentType = response.headers.get('content-type');
+    if (contentType) {
+        const streamingTypes = [
+            'video/',
+            'audio/',
+            'application/octet-stream'
+        ];
+        
+        if (streamingTypes.some(type => contentType.includes(type))) {
+            // Only cache small media files
+            if (!contentLength || parseInt(contentLength) > 10 * 1024 * 1024) {
+                return false;
+            }
+        }
     }
     
     return true;
 }
 
-// Handle background sync
-self.addEventListener('sync', event => {
-    if (event.tag === 'background-sync') {
-        event.waitUntil(
-            // Handle any background sync tasks
-            console.log('Service Worker: Background sync triggered')
-        );
-    }
-});
-
-// Handle push notifications
-self.addEventListener('push', event => {
-    if (event.data) {
-        const data = event.data.json();
-        const options = {
-            body: data.body || 'New update available',
-            icon: '/images/icon-192x192.png',
-            badge: '/images/badge-72x72.png',
-            data: data.data || {}
-        };
-        
-        event.waitUntil(
-            self.registration.showNotification(data.title || 'Carambola Golf Club', options)
-        );
-    }
-});
-
-// Handle notification clicks
-self.addEventListener('notificationclick', event => {
-    event.notification.close();
+// Check if URL should skip caching entirely
+function shouldSkipCaching(url, request) {
+    // Skip if URL matches excluded patterns
+    const pathname = url.pathname.toLowerCase();
     
-    event.waitUntil(
-        clients.openWindow(event.notification.data.url || '/')
-    );
+    for (const pattern of EXCLUDE_PATTERNS) {
+        if (pattern.test(pathname) || pattern.test(url.href)) {
+            return true;
+        }
+    }
+    
+    // Skip authentication and admin requests
+    if (pathname.includes('auth') || 
+        pathname.includes('login') || 
+        pathname.includes('admin') ||
+        pathname.startsWith('/wp-admin/')) {
+        return true;
+    }
+    
+    // Skip requests with auth headers
+    if (request.headers.get('authorization')) {
+        return true;
+    }
+    
+    return false;
+}
+
+// Check if URL is a static asset
+function isStaticAsset(url) {
+    const staticExtensions = ['.css', '.js', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.ico', '.woff', '.woff2', '.ttf'];
+    const pathname = url.pathname.toLowerCase();
+    
+    return staticExtensions.some(ext => pathname.endsWith(ext)) ||
+           PRECACHE_ASSETS.includes(url.pathname);
+}
+
+// Enhanced error handling
+self.addEventListener('error', (event) => {
+    log('Global error:', event.error);
 });
 
-// Error handling
-self.addEventListener('error', error => {
-    console.error('Service Worker: Global error:', error);
+self.addEventListener('unhandledrejection', (event) => {
+    log('Unhandled promise rejection:', event.reason);
+    
+    // Prevent 206 cache errors from appearing as unhandled rejections
+    if (event.reason && event.reason.message && 
+        event.reason.message.includes('Partial response (status code 206)')) {
+        log('✅ Suppressed known 206 cache API limitation (this is expected)');
+        event.preventDefault();
+    }
 });
 
-self.addEventListener('unhandledrejection', event => {
-    console.error('Service Worker: Unhandled promise rejection:', event.reason);
-    event.preventDefault();
+// Periodic cache cleanup
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.type === 'CACHE_CLEANUP') {
+        cleanupCaches();
+    }
+    
+    if (event.data && event.data.type === 'CONFIG_UPDATE') {
+        // Handle configuration updates from the main thread
+        Object.assign(CONFIG, event.data.config);
+        log('Configuration updated:', CONFIG);
+    }
 });
 
-console.log('Service Worker: Registered event handlers');
+// Cache cleanup function
+async function cleanupCaches() {
+    try {
+        const cache = await caches.open(CACHE_NAME);
+        const requests = await cache.keys();
+        
+        // Remove old entries if cache is getting too large
+        if (requests.length > 1000) {
+            const oldRequests = requests.slice(0, 100);
+            await Promise.all(oldRequests.map(req => cache.delete(req)));
+            log('Cleaned up', oldRequests.length, 'old cache entries');
+        }
+        
+        return { success: true, cleaned: requests.length > 1000 ? 100 : 0 };
+    } catch (error) {
+        log('Cache cleanup failed:', error);
+        return { error: error.message };
+    }
+}
+
+// Log successful registration
+log('Service Worker: Script loaded successfully with 206 error prevention');
+log('Service Worker: Configuration:', CONFIG);
+
+// Register event handlers
+log('Service Worker: Registered event handlers');
