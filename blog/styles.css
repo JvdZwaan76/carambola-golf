@@ -191,11 +191,11 @@
     z-index: 1 !important;
 }
 
-/* NUCLEAR: Ensure all blog advertisements also clear properly */
-.article-content .article-body .blog-advertisement {
+/* NUCLEAR: Ensure all static advertisements also clear properly */
+.article-content .article-body .static-advertisement {
     display: block !important;
     width: 100% !important;
-    margin: 3rem auto !important;
+    margin: 4rem auto !important;
     position: relative !important;
     float: none !important;
     clear: both !important;
@@ -252,6 +252,190 @@
     --blog-transition-fast: 0.15s ease;
     --blog-transition-medium: 0.3s ease;
     --blog-transition-slow: 0.5s ease;
+}
+
+/* ==========================================================================
+   STATIC ADVERTISEMENT SYSTEM - ENTERPRISE STYLING
+   ========================================================================== */
+
+/* Base static advertisement container - Enhanced for enterprise feel */
+.static-advertisement {
+    display: block !important;
+    opacity: 1;
+    visibility: visible;
+    margin: 4rem auto;
+    padding: 0;
+    background: transparent;
+    border: none;
+    text-align: center;
+    max-width: 100%;
+    position: relative;
+    overflow: hidden;
+    clear: both;
+    z-index: 20;
+    /* Enhanced enterprise styling */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+}
+
+/* Advertisement wrapper for better control */
+.static-advertisement .ad-wrapper {
+    position: relative;
+    padding: 2rem;
+    background: linear-gradient(135deg, 
+        rgba(248, 249, 250, 0.95) 0%, 
+        rgba(233, 236, 239, 0.95) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* Advertisement images - Enterprise styling */
+.static-advertisement img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+    margin: 0 auto !important;
+    border-radius: 12px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+    transition: all 0.4s ease;
+    border: 2px solid transparent;
+}
+
+/* Advertisement hover effects - Enterprise feel */
+.static-advertisement:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
+}
+
+.static-advertisement:hover img {
+    transform: scale(1.02);
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+
+/* Advertisement links - Clean enterprise styling */
+.static-advertisement a {
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Advertisement label - Subtle and professional */
+.static-advertisement::before {
+    content: "Advertisement";
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 0.7rem;
+    color: rgba(108, 117, 125, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    z-index: 10;
+}
+
+/* Mid-article advertisement styling - Enhanced */
+.static-ad-mid {
+    border-left: 4px solid var(--blog-accent-gold, #d4af37);
+    background: linear-gradient(135deg, 
+        rgba(248, 249, 250, 0.98) 0%, 
+        rgba(233, 236, 239, 0.98) 100%);
+    margin: 4rem auto;
+}
+
+.static-ad-mid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        var(--blog-accent-gold, #d4af37) 0%, 
+        transparent 100%);
+    opacity: 0.5;
+}
+
+/* Bottom advertisement styling - Enhanced */
+.static-ad-bottom {
+    border-top: 4px solid var(--blog-accent-gold, #d4af37);
+    background: linear-gradient(135deg, 
+        rgba(233, 236, 239, 0.98) 0%, 
+        rgba(248, 249, 250, 0.98) 100%);
+    margin: 4rem auto 5rem;
+}
+
+.static-ad-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--blog-accent-gold, #d4af37) 50%, 
+        transparent 100%);
+    opacity: 0.5;
+}
+
+/* Responsive advertisement sizing */
+@media (max-width: 1024px) {
+    .static-advertisement img {
+        max-width: 728px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .static-advertisement {
+        margin: 3rem 1rem;
+        border-radius: 12px;
+    }
+    
+    .static-advertisement .ad-wrapper {
+        padding: 1.5rem 1rem;
+        border-radius: 12px;
+    }
+    
+    .static-advertisement img {
+        max-width: 320px;
+        width: 100%;
+        border-radius: 8px;
+    }
+    
+    .static-advertisement::before {
+        font-size: 0.65rem;
+        top: 0.75rem;
+        right: 1rem;
+        padding: 0.2rem 0.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .static-advertisement {
+        margin: 2.5rem 0.5rem;
+    }
+    
+    .static-advertisement .ad-wrapper {
+        padding: 1rem;
+    }
+    
+    .static-advertisement img {
+        max-width: 300px;
+        border-radius: 6px;
+    }
 }
 
 /* ==========================================================================
@@ -1139,90 +1323,118 @@
 }
 
 /* ==========================================================================
-   ENHANCED AUTHOR BIO WITH PROFILE PICTURE IMPLEMENTATION
+   ENHANCED AUTHOR BIO WITH FIXED PROFILE PICTURE IMPLEMENTATION
    ========================================================================== */
 
 /* Author Bio - Enhanced with Profile Picture */
 .author-bio {
     background: var(--blog-bg-light, #f8f9fa);
-    padding: 2.5rem;
-    border-radius: 12px;
-    margin: 3rem 0;
+    padding: 3rem;
+    border-radius: 16px;
+    margin: 4rem auto;
     border: 2px solid var(--blog-light-gold, #f8f6f0);
+    max-width: 800px;
     /* CRITICAL FIX: Ensure author bio clears properly */
     clear: both;
     position: relative;
     z-index: 1;
+    box-shadow: var(--blog-shadow-soft, 0 4px 15px rgba(0, 0, 0, 0.08));
+    transition: all var(--blog-transition-medium, 0.3s ease);
+}
+
+.author-bio:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--blog-shadow-medium, 0 8px 25px rgba(0, 0, 0, 0.12));
 }
 
 .author-info {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
-/* Enhanced Author Avatar with Profile Picture Support */
+/* FIXED: Enhanced Author Avatar with Proper Profile Picture Support */
 .author-avatar {
-    width: 80px;
-    height: 80px;
-    min-width: 80px;
-    min-height: 80px;
+    width: 100px;
+    height: 100px;
+    min-width: 100px;
+    min-height: 100px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: var(--blog-primary-navy, #1e3a5f);
-    font-weight: bold;
+    font-weight: 700;
     flex-shrink: 0;
     overflow: hidden;
-    border: 3px solid var(--blog-accent-gold, #d4af37);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    background: var(--blog-accent-gold, #d4af37);
+    border: 4px solid var(--blog-accent-gold, #d4af37);
+    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.25);
+    background: linear-gradient(135deg, #f8f6f0 0%, #e8e2d5 100%);
     position: relative;
     transition: all var(--blog-transition-medium, 0.3s ease);
 }
 
-/* Profile Picture Implementation */
+/* FIXED: Profile Picture Implementation - Proper sizing and positioning */
 .author-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     border-radius: 50%;
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2;
-    transition: transform var(--blog-transition-medium, 0.3s ease);
+    z-index: 3;
+    transition: all var(--blog-transition-medium, 0.3s ease);
+    /* FIXED: Ensure image displays properly */
+    display: block;
+    opacity: 1;
 }
 
-.author-avatar:hover img {
+/* FIXED: Proper hover effects for profile picture */
+.author-bio:hover .author-avatar {
+    border-color: var(--blog-primary-navy, #1e3a5f);
+    box-shadow: 0 12px 48px rgba(212, 175, 55, 0.35);
     transform: scale(1.05);
 }
 
-/* Fallback initials when no image - positioned behind image */
+.author-bio:hover .author-avatar img {
+    transform: scale(1.02);
+}
+
+/* FIXED: Fallback initials positioning - Only show when no image */
 .author-avatar::before {
     content: attr(data-initials);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2rem;
-    font-weight: bold;
+    font-size: 2.5rem;
+    font-weight: 700;
     color: var(--blog-primary-navy, #1e3a5f);
     z-index: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: opacity var(--blog-transition-medium, 0.3s ease);
 }
 
-/* Hide initials when image is present */
-.author-avatar:has(img)::before {
-    display: none;
+/* FIXED: Hide initials when image is loaded and visible */
+.author-avatar img:not([style*="display: none"]) ~ .author-avatar::before,
+.author-avatar:has(img:not([style*="display: none"]))::before {
+    opacity: 0;
 }
 
-/* Enhanced loading state for profile pictures */
+/* FIXED: Show initials only when image is hidden or failed to load */
+.author-avatar img[style*="display: none"] ~ .author-avatar::before,
+.author-avatar:has(img[style*="display: none"])::before,
+.author-avatar:not(:has(img))::before {
+    opacity: 1;
+}
+
+/* FIXED: Enhanced loading state for profile pictures */
 .author-avatar img[loading] {
     opacity: 0;
     transition: opacity 0.5s ease;
@@ -1232,44 +1444,51 @@
     opacity: 1;
 }
 
-/* Profile picture error handling */
+/* FIXED: Profile picture error handling - Clean fallback */
 .author-avatar img:not([src]),
-.author-avatar img[src=""] {
-    display: none;
+.author-avatar img[src=""],
+.author-avatar img[onerror] {
+    display: none !important;
 }
 
 .author-details {
     flex: 1;
+    padding-top: 0.5rem;
 }
 
 .author-details h4 {
     color: var(--blog-primary-navy, #1e3a5f);
-    margin-bottom: 0.5rem;
-    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
     font-weight: 600;
+    line-height: 1.2;
 }
 
 .author-title {
     color: #666;
     font-style: italic;
-    font-size: 0.95rem;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
 }
 
 .author-bio p {
     color: #555;
     margin-bottom: 0;
-    line-height: 1.6;
+    line-height: 1.7;
+    font-size: 1.05rem;
 }
 
-/* Author bio hover effects */
-.author-bio:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+.author-bio a {
+    color: var(--blog-primary-navy, #1e3a5f);
+    text-decoration: none;
+    border-bottom: 1px solid var(--blog-accent-gold, #d4af37);
+    transition: all var(--blog-transition-medium, 0.3s ease);
 }
 
-.author-bio:hover .author-avatar {
-    border-color: var(--blog-primary-navy, #1e3a5f);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+.author-bio a:hover {
+    color: var(--blog-accent-gold, #d4af37);
+    border-bottom-color: var(--blog-primary-navy, #1e3a5f);
 }
 
 /* Article Navigation */
@@ -1326,12 +1545,13 @@
 /* Share Buttons - Using blog-specific variables */
 .share-section {
     background: white;
-    padding: 2rem;
-    border-radius: 8px;
-    margin: 3rem 0;
+    padding: 2.5rem;
+    border-radius: 12px;
+    margin: 3rem auto;
     text-align: center;
-    box-shadow: 0 4px 15px var(--blog-shadow-soft, rgba(0, 0, 0, 0.08));
+    box-shadow: var(--blog-shadow-soft, 0 4px 15px rgba(0, 0, 0, 0.08));
     border: 2px solid var(--blog-light-gold, #f8f6f0);
+    max-width: 600px;
     /* CRITICAL FIX: Ensure share section clears properly */
     clear: both;
     position: relative;
@@ -1341,7 +1561,7 @@
 .share-title {
     color: var(--blog-primary-navy, #1e3a5f);
     margin-bottom: 1.5rem;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 600;
 }
 
@@ -1349,13 +1569,13 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
-    max-width: 500px;
+    max-width: 400px;
     margin: 0 auto;
     justify-items: center;
 }
 
 .share-btn {
-    padding: 0.8rem 1.5rem;
+    padding: 0.9rem 1.75rem;
     border: none;
     border-radius: 25px;
     font-weight: 600;
@@ -1368,8 +1588,8 @@
     font-size: 0.9rem;
     cursor: pointer;
     width: 100%;
-    max-width: 220px;
-    min-height: 44px;
+    max-width: 180px;
+    min-height: 48px;
 }
 
 .share-btn.facebook {
@@ -1394,42 +1614,49 @@
 
 .share-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
 /* FAQ Section - Using blog-specific variables */
 .faq-section {
     background: var(--blog-bg-light, #f8f9fa);
-    padding: 3rem 2rem;
-    border-radius: 12px;
-    margin: 3rem 0;
+    padding: 4rem 3rem;
+    border-radius: 16px;
+    margin: 4rem auto;
     border: 2px solid var(--blog-light-gold, #f8f6f0);
+    max-width: 900px;
     /* CRITICAL FIX: Ensure FAQ section clears properly */
     clear: both;
     position: relative;
     z-index: 1;
+    box-shadow: var(--blog-shadow-soft, 0 4px 15px rgba(0, 0, 0, 0.08));
 }
 
 .faq-title {
     color: var(--blog-primary-navy, #1e3a5f);
     text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
+    margin-bottom: 3rem;
+    font-size: 2rem;
     font-weight: 400;
 }
 
 .faq-item {
     margin-bottom: 1.5rem;
     background: white;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px var(--blog-shadow-soft, rgba(0, 0, 0, 0.08));
+    transition: all var(--blog-transition-medium, 0.3s ease);
+}
+
+.faq-item:hover {
+    box-shadow: var(--blog-shadow-medium, 0 8px 25px rgba(0, 0, 0, 0.12));
 }
 
 .faq-question {
     background: var(--blog-primary-navy, #1e3a5f) !important;
     color: white !important;
-    padding: 1.5rem;
+    padding: 1.75rem;
     font-weight: 600;
     margin: 0;
     font-size: 1.1rem;
@@ -1463,11 +1690,12 @@ html body .faq-section .faq-question h3 {
 }
 
 .faq-answer {
-    padding: 1.5rem;
+    padding: 2rem;
     color: #555;
     line-height: 1.7;
     margin: 0;
     background: white;
+    font-size: 1.05rem;
 }
 
 .faq-answer p {
@@ -1480,88 +1708,12 @@ html body .faq-section .faq-question h3 {
     color: var(--blog-primary-navy, #1e3a5f);
     text-decoration: none;
     border-bottom: 1px solid var(--blog-accent-gold, #d4af37);
+    transition: all var(--blog-transition-medium, 0.3s ease);
 }
 
 .faq-answer a:hover {
     color: var(--blog-accent-gold, #d4af37);
     border-bottom-color: var(--blog-primary-navy, #1e3a5f);
-}
-
-/* ==========================================================================
-   ADVERTISEMENTS SYSTEM - MOBILE-OPTIMIZED
-   ========================================================================== */
-
-/* Base advertisement container */
-.blog-advertisement {
-    display: block !important;
-    opacity: 1;
-    visibility: visible;
-    margin: 3rem auto;
-    padding: 2rem;
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 12px;
-    text-align: center;
-    max-width: 100%;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.6s ease;
-    clear: both;
-    z-index: 1;
-}
-
-/* When ads become visible (added by JavaScript) */
-.blog-advertisement.visible {
-    opacity: 1 !important;
-    visibility: visible !important;
-    transform: translateY(0);
-}
-
-/* Advertisement label */
-.blog-advertisement::before {
-    content: "Advertisement";
-    position: absolute;
-    top: 0.5rem;
-    right: 1rem;
-    font-size: 0.75rem;
-    color: #6c757d;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    font-weight: 500;
-}
-
-/* Advertisement images */
-.blog-advertisement img {
-    max-width: 100% !important;
-    height: auto !important;
-    display: block !important;
-    margin: 0 auto !important;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-}
-
-.blog-advertisement:hover img {
-    transform: scale(1.02);
-}
-
-/* Advertisement links */
-.blog-advertisement a {
-    text-decoration: none;
-    display: block;
-}
-
-/* Mid-article advertisement styling */
-.blog-ad-mid {
-    border-left: 4px solid #d4af37;
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-}
-
-/* Bottom advertisement styling */
-.blog-ad-bottom {
-    border-top: 4px solid #d4af37;
-    background: linear-gradient(135deg, #e9ecef 0%, #f8f9fa 100%);
-    margin-bottom: 4rem;
 }
 
 /* ==========================================================================
@@ -1852,7 +2004,7 @@ html body .faq-section .faq-question h3 {
 
     /* CRITICAL: Blog Component Padding Fixes */
     .author-bio {
-        padding: 2rem 1.5rem !important; /* Better mobile padding */
+        padding: 2.5rem 2rem !important; /* Better mobile padding */
         margin: 3rem 1rem !important; /* Prevent edge touching */
     }
     
@@ -1862,18 +2014,47 @@ html body .faq-section .faq-question h3 {
     }
     
     .faq-section {
-        padding: 2rem 1.5rem !important; /* Better mobile padding */
+        padding: 3rem 2rem !important; /* Better mobile padding */
         margin: 3rem 1rem !important; /* Prevent edge touching */
     }
     
     .faq-question,
     .faq-answer {
-        padding: 1.5rem 1.5rem !important; /* More generous padding */
+        padding: 1.5rem !important; /* More generous padding */
     }
     
     .highlight-box {
         padding: 2rem 1.5rem !important; /* Better mobile padding */
         margin: 2rem 1rem !important; /* Prevent edge touching */
+    }
+
+    /* Static Advertisement Mobile Optimization */
+    .static-advertisement {
+        margin: 3rem 1rem !important;
+    }
+    
+    .static-advertisement .ad-wrapper {
+        padding: 1.5rem !important;
+    }
+    
+    .static-advertisement img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* FIXED: Author Avatar Mobile Adjustments */
+    .author-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 1.5rem;
+    }
+    
+    .author-avatar {
+        width: 120px;
+        height: 120px;
+        min-width: 120px;
+        min-height: 120px;
     }
 
     /* Article Hero Mobile - Better Content Spacing */
@@ -2096,24 +2277,6 @@ html body .faq-section .faq-question h3 {
         min-height: 48px !important; /* Larger touch target */
     }
 
-    /* Blog Advertisement Mobile Enhancement */
-    .blog-advertisement {
-        padding: 2rem 1.5rem !important; /* Better mobile padding */
-        margin: 3rem 1rem !important; /* Better margins */
-        border-radius: 12px;
-    }
-
-    .blog-advertisement::before {
-        top: 0.75rem;
-        right: 1rem;
-        font-size: 0.7rem;
-    }
-
-    /* Reading Progress Mobile */
-    .reading-progress-bar {
-        height: 3px; /* Slightly thinner on mobile */
-    }
-
     /* Trust Signals Mobile */
     .cta-trust-signals,
     .cta-urgency {
@@ -2128,29 +2291,6 @@ html body .faq-section .faq-question h3 {
         padding: 0.8rem !important; /* Better mobile padding */
         font-size: 0.9rem; /* Slightly larger text */
         margin: 0.5rem !important; /* Better spacing */
-    }
-
-    /* Author Bio Mobile Enhancements */
-    .author-info {
-        flex-direction: column;
-        text-align: center;
-        gap: 1rem;
-    }
-
-    .author-avatar {
-        width: 100px;
-        height: 100px;
-        min-width: 100px;
-        min-height: 100px;
-        margin: 0 auto;
-    }
-
-    .author-details {
-        text-align: center;
-    }
-
-    .author-title {
-        font-size: 0.9rem;
     }
 }
 
@@ -2188,12 +2328,41 @@ html body .faq-section .faq-question h3 {
     
     .faq-question,
     .faq-answer {
-        padding: 1.5rem 1.5rem !important; /* More generous padding */
+        padding: 1.5rem !important; /* More generous padding */
     }
     
     .highlight-box {
         padding: 1.8rem 1.5rem !important; /* Better small mobile padding */
         margin: 2rem 0.5rem !important; /* Better margins */
+    }
+
+    /* Static Advertisement Small Mobile */
+    .static-advertisement {
+        margin: 2.5rem 0.5rem !important;
+    }
+    
+    .static-advertisement .ad-wrapper {
+        padding: 1rem !important;
+    }
+
+    /* FIXED: Author Avatar Small Mobile Adjustment */
+    .author-info {
+        flex-direction: row;
+        text-align: left;
+        gap: 1rem;
+    }
+    
+    .author-avatar {
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+        min-height: 80px;
+        font-size: 2rem;
+    }
+    
+    .author-details {
+        text-align: left;
+        flex: 1;
     }
 
     /* Article Hero Small Mobile - Enhanced Spacing */
@@ -2302,26 +2471,6 @@ html body .faq-section .faq-question h3 {
         margin: 0.5rem 0 !important; /* Vertical spacing */
     }
 
-    /* Author Avatar Adjustment */
-    .author-avatar {
-        width: 80px;
-        height: 80px;
-        min-width: 80px;
-        min-height: 80px;
-        font-size: 1.5rem;
-    }
-
-    .author-info {
-        flex-direction: row;
-        text-align: left;
-        gap: 1rem;
-    }
-
-    .author-details {
-        text-align: left;
-        flex: 1;
-    }
-
     /* Share Buttons Enhanced */
     .share-buttons {
         max-width: 280px; /* Slightly wider */
@@ -2351,13 +2500,6 @@ html body .faq-section .faq-question h3 {
     .hub-section {
         padding: 1.5rem !important; /* Better padding */
         margin: 0 0.5rem !important; /* Prevent edge touching */
-    }
-
-    /* Blog Advertisement Small Mobile */
-    .blog-advertisement {
-        padding: 1.5rem !important; /* Better padding */
-        margin: 2.5rem 0.5rem !important; /* Better margins */
-        border-radius: 8px;
     }
 
     /* Social Proof Small Mobile */
@@ -2463,7 +2605,8 @@ a:focus {
     .blog-hero,
     .featured-article-card,
     .stat-item,
-    .credential-item {
+    .credential-item,
+    .static-advertisement {
         transition: none;
         animation: none;
     }
@@ -2472,7 +2615,8 @@ a:focus {
     .blog-cta .cta-button:hover,
     .featured-article .cta-button:hover,
     .article-card:hover,
-    .category-card:hover {
+    .category-card:hover,
+    .static-advertisement:hover {
         transform: none;
     }
     
@@ -2486,11 +2630,11 @@ a:focus {
         transform: none;
     }
     
-    .blog-advertisement {
+    .static-advertisement {
         transition: none;
     }
     
-    .blog-advertisement.visible {
+    .static-advertisement.visible {
         opacity: 1;
         visibility: visible;
     }
@@ -2506,7 +2650,7 @@ a:focus {
     .newsletter-signup,
     .blog-cta,
     .reading-progress-bar,
-    .blog-advertisement {
+    .static-advertisement {
         display: none !important;
     }
     
@@ -2565,7 +2709,8 @@ a:focus {
 .article-hero,
 .featured-article-card,
 .category-card,
-.article-card {
+.article-card,
+.static-advertisement {
     transform: translateZ(0); /* Force GPU acceleration */
     backface-visibility: hidden; /* Prevent flickering */
 }
