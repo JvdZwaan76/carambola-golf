@@ -12,11 +12,9 @@
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
         gtag('config', 'G-YJ3H2GJ4SS', {
-            // Enhanced measurement settings for granular data
             enhanced_measurement: true,
             scroll_threshold: 90,
             send_page_view: true,
-            // Custom parameters for golf course analytics
             custom_map: {
                 'golf_course_section': 'custom_parameter_1',
                 'user_intent': 'custom_parameter_2',
@@ -110,7 +108,6 @@
             // Track modal interactions
             const modal = document.getElementById('constructionModal');
             if (modal) {
-                // Track modal shows
                 const observer = new MutationObserver(function(mutations) {
                     mutations.forEach(function(mutation) {
                         if (mutation.target.classList.contains('show')) {
@@ -141,7 +138,6 @@
     <meta name="msapplication-config" content="/browserconfig.xml">
     
     <!-- Critical Resource Preloading -->
-    <link rel="preload" href="styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
@@ -209,7 +205,6 @@
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
     
     <!-- External CSS -->
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     
     <!-- Enhanced Structured Data / Schema.org -->
@@ -389,6 +384,1654 @@
         ]
     }
     </script>
+
+    <style>
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-navy: #1e3a5f;
+    --secondary-navy: #2c5282;
+    --accent-gold: #d4af37;
+    --light-gold: #f4e7c1;
+    --text-dark: #2d3748;
+    --text-light: #ffffff;
+    --bg-light: #f7fafc;
+    --bg-cream: #fefcf7;
+    --shadow-soft: rgba(30, 58, 95, 0.1);
+    --shadow-medium: rgba(30, 58, 95, 0.2);
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Performance optimizations */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-navy) 0%, var(--secondary-navy) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+    color: var(--text-light);
+    max-width: 400px;
+    padding: 2rem;
+}
+
+.golf-loader {
+    position: relative;
+    width: 120px;
+    height: 80px;
+    margin: 0 auto 2rem;
+}
+
+.golf-ball {
+    width: 20px;
+    height: 20px;
+    background: var(--text-light);
+    border-radius: 50%;
+    position: absolute;
+    top: 30px;
+    animation: golfBallRoll 2s ease-in-out infinite;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.golf-hole {
+    width: 30px;
+    height: 30px;
+    background: #000;
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    top: 25px;
+    border: 3px solid var(--accent-gold);
+}
+
+.golf-flag {
+    width: 2px;
+    height: 40px;
+    background: var(--accent-gold);
+    position: absolute;
+    right: 15px;
+    top: 5px;
+}
+
+.golf-flag::after {
+    content: '';
+    width: 20px;
+    height: 15px;
+    background: var(--accent-gold);
+    position: absolute;
+    top: 0;
+    right: 0;
+    clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+@keyframes golfBallRoll {
+    0% {
+        left: 0;
+        transform: rotate(0deg);
+    }
+    50% {
+        left: 70px;
+        transform: rotate(180deg);
+    }
+    100% {
+        left: 70px;
+        transform: rotate(360deg);
+        opacity: 0;
+    }
+}
+
+.loading-text h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--accent-gold);
+    font-weight: 400;
+}
+
+.loading-text p {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-bottom: 2rem;
+}
+
+.loading-bar {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.loading-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-gold), var(--light-gold));
+    border-radius: 2px;
+    animation: loadingProgress 3s ease-in-out infinite;
+}
+
+@keyframes loadingProgress {
+    0% {
+        width: 0%;
+        transform: translateX(-100%);
+    }
+    50% {
+        width: 100%;
+        transform: translateX(0%);
+    }
+    100% {
+        width: 100%;
+        transform: translateX(100%);
+    }
+}
+
+/* Body optimizations */
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    background-color: var(--bg-cream);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Performance optimizations for images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ENHANCED HERO WITH OPTIMIZED VIDEO LOADING */
+.hero {
+    height: 90vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-light);
+    margin-top: 80px;
+    padding-top: 2rem;
+    overflow: hidden;
+}
+
+.hero-video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+}
+
+/* OPTIMIZED POSTER IMAGE - ALWAYS VISIBLE BY DEFAULT */
+.hero-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    opacity: 1;
+    transition: opacity 0.8s ease;
+}
+
+/* VIDEO ELEMENT - HIDDEN BY DEFAULT */
+.hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+/* VIDEO VISIBLE WHEN PLAYING */
+.hero-video.playing {
+    opacity: 1;
+}
+
+/* POSTER HIDDEN WHEN VIDEO IS PLAYING */
+.hero-poster.hidden {
+    opacity: 0;
+}
+
+/* PLAY BUTTON OVERLAY */
+.hero-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    background: rgba(30, 58, 95, 0.85);
+    backdrop-filter: blur(15px);
+    border: 3px solid rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    color: white;
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 8px; /* Optical alignment for play icon */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    animation: playButtonPulse 3s ease-in-out infinite;
+}
+
+.hero-play-button:hover {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    border-color: var(--accent-gold);
+    transform: translate(-50%, -50%) scale(1.1);
+    animation: none;
+    box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+}
+
+.hero-play-button:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+/* HIDDEN WHEN VIDEO IS PLAYING */
+.hero-play-button.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Loading indicator for video */
+.hero-video-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    z-index: 4;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.hero-video-loading.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.video-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-top: 4px solid var(--accent-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes playButtonPulse {
+    0%, 100% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(212, 175, 55, 0.7);
+    }
+    50% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 20px rgba(212, 175, 55, 0);
+    }
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(30, 58, 95, 0.3), rgba(30, 58, 95, 0.5));
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 0 2rem;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-medium);
+    backdrop-filter: blur(5px);
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+    border-radius: 20px;
+    padding: 3rem;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+    border: 3px solid var(--accent-gold);
+    position: relative;
+    transform: scale(0.7);
+    transition: transform var(--transition-medium);
+}
+
+.modal-overlay.show .modal-content {
+    transform: scale(1);
+}
+
+.modal-header {
+    margin-bottom: 2rem;
+}
+
+.modal-icon {
+    font-size: 4rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+.modal-header h2 {
+    color: var(--primary-navy);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-body {
+    margin-bottom: 2rem;
+}
+
+.modal-body p {
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.contact-highlight {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+    padding: 1rem;
+    background: var(--light-gold);
+    border-radius: 10px;
+    border-left: 4px solid var(--accent-gold);
+}
+
+.contact-highlight i {
+    color: var(--primary-navy);
+    margin-right: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.contact-highlight a {
+    color: var(--primary-navy);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.contact-highlight a:hover {
+    color: var(--accent-gold);
+}
+
+.modal-close-btn {
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.modal-close-btn:hover {
+    background: var(--primary-navy);
+    color: var(--accent-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.golf-decoration {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 1rem;
+}
+
+.golf-decoration i {
+    color: var(--accent-gold);
+    font-size: 1.5rem;
+    animation: roll 3s linear infinite;
+}
+
+.golf-decoration i:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.golf-decoration i:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes roll {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Navigation */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(30, 58, 95, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 0.8rem 0;
+    transition: all var(--transition-medium);
+    border-bottom: 1px solid var(--accent-gold);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--accent-gold);
+    text-decoration: none;
+    font-family: 'Georgia', serif;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2.5rem;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 0.95rem;
+    transition: color var(--transition-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--accent-gold);
+}
+
+.nav-links a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-gold);
+}
+
+.mobile-menu {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.hero-tagline {
+    font-size: 1.2rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    background: rgba(30, 58, 95, 0.8);
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.hero h1 {
+    font-size: clamp(3rem, 6vw, 5rem);
+    margin-bottom: 1.5rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    margin-bottom: 2rem;
+    font-style: italic;
+    opacity: 0.9;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    margin-bottom: 3rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.95;
+}
+
+.cta-button {
+    display: inline-block;
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    padding: 1rem 2.5rem;
+    text-decoration: none;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all var(--transition-medium);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border: 2px solid var(--accent-gold);
+    cursor: pointer;
+    margin: 0.5rem;
+    transform: translateY(0);
+}
+
+.cta-button:hover {
+    background: transparent;
+    color: var(--accent-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+}
+
+/* Weather Widget Styles */
+.weather-widget {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, #f8fffe 0%, #e8f5f3 100%);
+    border-top: 1px solid rgba(212, 175, 55, 0.2);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.weather-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 8px 25px rgba(30, 58, 95, 0.1);
+    border: 2px solid var(--light-gold);
+    max-width: 600px;
+    margin: 0 auto;
+    backdrop-filter: blur(10px);
+}
+
+.weather-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+}
+
+.weather-icon {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    animation: weatherPulse 3s ease-in-out infinite;
+}
+
+@keyframes weatherPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+}
+
+.weather-location h3 {
+    color: var(--primary-navy);
+    font-size: 1.5rem;
+    margin-bottom: 0.2rem;
+    font-weight: 500;
+}
+
+.weather-location p {
+    color: #666;
+    font-size: 0.95rem;
+    margin: 0;
+    font-style: italic;
+}
+
+.weather-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.weather-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.temperature {
+    text-align: left;
+}
+
+.temperature #current-temp {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: var(--primary-navy);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.temp-range {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.temp-range #high-temp {
+    color: var(--primary-navy);
+    font-weight: 600;
+}
+
+.temp-range #low-temp {
+    color: #888;
+}
+
+.weather-details {
+    text-align: right;
+    flex: 1;
+}
+
+.weather-condition {
+    font-size: 1.2rem;
+    color: var(--primary-navy);
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.weather-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.weather-stats .stat {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.weather-stats .stat i {
+    color: var(--accent-gold);
+    width: 16px;
+    text-align: center;
+}
+
+.weather-notice {
+    background: var(--light-gold);
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--primary-navy);
+    font-weight: 500;
+    border-left: 4px solid var(--accent-gold);
+}
+
+.weather-notice i {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+}
+
+/* Heritage Section */
+.heritage {
+    padding: 6rem 0;
+    background: var(--primary-navy);
+    color: var(--text-light);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.heritage-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.heritage h2 {
+    font-size: clamp(2.5rem, 4vw, 3.5rem);
+    margin-bottom: 2rem;
+    color: var(--accent-gold);
+    font-weight: 400;
+}
+
+.heritage p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    opacity: 0.95;
+}
+
+/* Course Features */
+.features {
+    padding: 6rem 0;
+    background: var(--bg-light);
+}
+
+.section-title {
+    text-align: center;
+    font-size: clamp(2.5rem, 4vw, 3rem);
+    margin-bottom: 1rem;
+    color: var(--primary-navy);
+    font-weight: 400;
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 4rem;
+    font-style: italic;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    margin-top: 4rem;
+}
+
+.feature-card {
+    background: white;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    transition: all var(--transition-medium);
+    border-top: 3px solid var(--accent-gold);
+    transform: translateY(0);
+    will-change: transform;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--primary-navy);
+    margin-bottom: 1.5rem;
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-navy);
+    font-weight: 400;
+}
+
+.feature-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
+/* Course Stats */
+.course-stats {
+    padding: 6rem 0;
+    background: var(--bg-cream);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 3rem;
+    margin-top: 3rem;
+}
+
+.stat-card {
+    text-align: center;
+    background: white;
+    padding: 2.5rem 2rem;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    border: 1px solid var(--light-gold);
+    transition: transform var(--transition-medium);
+    transform: translateY(0);
+    will-change: transform;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-number {
+    font-size: 3rem;
+    color: var(--primary-navy);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.stat-description {
+    color: #888;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    line-height: 1.4;
+}
+
+/* Quick Links Section */
+.quick-links {
+    padding: 6rem 0;
+    background: var(--bg-light);
+}
+
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.quick-link-card {
+    background: white;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 8px 25px var(--shadow-soft);
+    transition: all var(--transition-medium);
+    border-top: 3px solid var(--accent-gold);
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transform: translateY(0);
+    will-change: transform;
+}
+
+.quick-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+
+.quick-link-icon {
+    font-size: 3rem;
+    color: var(--primary-navy);
+    margin-bottom: 1.5rem;
+}
+
+.quick-link-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-navy);
+    font-weight: 400;
+}
+
+.quick-link-card p {
+    color: #666;
+    line-height: 1.7;
+}
+
+/* Testimonials */
+.testimonials {
+    padding: 6rem 0;
+    background: var(--primary-navy);
+    color: var(--text-light);
+}
+
+.testimonial-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.testimonial-quote {
+    font-size: 1.4rem;
+    font-style: italic;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+    color: var(--light-gold);
+}
+
+.testimonial-author {
+    font-size: 1.1rem;
+    color: var(--accent-gold);
+}
+
+/* Course Notices */
+.course-notices {
+    background: var(--light-gold);
+    padding: 3rem 0;
+    border-top: 2px solid var(--accent-gold);
+    border-bottom: 2px solid var(--accent-gold);
+}
+
+.notices-title {
+    text-align: center;
+    color: var(--primary-navy);
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    font-weight: 400;
+}
+
+.notices-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.notice-item {
+    text-align: center;
+    color: var(--primary-navy);
+    font-size: 0.95rem;
+    padding: 1rem;
+}
+
+.notice-item i {
+    color: var(--primary-navy);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Contact Section */
+.contact {
+    padding: 6rem 0;
+    background: var(--bg-cream);
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 4rem;
+}
+
+.contact-info h3 {
+    color: var(--primary-navy);
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    font-weight: 400;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.2rem;
+    padding: 1rem;
+    background: white;
+    box-shadow: 0 3px 10px var(--shadow-soft);
+    transition: transform var(--transition-fast);
+}
+
+.contact-item:hover {
+    transform: translateY(-2px);
+}
+
+.contact-item i {
+    color: var(--accent-gold);
+    margin-right: 1rem;
+    width: 20px;
+    font-size: 1.1rem;
+    margin-top: 2px;
+}
+
+.contact-item-content {
+    flex: 1;
+}
+
+.contact-item-title {
+    font-weight: 600;
+    color: var(--primary-navy);
+    margin-bottom: 0.2rem;
+}
+
+.contact-item-details {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.contact-item-details a {
+    color: #666;
+    text-decoration: none;
+}
+
+.contact-item-details a:hover {
+    color: var(--accent-gold);
+}
+
+/* Footer */
+.footer {
+    background: var(--primary-navy);
+    color: var(--text-light);
+    text-align: center;
+    padding: 4rem 0 2rem;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.footer-logo {
+    font-size: 2rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    font-weight: 400;
+}
+
+.footer p {
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+.footer-links {
+    margin: 2rem 0;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.footer-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-section h4 {
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+    color: var(--text-light);
+    text-decoration: none;
+    opacity: 0.9;
+    transition: all var(--transition-medium);
+    font-size: 0.95rem;
+}
+
+.footer-section a:hover {
+    color: var(--accent-gold);
+    opacity: 1;
+}
+
+.footer-contact {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+}
+
+.footer-contact a {
+    color: var(--text-light);
+    text-decoration: none;
+}
+
+.footer-contact a:hover {
+    color: var(--accent-gold);
+    text-decoration: underline;
+}
+
+/* Footer Status Indicator */
+.footer-status {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.footer-status p {
+    opacity: 0.8;
+    font-size: 0.85rem;
+    margin: 0.25rem 0;
+}
+
+.footer-overall-status {
+    font-weight: 600;
+}
+
+.footer-overall-status.operational {
+    color: #4ade80;
+}
+
+.footer-overall-status.degraded {
+    color: #fbbf24;
+}
+
+.footer-overall-status.down {
+    color: #f87171;
+}
+
+.footer-status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    background: rgba(22, 163, 74, 0.1);
+    border: 1px solid rgba(22, 163, 74, 0.3);
+    border-radius: 12px;
+    transition: all var(--transition-medium);
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer-status-indicator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    width: 4px;
+    height: 20px;
+    background: #16a34a;
+    border-radius: 2px;
+    transform: translateY(-50%);
+}
+
+.footer-status-indicator:hover {
+    background: rgba(22, 163, 74, 0.15);
+    border-color: rgba(22, 163, 74, 0.5);
+    transform: translateY(-1px);
+    color: inherit;
+    text-decoration: none;
+}
+
+.footer-status-dot {
+    width: 8px;
+    height: 8px;
+    background: #16a34a;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
+    animation: pulse-green-subtle 2s infinite;
+}
+
+.footer-status-text {
+    font-size: 0.75rem;
+    color: #16a34a;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@keyframes pulse-green-subtle {
+    0%, 100% { 
+        opacity: 1; 
+        transform: scale(1);
+        box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.3);
+    }
+    50% { 
+        opacity: 0.8; 
+        transform: scale(1.1);
+        box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.2);
+    }
+}
+
+/* Offline Indicator */
+.offline-indicator {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ff6b6b;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    z-index: 1001;
+    font-size: 0.9rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    animation: slideDown 0.3s ease;
+}
+
+.offline-indicator i {
+    margin-right: 0.5rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+/* Performance optimizations */
+.feature-card,
+.stat-card,
+.quick-link-card {
+    contain: layout style paint;
+}
+
+/* Enhanced Mobile Responsive Design */
+@media (max-width: 768px) {
+    .mobile-menu {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--primary-navy);
+        flex-direction: column;
+        padding: 2rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .weather-widget {
+        padding: 2rem 0;
+    }
+
+    .weather-card {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+
+    .weather-header {
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .weather-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .weather-main {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .temperature #current-temp {
+        font-size: 2.5rem;
+    }
+
+    .weather-details {
+        text-align: center;
+    }
+
+    .weather-stats {
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 1rem;
+    }
+
+    .weather-stats .stat {
+        justify-content: center;
+        font-size: 0.85rem;
+    }
+
+    .weather-notice {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+
+    /* Hero play button mobile optimization */
+    .hero-play-button {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
+    .hero-play-button:hover {
+        transform: translate(-50%, -50%) scale(1.05);
+    }
+
+    .features-grid,
+    .stats-grid,
+    .quick-links-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    .notices-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content {
+        padding: 2rem;
+        margin: 1rem;
+    }
+
+    .modal-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .modal-body p {
+        font-size: 1rem;
+    }
+
+    /* Footer responsive */
+    .footer-links-grid {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+
+    /* Hero Section Mobile Fixes */
+    .hero {
+        height: auto;
+        min-height: 80vh;
+        margin-top: 100px;
+        padding: 3rem 1rem 2rem;
+    }
+
+    .hero-content {
+        padding: 2rem 1rem;
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.4rem);
+        margin-bottom: 1.5rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-description {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Footer Status Mobile */
+    .footer-status-indicator {
+        margin-left: 0.5rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .footer-status-dot {
+        width: 6px;
+        height: 6px;
+    }
+
+    .footer-status-text {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 1rem;
+    }
+
+    .hero-content {
+        padding: 1rem;
+    }
+
+    .hero {
+        margin-top: 90px;
+        padding: 2rem 0.5rem 1rem;
+    }
+
+    .hero-tagline {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .features-grid,
+    .quick-links-grid {
+        gap: 1.5rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        margin: 0.5rem;
+    }
+
+    .golf-decoration {
+        bottom: -10px;
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 5vw, 2.5rem);
+        padding: 0 1rem;
+    }
+
+    .preloader-content {
+        padding: 0.5rem;
+    }
+
+    .golf-loader {
+        width: 80px;
+        height: 50px;
+    }
+
+    .loading-text h2 {
+        font-size: 1.3rem;
+    }
+
+    .loading-text p {
+        font-size: 0.8rem;
+    }
+
+    /* Additional mobile styles for footer status */
+    .footer-status-indicator {
+        margin-left: 0.25rem;
+        padding: 0.15rem 0.4rem;
+    }
+
+    .footer-status-text {
+        font-size: 0.65rem;
+    }
+
+    .footer-status p {
+        font-size: 0.8rem;
+    }
+
+    /* Hero play button small mobile optimization */
+    .hero-play-button {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+    }
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Additional utility classes */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus styles for accessibility */
+.cta-button:focus,
+.modal-close-btn:focus,
+.nav-links a:focus,
+.footer-status-indicator:focus,
+.hero-play-button:focus {
+    outline: 2px solid var(--accent-gold);
+    outline-offset: 2px;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    .preloader {
+        transition: none;
+    }
+    
+    .golf-ball,
+    .loading-progress,
+    .modal-icon,
+    .golf-decoration i,
+    .weather-icon,
+    .footer-status-dot,
+    .hero-play-button {
+        animation: none;
+    }
+
+    .hero-video,
+    .hero-poster {
+        transition: none;
+    }
+}
+    </style>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -463,14 +2106,35 @@
         </div>
     </nav>
 
-    <!-- Hero Section with Video -->
+    <!-- OPTIMIZED Hero Section with Lazy Video Loading -->
     <section id="home" class="hero">
         <div class="hero-video-container">
-            <video class="hero-video" autoplay muted loop playsinline preload="metadata">
-                <source src="/video/carambola-golf-video-loop-hero.mp4" type="video/mp4">
+            <!-- POSTER IMAGE - LOADS IMMEDIATELY -->
+            <img src="/images/carambola-golf-clubhouse.webp" 
+                 alt="Carambola Golf Club Championship Clubhouse" 
+                 class="hero-poster">
+            
+            <!-- VIDEO ELEMENT - LOADS ONLY WHEN CLICKED -->
+            <video class="hero-video" 
+                   muted 
+                   loop 
+                   playsinline 
+                   preload="none"
+                   poster="/images/carambola-golf-clubhouse.webp">
+                <source data-src="/video/carambola-golf-video-loop-hero.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <img src="/images/carambola-golf-clubhouse.webp" alt="Carambola Golf Club Championship Clubhouse" class="hero-fallback-image">
+            
+            <!-- PLAY BUTTON OVERLAY -->
+            <button class="hero-play-button" aria-label="Play video tour of Carambola Golf Club">
+                <i class="fas fa-play"></i>
+            </button>
+            
+            <!-- LOADING INDICATOR -->
+            <div class="hero-video-loading">
+                <div class="video-spinner"></div>
+                <p>Loading video...</p>
+            </div>
         </div>
         <div class="hero-overlay"></div>
         <div class="hero-content">
@@ -763,7 +2427,6 @@
                         <ul>
                             <li><a href="/accommodations.html">Accommodations</a></li>
                             <li><a href="/st-croix.html">St. Croix</a></li>
-                            <li><a href="/blog/">Blog & Insights</a></li>
                         </ul>
                     </div>
                     <div class="footer-section">
@@ -802,56 +2465,226 @@
         <span>You're offline. Some features may be limited.</span>
     </div>
 
-    <!-- Scripts -->
-    <script src="script.js"></script>
-    <script src="footer-status.js"></script>
-    
-    <!-- Mobile Preloader Safety Script -->
     <script>
-    // Enhanced mobile preloader safety - prevents hanging on mobile devices
-    document.addEventListener('DOMContentLoaded', function() {
-        const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        const maxTimeout = isMobile ? 3000 : 6000; // Shorter timeout on mobile
-        
-        console.log('📱 Mobile preloader safety initialized', { isMobile, maxTimeout });
-        
-        // Force hide preloader after timeout
-        setTimeout(function() {
-            const preloader = document.querySelector('#preloader, .preloader');
-            if (preloader) {
-                console.log('🚨 Safety timeout: Force hiding preloader');
-                preloader.style.transition = 'opacity 0.3s ease';
-                preloader.style.opacity = '0';
-                preloader.style.visibility = 'hidden';
+        // OPTIMIZED VIDEO LOADING SYSTEM
+        class HeroVideoManager {
+            constructor() {
+                this.video = document.querySelector('.hero-video');
+                this.poster = document.querySelector('.hero-poster');
+                this.playButton = document.querySelector('.hero-play-button');
+                this.loadingIndicator = document.querySelector('.hero-video-loading');
+                this.videoLoaded = false;
+                this.isPlaying = false;
                 
+                this.init();
+            }
+            
+            init() {
+                if (!this.video || !this.playButton) return;
+                
+                // Add click event to play button
+                this.playButton.addEventListener('click', () => this.handlePlayClick());
+                
+                // Video event listeners
+                this.video.addEventListener('loadstart', () => this.showLoading());
+                this.video.addEventListener('canplay', () => this.onVideoReady());
+                this.video.addEventListener('error', () => this.onVideoError());
+                this.video.addEventListener('ended', () => this.onVideoEnded());
+                
+                // Track video interaction for analytics
+                this.playButton.addEventListener('click', () => {
+                    if (typeof trackUserEngagement === 'function') {
+                        trackUserEngagement('video_play_click', 'hero_video');
+                    }
+                });
+            }
+            
+            async handlePlayClick() {
+                if (this.isPlaying) return;
+                
+                try {
+                    // Show loading state
+                    this.showLoading();
+                    
+                    // Load video source if not already loaded
+                    if (!this.videoLoaded) {
+                        await this.loadVideo();
+                    }
+                    
+                    // Start playing
+                    await this.playVideo();
+                    
+                } catch (error) {
+                    console.error('Error playing video:', error);
+                    this.onVideoError();
+                }
+            }
+            
+            async loadVideo() {
+                return new Promise((resolve, reject) => {
+                    const source = this.video.querySelector('source[data-src]');
+                    if (!source) {
+                        reject(new Error('Video source not found'));
+                        return;
+                    }
+                    
+                    // Set the actual src from data-src
+                    source.src = source.getAttribute('data-src');
+                    this.video.load();
+                    
+                    // Wait for video to be ready
+                    const onCanPlay = () => {
+                        this.video.removeEventListener('canplay', onCanPlay);
+                        this.video.removeEventListener('error', onError);
+                        this.videoLoaded = true;
+                        resolve();
+                    };
+                    
+                    const onError = () => {
+                        this.video.removeEventListener('canplay', onCanPlay);
+                        this.video.removeEventListener('error', onError);
+                        reject(new Error('Video failed to load'));
+                    };
+                    
+                    this.video.addEventListener('canplay', onCanPlay);
+                    this.video.addEventListener('error', onError);
+                });
+            }
+            
+            async playVideo() {
+                try {
+                    await this.video.play();
+                    this.isPlaying = true;
+                    
+                    // Update UI
+                    this.video.classList.add('playing');
+                    this.poster.classList.add('hidden');
+                    this.playButton.classList.add('hidden');
+                    this.hideLoading();
+                    
+                } catch (error) {
+                    console.error('Error starting video playback:', error);
+                    throw error;
+                }
+            }
+            
+            showLoading() {
+                this.loadingIndicator.classList.add('visible');
+                this.playButton.style.opacity = '0.5';
+                this.playButton.style.pointerEvents = 'none';
+            }
+            
+            hideLoading() {
+                this.loadingIndicator.classList.remove('visible');
+            }
+            
+            onVideoReady() {
+                this.hideLoading();
+                this.playButton.style.opacity = '1';
+                this.playButton.style.pointerEvents = 'all';
+            }
+            
+            onVideoError() {
+                this.hideLoading();
+                this.playButton.style.opacity = '1';
+                this.playButton.style.pointerEvents = 'all';
+                
+                // Show fallback state
+                this.poster.classList.remove('hidden');
+                this.video.classList.remove('playing');
+                
+                console.warn('Video failed to load, showing poster image');
+            }
+            
+            onVideoEnded() {
+                // Optionally loop or show poster again
+                this.video.currentTime = 0;
+                this.video.play(); // Continue looping
+            }
+        }
+
+        // Modal functionality
+        function initializeModal() {
+            const modal = document.getElementById('constructionModal');
+            const closeBtn = document.getElementById('closeModal');
+            
+            if (!modal) return;
+            
+            // Show modal on page load with delay
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 1500);
+            
+            // Close modal
+            function closeModal() {
+                modal.classList.remove('show');
+            }
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeModal);
+            }
+            
+            // Close on background click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+            
+            // Close on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('show')) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Mobile navigation
+        function initializeMobileNav() {
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (!mobileMenu || !navLinks) return;
+            
+            mobileMenu.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                const isExpanded = navLinks.classList.contains('active');
+                mobileMenu.setAttribute('aria-expanded', isExpanded);
+            });
+        }
+
+        // Preloader management
+        function initializePreloader() {
+            const preloader = document.getElementById('preloader');
+            if (!preloader) return;
+            
+            const hidePreloader = () => {
+                preloader.classList.add('hidden');
                 setTimeout(() => {
                     if (preloader.parentNode) {
                         preloader.parentNode.removeChild(preloader);
                     }
-                }, 300);
+                }, 500);
+            };
+            
+            // Hide preloader when page is fully loaded
+            if (document.readyState === 'complete') {
+                hidePreloader();
+            } else {
+                window.addEventListener('load', hidePreloader);
             }
-        }, maxTimeout);
-        
-        // Additional mobile safety - ultra-short timeout
-        if (isMobile) {
-            setTimeout(function() {
-                const preloader = document.querySelector('#preloader, .preloader');
-                if (preloader) {
-                    console.log('📱 Ultra safety: Removing preloader completely');
-                    preloader.remove();
-                }
-            }, 5000);
+            
+            // Safety timeout to prevent hanging
+            const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            const maxTimeout = isMobile ? 3000 : 6000;
+            
+            setTimeout(hidePreloader, maxTimeout);
         }
-    });
-    </script>
-    
-    <!-- Weather Widget Script -->
-    <script>
-        // Simple weather data (you can integrate with a real API)
+
+        // Weather widget updates
         function updateWeather() {
-            // This is placeholder data - in production, you'd fetch from OpenWeatherMap or similar
             const weatherData = {
-                temperature: Math.floor(Math.random() * 8) + 78, // 78-85°F
+                temperature: Math.floor(Math.random() * 8) + 78,
                 high: Math.floor(Math.random() * 5) + 85,
                 low: Math.floor(Math.random() * 5) + 76,
                 condition: ['Sunny', 'Partly Sunny', 'Partly Cloudy'][Math.floor(Math.random() * 3)],
@@ -860,32 +2693,222 @@
                 visibility: 10
             };
 
-            document.getElementById('current-temp').textContent = weatherData.temperature + '°F';
-            document.getElementById('high-temp').textContent = weatherData.high + '°';
-            document.getElementById('low-temp').textContent = weatherData.low + '°';
-            document.getElementById('weather-condition').textContent = weatherData.condition;
-            document.getElementById('wind-speed').textContent = weatherData.windSpeed + ' mph';
-            document.getElementById('humidity').textContent = weatherData.humidity + '%';
-            document.getElementById('visibility').textContent = weatherData.visibility + ' mi';
-
-            // Update weather icon based on condition
-            const weatherIcon = document.querySelector('.weather-icon');
-            const iconMap = {
-                'Sunny': 'fas fa-sun',
-                'Partly Sunny': 'fas fa-cloud-sun',
-                'Partly Cloudy': 'fas fa-cloud'
+            const elements = {
+                temp: document.getElementById('current-temp'),
+                high: document.getElementById('high-temp'),
+                low: document.getElementById('low-temp'),
+                condition: document.getElementById('weather-condition'),
+                wind: document.getElementById('wind-speed'),
+                humidity: document.getElementById('humidity'),
+                visibility: document.getElementById('visibility')
             };
-            weatherIcon.className = iconMap[weatherData.condition] || 'fas fa-sun';
+
+            if (elements.temp) elements.temp.textContent = weatherData.temperature + '°F';
+            if (elements.high) elements.high.textContent = weatherData.high + '°';
+            if (elements.low) elements.low.textContent = weatherData.low + '°';
+            if (elements.condition) elements.condition.textContent = weatherData.condition;
+            if (elements.wind) elements.wind.textContent = weatherData.windSpeed + ' mph';
+            if (elements.humidity) elements.humidity.textContent = weatherData.humidity + '%';
+            if (elements.visibility) elements.visibility.textContent = weatherData.visibility + ' mi';
+
+            // Update weather icon
+            const weatherIcon = document.querySelector('.weather-icon');
+            if (weatherIcon) {
+                const iconMap = {
+                    'Sunny': 'fas fa-sun',
+                    'Partly Sunny': 'fas fa-cloud-sun',
+                    'Partly Cloudy': 'fas fa-cloud'
+                };
+                weatherIcon.className = iconMap[weatherData.condition] || 'fas fa-sun';
+            }
         }
 
-        // Update weather on page load
-        document.addEventListener('DOMContentLoaded', updateWeather);
-        
-        // Update weather every 30 minutes
-        setInterval(updateWeather, 30 * 60 * 1000);
+        // Footer status management
+        function initializeFooterStatus() {
+            const lastCheckElement = document.getElementById('footer-last-check');
+            if (lastCheckElement) {
+                const now = new Date();
+                lastCheckElement.textContent = now.toLocaleString();
+            }
+        }
+
+        // Intersection Observer for animations
+        function initializeAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe elements for animation
+            const animatedElements = document.querySelectorAll(
+                '.feature-card, .stat-card, .quick-link-card, .contact-item'
+            );
+            
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Optimize images with lazy loading
+        function initializeLazyLoading() {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            img.classList.remove('lazy');
+                            observer.unobserve(img);
+                        }
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Performance monitoring
+        function initializePerformanceMonitoring() {
+            if ('performance' in window) {
+                window.addEventListener('load', () => {
+                    setTimeout(() => {
+                        const perfData = performance.getEntriesByType('navigation')[0];
+                        if (perfData) {
+                            console.log('Page load performance:', {
+                                domContentLoaded: Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart),
+                                loadComplete: Math.round(perfData.loadEventEnd - perfData.loadEventStart),
+                                totalLoadTime: Math.round(perfData.loadEventEnd - perfData.navigationStart)
+                            });
+                        }
+                    }, 0);
+                });
+            }
+        }
+
+        // Initialize everything when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            // Core functionality
+            new HeroVideoManager();
+            initializeModal();
+            initializeMobileNav();
+            initializePreloader();
+            initializeFooterStatus();
+            
+            // Performance optimizations
+            initializeLazyLoading();
+            initializeAnimations();
+            initializePerformanceMonitoring();
+            
+            // Update weather immediately and then periodically
+            updateWeather();
+            setInterval(updateWeather, 30 * 60 * 1000); // Every 30 minutes
+            
+            // Track CTA button clicks
+            document.querySelectorAll('.cta-button, .book-tee-time').forEach(button => {
+                button.addEventListener('click', function() {
+                    if (typeof trackBookingIntent === 'function') {
+                        trackBookingIntent('cta_click', 'website_button');
+                    }
+                });
+            });
+
+            // Track phone number clicks
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (typeof trackBookingIntent === 'function') {
+                        trackBookingIntent('phone_click', 'direct_call');
+                    }
+                });
+            });
+
+            // Track email clicks
+            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (typeof trackBookingIntent === 'function') {
+                        trackBookingIntent('email_click', 'direct_email');
+                    }
+                });
+            });
+
+            // Track navigation clicks
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (typeof trackUserEngagement === 'function') {
+                        trackUserEngagement('navigation_click', this.textContent.trim());
+                    }
+                });
+            });
+
+            // Track feature card interactions
+            document.querySelectorAll('.feature-card, .quick-link-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const title = this.querySelector('h3')?.textContent || 'Unknown Feature';
+                    if (typeof trackGolfEvent === 'function') {
+                        trackGolfEvent('feature_interaction', title);
+                    }
+                });
+            });
+        });
+
+        // Service Worker for caching (optional performance boost)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // Offline detection
+        function handleOnlineStatus() {
+            const offlineIndicator = document.getElementById('offlineIndicator');
+            if (!offlineIndicator) return;
+            
+            const updateOnlineStatus = () => {
+                if (navigator.onLine) {
+                    offlineIndicator.style.display = 'none';
+                } else {
+                    offlineIndicator.style.display = 'block';
+                }
+            };
+
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+        }
+
+        // Initialize offline detection
+        handleOnlineStatus();
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
     </script>
-    
-    <!-- Affiliate Program Tracking -->
-    <script src="https://www.anrdoezrs.net/am/101520211/include/allCj/impressions/page/am.js"></script>
 </body>
 </html>
