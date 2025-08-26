@@ -137,8 +137,8 @@
     <meta name="msapplication-TileColor" content="#1e3a5f">
     <meta name="msapplication-config" content="/browserconfig.xml">
     
-    <!-- Critical Resource Preloading -->
-    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image">
+    <!-- Critical Resource Preloading - POSTER IMAGE PRIORITIZED -->
+    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
     <!-- DNS Prefetch for Performance -->
@@ -392,7 +392,7 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <!-- Preloader -->
+    <!-- Preloader - OPTIMIZED FOR FASTER POSTER-FIRST LOADING -->
     <div id="preloader" class="preloader">
         <div class="preloader-content">
             <div class="golf-loader">
@@ -460,31 +460,34 @@
         </div>
     </nav>
 
-    <!-- ENHANCED Hero Section with Working Video Autoplay -->
+    <!-- TRUE POSTER-FIRST Hero Section - Video Only Loads on User Click -->
     <section id="home" class="hero">
         <div class="hero-video-container">
-            <!-- POSTER IMAGE - LOADS IMMEDIATELY -->
+            <!-- POSTER IMAGE - LOADS IMMEDIATELY AND STAYS VISIBLE -->
             <img src="/images/carambola-golf-clubhouse.webp" 
                  alt="Carambola Golf Club Championship Clubhouse" 
-                 class="hero-poster">
+                 class="hero-poster"
+                 fetchpriority="high"
+                 loading="eager">
             
-            <!-- VIDEO ELEMENT - LOADS AND PLAYS AUTOMATICALLY AFTER DELAY -->
+            <!-- VIDEO ELEMENT - NO AUTO-LOADING, ONLY LOADS ON USER CLICK -->
             <video class="hero-video" 
                    muted 
                    loop 
                    playsinline 
                    preload="none"
-                   poster="/images/carambola-golf-clubhouse.webp">
+                   poster="/images/carambola-golf-clubhouse.webp"
+                   aria-label="Carambola Golf Club video tour">
                 <source data-src="/video/carambola-golf-video-loop-hero.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             
-            <!-- PLAY BUTTON OVERLAY -->
+            <!-- ENHANCED PLAY BUTTON - More Prominent for Poster-First -->
             <button class="hero-play-button" aria-label="Play video tour of Carambola Golf Club">
                 <i class="fas fa-play"></i>
             </button>
             
-            <!-- LOADING INDICATOR -->
+            <!-- LOADING INDICATOR - Shows Only When User Clicks Play -->
             <div class="hero-video-loading">
                 <div class="video-spinner"></div>
                 <p>Loading video...</p>
@@ -820,7 +823,7 @@
         <span>You're offline. Some features may be limited.</span>
     </div>
 
-    <!-- Load enhanced script with working autoplay -->
+    <!-- Load updated script with TRUE poster-first functionality -->
     <script src="script.js"></script>
 
     <!-- Load footer status integration -->
