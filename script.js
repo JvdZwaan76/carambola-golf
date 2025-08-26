@@ -144,7 +144,7 @@
         document.body.appendChild(notification);
     }
 
-    // OPTIMIZED VIDEO HERO MANAGER WITH AUTOPLAY ONCE LOADED
+    // ENHANCED VIDEO HERO MANAGER WITH WORKING AUTOPLAY
     class HeroVideoManager {
         constructor() {
             this.video = document.querySelector('.hero-video');
@@ -153,7 +153,9 @@
             this.loadingIndicator = document.querySelector('.hero-video-loading');
             this.videoLoaded = false;
             this.isPlaying = false;
-            this.autoplayDelay = 2000; // Delay after page load before starting video load
+            this.autoplayAttempted = false;
+            this.autoplayDelay = 3000; // 3 seconds after page load
+            this.canAutoplay = false;
             
             this.init();
         }
@@ -167,8 +169,11 @@
             // Video event listeners
             this.video.addEventListener('loadstart', () => this.showLoading());
             this.video.addEventListener('canplay', () => this.onVideoReady());
+            this.video.addEventListener('canplaythrough', () => this.onVideoReadyToPlay());
             this.video.addEventListener('error', () => this.onVideoError());
             this.video.addEventListener('ended', () => this.onVideoEnded());
+            this.video.addEventListener('play', () => this.onVideoPlay());
+            this.video.addEventListener('pause', () => this.onVideoPause());
             
             // Track video interaction for analytics
             this.playButton.addEventListener('click', () => {
@@ -177,40 +182,189 @@
                 }
             });
 
+            // Check if autoplay is possible
+            this.checkAutoplaySupport();
+            
             // Auto-start video loading after page load with delay
             this.startAutoVideoLoad();
             
-            console.log('🎥 Hero video manager initialized with autoplay');
+            console.log('🎥 Hero video manager initialized with enhanced autoplay');
+        }
+
+        async checkAutoplaySupport() {
+            // Create a test video to check autoplay support
+            const testVideo = document.createElement('video');
+            testVideo.muted = true;
+            testVideo.setAttribute('playsinline', '');
+            testVideo.style.position = 'absolute';
+            testVideo.style.top = '-9999px';
+            testVideo.style.left = '-9999px';
+            testVideo.style.width = '1px';
+            testVideo.style.height = '1px';
+            
+            try {
+                document.body.appendChild(testVideo);
+                const playPromise = testVideo.play();
+                
+                if (playPromise !== undefined) {
+                    await playPromise;
+                    this.canAutoplay = true;
+                    console.log('✅ Autoplay supported');
+                } else {
+                    this.canAutoplay = false;
+                }
+                
+                testVideo.pause();
+                testVideo.remove();
+                
+            } catch (error) {
+                this.canAutoplay = false;
+                console.log('❌ Autoplay blocked by browser');
+                testVideo.remove();
+            }
         }
 
         startAutoVideoLoad() {
-            // Wait for page to be fully loaded and settled, then start loading video
-            window.addEventListener('load', () => {
-                setTimeout(() => {
-                    if (!this.videoLoaded && !this.isPlaying) {
-                        console.log('🎬 Starting automatic video load...');
-                        this.loadVideoInBackground();
-                    }
-                }, this.autoplayDelay);
-            });
+            // Wait for page to be fully loaded and settled
+            if (document.readyState === 'loading') {
+                window.addEventListener('DOMContentLoaded', () => {
+                    this.scheduleAutoplay();
+                });
+            } else {
+                this.scheduleAutoplay();
+            }
         }
 
-        async loadVideoInBackground() {
+        scheduleAutoplay() {
+            // Wait for images and other resources to load
+            if (document.readyState !== 'complete') {
+                window.addEventListener('load', () => {
+                    setTimeout(() => this.startAutoplaySequence(), this.autoplayDelay);
+                });
+            } else {
+                setTimeout(() => this.startAutoplaySequence(), this.autoplayDelay);
+            }
+        }
+
+        async startAutoplaySequence() {
+            if (this.autoplayAttempted || this.isPlaying) return;
+            
+            this.autoplayAttempted = true;
+            console.log('🎬 Starting autoplay sequence...');
+
             try {
-                // Show subtle loading state (don't hide play button yet)
+                // Show subtle loading
                 this.showLoadingQuietly();
                 
-                // Load video source if not already loaded
+                // Load video if not already loaded
                 if (!this.videoLoaded) {
                     await this.loadVideo();
                 }
 
-                // Auto-start playing once ready
-                await this.autoStartVideo();
+                // Wait a moment for video to buffer
+                await this.waitForBuffer();
+
+                // Attempt autoplay
+                await this.attemptAutoplay();
                 
             } catch (error) {
-                console.error('Error auto-loading video:', error);
-                this.onVideoError();
+                console.log('⚠️ Autoplay failed, showing play button:', error.message);
+                this.onAutoplayFailed();
+            }
+        }
+
+        async waitForBuffer() {
+            return new Promise((resolve) => {
+                if (this.video.readyState >= 3) { // HAVE_FUTURE_DATA
+                    resolve();
+                } else {
+                    const onCanPlay = () => {
+                        this.video.removeEventListener('canplay', onCanPlay);
+                        resolve();
+                    };
+                    this.video.addEventListener('canplay', onCanPlay);
+                    
+                    // Timeout fallback
+                    setTimeout(resolve, 2000);
+                }
+            });
+        }
+
+        async attemptAutoplay() {
+            // Ensure video is muted for autoplay
+            this.video.muted = true;
+            this.video.setAttribute('playsinline', '');
+            
+            try {
+                const playPromise = this.video.play();
+                
+                if (playPromise !== undefined) {
+                    await playPromise;
+                    this.onAutoplaySuccess();
+                } else {
+                    throw new Error('Play promise undefined');
+                }
+                
+            } catch (error) {
+                console.log('Autoplay blocked:', error.message);
+                throw error;
+            }
+        }
+
+        onAutoplaySuccess() {
+            this.isPlaying = true;
+            
+            // Update UI - video takes over
+            this.video.classList.add('playing');
+            this.poster.classList.add('hidden');
+            this.playButton.classList.add('hidden');
+            this.hideLoading();
+            
+            console.log('✅ Video autoplay successful');
+            
+            // Track autoplay success
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'hero_video_autoplay', {
+                    'event_category': 'media',
+                    'event_label': 'success',
+                    'non_interaction': true
+                });
+            }
+
+            // Add click handler to pause/play video
+            this.video.addEventListener('click', () => this.toggleVideoPlayback());
+        }
+
+        onAutoplayFailed() {
+            this.hideLoading();
+            
+            // Show play button with enhanced styling to indicate video is ready
+            this.playButton.classList.remove('hidden');
+            this.playButton.style.background = 'rgba(212, 175, 55, 0.9)';
+            this.playButton.style.color = 'var(--primary-navy)';
+            this.playButton.style.animation = 'playButtonPulse 3s ease-in-out infinite';
+            
+            // Update button text/icon to show it's ready
+            const icon = this.playButton.querySelector('i');
+            if (icon) {
+                icon.style.animation = 'bounce 2s infinite';
+            }
+            
+            // Track autoplay failure
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'hero_video_autoplay', {
+                    'event_category': 'media',
+                    'event_label': 'blocked',
+                    'non_interaction': true
+                });
+            }
+        }
+
+        toggleVideoPlayback() {
+            if (this.isPlaying) {
+                this.video.pause();
+            } else {
+                this.video.play();
             }
         }
         
@@ -247,76 +401,41 @@
                 }
                 
                 // Set the actual src from data-src
-                source.src = source.getAttribute('data-src');
-                this.video.load();
+                if (!source.src) {
+                    source.src = source.getAttribute('data-src');
+                    this.video.load();
+                }
                 
                 // Wait for video to be ready
                 const onCanPlay = () => {
                     this.video.removeEventListener('canplay', onCanPlay);
                     this.video.removeEventListener('error', onError);
                     this.videoLoaded = true;
+                    console.log('📹 Video loaded successfully');
                     resolve();
                 };
                 
-                const onError = () => {
+                const onError = (e) => {
                     this.video.removeEventListener('canplay', onCanPlay);
                     this.video.removeEventListener('error', onError);
+                    console.error('Video load error:', e);
                     reject(new Error('Video failed to load'));
                 };
                 
-                this.video.addEventListener('canplay', onCanPlay);
-                this.video.addEventListener('error', onError);
+                if (this.video.readyState >= 3) {
+                    // Video already loaded
+                    this.videoLoaded = true;
+                    resolve();
+                } else {
+                    this.video.addEventListener('canplay', onCanPlay);
+                    this.video.addEventListener('error', onError);
+                }
             });
-        }
-        
-        async autoStartVideo() {
-            try {
-                await this.video.play();
-                this.isPlaying = true;
-                
-                // Update UI - video takes over
-                this.video.classList.add('playing');
-                this.poster.classList.add('hidden');
-                this.playButton.classList.add('hidden');
-                this.hideLoading();
-                
-                console.log('✅ Video auto-started successfully');
-                
-                // Track autoplay success
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'hero_video_autoplay', {
-                        'event_category': 'media',
-                        'event_label': 'success',
-                        'non_interaction': true
-                    });
-                }
-                
-            } catch (error) {
-                console.log('⚠️ Video autoplay blocked or failed:', error);
-                
-                // Show play button if autoplay fails
-                this.playButton.classList.remove('hidden');
-                this.hideLoading();
-                
-                // Update play button to indicate video is ready
-                this.playButton.style.background = 'rgba(212, 175, 55, 0.9)';
-                this.playButton.style.color = 'var(--primary-navy)';
-                
-                // Track autoplay failure
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'hero_video_autoplay', {
-                        'event_category': 'media',
-                        'event_label': 'blocked',
-                        'non_interaction': true
-                    });
-                }
-                
-                throw error;
-            }
         }
 
         async playVideo() {
             try {
+                this.video.muted = false; // Unmute for manual play
                 await this.video.play();
                 this.isPlaying = true;
                 
@@ -326,12 +445,8 @@
                 this.playButton.classList.add('hidden');
                 this.hideLoading();
                 
-                // Update play button icon for future use
-                const icon = this.playButton.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-play');
-                    icon.classList.add('fa-pause');
-                }
+                // Add click handler for pause
+                this.video.addEventListener('click', () => this.toggleVideoPlayback());
                 
             } catch (error) {
                 console.error('Error starting video playback:', error);
@@ -343,8 +458,10 @@
             this.video.pause();
             this.isPlaying = false;
             
-            // Show play button again
+            // Show play button again with pause styling
             this.playButton.classList.remove('hidden');
+            this.playButton.style.background = 'rgba(30, 58, 95, 0.85)';
+            this.playButton.style.color = 'white';
             
             // Update play button icon
             const icon = this.playButton.querySelector('i');
@@ -352,10 +469,14 @@
                 icon.classList.remove('fa-pause');
                 icon.classList.add('fa-play');
             }
-            
-            // Update play button style
-            this.playButton.style.background = 'rgba(30, 58, 95, 0.85)';
-            this.playButton.style.color = 'white';
+        }
+
+        onVideoPlay() {
+            this.isPlaying = true;
+        }
+
+        onVideoPause() {
+            this.isPlaying = false;
         }
         
         showLoading() {
@@ -376,11 +497,15 @@
         }
         
         onVideoReady() {
+            console.log('📹 Video ready state: canplay');
+        }
+
+        onVideoReadyToPlay() {
             this.hideLoading();
             this.playButton.style.opacity = '1';
             this.playButton.style.pointerEvents = 'all';
             
-            console.log('✅ Video ready for playback');
+            console.log('✅ Video ready for playback (canplaythrough)');
         }
         
         onVideoError() {
@@ -406,9 +531,11 @@
         }
         
         onVideoEnded() {
-            // Loop the video
+            // Loop the video smoothly
             this.video.currentTime = 0;
-            this.video.play();
+            if (this.isPlaying) {
+                this.video.play();
+            }
         }
     }
 
@@ -2084,7 +2211,7 @@
         performanceMetrics.mark('dom_ready');
         
         console.log('🌴 Welcome to Carambola Golf Club! 🌴');
-        console.log('🔧 Enhanced performance with autoplay video hero');
+        console.log('🔧 Enhanced performance with working autoplay video hero');
         console.log('🔧 For technical inquiries: jaspervdz@me.com');
         
         // Initialize preloader
@@ -2135,7 +2262,7 @@
             new CardInteractionManager();
             new OfflineManager();
             
-            // Initialize optimized video hero for home page
+            // Initialize enhanced video hero for home page
             if (document.querySelector('.hero-video')) {
                 new HeroVideoManager();
             }
@@ -2165,12 +2292,12 @@
             preloader.completeStep('hole_carousel');
             preloader.completeStep('score_cards');
             
-            console.log('✅ Main script initialization complete with autoplay video!');
+            console.log('✅ Main script initialization complete with working autoplay!');
             
             performanceMetrics.mark('init_complete');
             
         } catch (error) {
-            console.error('❌ Main script initialization error:', error);
+            console.error('⚠️ Main script initialization error:', error);
             preloader.hide(); // Hide preloader even if there's an error
         }
     });
@@ -2217,7 +2344,7 @@
 
     // Console branding
     console.log('%c🌴 Welcome to Carambola Golf Club! 🌴', 'color: #d4af37; font-size: 16px; font-weight: bold;');
-    console.log('%c⚡ Enhanced website with autoplay video hero', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%c⚡ Enhanced website with working autoplay video hero', 'color: #1e3a5f; font-size: 12px;');
     console.log('%c🔧 Technical support: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
