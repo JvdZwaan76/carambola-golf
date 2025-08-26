@@ -175,7 +175,7 @@ img {
     display: block;
 }
 
-/* ENHANCED HERO WITH OPTIMIZED VIDEO LOADING */
+/* ENHANCED HERO WITH OPTIMIZED VIDEO LOADING AND AUTOPLAY SUPPORT */
 .hero {
     height: 90vh;
     position: relative;
@@ -211,7 +211,7 @@ img {
     transition: opacity 0.8s ease;
 }
 
-/* VIDEO ELEMENT - HIDDEN BY DEFAULT */
+/* VIDEO ELEMENT - HIDDEN BY DEFAULT, SHOWS WHEN PLAYING */
 .hero-video {
     width: 100%;
     height: 100%;
@@ -222,6 +222,7 @@ img {
     z-index: 2;
     opacity: 0;
     transition: opacity 0.8s ease;
+    cursor: pointer; /* Add cursor for click interaction */
 }
 
 /* VIDEO VISIBLE WHEN PLAYING */
@@ -234,7 +235,7 @@ img {
     opacity: 0;
 }
 
-/* PLAY BUTTON OVERLAY */
+/* ENHANCED PLAY BUTTON OVERLAY WITH BETTER AUTOPLAY STATES */
 .hero-play-button {
     position: absolute;
     top: 50%;
@@ -279,7 +280,7 @@ img {
     pointer-events: none;
 }
 
-/* Loading indicator for video */
+/* Enhanced loading indicator for video with better visibility */
 .hero-video-loading {
     position: absolute;
     top: 50%;
@@ -290,6 +291,11 @@ img {
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
+    text-align: center;
+    background: rgba(30, 58, 95, 0.8);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
 }
 
 .hero-video-loading.visible {
@@ -304,7 +310,13 @@ img {
     border-top: 4px solid var(--accent-gold);
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-bottom: 1rem;
+    margin: 0 auto 1rem;
+}
+
+.hero-video-loading p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--accent-gold);
 }
 
 @keyframes spin {
@@ -318,6 +330,19 @@ img {
     }
     50% {
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 20px rgba(212, 175, 55, 0);
+    }
+}
+
+/* Enhanced bounce animation for play button when video is ready */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
     }
 }
 
@@ -724,18 +749,6 @@ img {
     color: var(--accent-gold);
     margin-bottom: 1rem;
     animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-10px);
-    }
-    60% {
-        transform: translateY(-5px);
-    }
 }
 
 .modal-header h2 {
