@@ -2299,3 +2299,73 @@
     };
 
 })();
+// Emergency fix - Force click handler attachment
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const playButton = document.querySelector('.hero-play-button');
+        const video = document.querySelector('.hero-video');
+        const poster = document.querySelector('.hero-poster');
+        
+        if (playButton && video && poster) {
+            console.log('🔧 Applying emergency click handler...');
+            
+            playButton.addEventListener('click', async function() {
+                console.log('🎬 Emergency click handler triggered!');
+                
+                try {
+                    // Show loading
+                    const loadingIndicator = document.querySelector('.hero-video-loading');
+                    if (loadingIndicator) {
+                        loadingIndicator.classList.add('visible');
+                    }
+                    
+                    // Load video source
+                    const source = video.querySelector('source[data-src]');
+                    if (source && !source.src) {
+                        console.log('📹 Setting video source:', source.getAttribute('data-src'));
+                        source.src = source.getAttribute('data-src');
+                        video.load();
+                    }
+                    
+                    // Wait for video to load
+                    await new Promise((resolve, reject) => {
+                        const onCanPlay = () => {
+                            video.removeEventListener('canplay', onCanPlay);
+                            video.removeEventListener('error', onError);
+                            resolve();
+                        };
+                        const onError = (e) => {
+                            video.removeEventListener('canplay', onCanPlay);
+                            video.removeEventListener('error', onError);
+                            reject(e);
+                        };
+                        
+                        if (video.readyState >= 3) {
+                            resolve();
+                        } else {
+                            video.addEventListener('canplay', onCanPlay);
+                            video.addEventListener('error', onError);
+                        }
+                    });
+                    
+                    // Play video
+                    video.muted = false;
+                    await video.play();
+                    
+                    // Update UI
+                    video.classList.add('playing');
+                    poster.classList.add('hidden');
+                    playButton.classList.add('hidden');
+                    if (loadingIndicator) {
+                        loadingIndicator.classList.remove('visible');
+                    }
+                    
+                    console.log('✅ Emergency handler: Video playing successfully!');
+                    
+                } catch (error) {
+                    console.error('❌ Emergency handler error:', error);
+                }
+            });
+        }
+    }, 3000); // Wait 3 seconds to ensure everything is loaded
+});
