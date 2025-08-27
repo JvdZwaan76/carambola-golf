@@ -4,7 +4,7 @@
 
     // Prevent duplicate execution
     if (window.CarambolaGolfInitialized) {
-        console.log('🟡 Main script already initialized, skipping duplicate execution');
+        console.log('Main script already initialized, skipping duplicate execution');
         return;
     }
     window.CarambolaGolfInitialized = true;
@@ -144,52 +144,172 @@
         document.body.appendChild(notification);
     }
 
-    // TRUE POSTER-FIRST VIDEO HERO MANAGER - NO AUTO-LOADING
+    // TRUE POSTER-FIRST VIDEO HERO MANAGER - BULLETPROOF VERSION
     class HeroVideoManager {
         constructor() {
+            this.video = null;
+            this.poster = null;
+            this.playButton = null;
+            this.loadingIndicator = null;
+            this.videoLoaded = false;
+            this.isPlaying = false;
+            this.userInteracted = false;
+            this.initAttempts = 0;
+            this.maxInitAttempts = 10;
+            
+            this.tryInit();
+        }
+        
+        tryInit() {
+            this.initAttempts++;
+            
+            // Find elements
             this.video = document.querySelector('.hero-video');
             this.poster = document.querySelector('.hero-poster');
             this.playButton = document.querySelector('.hero-play-button');
             this.loadingIndicator = document.querySelector('.hero-video-loading');
-            this.videoLoaded = false;
-            this.isPlaying = false;
-            this.userInteracted = false;
             
-            this.init();
+            console.log(`Hero video init attempt ${this.initAttempts}:`, {
+                video: !!this.video,
+                poster: !!this.poster,
+                playButton: !!this.playButton,
+                loadingIndicator: !!this.loadingIndicator
+            });
+            
+            // Check if all required elements are present
+            if (this.video && this.playButton && this.poster) {
+                this.init();
+                return;
+            }
+            
+            // Retry if elements not found and under max attempts
+            if (this.initAttempts < this.maxInitAttempts) {
+                console.log(`Retrying hero video init in 200ms (attempt ${this.initAttempts}/${this.maxInitAttempts})`);
+                setTimeout(() => this.tryInit(), 200);
+                return;
+            }
+            
+            console.warn('Hero video initialization failed - required elements not found after max attempts');
         }
         
         init() {
-            if (!this.video || !this.playButton || !this.poster) return;
+            try {
+                console.log('Initializing TRUE poster-first video hero...');
+                
+                // CRITICAL: Ensure video will NOT load automatically
+                this.enforceNoAutoLoad();
+                
+                // CRITICAL: Only add click event - NO automatic video loading
+                this.playButton.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.handlePlayClick();
+                }, { once: false });
+                
+                // Video event listeners (only activate after user interaction)
+                this.video.addEventListener('canplay', () => this.onVideoReady());
+                this.video.addEventListener('canplaythrough', () => this.onVideoReadyToPlay());
+                this.video.addEventListener('error', (e) => this.onVideoError(e));
+                this.video.addEventListener('ended', () => this.onVideoEnded());
+                this.video.addEventListener('play', () => this.onVideoPlay());
+                this.video.addEventListener('pause', () => this.onVideoPause());
+                
+                // Prevent any accidental video loading
+                this.video.addEventListener('loadstart', (e) => {
+                    if (!this.userInteracted) {
+                        console.warn('Video attempted to load without user interaction - preventing');
+                        this.video.pause();
+                        this.video.currentTime = 0;
+                    }
+                });
+                
+                // Track video interaction for analytics
+                this.playButton.addEventListener('click', () => {
+                    if (typeof trackUserEngagement === 'function') {
+                        trackUserEngagement('video_play_click', 'hero_video');
+                    }
+                });
+
+                // Make play button more prominent and ensure it's clickable
+                this.enhancePlayButton();
+                
+                // Ensure proper layering
+                this.ensureProperLayering();
+                
+                console.log('Hero video manager initialized with TRUE poster-first loading (NO AUTO-LOAD)');
+                
+            } catch (error) {
+                console.error('Error initializing hero video manager:', error);
+            }
+        }
+        
+        enforceNoAutoLoad() {
+            // Multiple safeguards to prevent auto-loading
+            this.video.preload = 'none';
+            this.video.setAttribute('preload', 'none');
             
-            // CRITICAL: Only add click event - NO automatic video loading
-            this.playButton.addEventListener('click', () => this.handlePlayClick());
+            // Remove any src attribute that might exist
+            if (this.video.src) {
+                this.video.removeAttribute('src');
+            }
             
-            // Video event listeners (only activate after user interaction)
-            this.video.addEventListener('canplay', () => this.onVideoReady());
-            this.video.addEventListener('canplaythrough', () => this.onVideoReadyToPlay());
-            this.video.addEventListener('error', () => this.onVideoError());
-            this.video.addEventListener('ended', () => this.onVideoEnded());
-            this.video.addEventListener('play', () => this.onVideoPlay());
-            this.video.addEventListener('pause', () => this.onVideoPause());
-            
-            // Track video interaction for analytics
-            this.playButton.addEventListener('click', () => {
-                if (typeof trackUserEngagement === 'function') {
-                    trackUserEngagement('video_play_click', 'hero_video');
+            // Ensure sources don't have src set
+            const sources = this.video.querySelectorAll('source');
+            sources.forEach(source => {
+                if (source.src && source.hasAttribute('data-src')) {
+                    source.removeAttribute('src');
                 }
             });
-
-            // Make play button more prominent to encourage interaction
-            this.enhancePlayButton();
             
-            console.log('🎥 Hero video manager initialized with TRUE poster-first loading (NO AUTO-LOAD)');
+            // Pause any automatic playback
+            this.video.pause();
+            
+            console.log('Video auto-load prevention enforced');
+        }
+        
+        ensureProperLayering() {
+            // Ensure proper z-index stacking
+            this.poster.style.zIndex = '1';
+            this.video.style.zIndex = '2';
+            this.playButton.style.zIndex = '10'; // Higher than hero content
+            
+            if (this.loadingIndicator) {
+                this.loadingIndicator.style.zIndex = '11';
+            }
+            
+            // Ensure play button is positioned correctly and clickable
+            this.playButton.style.position = 'absolute';
+            this.playButton.style.pointerEvents = 'all';
+            this.playButton.style.cursor = 'pointer';
+            
+            // Make sure hero content doesn't block the play button
+            const heroContent = document.querySelector('.hero-content');
+            if (heroContent) {
+                heroContent.style.zIndex = '5'; // Lower than play button
+                heroContent.style.pointerEvents = 'none'; // Allow clicks to pass through
+                
+                // Re-enable pointer events for CTA buttons inside hero content
+                const ctaButtons = heroContent.querySelectorAll('.cta-button, a, button');
+                ctaButtons.forEach(btn => {
+                    btn.style.pointerEvents = 'all';
+                });
+            }
+            
+            console.log('Proper layering ensured');
         }
 
         enhancePlayButton() {
-            // Add subtle animation to draw attention
+            // Make button more prominent and ensure visibility
+            this.playButton.style.display = 'flex';
+            this.playButton.style.alignItems = 'center';
+            this.playButton.style.justifyContent = 'center';
+            this.playButton.style.opacity = '1';
+            this.playButton.style.visibility = 'visible';
+            
+            // Add pulse animation to draw attention
             this.playButton.style.animation = 'playButtonPulse 3s ease-in-out infinite';
             
-            // Add hover enhancement
+            // Enhanced hover effects
             this.playButton.addEventListener('mouseenter', () => {
                 this.playButton.style.transform = 'translate(-50%, -50%) scale(1.1)';
                 this.playButton.style.background = 'var(--accent-gold)';
@@ -203,9 +323,22 @@
                     this.playButton.style.color = 'white';
                 }
             });
+            
+            // Add keyboard accessibility
+            this.playButton.setAttribute('tabindex', '0');
+            this.playButton.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.handlePlayClick();
+                }
+            });
+            
+            console.log('Play button enhanced for maximum visibility');
         }
         
         async handlePlayClick() {
+            console.log('User clicked play button - initiating video load');
+            
             // Mark that user has interacted
             this.userInteracted = true;
             
@@ -228,7 +361,7 @@
                 
             } catch (error) {
                 console.error('Error playing video:', error);
-                this.onVideoError();
+                this.onVideoError(error);
             }
         }
         
@@ -240,7 +373,7 @@
                     return;
                 }
                 
-                console.log('📹 Loading video (user initiated)...');
+                console.log('Loading video (user initiated):', source.getAttribute('data-src'));
                 
                 // Set the actual src from data-src ONLY when user requests it
                 if (!source.src) {
@@ -253,7 +386,7 @@
                     this.video.removeEventListener('canplay', onCanPlay);
                     this.video.removeEventListener('error', onError);
                     this.videoLoaded = true;
-                    console.log('✅ Video loaded successfully (user initiated)');
+                    console.log('Video loaded successfully (user initiated)');
                     resolve();
                 };
                 
@@ -277,7 +410,8 @@
 
         async playVideo() {
             try {
-                this.video.muted = false; // Unmute for manual play
+                // Unmute for manual play (user initiated)
+                this.video.muted = false;
                 await this.video.play();
                 this.isPlaying = true;
                 
@@ -288,6 +422,7 @@
                 this.hideLoading();
                 
                 // Add click handler for pause/play toggle on video
+                this.video.style.cursor = 'pointer';
                 this.video.addEventListener('click', () => this.toggleVideoPlayback());
                 
                 // Track video play success
@@ -299,7 +434,7 @@
                     });
                 }
                 
-                console.log('✅ Video playing successfully (user initiated)');
+                console.log('Video playing successfully (user initiated)');
                 
             } catch (error) {
                 console.error('Error starting video playback:', error);
@@ -323,7 +458,7 @@
                 icon.classList.add('fa-play');
             }
             
-            console.log('⏸️ Video paused');
+            console.log('Video paused');
         }
 
         toggleVideoPlayback() {
@@ -357,28 +492,33 @@
         }
         
         showLoading() {
-            this.loadingIndicator.classList.add('visible');
+            if (this.loadingIndicator) {
+                this.loadingIndicator.classList.add('visible');
+            }
             this.playButton.style.opacity = '0.5';
             this.playButton.style.pointerEvents = 'none';
         }
         
         hideLoading() {
-            this.loadingIndicator.classList.remove('visible');
+            if (this.loadingIndicator) {
+                this.loadingIndicator.classList.remove('visible');
+            }
             this.playButton.style.opacity = '1';
             this.playButton.style.pointerEvents = 'all';
         }
         
         onVideoReady() {
-            console.log('📹 Video ready state: canplay');
+            console.log('Video ready state: canplay');
             this.hideLoading();
         }
 
         onVideoReadyToPlay() {
             this.hideLoading();
-            console.log('✅ Video ready for playback (canplaythrough)');
+            console.log('Video ready for playback (canplaythrough)');
         }
         
-        onVideoError() {
+        onVideoError(error) {
+            console.error('Video error:', error);
             this.hideLoading();
             
             // Show fallback state - keep poster visible
@@ -390,7 +530,7 @@
             this.playButton.style.background = 'rgba(255, 107, 107, 0.8)';
             this.playButton.innerHTML = '<i class="fas fa-exclamation-triangle"></i>';
             
-            console.warn('❌ Video failed to load, showing poster image');
+            console.warn('Video failed to load, showing poster image');
             
             // Track video error
             if (typeof gtag !== 'undefined') {
@@ -423,7 +563,7 @@
 
             this.setupEventListeners();
             this.setupAccessibility();
-            console.log('🎯 Score card flip functionality initialized');
+            console.log('Score card flip functionality initialized');
         }
 
         setupEventListeners() {
@@ -647,7 +787,7 @@
                 });
             }
 
-            console.log('🎠 Course carousel initialized');
+            console.log('Course carousel initialized');
         }
 
         setupEventListeners() {
@@ -851,7 +991,7 @@
                 });
             }
 
-            console.log('🌟 Hole carousel initialized');
+            console.log('Hole carousel initialized');
         }
 
         setupEventListeners() {
@@ -1050,7 +1190,7 @@
         }
     }
 
-    // Enhanced preloader with progress tracking - UPDATED FOR POSTER-FIRST
+    // Enhanced preloader with progress tracking
     class PreloaderManager {
         constructor() {
             this.preloader = document.getElementById('preloader');
@@ -1121,14 +1261,14 @@
                     });
                 }
                 
-                console.log('✅ Preloader hidden successfully');
+                console.log('Preloader hidden successfully');
             }
         }
 
         init() {
             // Force hide after maximum time regardless of completion
             this.forceHideTimer = setTimeout(() => {
-                console.log('⏰ Preloader safety timeout reached');
+                console.log('Preloader safety timeout reached');
                 this.hide();
             }, this.maximumShowTime);
         }
@@ -1155,7 +1295,7 @@
                 // Fallback for older browsers
                 this.loadAllImages();
             }
-            console.log('🖼️ Image optimizer initialized');
+            console.log('Image optimizer initialized');
         }
 
         handleIntersection(entries) {
@@ -1410,7 +1550,7 @@
             window.addEventListener('scroll', throttle(this.handleScroll.bind(this), 16), passiveIfSupported);
             this.setActiveNavigation();
             
-            console.log('📱 Enhanced mobile navigation initialized');
+            console.log('Enhanced mobile navigation initialized');
         }
 
         setupMobileMenuEnhancements() {
@@ -1497,7 +1637,7 @@
                 });
             }
 
-            console.log('📱 Mobile menu opened');
+            console.log('Mobile menu opened');
         }
 
         closeMobileMenu() {
@@ -1515,7 +1655,7 @@
             // Unlock body scroll
             this.unlockScroll();
 
-            console.log('📱 Mobile menu closed');
+            console.log('Mobile menu closed');
         }
 
         handleLinkClick(e) {
@@ -1591,7 +1731,7 @@
             this.setupMainObserver();
             this.setupStatsObserver();
             this.observeElements();
-            console.log('✨ Animation manager initialized');
+            console.log('Animation manager initialized');
         }
 
         setupMainObserver() {
@@ -1776,7 +1916,7 @@
             this.setupFormTracking();
             this.setupPerformanceTracking();
             this.trackPageView();
-            console.log('📊 Analytics initialized');
+            console.log('Analytics initialized');
         }
 
         setupScrollTracking() {
@@ -2082,9 +2222,9 @@
     document.addEventListener('DOMContentLoaded', async function() {
         performanceMetrics.mark('dom_ready');
         
-        console.log('🌴 Welcome to Carambola Golf Club! 🌴');
-        console.log('🔧 Enhanced performance with TRUE POSTER-FIRST video hero (NO AUTO-LOAD)');
-        console.log('🔧 For technical inquiries: jaspervdz@me.com');
+        console.log('Welcome to Carambola Golf Club!');
+        console.log('Enhanced performance with TRUE POSTER-FIRST video hero (NO AUTO-LOAD)');
+        console.log('For technical inquiries: jaspervdz@me.com');
         
         // Initialize preloader with faster loading for poster-first
         const preloader = new PreloaderManager();
@@ -2099,7 +2239,7 @@
         preloader.addStep('hole_carousel');
         preloader.addStep('score_cards');
         
-        console.log('⚡ Starting initialization with poster-first optimization...');
+        console.log('Starting initialization with poster-first optimization...');
         
         try {
             // Initialize preloader with mobile optimizations
@@ -2107,7 +2247,7 @@
             
             // Register service worker
             const swResult = await registerServiceWorker();
-            console.log('✅ Service worker ready');
+            console.log('Service worker ready');
             preloader.completeStep('service_worker');
             
             // Initialize image optimizer
@@ -2118,7 +2258,7 @@
             if (document.fonts) {
                 await document.fonts.ready;
             }
-            console.log('✅ Fonts ready');
+            console.log('Fonts ready');
             preloader.completeStep('fonts');
             
             // Initialize analytics
@@ -2136,7 +2276,7 @@
             // Initialize TRUE POSTER-FIRST video hero for home page
             if (document.querySelector('.hero-video')) {
                 new HeroVideoManager();
-                console.log('✅ TRUE poster-first hero initialized (video will ONLY load on user click)');
+                console.log('TRUE poster-first hero initialized (video will ONLY load on user click)');
             }
             
             // Initialize carousel for course page
@@ -2163,13 +2303,13 @@
             preloader.completeStep('hole_carousel');
             preloader.completeStep('score_cards');
             
-            console.log('✅ Main script initialization complete with TRUE POSTER-FIRST loading!');
-            console.log('📊 Video will only load when user clicks play button');
+            console.log('Main script initialization complete with TRUE POSTER-FIRST loading!');
+            console.log('Video will only load when user clicks play button');
             
             performanceMetrics.mark('init_complete');
             
         } catch (error) {
-            console.error('⚠️ Main script initialization error:', error);
+            console.error('Main script initialization error:', error);
             preloader.hide(); // Hide preloader even if there's an error
         }
     });
@@ -2215,9 +2355,9 @@
     }, 100));
 
     // Console branding
-    console.log('%c🌴 Welcome to Carambola Golf Club! 🌴', 'color: #d4af37; font-size: 16px; font-weight: bold;');
-    console.log('%c⚡ Enhanced website with TRUE POSTER-FIRST video hero', 'color: #1e3a5f; font-size: 12px;');
-    console.log('%c🔧 Technical support: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%cWelcome to Carambola Golf Club!', 'color: #d4af37; font-size: 16px; font-weight: bold;');
+    console.log('%cEnhanced website with TRUE POSTER-FIRST video hero', 'color: #1e3a5f; font-size: 12px;');
+    console.log('%cTechnical support: jaspervdz@me.com', 'color: #1e3a5f; font-size: 12px;');
 
     // Global utility functions
     window.CarambolaGolf = {
@@ -2299,73 +2439,3 @@
     };
 
 })();
-// Emergency fix - Force click handler attachment
-document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(() => {
-        const playButton = document.querySelector('.hero-play-button');
-        const video = document.querySelector('.hero-video');
-        const poster = document.querySelector('.hero-poster');
-        
-        if (playButton && video && poster) {
-            console.log('🔧 Applying emergency click handler...');
-            
-            playButton.addEventListener('click', async function() {
-                console.log('🎬 Emergency click handler triggered!');
-                
-                try {
-                    // Show loading
-                    const loadingIndicator = document.querySelector('.hero-video-loading');
-                    if (loadingIndicator) {
-                        loadingIndicator.classList.add('visible');
-                    }
-                    
-                    // Load video source
-                    const source = video.querySelector('source[data-src]');
-                    if (source && !source.src) {
-                        console.log('📹 Setting video source:', source.getAttribute('data-src'));
-                        source.src = source.getAttribute('data-src');
-                        video.load();
-                    }
-                    
-                    // Wait for video to load
-                    await new Promise((resolve, reject) => {
-                        const onCanPlay = () => {
-                            video.removeEventListener('canplay', onCanPlay);
-                            video.removeEventListener('error', onError);
-                            resolve();
-                        };
-                        const onError = (e) => {
-                            video.removeEventListener('canplay', onCanPlay);
-                            video.removeEventListener('error', onError);
-                            reject(e);
-                        };
-                        
-                        if (video.readyState >= 3) {
-                            resolve();
-                        } else {
-                            video.addEventListener('canplay', onCanPlay);
-                            video.addEventListener('error', onError);
-                        }
-                    });
-                    
-                    // Play video
-                    video.muted = false;
-                    await video.play();
-                    
-                    // Update UI
-                    video.classList.add('playing');
-                    poster.classList.add('hidden');
-                    playButton.classList.add('hidden');
-                    if (loadingIndicator) {
-                        loadingIndicator.classList.remove('visible');
-                    }
-                    
-                    console.log('✅ Emergency handler: Video playing successfully!');
-                    
-                } catch (error) {
-                    console.error('❌ Emergency handler error:', error);
-                }
-            });
-        }
-    }, 3000); // Wait 3 seconds to ensure everything is loaded
-});
