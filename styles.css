@@ -175,7 +175,7 @@ img {
     display: block;
 }
 
-/* ENHANCED HERO SECTION - TRUE POSTER-FIRST WITH BULLETPROOF LAYERING */
+/* FIXED HERO SECTION - HOMEPAGE ONLY - TRUE POSTER-FIRST WITH BULLETPROOF LAYERING */
 .hero {
     height: 90vh;
     position: relative;
@@ -187,6 +187,8 @@ img {
     margin-top: 80px;
     padding-top: 2rem;
     overflow: hidden;
+    /* FIXED: Create new stacking context to prevent z-index conflicts */
+    isolation: isolate;
 }
 
 .hero-video-container {
@@ -195,7 +197,7 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -2;
+    z-index: 1; /* Base layer */
 }
 
 /* POSTER IMAGE - ALWAYS VISIBLE BY DEFAULT - HIGHEST PRIORITY */
@@ -206,8 +208,8 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1 !important; /* Force higher than video */
-    opacity: 1 !important;
+    z-index: 2; /* Above container */
+    opacity: 1;
     transition: opacity 0.8s ease;
     /* Ensure poster loads immediately */
     loading: eager;
@@ -224,8 +226,8 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2 !important;
-    opacity: 0 !important;
+    z-index: 3; /* Above poster */
+    opacity: 0;
     transition: opacity 0.8s ease;
     /* CRITICAL: Prevent any automatic loading */
     pointer-events: none;
@@ -233,22 +235,22 @@ img {
 
 /* VIDEO VISIBLE WHEN PLAYING */
 .hero-video.playing {
-    opacity: 1 !important;
+    opacity: 1;
     pointer-events: all; /* Allow clicking for pause/play */
     cursor: pointer;
 }
 
 /* POSTER HIDDEN WHEN VIDEO IS PLAYING */
 .hero-poster.hidden {
-    opacity: 0 !important;
+    opacity: 0;
 }
 
-/* PLAY BUTTON - MAXIMUM VISIBILITY AND ACCESSIBILITY */
+/* PLAY BUTTON - FIXED: MAXIMUM VISIBILITY AND ACCESSIBILITY */
 .hero-play-button {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: 100px;
     height: 100px;
     background: rgba(30, 58, 95, 0.85);
@@ -259,30 +261,34 @@ img {
     font-size: 2.5rem;
     cursor: pointer;
     transition: all var(--transition-medium);
-    z-index: 10 !important; /* HIGHEST Z-INDEX - ABOVE EVERYTHING */
-    display: flex !important;
+    /* FIXED: Much higher z-index to ensure it's always on top */
+    z-index: 100;
+    display: flex;
     align-items: center;
     justify-content: center;
     padding-left: 8px; /* Optical alignment for play icon */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     animation: playButtonPulse 3s ease-in-out infinite;
     /* CRITICAL: Ensure it's always clickable */
-    pointer-events: all !important;
-    opacity: 1 !important;
-    visibility: visible !important;
+    pointer-events: all;
+    opacity: 1;
+    visibility: visible;
+    /* FIXED: Force hardware acceleration and own layer */
+    will-change: transform, opacity;
+    contain: layout style paint;
 }
 
 .hero-play-button:hover {
-    background: var(--accent-gold) !important;
-    color: var(--primary-navy) !important;
-    border-color: var(--accent-gold) !important;
-    transform: translate(-50%, -50%) scale(1.1) !important;
+    background: var(--accent-gold);
+    color: var(--primary-navy);
+    border-color: var(--accent-gold);
+    transform: translate(-50%, -50%) scale(1.1);
     animation: none;
     box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
 }
 
 .hero-play-button:active {
-    transform: translate(-50%, -50%) scale(0.95) !important;
+    transform: translate(-50%, -50%) scale(0.95);
 }
 
 .hero-play-button:focus {
@@ -292,9 +298,9 @@ img {
 
 /* HIDDEN WHEN VIDEO IS PLAYING */
 .hero-play-button.hidden {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 /* LOADING INDICATOR - ABOVE PLAY BUTTON */
@@ -304,7 +310,7 @@ img {
     left: 50%;
     transform: translate(-50%, -50%);
     color: white;
-    z-index: 11 !important; /* Above play button when showing */
+    z-index: 101; /* Above play button when showing */
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
@@ -317,8 +323,8 @@ img {
 }
 
 .hero-video-loading.visible {
-    opacity: 1 !important;
-    visibility: visible !important;
+    opacity: 1;
+    visibility: visible;
 }
 
 .video-spinner {
@@ -350,14 +356,14 @@ img {
     right: 0;
     bottom: 0;
     background: linear-gradient(rgba(30, 58, 95, 0.3), rgba(30, 58, 95, 0.5));
-    z-index: 1; /* Same as poster, but won't interfere */
+    z-index: 4; /* Above media, below content */
     pointer-events: none;
 }
 
 /* HERO CONTENT - ALLOW CLICKS TO PASS THROUGH TO PLAY BUTTON */
 .hero-content {
     position: relative;
-    z-index: 5 !important; /* Lower than play button */
+    z-index: 5; /* Above overlay, below play button */
     max-width: 900px;
     padding: 0 2rem;
     /* CRITICAL: Allow clicks to pass through to play button */
@@ -368,9 +374,9 @@ img {
 .hero-content .cta-button,
 .hero-content a,
 .hero-content button {
-    pointer-events: all !important;
+    pointer-events: all;
     position: relative;
-    z-index: 6; /* Above hero content but below play button */
+    z-index: 1; /* Local stacking within hero-content */
 }
 
 /* ENHANCED PULSE ANIMATION */
@@ -1029,7 +1035,7 @@ img {
     color: var(--primary-navy);
 }
 
-/* Page Hero Sections */
+/* Page Hero Sections - KEEP UNCHANGED FOR OTHER PAGES */
 .page-hero {
     min-height: 60vh;
     display: flex;
@@ -2414,7 +2420,7 @@ img {
 }
 
 .pricing-cost::before {
-    content: ';
+    content: '$';
     font-size: 1rem;
     color: var(--accent-gold);
 }
@@ -3707,6 +3713,49 @@ img {
         height: 10px;
     }
 
+    /* MOBILE HERO FIXES - HOMEPAGE ONLY */
+    .hero {
+        height: auto;
+        min-height: 80vh;
+        margin-top: 100px;
+        padding: 3rem 1rem 2rem;
+    }
+
+    .hero-content {
+        padding: 2rem 1rem;
+    }
+
+    .hero-tagline {
+        font-size: 1rem;
+        padding: 0.75rem 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 8vw, 3.5rem);
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-subtitle {
+        font-size: clamp(1rem, 4vw, 1.4rem);
+        margin-bottom: 1.5rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    .hero-description {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+
+    /* MOBILE PLAY BUTTON */
+    .hero-play-button {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+
     /* Score Card Mobile Responsive Design */
     .score-card-section {
         padding: 4rem 0;
@@ -3815,42 +3864,6 @@ img {
         font-size: 0.9rem;
         width: 100%;
         max-width: 300px;
-    }
-
-    /* Hero Section Mobile Fixes */
-    .hero {
-        height: auto;
-        min-height: 80vh;
-        margin-top: 100px;
-        padding: 3rem 1rem 2rem;
-    }
-
-    .hero-content {
-        padding: 2rem 1rem;
-    }
-
-    .hero-tagline {
-        font-size: 1rem;
-        padding: 0.75rem 1.5rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .hero h1 {
-        font-size: clamp(2rem, 8vw, 3.5rem);
-        margin-bottom: 1rem;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-    }
-
-    .hero-subtitle {
-        font-size: clamp(1rem, 4vw, 1.4rem);
-        margin-bottom: 1.5rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    }
-
-    .hero-description {
-        font-size: 1rem;
-        margin-bottom: 2rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     }
 
     /* Page Hero Mobile Fixes */
@@ -4168,6 +4181,13 @@ img {
         font-size: 0.8rem;
     }
 
+    /* SMALL MOBILE PLAY BUTTON */
+    .hero-play-button {
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+    }
+
     /* Score Card Mobile Small Screens */
     .score-card-flip {
         min-height: 550px;
@@ -4324,13 +4344,6 @@ img {
     .sitemap-stats,
     .sitemap-footer {
         padding: 2rem 1rem;
-    }
-
-    /* Hero play button small mobile optimization */
-    .hero-play-button {
-        width: 70px !important;
-        height: 70px !important;
-        font-size: 1.8rem !important;
     }
 }
 
