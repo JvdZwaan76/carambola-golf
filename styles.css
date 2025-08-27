@@ -175,7 +175,7 @@ img {
     display: block;
 }
 
-/* FIXED HERO SECTION - HOMEPAGE ONLY - TRUE POSTER-FIRST WITH BULLETPROOF LAYERING */
+/* FIXED HERO SECTION - NO TEXT OVERLAP, RESPONSIVE POSITIONING */
 .hero {
     height: 90vh;
     position: relative;
@@ -187,7 +187,6 @@ img {
     margin-top: 80px;
     padding-top: 2rem;
     overflow: hidden;
-    /* FIXED: Create new stacking context to prevent z-index conflicts */
     isolation: isolate;
 }
 
@@ -197,10 +196,9 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Base layer */
+    z-index: 1;
 }
 
-/* POSTER IMAGE - ALWAYS VISIBLE BY DEFAULT - HIGHEST PRIORITY */
 .hero-poster {
     width: 100%;
     height: 100%;
@@ -208,17 +206,14 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2; /* Above container */
+    z-index: 2;
     opacity: 1;
     transition: opacity 0.8s ease;
-    /* Ensure poster loads immediately */
     loading: eager;
     fetchpriority: high;
-    /* Prevent any interaction that might trigger video loading */
     pointer-events: none;
 }
 
-/* VIDEO ELEMENT - HIDDEN BY DEFAULT, ONLY SHOWS WHEN PLAYING */
 .hero-video {
     width: 100%;
     height: 100%;
@@ -226,31 +221,62 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 3; /* Above poster */
+    z-index: 3;
     opacity: 0;
     transition: opacity 0.8s ease;
-    /* CRITICAL: Prevent any automatic loading */
     pointer-events: none;
 }
 
-/* VIDEO VISIBLE WHEN PLAYING */
 .hero-video.playing {
     opacity: 1;
-    pointer-events: all; /* Allow clicking for pause/play */
+    pointer-events: all;
     cursor: pointer;
 }
 
-/* POSTER HIDDEN WHEN VIDEO IS PLAYING */
 .hero-poster.hidden {
     opacity: 0;
 }
 
-/* PLAY BUTTON - FIXED: MAXIMUM VISIBILITY AND ACCESSIBILITY */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(rgba(30, 58, 95, 0.3), rgba(30, 58, 95, 0.5));
+    z-index: 4;
+    pointer-events: none;
+}
+
+/* HERO CONTENT - RESTRUCTURED FOR BETTER PLAY BUTTON POSITIONING */
+.hero-content {
+    position: relative;
+    z-index: 5;
+    max-width: 900px;
+    padding: 0 2rem;
+    pointer-events: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: center;
+    text-align: center;
+}
+
+.hero-content .cta-button,
+.hero-content a,
+.hero-content button {
+    pointer-events: all;
+    position: relative;
+    z-index: 1;
+}
+
+/* PLAY BUTTON - REPOSITIONED TO AVOID TEXT OVERLAP */
 .hero-play-button {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* DESKTOP: Position to the right of main content */
+    top: 45%;
+    right: 15%;
+    transform: translateY(-50%);
     width: 100px;
     height: 100px;
     background: rgba(30, 58, 95, 0.85);
@@ -261,19 +287,16 @@ img {
     font-size: 2.5rem;
     cursor: pointer;
     transition: all var(--transition-medium);
-    /* FIXED: Much higher z-index to ensure it's always on top */
     z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-left: 8px; /* Optical alignment for play icon */
+    padding-left: 8px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     animation: playButtonPulse 3s ease-in-out infinite;
-    /* CRITICAL: Ensure it's always clickable */
     pointer-events: all;
     opacity: 1;
     visibility: visible;
-    /* FIXED: Force hardware acceleration and own layer */
     will-change: transform, opacity;
     contain: layout style paint;
 }
@@ -282,13 +305,13 @@ img {
     background: var(--accent-gold);
     color: var(--primary-navy);
     border-color: var(--accent-gold);
-    transform: translate(-50%, -50%) scale(1.1);
+    transform: translateY(-50%) scale(1.1);
     animation: none;
     box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
 }
 
 .hero-play-button:active {
-    transform: translate(-50%, -50%) scale(0.95);
+    transform: translateY(-50%) scale(0.95);
 }
 
 .hero-play-button:focus {
@@ -296,21 +319,19 @@ img {
     outline-offset: 4px;
 }
 
-/* HIDDEN WHEN VIDEO IS PLAYING */
 .hero-play-button.hidden {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
 }
 
-/* LOADING INDICATOR - ABOVE PLAY BUTTON */
 .hero-video-loading {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 45%;
+    right: 15%;
+    transform: translateY(-50%);
     color: white;
-    z-index: 101; /* Above play button when showing */
+    z-index: 101;
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
@@ -348,44 +369,139 @@ img {
     100% { transform: rotate(360deg); }
 }
 
-/* HERO OVERLAY - LOWER THAN PLAY BUTTON */
-.hero-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(rgba(30, 58, 95, 0.3), rgba(30, 58, 95, 0.5));
-    z-index: 4; /* Above media, below content */
-    pointer-events: none;
-}
-
-/* HERO CONTENT - ALLOW CLICKS TO PASS THROUGH TO PLAY BUTTON */
-.hero-content {
-    position: relative;
-    z-index: 5; /* Above overlay, below play button */
-    max-width: 900px;
-    padding: 0 2rem;
-    /* CRITICAL: Allow clicks to pass through to play button */
-    pointer-events: none;
-}
-
-/* RE-ENABLE POINTER EVENTS FOR INTERACTIVE ELEMENTS IN HERO CONTENT */
-.hero-content .cta-button,
-.hero-content a,
-.hero-content button {
-    pointer-events: all;
-    position: relative;
-    z-index: 1; /* Local stacking within hero-content */
-}
-
-/* ENHANCED PULSE ANIMATION */
 @keyframes playButtonPulse {
     0%, 100% {
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 0 rgba(212, 175, 55, 0.7);
     }
     50% {
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 20px rgba(212, 175, 55, 0);
+    }
+}
+
+/* RESPONSIVE PLAY BUTTON POSITIONING */
+
+/* Large Desktop - Play button on right side */
+@media (min-width: 1200px) {
+    .hero-play-button {
+        top: 45%;
+        right: 12%;
+        transform: translateY(-50%);
+    }
+    
+    .hero-video-loading {
+        top: 45%;
+        right: 12%;
+        transform: translateY(-50%);
+    }
+}
+
+/* Medium Desktop/Tablet Landscape - Adjust position */
+@media (max-width: 1199px) and (min-width: 769px) {
+    .hero-play-button {
+        top: 40%;
+        right: 8%;
+        transform: translateY(-50%);
+        width: 90px;
+        height: 90px;
+        font-size: 2.2rem;
+    }
+    
+    .hero-video-loading {
+        top: 40%;
+        right: 8%;
+        transform: translateY(-50%);
+    }
+}
+
+/* Tablet Portrait - Move to bottom right to avoid text */
+@media (max-width: 768px) and (min-width: 481px) {
+    .hero-play-button {
+        top: auto;
+        bottom: 25%;
+        right: 10%;
+        left: auto;
+        transform: none;
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+    }
+    
+    .hero-video-loading {
+        top: auto;
+        bottom: 25%;
+        right: 10%;
+        left: auto;
+        transform: none;
+    }
+}
+
+/* Mobile - Center bottom to avoid all text */
+@media (max-width: 480px) {
+    .hero-play-button {
+        top: auto;
+        bottom: 20%;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        width: 70px;
+        height: 70px;
+        font-size: 1.8rem;
+    }
+    
+    .hero-video-loading {
+        top: auto;
+        bottom: 20%;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+    }
+    
+    .hero-content {
+        padding-bottom: 8rem; /* Extra space for play button */
+    }
+}
+
+/* Extra small mobile - Ensure no overlap */
+@media (max-width: 360px) {
+    .hero-play-button {
+        bottom: 15%;
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .hero-video-loading {
+        bottom: 15%;
+    }
+    
+    .hero-content {
+        padding-bottom: 7rem;
+    }
+}
+
+/* Landscape mobile - Adjust for shorter height */
+@media (max-height: 600px) and (orientation: landscape) {
+    .hero-play-button {
+        top: 50%;
+        right: 10%;
+        bottom: auto;
+        left: auto;
+        transform: translateY(-50%);
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .hero-video-loading {
+        top: 50%;
+        right: 10%;
+        bottom: auto;
+        left: auto;
+        transform: translateY(-50%);
+    }
+    
+    .hero-content {
+        padding-bottom: 2rem;
     }
 }
 
