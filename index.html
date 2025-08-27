@@ -460,51 +460,54 @@
         </div>
     </nav>
 
-    <!-- TRUE POSTER-FIRST Hero Section - Video Only Loads on User Click -->
-    <section id="home" class="hero">
-        <div class="hero-video-container">
-            <!-- POSTER IMAGE - LOADS IMMEDIATELY AND STAYS VISIBLE -->
-            <img src="/images/carambola-golf-clubhouse.webp" 
-                 alt="Carambola Golf Club Championship Clubhouse" 
-                 class="hero-poster"
-                 fetchpriority="high"
-                 loading="eager">
-            
-            <!-- VIDEO ELEMENT - NO AUTO-LOADING, ONLY LOADS ON USER CLICK -->
-            <video class="hero-video" 
-                   muted 
-                   loop 
-                   playsinline 
-                   preload="none"
-                   poster="/images/carambola-golf-clubhouse.webp"
-                   aria-label="Carambola Golf Club video tour">
-                <source data-src="/video/carambola-golf-video-loop-hero.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            
-            <!-- ENHANCED PLAY BUTTON - More Prominent for Poster-First -->
-            <button class="hero-play-button" aria-label="Play video tour of Carambola Golf Club">
-                <i class="fas fa-play"></i>
-            </button>
-            
-            <!-- LOADING INDICATOR - Shows Only When User Clicks Play -->
-            <div class="hero-video-loading">
-                <div class="video-spinner"></div>
-                <p>Loading video...</p>
-            </div>
+   <!-- FIXED Hero Section with proper element ordering and structure -->
+<section id="home" class="hero">
+    <div class="hero-video-container">
+        <!-- POSTER IMAGE - LOADS IMMEDIATELY AND STAYS VISIBLE -->
+        <img src="/images/carambola-golf-clubhouse.webp" 
+             alt="Carambola Golf Club Championship Clubhouse" 
+             class="hero-poster"
+             fetchpriority="high"
+             loading="eager">
+        
+        <!-- VIDEO ELEMENT - NO AUTO-LOADING, ONLY LOADS ON USER CLICK -->
+        <video class="hero-video" 
+               muted 
+               loop 
+               playsinline 
+               preload="none"
+               poster="/images/carambola-golf-clubhouse.webp"
+               aria-label="Carambola Golf Club video tour">
+            <source data-src="/video/carambola-golf-video-loop-hero.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <!-- HERO OVERLAY -->
+    <div class="hero-overlay"></div>
+    
+    <!-- HERO CONTENT - POSITIONED BELOW PLAY BUTTON -->
+    <div class="hero-content">
+        <div class="hero-tagline">Play the Caribbean's Premier Golf Course</div>
+        <h1>Carambola Golf Club</h1>
+        <div class="hero-subtitle">Designed by Robert Trent Jones Sr.</div>
+        <div class="hero-description">
+            Experience championship golf in tropical paradise. Every hole showcases Jones' legendary design philosophy while incorporating St. Croix's natural beauty and challenging trade winds.
         </div>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <div class="hero-tagline">Play the Caribbean's Premier Golf Course</div>
-            <h1>Carambola Golf Club</h1>
-            <div class="hero-subtitle">Designed by Robert Trent Jones Sr.</div>
-            <div class="hero-description">
-                Experience championship golf in tropical paradise. Every hole showcases Jones' legendary design philosophy while incorporating St. Croix's natural beauty and challenging trade winds.
-            </div>
-            <button class="cta-button book-tee-time">Book Tee Time</button>
-        </div>
-    </section>
-
+        <button class="cta-button book-tee-time">Book Tee Time</button>
+    </div>
+    
+    <!-- PLAY BUTTON - HIGHEST Z-INDEX, POSITIONED LAST FOR ACCESSIBILITY -->
+    <button class="hero-play-button" aria-label="Play video tour of Carambola Golf Club">
+        <i class="fas fa-play"></i>
+    </button>
+    
+    <!-- LOADING INDICATOR - SHOWS ONLY WHEN USER CLICKS PLAY -->
+    <div class="hero-video-loading">
+        <div class="video-spinner"></div>
+        <p>Loading video...</p>
+    </div>
+</section>
     <!-- Weather Widget -->
     <section class="weather-widget">
         <div class="container">
