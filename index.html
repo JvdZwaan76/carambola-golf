@@ -1,17 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Critical Resource Preloading - POSTER IMAGE PRIORITIZED -->
+    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="script.js" as="script">
+    
+    <!-- DNS Prefetch - OPTIMIZED (reduced from 6 to 3 essential) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#1e3a5f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Carambola Golf">
+    <meta name="msapplication-TileColor" content="#1e3a5f">
+    
+    <!-- CORE SEO Meta Tags -->
+    <title>Carambola Golf Club | Robert Trent Jones Sr. Championship Course | St. Croix Golf Resort</title>
+    <meta name="description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands. Book your tee time today for the ultimate Caribbean golf vacation with luxury accommodations and island adventures.">
+    <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course, golf vacation, tropical golf, us virgin islands, estate river, kingshill, golf resort, caribbean resort">
+    <meta name="author" content="Carambola Golf Club">
+    
+    <!-- Geographic Tags -->
+    <meta name="geo.region" content="VI">
+    <meta name="geo.placename" content="St. Croix">
+    <meta name="geo.position" content="17.7537;-64.8059">
+    <meta name="ICBM" content="17.7537, -64.8059">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://carambola.golf/">
+    <meta property="og:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
+    <meta property="og:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
+    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    <meta property="og:site_name" content="Carambola Golf Club">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://carambola.golf/">
+    <meta property="twitter:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
+    <meta property="twitter:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
+    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
+    <meta property="twitter:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://carambola.golf/">
+    
+    <!-- Favicon and Icons - FIXED 404 ERROR -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <!-- REMOVED: android-chrome-512x512.png - causing 404 error -->
+    
+    <!-- Critical CSS -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- External CSS - DEFERRED -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin="anonymous">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"></noscript>
+    
+    <!-- MINIMAL Schema.org - Essential data only -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "GolfCourse",
+        "name": "Carambola Golf Club",
+        "description": "Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands.",
+        "url": "https://carambola.golf",
+        "telephone": "+13407785638",
+        "email": "info@carambola.golf",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Estate River, Kingshill",
+            "addressLocality": "St. Croix",
+            "addressRegion": "VI",
+            "postalCode": "00850",
+            "addressCountry": "US"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "17.7537",
+            "longitude": "-64.8059"
+        },
+        "founder": {
+            "@type": "Person",
+            "name": "Robert Trent Jones Sr."
+        },
+        "offers": {
+            "@type": "Offer",
+            "name": "18-Hole Golf Round",
+            "price": "115",
+            "priceCurrency": "USD"
+        }
+    }
+    </script>
+    
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
     <!-- End Google Tag Manager -->
-    <!-- Clarity tracking code for https://carambola.golf/ -->
-<script>
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "t1nijgvn69");
-</script>
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
     <script>
@@ -130,276 +232,20 @@
         });
     </script>
     
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="googlebot" content="index, follow">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#1e3a5f">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Carambola Golf">
-    <meta name="msapplication-TileColor" content="#1e3a5f">
-    <meta name="msapplication-config" content="/browserconfig.xml">
-    
-    <!-- Critical Resource Preloading - POSTER IMAGE PRIORITIZED -->
-    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
-    
-    <!-- DNS Prefetch for Performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <link rel="dns-prefetch" href="https://www.googletagmanager.com">
-    <link rel="dns-prefetch" href="https://www.google-analytics.com">
-    <link rel="dns-prefetch" href="https://api.openweathermap.org">
-    
-    <!-- SEO Meta Tags -->
-    <title>Carambola Golf Club | Robert Trent Jones Sr. Championship Course | St. Croix Golf Resort</title>
-    <meta name="description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands. Book your tee time today for the ultimate Caribbean golf vacation with luxury accommodations and island adventures.">
-    <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course, golf vacation, tropical golf, us virgin islands, estate river, kingshill, golf resort, caribbean resort">
-    <meta name="author" content="Carambola Golf Club">
-    <meta name="copyright" content="Carambola Golf Club">
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="7 days">
-    <meta name="distribution" content="global">
-    <meta name="rating" content="general">
-    
-    <!-- Additional SEO Tags -->
-    <meta name="HandheldFriendly" content="true">
-    <meta name="MobileOptimized" content="width">
-    <meta name="apple-mobile-web-app-title" content="Carambola Golf">
-    <meta name="application-name" content="Carambola Golf Club">
-    <meta name="msapplication-tooltip" content="Championship Golf in Paradise">
-    <meta name="msapplication-starturl" content="/">
-    
-    <!-- Geographic Tags -->
-    <meta name="geo.region" content="VI">
-    <meta name="geo.placename" content="St. Croix">
-    <meta name="geo.position" content="17.7537;-64.8059">
-    <meta name="ICBM" content="17.7537, -64.8059">
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://carambola.golf/">
-    <meta property="og:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
-    <meta property="og:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
-    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Carambola Golf Club Championship Clubhouse">
-    <meta property="og:site_name" content="Carambola Golf Club">
-    <meta property="og:locale" content="en_US">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://carambola.golf/">
-    <meta property="twitter:title" content="Carambola Golf Club | Robert Trent Jones Sr. Championship Course">
-    <meta property="twitter:description" content="Experience championship golf at Carambola Golf Club, featuring an 18-hole Robert Trent Jones Sr. designed course in St. Croix, US Virgin Islands.">
-    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
-    <meta property="twitter:image:alt" content="Carambola Golf Club Championship Clubhouse">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://carambola.golf/">
-    
-    <!-- Favicon and Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png">
-    
-    <!-- External CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
-    
-    <!-- Enhanced Structured Data / Schema.org -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "GolfCourse",
-        "name": "Carambola Golf Club",
-        "description": "Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands. Experience world-class golf in tropical paradise with stunning Caribbean views, luxury amenities, and complete vacation experiences.",
-        "url": "https://carambola.golf",
-        "telephone": "+13407785638",
-        "email": "info@carambola.golf",
-        "logo": "https://carambola.golf/images/carambola-golf-logo.png",
-        "image": [
-            "https://carambola.golf/images/carambola-golf-clubhouse.webp",
-            "https://carambola.golf/images/carambola-golf-hole-12.webp",
-            "https://carambola.golf/images/carambola-golf-hole-18.webp"
-        ],
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Estate River, Kingshill",
-            "addressLocality": "St. Croix",
-            "addressRegion": "VI",
-            "postalCode": "00850",
-            "addressCountry": "US"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "17.7537",
-            "longitude": "-64.8059"
-        },
-        "hasMap": "https://maps.google.com/maps?q=Carambola+Golf+Club,+Estate+River,+Kingshill,+St.+Croix,+VI",
-        "openingHours": "Mo-Su 06:00-18:00",
-        "priceRange": "$$",
-        "starRating": {
-            "@type": "Rating",
-            "ratingValue": "4.8",
-            "bestRating": "5",
-            "worstRating": "1"
-        },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "127",
-            "bestRating": "5",
-            "worstRating": "1"
-        },
-        "amenityFeature": [
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Pro Shop",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification", 
-                "name": "Driving Range",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Putting Green", 
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Golf Lessons",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Golf Cart Rental",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Club Rental",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Restaurant",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Lounge",
-                "value": true
-            },
-            {
-                "@type": "LocationFeatureSpecification",
-                "name": "Free Parking",
-                "value": true
-            }
-        ],
-        "founder": {
-            "@type": "Person",
-            "name": "Robert Trent Jones Sr.",
-            "description": "Legendary golf course architect",
-            "url": "https://en.wikipedia.org/wiki/Robert_Trent_Jones"
-        },
-        "paymentAccepted": "Cash, Credit Card, Debit Card",
-        "currenciesAccepted": "USD",
-        "smokingAllowed": false,
-        "petsAllowed": false,
-        "isAccessibleForFree": false,
-        "publicAccess": true,
-        "sameAs": [
-            "https://www.facebook.com/CarambolaGolfClub",
-            "https://www.instagram.com/carambolagolf",
-            "https://www.twitter.com/CarambolaGolf",
-            "https://www.youtube.com/CarambolaGolfClub",
-            "https://www.tripadvisor.com/carambola-golf-club"
-        ],
-        "offers": [
-            {
-                "@type": "Offer",
-                "name": "18-Hole Golf Round",
-                "description": "Championship golf experience designed by Robert Trent Jones Sr.",
-                "price": "115",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2025-01-01",
-                "category": "Golf"
-            },
-            {
-                "@type": "Offer",
-                "name": "Annual Golf Membership",
-                "description": "Unlimited golf access for one year",
-                "price": "1400",
-                "priceCurrency": "USD",
-                "availability": "https://schema.org/InStock",
-                "validFrom": "2025-01-01",
-                "category": "Membership"
-            }
-        ]
-    }
+    <!-- Microsoft Clarity -->
+    <script>
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "t1nijgvn69");
     </script>
-    
-    <!-- FAQ Schema for SEO -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
-            {
-                "@type": "Question",
-                "name": "Who designed Carambola Golf Club?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Carambola Golf Club was designed by legendary golf course architect Robert Trent Jones Sr., one of the most celebrated golf course designers in history."
-                }
-            },
-            {
-                "@type": "Question", 
-                "name": "How do I book a tee time at Carambola Golf Club?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "To book a tee time at Carambola Golf Club, call our Pro Shop at +1-340-778-5638 or email info@carambola.golf. We recommend booking 24-48 hours in advance."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "What are the green fees at Carambola Golf Club?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Visitor green fees are $115 for 18 holes with cart, $85 walking. Local residents (VI ID required) pay $75 for 18 holes with cart, $45 walking. Multi-round packages available."
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Where is Carambola Golf Club located?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Carambola Golf Club is located at Estate River, Kingshill, St. Croix, VI 00850, approximately 20 minutes from Henry E. Rohlsen Airport."
-                }
-            }
-        ]
-    }
-    </script>
-
-    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
-
-    <!-- Preloader - OPTIMIZED FOR FASTER POSTER-FIRST LOADING -->
+    
+    <!-- Preloader - OPTIMIZED FOR FASTER LOADING -->
     <div id="preloader" class="preloader">
         <div class="preloader-content">
             <div class="golf-loader">
@@ -467,18 +313,18 @@
         </div>
     </nav>
 
-    <!-- FIXED Hero Section with proper element ordering and bulletproof layering -->
+    <!-- HERO Section with TRUE poster-first loading -->
     <section id="home" class="hero">
-        <!-- Background Media Container - Base Layer -->
+        <!-- Background Media Container -->
         <div class="hero-video-container">
-            <!-- POSTER IMAGE - ALWAYS VISIBLE BY DEFAULT -->
+            <!-- POSTER IMAGE - ALWAYS VISIBLE -->
             <img src="/images/carambola-golf-clubhouse.webp" 
                  alt="Carambola Golf Club Championship Clubhouse" 
                  class="hero-poster"
                  fetchpriority="high"
                  loading="eager">
             
-            <!-- VIDEO ELEMENT - ONLY LOADS ON USER CLICK -->
+            <!-- VIDEO ELEMENT - LOADS ON USER CLICK -->
             <video class="hero-video" 
                    muted 
                    loop 
@@ -491,10 +337,8 @@
             </video>
         </div>
         
-        <!-- HERO OVERLAY - Above media, below content -->
         <div class="hero-overlay"></div>
         
-        <!-- HERO CONTENT - Middle layer -->
         <div class="hero-content">
             <div class="hero-tagline">Play the Caribbean's Premier Golf Course</div>
             <h1>Carambola Golf Club</h1>
@@ -505,12 +349,10 @@
             <button class="cta-button book-tee-time">Book Tee Time</button>
         </div>
         
-        <!-- PLAY BUTTON - HIGHEST LAYER, COMPLETELY SEPARATE FOR MAXIMUM VISIBILITY -->
         <button class="hero-play-button" aria-label="Play video tour of Carambola Golf Club">
             <i class="fas fa-play"></i>
         </button>
         
-        <!-- LOADING INDICATOR - TOP LAYER, SHOWS ONLY WHEN USER CLICKS PLAY -->
         <div class="hero-video-loading">
             <div class="video-spinner"></div>
             <p>Loading video...</p>
@@ -835,10 +677,58 @@
         <span>You're offline. Some features may be limited.</span>
     </div>
 
-    <!-- Load updated script with TRUE poster-first functionality -->
+    <!-- Load scripts at end of body for optimal performance -->
     <script src="script.js"></script>
-
-    <!-- Load footer status integration -->
     <script src="footer-status.js"></script>
+    
+    <!-- DEFERRED FAQ Schema - Load after critical content -->
+    <script>
+        // Load additional schema after initial page load
+        setTimeout(function() {
+            const faqSchema = {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "Who designed Carambola Golf Club?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Carambola Golf Club was designed by legendary golf course architect Robert Trent Jones Sr., one of the most celebrated golf course designers in history."
+                        }
+                    },
+                    {
+                        "@type": "Question", 
+                        "name": "How do I book a tee time at Carambola Golf Club?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "To book a tee time at Carambola Golf Club, call our Pro Shop at +1-340-778-5638 or email info@carambola.golf. We recommend booking 24-48 hours in advance."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "What are the green fees at Carambola Golf Club?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Visitor green fees are $115 for 18 holes with cart, $85 walking. Local residents (VI ID required) pay $75 for 18 holes with cart, $45 walking. Multi-round packages available."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Where is Carambola Golf Club located?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Carambola Golf Club is located at Estate River, Kingshill, St. Croix, VI 00850, approximately 20 minutes from Henry E. Rohlsen Airport."
+                        }
+                    }
+                ]
+            };
+            
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(faqSchema);
+            document.head.appendChild(script);
+        }, 2000);
+    </script>
 </body>
 </html>
