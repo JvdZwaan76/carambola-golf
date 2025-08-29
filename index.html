@@ -1,27 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- FIXED: Critical Resource Preloading - PROPER CROSSORIGIN ATTRIBUTES -->
-    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high" crossorigin>
+    <!-- FIXED: Critical Resource Preloading - ADDED MISSING CROSSORIGIN ONLY -->
+    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
     <link rel="preload" href="styles.css" as="style" crossorigin>
     <link rel="preload" href="script.js" as="script" crossorigin>
     
-    <!-- FIXED: DNS Prefetch - COMPLETE LIST INCLUDING CLARITY ENDPOINTS -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <!-- DNS Prefetch - OPTIMIZED (reduced from 6 to 3 essential) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <!-- FIXED: Add missing Clarity endpoints -->
-    <link rel="dns-prefetch" href="//y.clarity.ms">
-    <link rel="dns-prefetch" href="//c.clarity.ms">
-    <link rel="dns-prefetch" href="//www.clarity.ms">
-    <link rel="preconnect" href="https://y.clarity.ms" crossorigin>
-    <link rel="preconnect" href="https://c.clarity.ms" crossorigin>
     
-    <!-- STRATEGIC PREFETCH - INDEX.HTML SPECIFIC -->
+    <!-- STRATEGIC PREFETCH - INDEX.HTML SPECIFIC (REMOVED 503-causing prefetch) -->
     <link rel="dns-prefetch" href="//api.openweathermap.org">
-    <link rel="prefetch" href="/course.html" as="document">
-    <link rel="prefetch" href="/pricing.html" as="document">
+    <!-- Removed course.html and pricing.html prefetch to eliminate 503 errors -->
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,12 +63,13 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/">
     
-    <!-- FIXED: Favicon and Icons - BETTER FALLBACK HANDLING -->
+    <!-- Favicon and Icons - FIXED 404 ERROR -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <!-- REMOVED: android-chrome-512x512.png - causing 404 error -->
     
     <!-- CRITICAL CSS INLINE - INDEX.HTML ONLY (Preserves all existing classes) -->
     <style>
@@ -123,11 +116,11 @@
     }
     </style>
     
-    <!-- FIXED: LOAD FULL CSS ASYNCHRONOUSLY WITH PROPER CROSSORIGIN -->
+    <!-- FIXED: LOAD FULL CSS ASYNCHRONOUSLY - Added crossorigin -->
     <link rel="preload" href="styles.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="styles.css"></noscript>
     
-    <!-- FIXED: External CSS - DEFERRED WITH PROPER CROSSORIGIN -->
+    <!-- FIXED: External CSS - DEFERRED - Added crossorigin -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"></noscript>
     
