@@ -1,19 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- FIXED: Critical Resource Preloading - ADDED MISSING CROSSORIGIN ONLY -->
+    <!-- FIXED: Critical Resource Preloading - CORRECTED ALL ATTRIBUTE ISSUES -->
     <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
-    <link rel="preload" href="styles.css" as="style" crossorigin>
-    <link rel="preload" href="script.js" as="script" crossorigin>
+    <link rel="preload" href="/styles.css" as="style" crossorigin>
+    <link rel="preload" href="/script.js" as="script" crossorigin>
     
-    <!-- DNS Prefetch - OPTIMIZED (reduced from 6 to 3 essential) -->
+    <!-- DNS Prefetch - OPTIMIZED -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
-    <!-- STRATEGIC PREFETCH - INDEX.HTML SPECIFIC (REMOVED 503-causing prefetch) -->
+    <!-- STRATEGIC PREFETCH - INDEX.HTML SPECIFIC -->
     <link rel="dns-prefetch" href="//api.openweathermap.org">
-    <!-- Removed course.html and pricing.html prefetch to eliminate 503 errors -->
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -63,13 +62,12 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/">
     
-    <!-- Favicon and Icons - FIXED 404 ERROR -->
+    <!-- Favicon and Icons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-    <!-- REMOVED: android-chrome-512x512.png - causing 404 error -->
     
     <!-- CRITICAL CSS INLINE - INDEX.HTML ONLY (Preserves all existing classes) -->
     <style>
@@ -116,24 +114,22 @@
     }
     </style>
     
-    <!-- FIXED: LOAD FULL CSS ASYNCHRONOUSLY - Added crossorigin -->
-    <link rel="preload" href="styles.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="styles.css"></noscript>
+    <!-- FIXED: LOAD FULL CSS ASYNCHRONOUSLY WITH CROSSORIGIN -->
+    <link rel="stylesheet" href="/styles.css">
     
-    <!-- FIXED: External CSS - DEFERRED - Added crossorigin -->
+    <!-- FIXED: External CSS - PROPER CROSSORIGIN -->
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"></noscript>
     
-    <!-- FONT OPTIMIZATION - INDEX.HTML SPECIFIC -->
+    <!-- FONT OPTIMIZATION -->
     <style>
-    /* Optimize font loading for faster text rendering */
     @font-face {
         font-family: 'Georgia';
-        font-display: swap; /* Shows fallback immediately, swaps when loaded */
+        font-display: swap;
     }
     </style>
     
-    <!-- MINIMAL Schema.org - Essential data only -->
+    <!-- Schema.org -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -171,9 +167,8 @@
     
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
-    <!-- End Google Tag Manager -->
     
-    <!-- Google tag (gtag.js) -->
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -190,7 +185,6 @@
             }
         });
 
-        // Enhanced Analytics Tracking Functions
         function trackGolfEvent(action, section, details = {}) {
             gtag('event', action, {
                 event_category: 'Golf Course Interaction',
@@ -233,39 +227,33 @@
             });
         }
 
-        // Initialize enhanced tracking
         document.addEventListener('DOMContentLoaded', function() {
             trackScrollDepth();
             
-            // Track CTA button clicks
             document.querySelectorAll('.cta-button, .book-tee-time').forEach(button => {
                 button.addEventListener('click', function() {
                     trackBookingIntent('cta_click', 'website_button');
                 });
             });
 
-            // Track phone number clicks
             document.querySelectorAll('a[href^="tel:"]').forEach(link => {
                 link.addEventListener('click', function() {
                     trackBookingIntent('phone_click', 'direct_call');
                 });
             });
 
-            // Track email clicks
             document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
                 link.addEventListener('click', function() {
                     trackBookingIntent('email_click', 'direct_email');
                 });
             });
 
-            // Track navigation clicks
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.addEventListener('click', function() {
                     trackUserEngagement('navigation_click', this.textContent.trim());
                 });
             });
 
-            // Track feature card interactions
             document.querySelectorAll('.feature-card, .quick-link-card').forEach(card => {
                 card.addEventListener('click', function() {
                     const title = this.querySelector('h3')?.textContent || 'Unknown Feature';
@@ -273,7 +261,6 @@
                 });
             });
 
-            // Track modal interactions
             const modal = document.getElementById('constructionModal');
             if (modal) {
                 const observer = new MutationObserver(function(mutations) {
@@ -304,7 +291,7 @@
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
-    <!-- Preloader - OPTIMIZED FOR FASTER LOADING -->
+    <!-- Preloader -->
     <div id="preloader" class="preloader">
         <div class="preloader-content">
             <div class="golf-loader">
@@ -372,18 +359,15 @@
         </div>
     </nav>
 
-    <!-- HERO Section with TRUE poster-first loading -->
+    <!-- HERO Section -->
     <section id="home" class="hero">
-        <!-- Background Media Container -->
         <div class="hero-video-container">
-            <!-- POSTER IMAGE - ALWAYS VISIBLE -->
             <img src="/images/carambola-golf-clubhouse.webp" 
                  alt="Carambola Golf Club Championship Clubhouse" 
                  class="hero-poster"
                  fetchpriority="high"
                  loading="eager">
             
-            <!-- VIDEO ELEMENT - LOADS ON USER CLICK -->
             <video class="hero-video" 
                    muted 
                    loop 
@@ -736,13 +720,12 @@
         <span>You're offline. Some features may be limited.</span>
     </div>
 
-    <!-- Load scripts at end of body for optimal performance -->
-    <script src="script.js"></script>
+    <!-- Scripts -->
+    <script src="script.js" crossorigin></script>
     <script src="footer-status.js"></script>
     
-    <!-- DEFERRED FAQ Schema - Load after critical content -->
+    <!-- Deferred Schema -->
     <script>
-        // Load additional schema after initial page load
         setTimeout(function() {
             const faqSchema = {
                 "@context": "https://schema.org",
