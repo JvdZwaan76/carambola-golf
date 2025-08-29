@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Critical Resource Preloading - POSTER IMAGE PRIORITIZED -->
-    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
-    <link rel="preload" href="styles.css" as="style">
-    <link rel="preload" href="script.js" as="script">
+    <!-- FIXED: Critical Resource Preloading - PROPER CROSSORIGIN ATTRIBUTES -->
+    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high" crossorigin>
+    <link rel="preload" href="styles.css" as="style" crossorigin>
+    <link rel="preload" href="script.js" as="script" crossorigin>
     
-    <!-- DNS Prefetch - OPTIMIZED (reduced from 6 to 3 essential) -->
-    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <!-- FIXED: DNS Prefetch - COMPLETE LIST INCLUDING CLARITY ENDPOINTS -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <!-- FIXED: Add missing Clarity endpoints -->
+    <link rel="dns-prefetch" href="//y.clarity.ms">
+    <link rel="dns-prefetch" href="//c.clarity.ms">
+    <link rel="dns-prefetch" href="//www.clarity.ms">
+    <link rel="preconnect" href="https://y.clarity.ms" crossorigin>
+    <link rel="preconnect" href="https://c.clarity.ms" crossorigin>
+    
+    <!-- STRATEGIC PREFETCH - INDEX.HTML SPECIFIC -->
+    <link rel="dns-prefetch" href="//api.openweathermap.org">
+    <link rel="prefetch" href="/course.html" as="document">
+    <link rel="prefetch" href="/pricing.html" as="document">
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,20 +71,74 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/">
     
-    <!-- Favicon and Icons - FIXED 404 ERROR -->
+    <!-- FIXED: Favicon and Icons - BETTER FALLBACK HANDLING -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
-    <!-- REMOVED: android-chrome-512x512.png - causing 404 error -->
     
-    <!-- Critical CSS -->
-    <link rel="stylesheet" href="styles.css">
+    <!-- CRITICAL CSS INLINE - INDEX.HTML ONLY (Preserves all existing classes) -->
+    <style>
+    /* Critical above-the-fold styles - INDEX.HTML SPECIFIC */
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{--primary-navy:#1e3a5f;--secondary-navy:#2c5282;--accent-gold:#d4af37;--light-gold:#f4e7c1;--text-dark:#2d3748;--text-light:#ffffff;--bg-light:#f7fafc;--bg-cream:#fefcf7;--shadow-soft:rgba(30,58,95,0.1);--shadow-medium:rgba(30,58,95,0.2);--transition-fast:0.2s ease;--transition-medium:0.3s ease;--transition-slow:0.5s ease;}
+    body{font-family:'Georgia','Times New Roman',serif;line-height:1.6;color:var(--text-dark);background-color:var(--bg-cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
     
-    <!-- External CSS - DEFERRED -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin="anonymous">
+    /* Critical preloader styles */
+    .preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,var(--primary-navy) 0%,var(--secondary-navy) 100%);display:flex;align-items:center;justify-content:center;z-index:10001;transition:opacity 0.5s ease,visibility 0.5s ease;}
+    .preloader.hidden{opacity:0;visibility:hidden;}
+    .preloader-content{text-align:center;color:var(--text-light);max-width:400px;padding:2rem;}
+    .golf-loader{position:relative;width:120px;height:80px;margin:0 auto 2rem;}
+    .golf-ball{width:20px;height:20px;background:var(--text-light);border-radius:50%;position:absolute;top:30px;animation:golfBallRoll 2s ease-in-out infinite;box-shadow:0 0 10px rgba(255,255,255,0.3);}
+    @keyframes golfBallRoll{0%{left:0;transform:rotate(0deg);}50%{left:70px;transform:rotate(180deg);}100%{left:70px;transform:rotate(360deg);opacity:0;}}
+    .loading-text h2{font-size:2rem;margin-bottom:0.5rem;color:var(--accent-gold);font-weight:400;}
+    .loading-progress{height:100%;background:linear-gradient(90deg,var(--accent-gold),var(--light-gold));border-radius:2px;animation:loadingProgress 3s ease-in-out infinite;}
+    
+    /* Critical navbar styles */
+    .navbar{position:fixed;top:0;width:100%;background:rgba(30,58,95,0.95);backdrop-filter:blur(10px);z-index:1000;padding:0.8rem 0;transition:all var(--transition-medium);border-bottom:1px solid var(--accent-gold);}
+    .nav-container{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;}
+    .logo{font-size:1.8rem;font-weight:bold;color:var(--accent-gold);text-decoration:none;font-family:'Georgia',serif;}
+    .nav-links{display:flex;list-style:none;gap:2.5rem;}
+    .nav-links a{color:var(--text-light);text-decoration:none;font-weight:400;font-size:0.95rem;transition:color var(--transition-medium);text-transform:uppercase;letter-spacing:0.5px;padding:0.5rem 0;position:relative;}
+    .mobile-menu{display:none;background:none;border:none;color:var(--text-light);font-size:1.5rem;cursor:pointer;}
+    
+    /* Critical hero styles */
+    .hero{height:90vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text-light);margin-top:80px;padding-top:2rem;overflow:hidden;isolation:isolate;}
+    .hero-video-container{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;}
+    .hero-poster{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:2;opacity:1;transition:opacity 0.8s ease;pointer-events:none;}
+    .hero-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(rgba(30,58,95,0.3),rgba(30,58,95,0.5));z-index:4;pointer-events:none;}
+    .hero-content{position:relative;z-index:5;max-width:900px;padding:0 2rem;pointer-events:none;display:grid;grid-template-columns:1fr;gap:1.5rem;align-items:center;text-align:center;}
+    .hero-play-button{position:absolute;top:45%;right:15%;transform:translateY(-50%);width:100px;height:100px;background:rgba(30,58,95,0.85);border:3px solid rgba(255,255,255,0.9);border-radius:50%;color:white;font-size:2.5rem;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;pointer-events:all;opacity:1;visibility:visible;}
+    
+    /* Mobile responsive critical styles */
+    @media (max-width:768px){
+        .mobile-menu{display:block;}
+        .nav-links{display:none;}
+        .hero{height:auto;min-height:80vh;margin-top:100px;padding:3rem 1rem 2rem;}
+        .hero-play-button{top:auto;bottom:25%;right:10%;left:auto;transform:none;width:80px;height:80px;font-size:2rem;}
+    }
+    @media (max-width:480px){
+        .hero-play-button{bottom:20%;left:50%;right:auto;transform:translateX(-50%);width:70px;height:70px;font-size:1.8rem;}
+    }
+    </style>
+    
+    <!-- FIXED: LOAD FULL CSS ASYNCHRONOUSLY WITH PROPER CROSSORIGIN -->
+    <link rel="preload" href="styles.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="styles.css"></noscript>
+    
+    <!-- FIXED: External CSS - DEFERRED WITH PROPER CROSSORIGIN -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"></noscript>
+    
+    <!-- FONT OPTIMIZATION - INDEX.HTML SPECIFIC -->
+    <style>
+    /* Optimize font loading for faster text rendering */
+    @font-face {
+        font-family: 'Georgia';
+        font-display: swap; /* Shows fallback immediately, swaps when loaded */
+    }
+    </style>
     
     <!-- MINIMAL Schema.org - Essential data only -->
     <script type="application/ld+json">
@@ -520,7 +586,7 @@
                 <div class="testimonial-quote">
                     "Carambola Golf Club represents the perfect marriage of Robert Trent Jones Sr.'s legendary design philosophy with the natural beauty of the Caribbean. Every hole is a masterpiece."
                 </div>
-                <div class="testimonial-author">— Golf Architecture Review</div>
+                <div class="testimonial-author">– Golf Architecture Review</div>
             </div>
         </div>
     </section>
