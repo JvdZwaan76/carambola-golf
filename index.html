@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- FIXED: Critical Resource Preloading - CORRECTED ALL ATTRIBUTE ISSUES -->
+    <!-- FIXED: Critical Resource Preloading - CORRECTED CROSSORIGIN ATTRIBUTES -->
     <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
-    <link rel="preload" href="/styles.css" as="style" crossorigin>
-    <link rel="preload" href="/script.js" as="script" crossorigin>
+    <link rel="preload" href="/styles.css" as="style" crossorigin="anonymous">
+    <link rel="preload" href="/script.js" as="script" crossorigin="anonymous">
     
     <!-- DNS Prefetch - OPTIMIZED -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    
-    <!-- STRATEGIC PREFETCH - INDEX.HTML SPECIFIC -->
-    <link rel="dns-prefetch" href="//api.openweathermap.org">
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -118,7 +115,7 @@
     <link rel="stylesheet" href="/styles.css">
     
     <!-- FIXED: External CSS - PROPER CROSSORIGIN -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"></noscript>
     
     <!-- FONT OPTIMIZATION -->
@@ -563,7 +560,7 @@
                 <div class="testimonial-quote">
                     "Carambola Golf Club represents the perfect marriage of Robert Trent Jones Sr.'s legendary design philosophy with the natural beauty of the Caribbean. Every hole is a masterpiece."
                 </div>
-                <div class="testimonial-author">– Golf Architecture Review</div>
+                <div class="testimonial-author">— Golf Architecture Review</div>
             </div>
         </div>
     </section>
