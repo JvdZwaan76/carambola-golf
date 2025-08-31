@@ -1,5 +1,6 @@
 /* CARAMBOLA GOLF CLUB BLOG STYLES - MOBILE-OPTIMIZED WITH CONFLICT PREVENTION */
 /* Enterprise integration with main design system - CONFLICT-FREE */
+/* ENHANCED: Priority 1 Profile Image System - Production Ready */
 
 /* ==========================================================================
    AGGRESSIVE FIX FOR IMAGE TEXT OVERLAY ISSUE - MUST BE FIRST
@@ -1323,10 +1324,10 @@
 }
 
 /* ==========================================================================
-   ENHANCED AUTHOR BIO WITH FIXED PROFILE PICTURE IMPLEMENTATION
+   PRIORITY 1: ENHANCED AUTHOR BIO WITH PERFECT PROFILE PICTURE SYSTEM
    ========================================================================== */
 
-/* Author Bio - Enhanced with Profile Picture */
+/* Author Bio - Enhanced with Profile Picture - PRODUCTION READY */
 .author-bio {
     background: var(--blog-bg-light, #f8f9fa);
     padding: 3rem;
@@ -1354,64 +1355,89 @@
     margin-bottom: 2rem;
 }
 
-/* FIXED: Enhanced Author Avatar with Proper Profile Picture Support */
+/* PRIORITY 1: ENHANCED AUTHOR AVATAR - PERFECT VIEWPORT SCALING */
 .author-avatar {
-    width: 100px;
-    height: 100px;
-    min-width: 100px;
-    min-height: 100px;
+    /* Desktop: Larger, more prominent - 120px */
+    width: 120px;
+    height: 120px;
+    min-width: 120px;
+    min-height: 120px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.5rem;
+    font-size: 2.8rem;
     color: var(--blog-primary-navy, #1e3a5f);
     font-weight: 700;
     flex-shrink: 0;
     overflow: hidden;
-    border: 4px solid var(--blog-accent-gold, #d4af37);
-    box-shadow: 0 8px 32px rgba(212, 175, 55, 0.25);
+    /* ENTERPRISE: Enhanced border and shadow */
+    border: 5px solid var(--blog-accent-gold, #d4af37);
+    box-shadow: 
+        0 8px 32px rgba(212, 175, 55, 0.25),
+        0 2px 8px rgba(30, 58, 95, 0.1);
     background: linear-gradient(135deg, #f8f6f0 0%, #e8e2d5 100%);
     position: relative;
     transition: all var(--blog-transition-medium, 0.3s ease);
+    /* PERFORMANCE: GPU acceleration */
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 
-/* FIXED: Profile Picture Implementation - Proper sizing and positioning */
+/* PRIORITY 1: PROFILE PICTURE - Perfect sizing and positioning */
 .author-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
+    object-position: center top; /* Better face positioning */
     border-radius: 50%;
     position: absolute;
     top: 0;
     left: 0;
     z-index: 3;
     transition: all var(--blog-transition-medium, 0.3s ease);
-    /* FIXED: Ensure image displays properly */
     display: block;
+    opacity: 1;
+    /* ENTERPRISE: Enhanced image rendering */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+/* PRIORITY 1: Loading states with enterprise feel */
+.author-avatar img[loading] {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.author-avatar img[loading].loaded,
+.author-avatar img.loaded {
     opacity: 1;
 }
 
-/* FIXED: Proper hover effects for profile picture */
+/* PRIORITY 1: Enterprise hover effects */
 .author-bio:hover .author-avatar {
     border-color: var(--blog-primary-navy, #1e3a5f);
-    box-shadow: 0 12px 48px rgba(212, 175, 55, 0.35);
-    transform: scale(1.05);
+    box-shadow: 
+        0 12px 48px rgba(212, 175, 55, 0.35),
+        0 4px 16px rgba(30, 58, 95, 0.15);
+    transform: translateZ(0) scale(1.05);
 }
 
 .author-bio:hover .author-avatar img {
     transform: scale(1.02);
+    filter: saturate(1.1) contrast(1.05);
 }
 
-/* FIXED: Fallback initials positioning - Only show when no image */
+/* PRIORITY 1: Fallback initials with better typography */
 .author-avatar::before {
     content: attr(data-initials);
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 2.5rem;
+    font-size: inherit;
     font-weight: 700;
     color: var(--blog-primary-navy, #1e3a5f);
     z-index: 1;
@@ -1419,38 +1445,94 @@
     align-items: center;
     justify-content: center;
     transition: opacity var(--blog-transition-medium, 0.3s ease);
+    font-family: 'Georgia', serif;
+    letter-spacing: 0.1em;
 }
 
-/* FIXED: Hide initials when image is loaded and visible */
-.author-avatar img:not([style*="display: none"]) ~ .author-avatar::before,
+/* PRIORITY 1: Hide/show initials logic - Enhanced */
 .author-avatar:has(img:not([style*="display: none"]))::before {
     opacity: 0;
 }
 
-/* FIXED: Show initials only when image is hidden or failed to load */
-.author-avatar img[style*="display: none"] ~ .author-avatar::before,
 .author-avatar:has(img[style*="display: none"])::before,
 .author-avatar:not(:has(img))::before {
     opacity: 1;
 }
 
-/* FIXED: Enhanced loading state for profile pictures */
-.author-avatar img[loading] {
-    opacity: 0;
-    transition: opacity 0.5s ease;
+/* PRIORITY 1: TABLET OPTIMIZATION - Balanced sizing */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .author-avatar {
+        width: 110px;
+        height: 110px;
+        min-width: 110px;
+        min-height: 110px;
+        font-size: 2.6rem;
+        border-width: 4px;
+    }
 }
 
-.author-avatar img[loading].loaded {
-    opacity: 1;
+/* PRIORITY 1: MOBILE OPTIMIZATION - Perfect mobile sizing */
+@media (max-width: 768px) {
+    .author-avatar {
+        width: 100px;
+        height: 100px;
+        min-width: 100px;
+        min-height: 100px;
+        font-size: 2.4rem;
+        border-width: 4px;
+        box-shadow: 
+            0 6px 24px rgba(212, 175, 55, 0.2),
+            0 2px 6px rgba(30, 58, 95, 0.1);
+    }
+    
+    /* Mobile: Side-by-side layout optimization */
+    .author-info {
+        flex-direction: row;
+        align-items: flex-start;
+        text-align: left;
+        gap: 1.5rem;
+    }
+    
+    .author-details {
+        flex: 1;
+        padding-top: 0.2rem;
+    }
 }
 
-/* FIXED: Profile picture error handling - Clean fallback */
-.author-avatar img:not([src]),
-.author-avatar img[src=""],
-.author-avatar img[onerror] {
-    display: none !important;
+/* PRIORITY 1: SMALL MOBILE - Compact but professional */
+@media (max-width: 480px) {
+    .author-avatar {
+        width: 80px;
+        height: 80px;
+        min-width: 80px;
+        min-height: 80px;
+        font-size: 2rem;
+        border-width: 3px;
+    }
+    
+    .author-info {
+        gap: 1rem;
+    }
+    
+    .author-details h4 {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .author-title {
+        font-size: 0.9rem;
+    }
 }
 
+/* PRIORITY 1: RETINA/HIGH-DPI - Enhanced quality */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 2dppx) {
+    .author-avatar img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: auto;
+    }
+}
+
+/* Author Details - Enhanced for enterprise look */
 .author-details {
     flex: 1;
     padding-top: 0.5rem;
@@ -2042,21 +2124,6 @@ html body .faq-section .faq-question h3 {
         height: auto !important;
     }
 
-    /* FIXED: Author Avatar Mobile Adjustments */
-    .author-info {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 1.5rem;
-    }
-    
-    .author-avatar {
-        width: 120px;
-        height: 120px;
-        min-width: 120px;
-        min-height: 120px;
-    }
-
     /* Article Hero Mobile - Better Content Spacing */
     .article-hero {
         padding: 4rem 1.5rem 3rem !important; /* Better mobile padding */
@@ -2345,26 +2412,6 @@ html body .faq-section .faq-question h3 {
         padding: 1rem !important;
     }
 
-    /* FIXED: Author Avatar Small Mobile Adjustment */
-    .author-info {
-        flex-direction: row;
-        text-align: left;
-        gap: 1rem;
-    }
-    
-    .author-avatar {
-        width: 80px;
-        height: 80px;
-        min-width: 80px;
-        min-height: 80px;
-        font-size: 2rem;
-    }
-    
-    .author-details {
-        text-align: left;
-        flex: 1;
-    }
-
     /* Article Hero Small Mobile - Enhanced Spacing */
     .article-hero {
         padding: 3rem 1rem 2.5rem !important; /* Better small mobile padding */
@@ -2606,7 +2653,8 @@ a:focus {
     .featured-article-card,
     .stat-item,
     .credential-item,
-    .static-advertisement {
+    .static-advertisement,
+    .author-avatar {
         transition: none;
         animation: none;
     }
@@ -2616,7 +2664,8 @@ a:focus {
     .featured-article .cta-button:hover,
     .article-card:hover,
     .category-card:hover,
-    .static-advertisement:hover {
+    .static-advertisement:hover,
+    .author-bio:hover .author-avatar {
         transform: none;
     }
     
@@ -2704,15 +2753,26 @@ a:focus {
     box-sizing: border-box;
 }
 
-/* Final performance optimizations */
+/* PRIORITY 1: Performance optimizations for profile images and author bio */
 .blog-hero,
 .article-hero,
 .featured-article-card,
 .category-card,
 .article-card,
-.static-advertisement {
+.static-advertisement,
+.author-bio,
+.author-avatar {
     transform: translateZ(0); /* Force GPU acceleration */
     backface-visibility: hidden; /* Prevent flickering */
+}
+
+/* PRIORITY 1: Prevent layout shifts and optimize rendering */
+.author-bio {
+    contain: layout style;
+}
+
+.author-avatar {
+    contain: layout style paint;
 }
 
 /* Ensure proper text rendering */
