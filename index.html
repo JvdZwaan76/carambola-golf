@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- FIXED: Critical Resource Preloading - CORRECTED CROSSORIGIN ATTRIBUTES -->
-    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
-    <link rel="preload" href="/styles.css" as="style" crossorigin="anonymous">
-    <link rel="preload" href="/script.js" as="script" crossorigin="anonymous">
-    
-    <!-- DNS Prefetch - OPTIMIZED -->
+    <!-- CRITICAL: DNS prefetch and preconnect FIRST -->
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    
+    <!-- CRITICAL: Resource hints for homepage assets ONLY -->
+    <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high" crossorigin>
+    <link rel="preload" href="/styles.css" as="style" crossorigin>
+    <link rel="preload" href="/script.js" as="script" crossorigin>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-    <meta name="googlebot" content="index, follow">
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
@@ -21,13 +22,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Carambola Golf">
-    <meta name="msapplication-TileColor" content="#1e3a5f">
     
     <!-- CORE SEO Meta Tags -->
     <title>Carambola Golf Club | St. Croix Championship Course</title>
     <meta name="description" content="Carambola Golf Club: 18-hole Robert Trent Jones Sr. course in St. Croix. Book a tee time for a premier Caribbean golf experience.">
-    <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course, golf vacation, tropical golf, us virgin islands, estate river, kingshill, golf resort, caribbean resort">
-    <meta name="author" content="Carambola Golf Club">
+    <meta name="keywords" content="carambola golf club, st croix golf, robert trent jones sr, virgin islands golf, caribbean golf, championship golf course">
     
     <!-- Geographic Tags -->
     <meta name="geo.region" content="VI">
@@ -58,242 +57,49 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/">
     
-    <!-- Favicon and Icons -->
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <!-- Favicons - Optimized -->
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     
-    <!-- CRITICAL CSS INLINE - INDEX.HTML ONLY (Preserves all existing classes) -->
+    <!-- CRITICAL CSS INLINE - COMPRESSED AND OPTIMIZED -->
     <style>
-    /* Critical above-the-fold styles - INDEX.HTML SPECIFIC */
-    *{margin:0;padding:0;box-sizing:border-box;}
-    :root{--primary-navy:#1e3a5f;--secondary-navy:#2c5282;--accent-gold:#d4af37;--light-gold:#f4e7c1;--text-dark:#2d3748;--text-light:#ffffff;--bg-light:#f7fafc;--bg-cream:#fefcf7;--shadow-soft:rgba(30,58,95,0.1);--shadow-medium:rgba(30,58,95,0.2);--transition-fast:0.2s ease;--transition-medium:0.3s ease;--transition-slow:0.5s ease;}
-    body{font-family:'Georgia','Times New Roman',serif;line-height:1.6;color:var(--text-dark);background-color:var(--bg-cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    *{margin:0;padding:0;box-sizing:border-box}:root{--primary-navy:#1e3a5f;--secondary-navy:#2c5282;--accent-gold:#d4af37;--light-gold:#f4e7c1;--text-dark:#2d3748;--text-light:#ffffff;--bg-light:#f7fafc;--bg-cream:#fefcf7;--shadow-soft:rgba(30,58,95,0.1);--shadow-medium:rgba(30,58,95,0.2);--transition-fast:0.2s ease;--transition-medium:0.3s ease;--transition-slow:0.5s ease}body{font-family:Georgia,'Times New Roman',serif;line-height:1.6;color:var(--text-dark);background-color:var(--bg-cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
     
-    /* Critical preloader styles */
-    .preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,var(--primary-navy) 0%,var(--secondary-navy) 100%);display:flex;align-items:center;justify-content:center;z-index:10001;transition:opacity 0.5s ease,visibility 0.5s ease;}
-    .preloader.hidden{opacity:0;visibility:hidden;}
-    .preloader-content{text-align:center;color:var(--text-light);max-width:400px;padding:2rem;}
-    .golf-loader{position:relative;width:120px;height:80px;margin:0 auto 2rem;}
-    .golf-ball{width:20px;height:20px;background:var(--text-light);border-radius:50%;position:absolute;top:30px;animation:golfBallRoll 2s ease-in-out infinite;box-shadow:0 0 10px rgba(255,255,255,0.3);}
-    @keyframes golfBallRoll{0%{left:0;transform:rotate(0deg);}50%{left:70px;transform:rotate(180deg);}100%{left:70px;transform:rotate(360deg);opacity:0;}}
-    .loading-text h2{font-size:2rem;margin-bottom:0.5rem;color:var(--accent-gold);font-weight:400;}
-    .loading-progress{height:100%;background:linear-gradient(90deg,var(--accent-gold),var(--light-gold));border-radius:2px;animation:loadingProgress 3s ease-in-out infinite;}
+    .preloader{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,var(--primary-navy) 0%,var(--secondary-navy) 100%);display:flex;align-items:center;justify-content:center;z-index:10001;transition:opacity 0.5s ease,visibility 0.5s ease}.preloader.hidden{opacity:0;visibility:hidden}.preloader-content{text-align:center;color:var(--text-light);max-width:400px;padding:2rem}.golf-loader{position:relative;width:120px;height:80px;margin:0 auto 2rem}.golf-ball{width:20px;height:20px;background:var(--text-light);border-radius:50%;position:absolute;top:30px;animation:golfBallRoll 2s ease-in-out infinite;box-shadow:0 0 10px rgba(255,255,255,0.3)}@keyframes golfBallRoll{0%{left:0;transform:rotate(0deg)}50%{left:70px;transform:rotate(180deg)}100%{left:70px;transform:rotate(360deg);opacity:0}}.loading-text h2{font-size:2rem;margin-bottom:0.5rem;color:var(--accent-gold);font-weight:400}.loading-progress{height:100%;background:linear-gradient(90deg,var(--accent-gold),var(--light-gold));border-radius:2px;animation:loadingProgress 3s ease-in-out infinite}
     
-    /* Critical navbar styles */
-    .navbar{position:fixed;top:0;width:100%;background:rgba(30,58,95,0.95);backdrop-filter:blur(10px);z-index:1000;padding:0.8rem 0;transition:all var(--transition-medium);border-bottom:1px solid var(--accent-gold);}
-    .nav-container{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 2rem;}
-    .logo{font-size:1.8rem;font-weight:bold;color:var(--accent-gold);text-decoration:none;font-family:'Georgia',serif;}
-    .nav-links{display:flex;list-style:none;gap:2.5rem;}
-    .nav-links a{color:var(--text-light);text-decoration:none;font-weight:400;font-size:0.95rem;transition:color var(--transition-medium);text-transform:uppercase;letter-spacing:0.5px;padding:0.5rem 0;position:relative;}
-    .mobile-menu{display:none;background:none;border:none;color:var(--text-light);font-size:1.5rem;cursor:pointer;}
+    .navbar{position:fixed;top:0;width:100%;background:rgba(30,58,95,0.95);backdrop-filter:blur(10px);z-index:1000;padding:0.8rem 0;transition:all var(--transition-medium);border-bottom:1px solid var(--accent-gold)}.nav-container{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 2rem}.logo{font-size:1.8rem;font-weight:bold;color:var(--accent-gold);text-decoration:none;font-family:Georgia,serif}.nav-links{display:flex;list-style:none;gap:2.5rem}.nav-links a{color:var(--text-light);text-decoration:none;font-weight:400;font-size:0.95rem;transition:color var(--transition-medium);text-transform:uppercase;letter-spacing:0.5px;padding:0.5rem 0;position:relative}.mobile-menu{display:none;background:none;border:none;color:var(--text-light);font-size:1.5rem;cursor:pointer}
     
-    /* Critical hero styles */
-    .hero{height:90vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text-light);margin-top:80px;padding-top:2rem;overflow:hidden;isolation:isolate;}
-    .hero-video-container{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1;}
-    .hero-poster{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:2;opacity:1;transition:opacity 0.8s ease;pointer-events:none;}
-    .hero-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(rgba(30,58,95,0.3),rgba(30,58,95,0.5));z-index:4;pointer-events:none;}
-    .hero-content{position:relative;z-index:5;max-width:900px;padding:0 2rem;pointer-events:none;display:grid;grid-template-columns:1fr;gap:1.5rem;align-items:center;text-align:center;}
-    .hero-play-button{position:absolute;top:45%;right:15%;transform:translateY(-50%);width:100px;height:100px;background:rgba(30,58,95,0.85);border:3px solid rgba(255,255,255,0.9);border-radius:50%;color:white;font-size:2.5rem;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;pointer-events:all;opacity:1;visibility:visible;}
+    .hero{height:90vh;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--text-light);margin-top:80px;padding-top:2rem;overflow:hidden;isolation:isolate}.hero-video-container{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}.hero-poster{width:100%;height:100%;object-fit:cover;position:absolute;top:0;left:0;z-index:2;opacity:1;transition:opacity 0.8s ease;pointer-events:none}.hero-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(rgba(30,58,95,0.3),rgba(30,58,95,0.5));z-index:4;pointer-events:none}.hero-content{position:relative;z-index:5;max-width:900px;padding:0 2rem;pointer-events:none;display:grid;grid-template-columns:1fr;gap:1.5rem;align-items:center;text-align:center}.hero-play-button{position:absolute;top:45%;right:15%;transform:translateY(-50%);width:100px;height:100px;background:rgba(30,58,95,0.85);border:3px solid rgba(255,255,255,0.9);border-radius:50%;color:white;font-size:2.5rem;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;pointer-events:all;opacity:1;visibility:visible}
     
-    /* Mobile responsive critical styles */
-    @media (max-width:768px){
-        .mobile-menu{display:block;}
-        .nav-links{display:none;}
-        .hero{height:auto;min-height:80vh;margin-top:100px;padding:3rem 1rem 2rem;}
-        .hero-play-button{top:auto;bottom:25%;right:10%;left:auto;transform:none;width:80px;height:80px;font-size:2rem;}
-    }
-    @media (max-width:480px){
-        .hero-play-button{bottom:20%;left:50%;right:auto;transform:translateX(-50%);width:70px;height:70px;font-size:1.8rem;}
-    }
+    .hero-tagline{font-size:1.2rem;color:var(--accent-gold);margin-bottom:1rem;text-transform:uppercase;letter-spacing:2px;font-weight:600;text-shadow:2px 2px 4px rgba(0,0,0,0.7);background:rgba(30,58,95,0.8);padding:0.5rem 1rem;border-radius:5px;display:inline-block}.hero h1{font-size:clamp(3rem,6vw,5rem);margin-bottom:1.5rem;font-weight:400;line-height:1.2}.hero-subtitle{font-size:clamp(1.2rem,2.5vw,1.8rem);margin-bottom:2rem;font-style:italic;opacity:0.9}.hero-description{font-size:1.1rem;margin-bottom:3rem;max-width:600px;margin-left:auto;margin-right:auto;opacity:0.95}.cta-button{display:inline-block;background:var(--accent-gold);color:var(--primary-navy);padding:1rem 2.5rem;text-decoration:none;border-radius:3px;font-weight:600;font-size:1rem;transition:all var(--transition-medium);text-transform:uppercase;letter-spacing:1px;border:2px solid var(--accent-gold);cursor:pointer;margin:0.5rem;transform:translateY(0)}
+    
+    @media (max-width:768px){.mobile-menu{display:block}.nav-links{display:none}.hero{height:auto;min-height:80vh;margin-top:100px;padding:3rem 1rem 2rem}.hero-play-button{top:auto;bottom:25%;right:10%;left:auto;transform:none;width:80px;height:80px;font-size:2rem}}@media (max-width:480px){.hero-play-button{bottom:20%;left:50%;right:auto;transform:translateX(-50%);width:70px;height:70px;font-size:1.8rem}}
     </style>
     
-    <!-- FIXED: LOAD FULL CSS ASYNCHRONOUSLY WITH CROSSORIGIN -->
-<link rel="stylesheet" href="/styles.css" crossorigin="anonymous">
+    <!-- OPTIMIZED: Load full CSS asynchronously -->
+    <link rel="stylesheet" href="/styles.css" media="print" onload="this.media='all';this.onload=null;">
+    <noscript><link rel="stylesheet" href="/styles.css"></noscript>
     
-    <!-- FIXED: External CSS - PROPER CROSSORIGIN -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous"></noscript>
+    <!-- OPTIMIZED: Font Awesome with proper loading -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" crossorigin>
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin></noscript>
     
-    <!-- FONT OPTIMIZATION -->
-    <style>
-    @font-face {
-        font-family: 'Georgia';
-        font-display: swap;
-    }
-    </style>
-    
-    <!-- Schema.org -->
+    <!-- Schema.org structured data -->
     <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "GolfCourse",
-        "name": "Carambola Golf Club",
-        "description": "Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands.",
-        "url": "https://carambola.golf",
-        "telephone": "+13407785638",
-        "email": "info@carambola.golf",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Estate River, Kingshill",
-            "addressLocality": "St. Croix",
-            "addressRegion": "VI",
-            "postalCode": "00850",
-            "addressCountry": "US"
-        },
-        "geo": {
-            "@type": "GeoCoordinates",
-            "latitude": "17.7537",
-            "longitude": "-64.8059"
-        },
-        "founder": {
-            "@type": "Person",
-            "name": "Robert Trent Jones Sr."
-        },
-        "offers": {
-            "@type": "Offer",
-            "name": "18-Hole Golf Round",
-            "price": "115",
-            "priceCurrency": "USD"
-        }
-    }
+    {"@context":"https://schema.org","@type":"GolfCourse","name":"Carambola Golf Club","description":"Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands.","url":"https://carambola.golf","telephone":"+13407785638","email":"info@carambola.golf","address":{"@type":"PostalAddress","streetAddress":"Estate River, Kingshill","addressLocality":"St. Croix","addressRegion":"VI","postalCode":"00850","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":"17.7537","longitude":"-64.8059"},"founder":{"@type":"Person","name":"Robert Trent Jones Sr."},"offers":{"@type":"Offer","name":"18-Hole Golf Round","price":"115","priceCurrency":"USD"}}
     </script>
     
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <!-- OPTIMIZED: Analytics - Minimal inline, defer heavy scripts -->
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-YJ3H2GJ4SS', {
-            enhanced_measurement: true,
-            scroll_threshold: 90,
-            send_page_view: true,
-            custom_map: {
-                'golf_course_section': 'custom_parameter_1',
-                'user_intent': 'custom_parameter_2',
-                'booking_stage': 'custom_parameter_3'
-            }
-        });
-
-        function trackGolfEvent(action, section, details = {}) {
-            gtag('event', action, {
-                event_category: 'Golf Course Interaction',
-                event_label: section,
-                golf_course_section: section,
-                ...details
-            });
-        }
-
-        function trackBookingIntent(stage, method = '') {
-            gtag('event', 'booking_intent', {
-                event_category: 'Booking Funnel',
-                event_label: stage,
-                booking_stage: stage,
-                contact_method: method,
-                value: stage === 'tee_time_request' ? 115 : 0
-            });
-        }
-
-        function trackUserEngagement(action, element) {
-            gtag('event', action, {
-                event_category: 'User Engagement',
-                event_label: element,
-                engagement_time_msec: Date.now()
-            });
-        }
-
-        function trackScrollDepth() {
-            let maxScroll = 0;
-            window.addEventListener('scroll', function() {
-                const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
-                if (scrollPercent > maxScroll && scrollPercent % 25 === 0) {
-                    maxScroll = scrollPercent;
-                    gtag('event', 'scroll', {
-                        event_category: 'User Engagement',
-                        event_label: scrollPercent + '%',
-                        value: scrollPercent
-                    });
-                }
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            trackScrollDepth();
-            
-            document.querySelectorAll('.cta-button, .book-tee-time').forEach(button => {
-                button.addEventListener('click', function() {
-                    trackBookingIntent('cta_click', 'website_button');
-                });
-            });
-
-            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
-                link.addEventListener('click', function() {
-                    trackBookingIntent('phone_click', 'direct_call');
-                });
-            });
-
-            document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
-                link.addEventListener('click', function() {
-                    trackBookingIntent('email_click', 'direct_email');
-                });
-            });
-
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', function() {
-                    trackUserEngagement('navigation_click', this.textContent.trim());
-                });
-            });
-
-            document.querySelectorAll('.feature-card, .quick-link-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const title = this.querySelector('h3')?.textContent || 'Unknown Feature';
-                    trackGolfEvent('feature_interaction', title);
-                });
-            });
-
-            const modal = document.getElementById('constructionModal');
-            if (modal) {
-                const observer = new MutationObserver(function(mutations) {
-                    mutations.forEach(function(mutation) {
-                        if (mutation.target.classList.contains('show')) {
-                            gtag('event', 'modal_view', {
-                                event_category: 'User Engagement',
-                                event_label: 'booking_modal'
-                            });
-                        }
-                    });
-                });
-                observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
-            }
-        });
-    </script>
-    
-    <!-- Microsoft Clarity -->
-    <script>
-        (function(c,l,a,r,i,t,y){
-            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";
-            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", "t1nijgvn69");
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-YJ3H2GJ4SS',{enhanced_measurement:true,send_page_view:true});
     </script>
 </head>
 <body>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TT6N8MNJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    
-    <!-- Preloader -->
+    <!-- Preloader - Minimal -->
     <div id="preloader" class="preloader">
         <div class="preloader-content">
             <div class="golf-loader">
                 <div class="golf-ball"></div>
-                <div class="golf-hole"></div>
-                <div class="golf-flag"></div>
             </div>
             <div class="loading-text">
                 <h2>Carambola Golf Club</h2>
@@ -329,11 +135,6 @@
                     <i class="fas fa-times"></i> Continue to Website
                 </button>
             </div>
-            <div class="golf-decoration">
-                <i class="fas fa-golf-ball"></i>
-                <i class="fas fa-golf-ball"></i>
-                <i class="fas fa-golf-ball"></i>
-            </div>
         </div>
     </div>
 
@@ -362,7 +163,9 @@
                  alt="Carambola Golf Club Championship Clubhouse" 
                  class="hero-poster"
                  fetchpriority="high"
-                 loading="eager">
+                 loading="eager"
+                 width="1200"
+                 height="630">
             
             <video class="hero-video" 
                    muted 
@@ -716,57 +519,17 @@
         <span>You're offline. Some features may be limited.</span>
     </div>
 
-    <!-- Scripts -->
-    <script src="script.js" crossorigin></script>
-    <script src="footer-status.js"></script>
+    <!-- OPTIMIZED: Scripts with proper loading strategy -->
+    <script src="script.js" defer></script>
+    <script src="footer-status.js" defer></script>
     
-    <!-- Deferred Schema -->
+    <!-- DEFERRED: Heavy analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
+    
+    <!-- Microsoft Clarity - deferred -->
     <script>
-        setTimeout(function() {
-            const faqSchema = {
-                "@context": "https://schema.org",
-                "@type": "FAQPage",
-                "mainEntity": [
-                    {
-                        "@type": "Question",
-                        "name": "Who designed Carambola Golf Club?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Carambola Golf Club was designed by legendary golf course architect Robert Trent Jones Sr., one of the most celebrated golf course designers in history."
-                        }
-                    },
-                    {
-                        "@type": "Question", 
-                        "name": "How do I book a tee time at Carambola Golf Club?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "To book a tee time at Carambola Golf Club, call our Pro Shop at +1-340-778-5638 or email info@carambola.golf. We recommend booking 24-48 hours in advance."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "What are the green fees at Carambola Golf Club?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Visitor green fees are $115 for 18 holes with cart, $85 walking. Local residents (VI ID required) pay $75 for 18 holes with cart, $45 walking. Multi-round packages available."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Where is Carambola Golf Club located?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Carambola Golf Club is located at Estate River, Kingshill, St. Croix, VI 00850, approximately 20 minutes from Henry E. Rohlsen Airport."
-                        }
-                    }
-                ]
-            };
-            
-            const script = document.createElement('script');
-            script.type = 'application/ld+json';
-            script.textContent = JSON.stringify(faqSchema);
-            document.head.appendChild(script);
-        }, 2000);
+        setTimeout(function(){(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "t1nijgvn69")}, 3000);
     </script>
 </body>
 </html>
