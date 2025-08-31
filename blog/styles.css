@@ -2783,3 +2783,63 @@ a:focus {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+/* QUICK FIX: Add this CSS to force perfect circular profile images */
+/* Add to the END of your blog/styles.css file */
+
+/* PRIORITY FIX: Perfect Circular Profile Images */
+.author-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    border-radius: 50% !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    /* CRITICAL: Force aspect ratio */
+    aspect-ratio: 1/1 !important;
+    /* BACKUP: Additional constraints */
+    min-width: 100% !important;
+    min-height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+}
+
+/* BACKUP: Ensure container is perfectly square */
+.author-avatar {
+    aspect-ratio: 1/1 !important;
+    overflow: hidden !important;
+    /* Force square dimensions */
+    width: 120px !important;
+    height: 120px !important;
+    min-width: 120px !important;
+    min-height: 120px !important;
+}
+
+/* Mobile overrides to maintain perfect circles */
+@media (max-width: 1024px) and (min-width: 769px) {
+    .author-avatar {
+        width: 110px !important;
+        height: 110px !important;
+        min-width: 110px !important;
+        min-height: 110px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .author-avatar {
+        width: 100px !important;
+        height: 100px !important;
+        min-width: 100px !important;
+        min-height: 100px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .author-avatar {
+        width: 80px !important;
+        height: 80px !important;
+        min-width: 80px !important;
+        min-height: 80px !important;
+    }
+}
