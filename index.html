@@ -1,16 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- CRITICAL: DNS prefetch and preconnect FIRST -->
+    <!-- SIMPLE: DNS prefetch only (no preload conflicts) -->
     <link rel="dns-prefetch" href="//www.googletagmanager.com">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://www.googletagmanager.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
-    <!-- CRITICAL: Resource hints for homepage assets ONLY -->
+    <!-- HERO IMAGE: Only preload the critical hero image -->
     <link rel="preload" href="/images/carambola-golf-clubhouse.webp" as="image" fetchpriority="high">
-    <link rel="preload" href="/styles.css" as="style">
-    <link rel="preload" href="/script.js" as="script">
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,11 +55,11 @@
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/">
     
-    <!-- Favicons - Optimized -->
+    <!-- Favicons - Simplified -->
     <link rel="icon" href="/favicon.ico" sizes="any">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     
-    <!-- CRITICAL CSS INLINE - COMPRESSED AND OPTIMIZED -->
+    <!-- COMPRESSED CRITICAL CSS - SAME AS BEFORE -->
     <style>
     *{margin:0;padding:0;box-sizing:border-box}:root{--primary-navy:#1e3a5f;--secondary-navy:#2c5282;--accent-gold:#d4af37;--light-gold:#f4e7c1;--text-dark:#2d3748;--text-light:#ffffff;--bg-light:#f7fafc;--bg-cream:#fefcf7;--shadow-soft:rgba(30,58,95,0.1);--shadow-medium:rgba(30,58,95,0.2);--transition-fast:0.2s ease;--transition-medium:0.3s ease;--transition-slow:0.5s ease}body{font-family:Georgia,'Times New Roman',serif;line-height:1.6;color:var(--text-dark);background-color:var(--bg-cream);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
     
@@ -76,22 +74,20 @@
     @media (max-width:768px){.mobile-menu{display:block}.nav-links{display:none}.hero{height:auto;min-height:80vh;margin-top:100px;padding:3rem 1rem 2rem}.hero-play-button{top:auto;bottom:25%;right:10%;left:auto;transform:none;width:80px;height:80px;font-size:2rem}}@media (max-width:480px){.hero-play-button{bottom:20%;left:50%;right:auto;transform:translateX(-50%);width:70px;height:70px;font-size:1.8rem}}
     </style>
     
-    <!-- OPTIMIZED: Load full CSS asynchronously -->
-    <link rel="stylesheet" href="/styles.css" media="print" onload="this.media='all';this.onload=null;">
-    <noscript><link rel="stylesheet" href="/styles.css"></noscript>
+    <!-- SIMPLE: Load CSS normally (no preload conflicts) -->
+    <link rel="stylesheet" href="/styles.css">
     
-    <!-- OPTIMIZED: Font Awesome with proper loading -->
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></noscript>
+    <!-- SIMPLE: Font Awesome loading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     
     <!-- Schema.org structured data -->
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"GolfCourse","name":"Carambola Golf Club","description":"Championship 18-hole golf course designed by Robert Trent Jones Sr. in St. Croix, US Virgin Islands.","url":"https://carambola.golf","telephone":"+13407785638","email":"info@carambola.golf","address":{"@type":"PostalAddress","streetAddress":"Estate River, Kingshill","addressLocality":"St. Croix","addressRegion":"VI","postalCode":"00850","addressCountry":"US"},"geo":{"@type":"GeoCoordinates","latitude":"17.7537","longitude":"-64.8059"},"founder":{"@type":"Person","name":"Robert Trent Jones Sr."},"offers":{"@type":"Offer","name":"18-Hole Golf Round","price":"115","priceCurrency":"USD"}}
     </script>
     
-    <!-- OPTIMIZED: Analytics - Minimal inline, defer heavy scripts -->
+    <!-- SIMPLIFIED: Analytics - Essential only -->
     <script>
-    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-YJ3H2GJ4SS',{enhanced_measurement:true,send_page_view:true});
+    window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-YJ3H2GJ4SS',{send_page_view:true});
     </script>
 </head>
 <body>
@@ -226,7 +222,7 @@
                                 <div class="stat">
                                     <i class="fas fa-wind"></i>
                                     <span id="wind-speed">12 mph</span>
-                                </div>
+                                div>
                                 <div class="stat">
                                     <i class="fas fa-tint"></i>
                                     <span id="humidity">65%</span>
@@ -519,17 +515,22 @@
         <span>You're offline. Some features may be limited.</span>
     </div>
 
-    <!-- OPTIMIZED: Scripts with proper loading strategy -->
+    <!-- SIMPLE: Scripts load normally (no preload conflicts) -->
     <script src="script.js" defer></script>
     <script src="footer-status.js" defer></script>
     
-    <!-- DEFERRED: Heavy analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS"></script>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');</script>
-    
-    <!-- Microsoft Clarity - deferred -->
+    <!-- DEFERRED: Heavy analytics (load after 3 seconds) -->
     <script>
-        setTimeout(function(){(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "t1nijgvn69")}, 3000);
+        setTimeout(function(){
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = 'https://www.googletagmanager.com/gtag/js?id=G-YJ3H2GJ4SS';
+            document.head.appendChild(script);
+            
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-TT6N8MNJ');
+            
+            (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i+"?ref=bwt";y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "t1nijgvn69");
+        }, 3000);
     </script>
 </body>
 </html>
