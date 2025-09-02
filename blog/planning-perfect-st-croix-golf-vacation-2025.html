@@ -39,9 +39,10 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
-    <!-- FIXED: Critical Resource Preloading - Removed unused image preload -->
+    <!-- OPTIMIZED: Critical Resource Preloading - Hero Image Added -->
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/blog/styles.css" as="style">
+    <link rel="preload" href="/images/st-croix-golf-vacation-planning-hero.webp" as="image" fetchpriority="high">
     <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
@@ -71,10 +72,10 @@
     <meta property="og:url" content="https://carambola.golf/blog/planning-perfect-st-croix-golf-vacation-2025.html">
     <meta property="og:title" content="Insider Tips for Planning Your Perfect 2025 St. Croix Golf Vacation at Carambola Resort">
     <meta property="og:description" content="Expert vacation planning tips for St. Croix golf trips including booking strategies, travel advice, and course preparation for Carambola Golf Resort.">
-    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
+    <meta property="og:image" content="https://carambola.golf/images/st-croix-golf-vacation-planning-hero.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    <meta property="og:image:alt" content="St. Croix Golf Vacation Planning at Carambola Resort">
     <meta property="og:site_name" content="Carambola Golf Club">
     <meta property="og:locale" content="en_US">
     <meta property="article:author" content="Jasper van der Zwaan">
@@ -86,8 +87,8 @@
     <meta property="twitter:url" content="https://carambola.golf/blog/planning-perfect-st-croix-golf-vacation-2025.html">
     <meta property="twitter:title" content="Insider Tips for Planning Your Perfect 2025 St. Croix Golf Vacation">
     <meta property="twitter:description" content="Expert vacation planning tips for St. Croix golf trips including booking strategies, travel advice, and course preparation.">
-    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-clubhouse.webp">
-    <meta property="twitter:image:alt" content="Carambola Golf Club Championship Clubhouse">
+    <meta property="twitter:image" content="https://carambola.golf/images/st-croix-golf-vacation-planning-hero.webp">
+    <meta property="twitter:image:alt" content="St. Croix Golf Vacation Planning at Carambola Resort">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/blog/planning-perfect-st-croix-golf-vacation-2025.html">
@@ -103,6 +104,18 @@
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     
+    <!-- Custom Hero Background Style for This Article -->
+    <style>
+    .article-hero {
+        background: var(--blog-gradient-overlay), url('/images/st-croix-golf-vacation-planning-hero.webp') center/cover fixed !important;
+    }
+    @media (max-width: 768px) {
+        .article-hero {
+            background: var(--blog-gradient-overlay), url('/images/st-croix-golf-vacation-planning-hero.webp') center/cover scroll !important;
+        }
+    }
+    </style>
+    
     <!-- Article-specific Structured Data -->
     <script type="application/ld+json">
     {
@@ -112,7 +125,7 @@
         "description": "Expert vacation planning tips for St. Croix golf trips including booking strategies, travel advice, and course preparation for Carambola Golf Resort.",
         "image": {
             "@type": "ImageObject",
-            "url": "https://carambola.golf/images/carambola-golf-clubhouse.webp",
+            "url": "https://carambola.golf/images/st-croix-golf-vacation-planning-hero.webp",
             "width": 1200,
             "height": 630
         },
@@ -269,7 +282,7 @@
         </div>
     </section>
 
-    <!-- OPTIMIZED: Article Hero - Removed inline styles, uses optimized CSS -->
+    <!-- Article Hero with Custom Background -->
     <section class="article-hero">
         <div class="article-header">
             <div class="article-meta">
@@ -327,6 +340,20 @@
 
             <p>Securing your spot at <a href="/course.html">Carambola Golf Course St. Croix</a> is straightforward, but early planning pays off in 2025's high-demand season. Green fees are value-packed: $110 for 18 holes with cart ($80 walking), or $80/$60 for 9 holes—affordable compared to mainland resorts. Book tee times via our Pro Shop at <a href="tel:+13407785638">+1-340-778-5638</a> or online at <a href="/contact.html">carambola.golf</a>—aim for mornings to beat the heat and enjoy cooler breezes. For full details, visit our <a href="/pricing.html">pricing page</a>.</p>
 
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/carambola-golf-booking-tee-times.webp" type="image/webp">
+                    <img src="/images/carambola-golf-booking-tee-times.jpg" 
+                         alt="Carambola Golf Club pro shop tee time booking and vacation planning services" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    Book your tee times at Carambola Golf Club's pro shop, where friendly staff help plan every detail of your St. Croix golf vacation for the perfect Caribbean experience.
+                </div>
+            </div>
+
             <!-- STATIC ADVERTISEMENT - MID ARTICLE -->
             <div class="static-advertisement static-ad-mid">
                 <div class="ad-wrapper">
@@ -360,6 +387,20 @@
 
             <p>As a US territory, St. Croix offers streamlined entry for US citizens and clear requirements for international visitors. Understanding the documentation needed ensures a smooth start to your golf vacation.</p>
 
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/st-croix-travel-documents-airport.webp" type="image/webp">
+                    <img src="/images/st-croix-travel-documents-airport.jpg" 
+                         alt="Henry E. Rohlsen Airport St. Croix with travel documents for golf vacation planning" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    Henry E. Rohlsen Airport serves as your gateway to St. Croix, just 20 minutes from Carambola Golf Club with streamlined entry for US citizens and clear requirements for international visitors.
+                </div>
+            </div>
+
             <h3>For US Citizens</h3>
             <p>US citizens need only a valid government-issued photo ID (driver's license or passport) for entry to St. Croix. However, carrying a passport is recommended for easier re-entry to the mainland US and international travel connections.</p>
 
@@ -369,6 +410,20 @@
             <h2>Travel Tip: Shipping Your Golf Clubs for a Hassle-Free Vacation</h2>
 
             <p>If you prefer playing with your own clubs rather than renting, shipping them ahead is a smart move for your St. Croix trip—avoiding airline baggage fees and ensuring they're ready at Carambola upon arrival. In 2025, options abound for safe, cost-effective shipping.</p>
+
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/golf-clubs-shipping-vacation.webp" type="image/webp">
+                    <img src="/images/golf-clubs-shipping-vacation.jpg" 
+                         alt="Golf clubs being shipped and prepared for St. Croix vacation at Carambola Golf Club" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    Ship your golf clubs ahead to St. Croix for a hassle-free vacation experience. Professional shipping services ensure your equipment arrives safely at Carambola Golf Club, ready for your championship rounds.
+                </div>
+            </div>
 
             <h3>Best Ways to Ship</h3>
             <p>Use specialized services like <a href="https://www.shipsticks.com/" target="_blank" rel="noopener">Ship Sticks</a> (door-to-door, white-glove service; 3.5M+ clubs shipped, rated best by Golf Digest) or <a href="https://www.luggageforward.com/shipping-golf-clubs/" target="_blank" rel="noopener">Luggage Forward</a> for international/domestic ease. For DIY, carriers like <a href="https://www.fedex.com/en-us/shipping/how-to-ship-golf-clubs.html" target="_blank" rel="noopener">FedEx</a> (Ground for 1-5 days) or <a href="https://www.theupsstore.com/pack-ship/golf-clubs" target="_blank" rel="noopener">UPS</a> (pack at stores) are reliable. Alternatives include <a href="https://www.shipgo.com/ship-golf-clubs" target="_blank" rel="noopener">ShipGo</a> (starting $44.99) or <a href="https://www.lugless.com/shipping-golf-clubs/" target="_blank" rel="noopener">LugLess</a> for affordable options.</p>
@@ -393,6 +448,20 @@
             <h2>Essential Packing Guide for Your St. Croix Golf Adventure</h2>
 
             <p>Packing smart for your Caribbean golf vacation ensures you're prepared for both on-course performance and island exploration. St. Croix's tropical climate and trade winds require specific considerations for optimal comfort and play.</p>
+
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/st-croix-golf-vacation-packing.webp" type="image/webp">
+                    <img src="/images/st-croix-golf-vacation-packing.jpg" 
+                         alt="Golf vacation packing essentials for St. Croix including tropical golf gear and vacation items" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    Pack smart for your St. Croix golf vacation with tropical-specific gear, sun protection, and versatile clothing that transitions from championship golf to Caribbean relaxation.
+                </div>
+            </div>
 
             <h3>Golf-Specific Essentials</h3>
             <ul>
