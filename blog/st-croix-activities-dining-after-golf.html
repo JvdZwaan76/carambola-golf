@@ -39,12 +39,16 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
-    <!-- Critical Resource Preloading - Optimized Order -->
+    <!-- OPTIMIZED: Critical Resource Preloading -->
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/blog/styles.css" as="style">
-    <link rel="preload" href="/images/carambola-attraction-buck-island.webp" as="image">
+    <link rel="preload" href="/images/carambola-attraction-buck-island.webp" as="image" fetchpriority="high">
     <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
+    
+    <!-- DNS Prefetch for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
     <!-- SEO Meta Tags -->
     <title>What to Do After Your Round at Carambola Golf Resort: Fine Dining and Activities in St. Croix</title>
@@ -95,7 +99,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     
-    <!-- CSS Loading Order: Main styles first, then blog supplements -->
+    <!-- OPTIMIZED: CSS Loading Order -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -266,8 +270,8 @@
         </div>
     </section>
 
-    <!-- Article Hero -->
-    <section class="article-hero" style="background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)), url('/images/carambola-attraction-buck-island.webp') center/cover;">
+    <!-- OPTIMIZED: Article Hero - Removed inline styles, uses optimized CSS with Buck Island background -->
+    <section class="article-hero">
         <div class="article-header">
             <div class="article-meta">
                 <span class="article-category">St. Croix Activities</span>
@@ -450,28 +454,48 @@
                 <h2 class="faq-title">Frequently Asked Questions About St. Croix Activities</h2>
                 
                 <div class="faq-item">
-                    <h3 class="faq-question">What are the best restaurants in St. Croix after golf?</h3>
-                    <p class="faq-answer">Top restaurants include Savant Restaurant for upscale dining, Rum Runners Steakhouse for premium steaks, Kendricks for French-Caribbean fusion, and Cheeseburgers in Paradise for casual beachfront dining. All offer unique atmospheres perfect for post-golf celebrations.</p>
+                    <div class="faq-question">
+                        <h3>What are the best restaurants in St. Croix after golf?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Top restaurants include Savant Restaurant for upscale dining, Rum Runners Steakhouse for premium steaks, Kendricks for French-Caribbean fusion, and Cheeseburgers in Paradise for casual beachfront dining. All offer unique atmospheres perfect for post-golf celebrations.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <h3 class="faq-question">What activities can I do in St. Croix besides golf?</h3>
-                    <p class="faq-answer">Popular activities include snorkeling at Buck Island Reef National Monument, diving at Cane Bay Wall, visiting historic Christiansted, touring Cruzan Rum Distillery, exploring St. George Village Botanical Garden, and relaxing at Sandy Point Beach.</p>
+                    <div class="faq-question">
+                        <h3>What activities can I do in St. Croix besides golf?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Popular activities include snorkeling at Buck Island Reef National Monument, diving at Cane Bay Wall, visiting historic Christiansted, touring Cruzan Rum Distillery, exploring St. George Village Botanical Garden, and relaxing at Sandy Point Beach.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <h3 class="faq-question">How do I get to Buck Island from St. Croix?</h3>
-                    <p class="faq-answer">Buck Island tours depart from Christiansted harbor. Half-day tours include boat transportation, snorkeling gear, and guided underwater trails. Book with operators like Big Beard's Adventure Tours for the best experience.</p>
+                    <div class="faq-question">
+                        <h3>How do I get to Buck Island from St. Croix?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Buck Island tours depart from Christiansted harbor. Half-day tours include boat transportation, snorkeling gear, and guided underwater trails. Book with operators like Big Beard's Adventure Tours for the best experience.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <h3 class="faq-question">What cultural attractions should I visit in St. Croix?</h3>
-                    <p class="faq-answer">Must-visit cultural sites include Christiansted National Historic Site with Fort Christiansvaern, Whim Plantation Museum, Cruzan Rum Distillery, and St. George Village Botanical Garden for insights into the island's rich history.</p>
+                    <div class="faq-question">
+                        <h3>What cultural attractions should I visit in St. Croix?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Must-visit cultural sites include Christiansted National Historic Site with Fort Christiansvaern, Whim Plantation Museum, Cruzan Rum Distillery, and St. George Village Botanical Garden for insights into the island's rich history.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <h3 class="faq-question">Where can I go shopping in St. Croix?</h3>
-                    <p class="faq-answer">Christiansted's historic downtown offers duty-free shopping for jewelry and luxury goods, local art galleries, and weekend farmers' markets featuring local crafts and produce. Many shops offer shipping services for convenient purchases.</p>
+                    <div class="faq-question">
+                        <h3>Where can I go shopping in St. Croix?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Christiansted's historic downtown offers duty-free shopping for jewelry and luxury goods, local art galleries, and weekend farmers' markets featuring local crafts and produce. Many shops offer shipping services for convenient purchases.</p>
+                    </div>
                 </div>
             </div>
 
@@ -482,8 +506,8 @@
                         <img src="/images/Jasper-2022-Profile-Pic.jpg" 
                              alt="Jasper van der Zwaan - Golf Tourism Expert and St. Croix Travel Specialist" 
                              loading="lazy"
-                             width="100"
-                             height="100"
+                             width="120"
+                             height="120"
                              onload="this.classList.add('loaded')"
                              onerror="this.style.display='none';">
                     </div>
