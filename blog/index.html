@@ -55,10 +55,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Carambola Golf Blog">
     
-    <!-- Critical Resource Preloading - Optimized Order -->
+    <!-- OPTIMIZED: Critical Resource Preloading - Hero Image Added -->
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/blog/styles.css" as="style">
-    <link rel="preload" href="/images/carambola-golf-hole-18.webp" as="image">
+    <link rel="preload" href="/images/carambola-golf-blog-hero-background.webp" as="image" fetchpriority="high">
     <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
@@ -90,10 +90,10 @@
     <meta property="og:url" content="https://carambola.golf/blog/">
     <meta property="og:title" content="Blog & Insights | Carambola Golf Club | Expert Golf & St. Croix Travel Guides">
     <meta property="og:description" content="Discover expert insights, golf tips, and St. Croix travel guides from Carambola Golf Club. Read comprehensive guides on championship golf and Caribbean adventures.">
-    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-hole-18.webp">
+    <meta property="og:image" content="https://carambola.golf/images/carambola-golf-blog-hero-background.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Carambola Golf Club Championship Course">
+    <meta property="og:image:alt" content="Carambola Golf Club Blog and Expert Golf Guides">
     <meta property="og:site_name" content="Carambola Golf Club">
     <meta property="og:locale" content="en_US">
     
@@ -102,8 +102,8 @@
     <meta property="twitter:url" content="https://carambola.golf/blog/">
     <meta property="twitter:title" content="Blog & Insights | Carambola Golf Club | Expert Golf & St. Croix Travel Guides">
     <meta property="twitter:description" content="Discover expert insights, golf tips, and St. Croix travel guides from Carambola Golf Club. Read comprehensive guides on championship golf and Caribbean adventures.">
-    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-hole-18.webp">
-    <meta property="twitter:image:alt" content="Carambola Golf Club Championship Course">
+    <meta property="twitter:image" content="https://carambola.golf/images/carambola-golf-blog-hero-background.webp">
+    <meta property="twitter:image:alt" content="Carambola Golf Club Blog and Expert Golf Guides">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/blog/">
@@ -120,6 +120,37 @@
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
+    
+    <!-- Custom Hero Background Style for Blog Index -->
+    <style>
+    .blog-hero {
+        background: var(--blog-gradient-overlay), url('/images/carambola-golf-blog-hero-background.webp') center/cover fixed !important;
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: var(--text-light);
+        margin-top: 100px;
+        padding: 4rem 2rem;
+        position: relative;
+    }
+    @media (max-width: 768px) {
+        .blog-hero {
+            background: var(--blog-gradient-overlay), url('/images/carambola-golf-blog-hero-background.webp') center/cover scroll !important;
+            margin-top: 110px;
+            min-height: 60vh;
+            padding: 3rem 1rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .blog-hero {
+            margin-top: 120px;
+            min-height: 50vh;
+            padding: 2.5rem 1rem;
+        }
+    }
+    </style>
     
     <!-- Enhanced Blog-specific Structured Data -->
     <script type="application/ld+json">
@@ -167,7 +198,7 @@
                     "name": "Jasper van der Zwaan",
                     "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
                 },
-                "image": "https://carambola.golf/images/carambola-golf-clubhouse.webp",
+                "image": "https://carambola.golf/images/carambola-golf-featured-article-hero.webp",
                 "url": "https://carambola.golf/blog/ultimate-guide-carambola-golf-resort-2025.html"
             },
             {
@@ -181,7 +212,7 @@
                     "name": "Jasper van der Zwaan",
                     "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
                 },
-                "image": "https://carambola.golf/images/carambola-golf-hole-12.webp",
+                "image": "https://carambola.golf/images/st-croix-vacation-planning-category.webp",
                 "url": "https://carambola.golf/blog/planning-perfect-st-croix-golf-vacation-2025.html"
             },
             {
@@ -195,7 +226,7 @@
                     "name": "Jasper van der Zwaan",
                     "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
                 },
-                "image": "https://carambola.golf/images/carambola-attraction-buck-island.webp",
+                "image": "https://carambola.golf/images/st-croix-activities-category.webp",
                 "url": "https://carambola.golf/blog/st-croix-activities-dining-after-golf.html"
             }
         ],
@@ -250,6 +281,28 @@
     
     <!-- Blog RSS Feed -->
     <link rel="alternate" type="application/rss+xml" title="Carambola Golf Club Blog RSS Feed" href="https://carambola.golf/blog/rss.xml">
+    
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://carambola.golf/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Blog & Insights",
+                "item": "https://carambola.golf/blog/"
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -278,13 +331,39 @@
         </div>
     </nav>
 
+    <!-- Breadcrumb Navigation -->
+    <section class="breadcrumb">
+        <div class="breadcrumb-nav">
+            <ol class="breadcrumb-list">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-separator">›</li>
+                <li class="breadcrumb-current">Blog & Insights</li>
+            </ol>
+        </div>
+    </section>
+
     <!-- Main Content -->
     <main id="main-content">
-        <!-- Blog Hero Section -->
+        <!-- Blog Hero Section with Custom Background -->
         <section class="blog-hero" role="banner">
-            <div class="blog-hero-content">
+            <div class="article-header">
+                <div class="article-meta">
+                    <span class="article-category">Expert Insights</span>
+                    <span class="article-date">
+                        <i class="fas fa-calendar"></i>
+                        Updated January 2025
+                    </span>
+                    <span class="article-reading-time">
+                        <i class="fas fa-book-open"></i>
+                        Comprehensive Guides
+                    </span>
+                    <span class="article-author">
+                        <i class="fas fa-user"></i>
+                        Golf Experts
+                    </span>
+                </div>
                 <h1>Your Guide to Championship Golf in Paradise</h1>
-                <p>Expert golf tips, vacation guides, and insider knowledge for your perfect St. Croix golf experience</p>
+                <p class="article-excerpt">Expert golf tips, vacation guides, and insider knowledge for your perfect St. Croix golf experience at our Robert Trent Jones Sr. championship course.</p>
                 
                 <!-- Enhanced Trust Signals -->
                 <div class="blog-credentials">
@@ -304,13 +383,26 @@
             </div>
         </section>
 
-        <!-- Blog Overview -->
+        <!-- Blog Overview with Expert Image -->
         <section class="blog-overview">
             <div class="container">
                 <div class="blog-overview-content">
-                    <h2>Your Guide to Championship Golf in Paradise</h2>
-                    <p>Welcome to our collection of expert insights, travel guides, and golf tips designed to enhance your <a href="/course.html">Carambola Golf Club experience</a>. From course strategy and vacation planning to discovering St. Croix's hidden gems, our curated content helps you make the most of your Caribbean golf adventure.</p>
-                    <p>Written by golf enthusiasts and local experts, these guides combine insider knowledge with practical advice to ensure your visit to our <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html">Robert Trent Jones Sr.-designed championship course</a> exceeds expectations.</p>
+                    <div class="overview-text">
+                        <h2>Your Guide to Championship Golf in Paradise</h2>
+                        <p>Welcome to our collection of expert insights, travel guides, and golf tips designed to enhance your <a href="/course.html">Carambola Golf Club experience</a>. From course strategy and vacation planning to discovering St. Croix's hidden gems, our curated content helps you make the most of your Caribbean golf adventure.</p>
+                        <p>Written by golf enthusiasts and local experts, these guides combine insider knowledge with practical advice to ensure your visit to our <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html">Robert Trent Jones Sr.-designed championship course</a> exceeds expectations.</p>
+                    </div>
+                    
+                    <div class="overview-image">
+                        <picture>
+                            <source srcset="/images/carambola-golf-expert-insights.webp" type="image/webp">
+                            <img src="/images/carambola-golf-expert-insights.jpg" 
+                                 alt="Carambola Golf Club expert insights and professional golf guidance in St. Croix" 
+                                 loading="lazy"
+                                 width="500"
+                                 height="300">
+                        </picture>
+                    </div>
                     
                     <!-- Enhanced Social Proof Section -->
                     <div class="blog-social-proof">
@@ -339,15 +431,19 @@
             </div>
         </section>
 
-        <!-- Featured Article -->
+        <!-- Featured Article with Enhanced Image -->
         <section class="featured-article">
             <div class="container">
                 <h2 class="section-title">Featured Guide</h2>
                 <div class="featured-article-card">
                     <div class="featured-article-image">
                         <picture>
-                            <source srcset="/images/carambola-golf-clubhouse.webp" type="image/webp">
-                            <img src="/images/carambola-golf-clubhouse.jpg" alt="Carambola Golf Club Championship Clubhouse" loading="lazy" width="600" height="400">
+                            <source srcset="/images/carambola-golf-featured-article-hero.webp" type="image/webp">
+                            <img src="/images/carambola-golf-featured-article-hero.jpg" 
+                                 alt="Carambola Golf Club Championship Course - Ultimate Resort Guide" 
+                                 loading="lazy" 
+                                 width="600" 
+                                 height="400">
                         </picture>
                         <div class="featured-badge">
                             <i class="fas fa-star" aria-hidden="true"></i>
@@ -399,51 +495,87 @@
             </div>
         </section>
 
-        <!-- Blog Categories -->
+        <!-- Blog Categories with Images -->
         <section class="blog-categories">
             <div class="container">
                 <h2 class="section-title">Explore Our Guides</h2>
                 <div class="categories-grid">
                     <div class="category-card">
-                        <div class="category-icon">
-                            <i class="fas fa-golf-ball" aria-hidden="true"></i>
+                        <div class="category-image">
+                            <picture>
+                                <source srcset="/images/carambola-golf-strategy-category.webp" type="image/webp">
+                                <img src="/images/carambola-golf-strategy-category.jpg" 
+                                     alt="Golf course strategy and championship tips at Carambola Golf Club" 
+                                     loading="lazy"
+                                     width="400"
+                                     height="300">
+                            </picture>
                         </div>
-                        <h3>Golf Course Strategy</h3>
-                        <p>Master our championship course with insider tips, hole-by-hole guides, and pro strategies for Caribbean golf conditions.</p>
-                        <div class="category-links">
-                            <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html">Ultimate Course Guide</a>
-                            <a href="/course.html">Course Details</a>
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <i class="fas fa-golf-ball" aria-hidden="true"></i>
+                            </div>
+                            <h3>Golf Course Strategy</h3>
+                            <p>Master our championship course with insider tips, hole-by-hole guides, and pro strategies for Caribbean golf conditions.</p>
+                            <div class="category-links">
+                                <a href="/blog/ultimate-guide-carambola-golf-resort-2025.html">Ultimate Course Guide</a>
+                                <a href="/course.html">Course Details</a>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="category-card">
-                        <div class="category-icon">
-                            <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
+                        <div class="category-image">
+                            <picture>
+                                <source srcset="/images/st-croix-vacation-planning-category.webp" type="image/webp">
+                                <img src="/images/st-croix-vacation-planning-category.jpg" 
+                                     alt="St. Croix golf vacation planning and travel preparation guides" 
+                                     loading="lazy"
+                                     width="400"
+                                     height="300">
+                            </picture>
                         </div>
-                        <h3>Vacation Planning</h3>
-                        <p>Expert advice for planning your perfect St. Croix golf getaway, from booking strategies to travel tips.</p>
-                        <div class="category-links">
-                            <a href="/blog/planning-perfect-st-croix-golf-vacation-2025.html">Planning Guide</a>
-                            <a href="/accommodations.html">Where to Stay</a>
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
+                            </div>
+                            <h3>Vacation Planning</h3>
+                            <p>Expert advice for planning your perfect St. Croix golf getaway, from booking strategies to travel tips.</p>
+                            <div class="category-links">
+                                <a href="/blog/planning-perfect-st-croix-golf-vacation-2025.html">Planning Guide</a>
+                                <a href="/accommodations.html">Where to Stay</a>
+                            </div>
                         </div>
                     </div>
                     
                     <div class="category-card">
-                        <div class="category-icon">
-                            <i class="fas fa-island-tropical" aria-hidden="true"></i>
+                        <div class="category-image">
+                            <picture>
+                                <source srcset="/images/st-croix-activities-category.webp" type="image/webp">
+                                <img src="/images/st-croix-activities-category.jpg" 
+                                     alt="St. Croix activities and attractions for golf vacation experiences" 
+                                     loading="lazy"
+                                     width="400"
+                                     height="300">
+                            </picture>
                         </div>
-                        <h3>St. Croix Activities</h3>
-                        <p>Discover the best dining, cultural attractions, and adventures to complement your golf experience.</p>
-                        <div class="category-links">
-                            <a href="/blog/st-croix-activities-dining-after-golf.html">Activities Guide</a>
-                            <a href="/st-croix.html">Experience St. Croix</a>
+                        <div class="category-content">
+                            <div class="category-icon">
+                                <i class="fas fa-island-tropical" aria-hidden="true"></i>
+                            </div>
+                            <h3>St. Croix Activities</h3>
+                            <p>Discover the best dining, cultural attractions, and adventures to complement your golf experience.</p>
+                            <div class="category-links">
+                                <a href="/blog/st-croix-activities-dining-after-golf.html">Activities Guide</a>
+                                <a href="/st-croix.html">Experience St. Croix</a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Latest Articles -->
+        <!-- Latest Articles with Updated Images -->
         <section class="latest-articles">
             <div class="container">
                 <h2 class="section-title">Latest Articles</h2>
@@ -451,8 +583,12 @@
                     <article class="article-card">
                         <div class="article-image">
                             <picture>
-                                <source srcset="/images/carambola-golf-hole-12.webp" type="image/webp">
-                                <img src="/images/carambola-golf-hole-12.jpg" alt="St. Croix Golf Vacation Planning" loading="lazy" width="400" height="250">
+                                <source srcset="/images/st-croix-vacation-planning-category.webp" type="image/webp">
+                                <img src="/images/st-croix-vacation-planning-category.jpg" 
+                                     alt="St. Croix Golf Vacation Planning Guide" 
+                                     loading="lazy" 
+                                     width="400" 
+                                     height="250">
                             </picture>
                             <div class="article-category-badge">Vacation Planning</div>
                         </div>
@@ -481,8 +617,12 @@
                     <article class="article-card">
                         <div class="article-image">
                             <picture>
-                                <source srcset="/images/carambola-attraction-buck-island.webp" type="image/webp">
-                                <img src="/images/carambola-attraction-buck-island.jpg" alt="St. Croix Activities and Dining" loading="lazy" width="400" height="250">
+                                <source srcset="/images/st-croix-activities-category.webp" type="image/webp">
+                                <img src="/images/st-croix-activities-category.jpg" 
+                                     alt="St. Croix Activities and Dining After Golf" 
+                                     loading="lazy" 
+                                     width="400" 
+                                     height="250">
                             </picture>
                             <div class="article-category-badge">St. Croix Activities</div>
                         </div>
@@ -511,7 +651,7 @@
             </div>
         </section>
 
-        <!-- Enhanced Newsletter with Conversion Optimization -->
+        <!-- Enhanced Newsletter with Success Image -->
         <section class="newsletter-signup">
             <div class="newsletter-content">
                 <div class="newsletter-info">
@@ -547,25 +687,37 @@
                         </div>
                     </div>
                 </div>
-                <!-- Optimized form with proper handling -->
-                <form class="newsletter-form" id="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
-                    <div class="form-group">
-                        <label for="newsletter-email" class="visually-hidden">Email Address</label>
-                        <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="newsletter-name" class="visually-hidden">First Name (Optional)</label>
-                        <input type="text" id="newsletter-name" name="name" placeholder="First name (optional)">
-                    </div>
-                    <button type="submit" class="cta-button primary">
-                        <i class="fas fa-gift" aria-hidden="true"></i>
-                        Get Free Strategy Guide
-                    </button>
-                    <p class="privacy-note">
-                        <i class="fas fa-lock" aria-hidden="true"></i>
-                        We respect your privacy. Unsubscribe at any time. No spam, ever.
-                    </p>
-                </form>
+                
+                <div class="newsletter-visual">
+                    <picture>
+                        <source srcset="/images/carambola-golf-newsletter-success.webp" type="image/webp">
+                        <img src="/images/carambola-golf-newsletter-success.jpg" 
+                             alt="Carambola Golf Club free strategy guide and expert golf insights" 
+                             loading="lazy"
+                             width="500"
+                             height="300">
+                    </picture>
+                    
+                    <!-- Optimized form with proper handling -->
+                    <form class="newsletter-form" id="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                        <div class="form-group">
+                            <label for="newsletter-email" class="visually-hidden">Email Address</label>
+                            <input type="email" id="newsletter-email" name="email" placeholder="Enter your email address" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newsletter-name" class="visually-hidden">First Name (Optional)</label>
+                            <input type="text" id="newsletter-name" name="name" placeholder="First name (optional)">
+                        </div>
+                        <button type="submit" class="cta-button primary">
+                            <i class="fas fa-gift" aria-hidden="true"></i>
+                            Get Free Strategy Guide
+                        </button>
+                        <p class="privacy-note">
+                            <i class="fas fa-lock" aria-hidden="true"></i>
+                            We respect your privacy. Unsubscribe at any time. No spam, ever.
+                        </p>
+                    </form>
+                </div>
             </div>
         </section>
 
