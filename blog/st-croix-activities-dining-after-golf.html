@@ -39,10 +39,10 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
-    <!-- OPTIMIZED: Critical Resource Preloading -->
+    <!-- OPTIMIZED: Critical Resource Preloading - Hero Image Added -->
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/blog/styles.css" as="style">
-    <link rel="preload" href="/images/carambola-attraction-buck-island.webp" as="image" fetchpriority="high">
+    <link rel="preload" href="/images/st-croix-activities-dining-hero.webp" as="image" fetchpriority="high">
     <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
@@ -72,10 +72,10 @@
     <meta property="og:url" content="https://carambola.golf/blog/st-croix-activities-dining-after-golf.html">
     <meta property="og:title" content="What to Do After Your Round: Fine Dining and Activities in St. Croix">
     <meta property="og:description" content="Discover the best restaurants, activities, and attractions in St. Croix to complement your golf vacation at Carambola Golf Resort.">
-    <meta property="og:image" content="https://carambola.golf/images/carambola-attraction-buck-island.webp">
+    <meta property="og:image" content="https://carambola.golf/images/st-croix-activities-dining-hero.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="St. Croix Buck Island Reef National Monument">
+    <meta property="og:image:alt" content="St. Croix Activities and Dining After Golf at Carambola Resort">
     <meta property="og:site_name" content="Carambola Golf Club">
     <meta property="og:locale" content="en_US">
     <meta property="article:author" content="Jasper van der Zwaan">
@@ -87,8 +87,8 @@
     <meta property="twitter:url" content="https://carambola.golf/blog/st-croix-activities-dining-after-golf.html">
     <meta property="twitter:title" content="What to Do After Your Round: Fine Dining and Activities in St. Croix">
     <meta property="twitter:description" content="Discover the best restaurants, activities, and attractions in St. Croix to complement your golf vacation.">
-    <meta property="twitter:image" content="https://carambola.golf/images/carambola-attraction-buck-island.webp">
-    <meta property="twitter:image:alt" content="St. Croix Buck Island Reef National Monument">
+    <meta property="twitter:image" content="https://carambola.golf/images/st-croix-activities-dining-hero.webp">
+    <meta property="twitter:image:alt" content="St. Croix Activities and Dining After Golf at Carambola Resort">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://carambola.golf/blog/st-croix-activities-dining-after-golf.html">
@@ -104,6 +104,18 @@
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     
+    <!-- Custom Hero Background Style for This Article -->
+    <style>
+    .article-hero {
+        background: var(--blog-gradient-overlay), url('/images/st-croix-activities-dining-hero.webp') center/cover fixed !important;
+    }
+    @media (max-width: 768px) {
+        .article-hero {
+            background: var(--blog-gradient-overlay), url('/images/st-croix-activities-dining-hero.webp') center/cover scroll !important;
+        }
+    }
+    </style>
+    
     <!-- Article-specific Structured Data -->
     <script type="application/ld+json">
     {
@@ -113,7 +125,7 @@
         "description": "Discover the best restaurants, activities, and attractions in St. Croix to complement your golf vacation at Carambola Golf Resort.",
         "image": {
             "@type": "ImageObject",
-            "url": "https://carambola.golf/images/carambola-attraction-buck-island.webp",
+            "url": "https://carambola.golf/images/st-croix-activities-dining-hero.webp",
             "width": 1200,
             "height": 630
         },
@@ -270,7 +282,7 @@
         </div>
     </section>
 
-    <!-- OPTIMIZED: Article Hero - Removed inline styles, uses optimized CSS with Buck Island background -->
+    <!-- Article Hero with Custom Background -->
     <section class="article-hero">
         <div class="article-header">
             <div class="article-meta">
@@ -315,6 +327,20 @@
 
             <p>St. Croix's dining scene rivals any Caribbean destination, offering everything from beachfront casual fare to sophisticated fine dining experiences. After a round at Carambola, treat yourself to the island's culinary treasures that showcase fresh local ingredients, Caribbean spices, and international influences.</p>
 
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/st-croix-fine-dining-restaurants.webp" type="image/webp">
+                    <img src="/images/st-croix-fine-dining-restaurants.jpg" 
+                         alt="Fine dining restaurants in St. Croix perfect for post-golf meals after Carambola Golf Club rounds" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    St. Croix's award-winning restaurants offer the perfect setting for celebrating a great round at Carambola, featuring fresh Caribbean cuisine and waterfront ambiance.
+                </div>
+            </div>
+
             <h3>Top Restaurant Recommendations</h3>
 
             <p><strong><a href="https://www.savantvi.com/" target="_blank" rel="noopener">Savant Restaurant</a> (Christiansted):</strong> This upscale establishment offers an innovative menu featuring fresh seafood and Caribbean-inspired dishes. Located in a historic 18th-century building, Savant provides an elegant atmosphere perfect for celebrating a great round of golf. Their lobster thermidor and locally caught mahi-mahi are consistently rated among the best on the island.</p>
@@ -351,6 +377,20 @@
 
             <p>Beyond its natural beauty, St. Croix boasts a fascinating history spanning Danish colonial rule, sugar plantation era, and vibrant Caribbean culture. These cultural experiences provide perfect afternoon activities after morning golf rounds.</p>
 
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/st-croix-cultural-christiansted-historic.webp" type="image/webp">
+                    <img src="/images/st-croix-cultural-christiansted-historic.jpg" 
+                         alt="Historic Christiansted St. Croix with Danish colonial architecture and Fort Christiansvaern" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    Explore historic Christiansted's Danish colonial architecture and Fort Christiansvaern, offering fascinating cultural experiences perfect for afternoon exploration after morning golf rounds at Carambola.
+                </div>
+            </div>
+
             <h3>Historic Christiansted</h3>
             <p>Explore <a href="https://www.nps.gov/chri/" target="_blank" rel="noopener">Christiansted National Historic Site</a>, where Danish colonial architecture tells the story of St. Croix's sugar plantation era. Fort Christiansvaern, built in 1749, offers guided tours and stunning harbor views. The nearby Steeple Building houses fascinating exhibits about island history and culture.</p>
 
@@ -368,6 +408,20 @@
             <h2>Beach and Water Activities: Perfect Post-Golf Relaxation</h2>
 
             <p>St. Croix's pristine beaches and crystal-clear waters provide the perfect antidote to an exciting round of golf. Whether you prefer active water sports or peaceful beach relaxation, the island offers options for every preference.</p>
+
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/st-croix-beach-water-activities.webp" type="image/webp">
+                    <img src="/images/st-croix-beach-water-activities.jpg" 
+                         alt="St. Croix beach and water activities including snorkeling and sailing perfect after golf at Carambola" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    St. Croix's pristine beaches and crystal-clear waters offer the perfect relaxation after challenging rounds at Carambola Golf Club, with world-class snorkeling and water sports.
+                </div>
+            </div>
 
             <h3>Buck Island Reef National Monument</h3>
             <p>Just off St. Croix's northeast coast, <a href="https://www.nps.gov/buis/" target="_blank" rel="noopener">Buck Island</a> offers some of the Caribbean's best snorkeling and diving. Half-day tours with companies like <a href="https://www.bigbeardvi.com/" target="_blank" rel="noopener">Big Beard's Adventure Tours</a> include boat transportation, snorkeling gear, and guided underwater trails through vibrant coral reefs teeming with tropical fish. Many tours include beach time on the island's pristine white sand beaches.</p>
@@ -391,6 +445,20 @@
 
             <p>For those seeking more active pursuits after golf, St. Croix offers diverse adventure activities that showcase the island's natural beauty from different perspectives.</p>
 
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/st-croix-adventure-nature-activities.webp" type="image/webp">
+                    <img src="/images/st-croix-adventure-nature-activities.jpg" 
+                         alt="St. Croix adventure and nature activities including hiking and botanical gardens for golf vacations" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    Explore St. Croix's natural beauty through hiking trails, botanical gardens, and adventure activities that provide the perfect complement to championship golf at Carambola.
+                </div>
+            </div>
+
             <h3>Hiking and Nature Exploration</h3>
             <p>The island features several hiking trails through tropical forests and coastal areas. The Jack and Isaac Bay Preserve offers easy coastal walks with excellent bird watching, while the more challenging trails in the northwest mountains provide panoramic island views.</p>
 
@@ -403,6 +471,20 @@
             <h2>Shopping and Local Crafts: Unique Island Treasures</h2>
 
             <p>St. Croix offers excellent shopping opportunities, from duty-free goods in Christiansted to local crafts and artwork that capture the island's creative spirit.</p>
+
+            <div class="article-image">
+                <picture>
+                    <source srcset="/images/st-croix-shopping-local-crafts.webp" type="image/webp">
+                    <img src="/images/st-croix-shopping-local-crafts.jpg" 
+                         alt="St. Croix shopping and local crafts in Christiansted perfect for golf vacation souvenirs" 
+                         loading="lazy"
+                         width="800"
+                         height="450">
+                </picture>
+                <div class="image-caption">
+                    Discover unique island treasures and local crafts in Christiansted's historic shopping district, perfect for finding meaningful souvenirs from your Carambola golf vacation.
+                </div>
+            </div>
 
             <h3>Christiansted Shopping District</h3>
             <p>The <a href="https://www.visitstcroix.com/" target="_blank" rel="noopener">historic downtown area</a> features duty-free shopping for jewelry, watches, and liquor, along with local boutiques selling Caribbean-made goods. Gallery shops showcase local artists' work, including paintings, pottery, and handcrafted jewelry.</p>
