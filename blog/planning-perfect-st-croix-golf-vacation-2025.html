@@ -39,12 +39,16 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
-    <!-- Critical Resource Preloading - Optimized Order -->
+    <!-- OPTIMIZED: Critical Resource Preloading -->
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/blog/styles.css" as="style">
-    <link rel="preload" href="/images/carambola-golf-hole-12.webp" as="image">
+    <link rel="preload" href="/images/carambola-golf-hole-12.webp" as="image" fetchpriority="high">
     <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
+    
+    <!-- DNS Prefetch for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     
     <!-- SEO Meta Tags -->
     <title>Insider Tips for Planning Your Perfect 2025 St. Croix Golf Vacation at Carambola Resort</title>
@@ -95,7 +99,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     
-    <!-- CSS Loading Order: Main styles first, then blog supplements -->
+    <!-- OPTIMIZED: CSS Loading Order -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -266,8 +270,8 @@
         </div>
     </section>
 
-    <!-- Article Hero -->
-    <section class="article-hero" style="background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)), url('/images/carambola-golf-hole-12.webp') center/cover;">
+    <!-- OPTIMIZED: Article Hero - Removed inline styles, uses optimized CSS -->
+    <section class="article-hero">
         <div class="article-header">
             <div class="article-meta">
                 <span class="article-category">Vacation Planning</span>
@@ -421,28 +425,48 @@
                 <h2 class="faq-title">Frequently Asked Questions About St. Croix Golf Vacations</h2>
                 
                 <div class="faq-item">
-                    <h3 class="faq-question">What are the best months for a St. Croix golf trip in 2025?</h3>
-                    <p class="faq-answer">December to April offers ideal weather and events, with temperatures averaging 78-85°F and minimal rainfall. This is peak season, so book early for the best rates and availability.</p>
+                    <div class="faq-question">
+                        <h3>What are the best months for a St. Croix golf trip in 2025?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>December to April offers ideal weather and events, with temperatures averaging 78-85°F and minimal rainfall. This is peak season, so book early for the best rates and availability.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <h3 class="faq-question">How do I book packages at Carambola Golf Club?</h3>
-                    <p class="faq-answer">Visit <a href="/contact.html">carambola.golf</a> or call <a href="tel:+13407785638">+1-340-778-5638</a> for customized golf packages, group rates, and vacation planning assistance. Our team can help coordinate tee times, accommodations, and activities.</p>
+                    <div class="faq-question">
+                        <h3>How do I book packages at Carambola Golf Club?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Visit <a href="/contact.html">carambola.golf</a> or call <a href="tel:+13407785638">+1-340-778-5638</a> for customized golf packages, group rates, and vacation planning assistance. Our team can help coordinate tee times, accommodations, and activities.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <h3 class="faq-question">What travel documents do I need for St. Croix?</h3>
-                    <p class="faq-answer">US citizens need a valid photo ID (driver's license or passport). Non-US citizens need a valid passport. No visa required for US Virgin Islands as it's US territory.</p>
+                    <div class="faq-question">
+                        <h3>What travel documents do I need for St. Croix?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>US citizens need a valid photo ID (driver's license or passport). Non-US citizens need a valid passport. No visa required for US Virgin Islands as it's US territory.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <h3 class="faq-question">How can I ship my golf clubs to St. Croix?</h3>
-                    <p class="faq-answer">Use specialized services like Ship Sticks or standard carriers like FedEx. Costs start at $50-150 domestically. Pack in a hard case under 50 lbs, ship 3-5 days early, and consider insurance for valuable equipment.</p>
+                    <div class="faq-question">
+                        <h3>How can I ship my golf clubs to St. Croix?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Use specialized services like Ship Sticks or standard carriers like FedEx. Costs start at $50-150 domestically. Pack in a hard case under 50 lbs, ship 3-5 days early, and consider insurance for valuable equipment.</p>
+                    </div>
                 </div>
 
                 <div class="faq-item">
-                    <h3 class="faq-question">How do I get to Carambola Golf Club from the airport?</h3>
-                    <p class="faq-answer">Henry E. Rohlsen Airport (STX) is about 20 minutes from Carambola. Rent a car for maximum flexibility, or arrange shuttle service through your accommodation.</p>
+                    <div class="faq-question">
+                        <h3>How do I get to Carambola Golf Club from the airport?</h3>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Henry E. Rohlsen Airport (STX) is about 20 minutes from Carambola. Rent a car for maximum flexibility, or arrange shuttle service through your accommodation.</p>
+                    </div>
                 </div>
             </div>
 
@@ -453,8 +477,8 @@
                         <img src="/images/Jasper-2022-Profile-Pic.jpg" 
                              alt="Jasper van der Zwaan - Golf Tourism Expert and Caribbean Travel Specialist" 
                              loading="lazy"
-                             width="100"
-                             height="100"
+                             width="120"
+                             height="120"
                              onload="this.classList.add('loaded')"
                              onerror="this.style.display='none';">
                     </div>
