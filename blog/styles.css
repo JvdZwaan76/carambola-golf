@@ -1,5 +1,5 @@
 /* CARAMBOLA GOLF CLUB BLOG STYLES - PRODUCTION OPTIMIZED */
-/* Version 3.0 - Lightweight, Enterprise-Aligned, Zero Conflicts */
+/* Version 3.1 - FIXED: Breadcrumb positioning & FAQ text color */
 /* File size: ~4KB | Perfect main styles.css integration */
 
 /* ==========================================================================
@@ -20,14 +20,16 @@
 }
 
 /* ==========================================================================
-   BREADCRUMB NAVIGATION - ENTERPRISE MINIMAL
+   BREADCRUMB NAVIGATION - ENTERPRISE MINIMAL (FIXED POSITIONING)
    ========================================================================== */
 
 .breadcrumb {
     background: var(--bg-cream);
     padding: 1rem 0;
     border-bottom: 1px solid var(--light-gold);
-    margin-top: 80px;
+    margin-top: 100px; /* FIXED: Increased from 80px to properly clear fixed navbar */
+    position: relative;
+    z-index: 100;
 }
 
 .breadcrumb-nav {
@@ -88,7 +90,7 @@
     justify-content: center;
     text-align: center;
     color: var(--text-light);
-    margin-top: 80px;
+    margin-top: 100px; /* FIXED: Adjusted to match breadcrumb spacing */
     padding: 4rem 2rem;
     position: relative;
 }
@@ -569,7 +571,7 @@
 }
 
 /* ==========================================================================
-   FAQ SECTION - ENTERPRISE BALANCED
+   FAQ SECTION - ENTERPRISE BALANCED (FIXED TEXT COLOR)
    ========================================================================== */
 
 .faq-section {
@@ -619,8 +621,10 @@
     background: var(--secondary-navy);
 }
 
-.faq-question h3 {
-    color: white;
+/* FIXED: FAQ header text color - ensure white text on navy background */
+.faq-question h3,
+.faq-question h3 * {
+    color: white !important;
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
@@ -852,13 +856,14 @@
 }
 
 /* ==========================================================================
-   MOBILE RESPONSIVE - OPTIMIZED BREAKPOINTS
+   MOBILE RESPONSIVE - OPTIMIZED BREAKPOINTS (FIXED SPACING)
    ========================================================================== */
 
 @media (max-width: 768px) {
-    /* Breadcrumb Mobile */
+    /* Breadcrumb Mobile - FIXED: Proper spacing */
     .breadcrumb {
         padding: 0.8rem 0;
+        margin-top: 110px; /* FIXED: Account for mobile navbar height */
     }
     
     .breadcrumb-nav {
@@ -871,11 +876,12 @@
         flex-wrap: wrap;
     }
     
-    /* Article Hero Mobile */
+    /* Article Hero Mobile - FIXED: Consistent spacing */
     .article-hero {
         min-height: 50vh;
         padding: 3rem 1rem 2rem;
         background-attachment: scroll !important;
+        margin-top: 110px; /* FIXED: Match breadcrumb spacing */
     }
     
     .article-header {
@@ -1031,11 +1037,11 @@
 
 @media (max-width: 480px) {
     .breadcrumb {
-        margin-top: 90px;
+        margin-top: 120px; /* FIXED: Extra spacing for smallest screens */
     }
     
     .article-hero {
-        margin-top: 90px;
+        margin-top: 120px; /* FIXED: Consistent with breadcrumb */
         padding: 2rem 0.5rem 1.5rem;
         min-height: 45vh;
     }
