@@ -39,7 +39,7 @@
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     
-    <!-- UPDATED: Critical Resource Preloading - Fixed Profile Image Path -->
+    <!-- OPTIMIZED: Critical Resource Preloading -->
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/blog/styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-course-aerial-hero.webp" as="image" fetchpriority="high">
@@ -99,7 +99,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
     
-    <!-- CSS Loading Order: Main styles first, then blog supplements -->
+    <!-- OPTIMIZED: CSS Loading Order -->
     <link rel="stylesheet" href="/styles.css">
     <link rel="stylesheet" href="/blog/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
@@ -271,8 +271,8 @@
         </div>
     </section>
 
-    <!-- Article Hero with Optimized Background Image -->
-    <section class="article-hero" style="background: linear-gradient(rgba(30, 58, 95, 0.6), rgba(30, 58, 95, 0.6)), url('/images/carambola-golf-course-aerial-hero.webp') center/cover;">
+    <!-- CRITICAL FIX: Article Hero - Removed problematic inline styles, uses optimized CSS background -->
+    <section class="article-hero">
         <div class="article-header">
             <div class="article-meta">
                 <span class="article-category">Golf Guides</span>
@@ -496,7 +496,7 @@
                 </div>
             </div>
 
-            <!-- UPDATED: Enhanced Author Bio with Correct Profile Picture -->
+            <!-- Enhanced Author Bio with Correct Profile Picture -->
             <div class="author-bio">
                 <div class="author-info">
                     <div class="author-avatar" data-initials="JZ">
