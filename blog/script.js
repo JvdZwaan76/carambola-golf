@@ -566,7 +566,75 @@
         }
     };
 
-    // Enhanced reading progress tracker (unchanged but with dual ad context)
+    // Enhanced sharing system for clean HTML
+    function setupSharingSystem() {
+        const shareButtons = document.querySelectorAll('[data-share-platform]');
+        shareButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const platform = button.getAttribute('data-share-platform');
+                shareArticle(platform);
+            });
+        });
+
+        utils.log('Enhanced sharing system initialized for', shareButtons.length, 'buttons');
+    }
+
+    // Share functionality
+    function shareArticle(platform) {
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent(document.title);
+        const description = encodeURIComponent("Complete guide to Carambola Golf Resort and St. Croix golf vacations!");
+        
+        let shareUrl = '';
+        
+        switch(platform) {
+            case 'facebook':
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                break;
+            case 'twitter':
+                shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+                break;
+            case 'linkedin':
+                shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+                break;
+            case 'email':
+                shareUrl = `mailto:?subject=${title}&body=Check out this comprehensive guide: ${url}`;
+                break;
+        }
+        
+        if (platform === 'email') {
+            window.location.href = shareUrl;
+        } else {
+            window.open(shareUrl, '_blank', 'width=600,height=400');
+        }
+        
+        // Track sharing
+        utils.safeTrack('article_shared', platform, {
+            article_title: document.title.substring(0, 50),
+            share_method: platform,
+            dual_ads_present: state.ads.static.placed
+        });
+    }
+
+    // Enhanced CTA tracking
+    function setupCTATracking() {
+        const ctaButtons = document.querySelectorAll('[data-track-cta]');
+        ctaButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const ctaType = button.getAttribute('data-track-cta');
+                utils.safeTrack('cta_click', ctaType, {
+                    button_text: button.textContent.trim(),
+                    destination_url: button.href,
+                    dual_ads_present: state.ads.static.placed
+                });
+            });
+        });
+
+        utils.log('Enhanced CTA tracking initialized for', ctaButtons.length, 'buttons');
+    }
+
+    // Enhanced reading progress tracker
     function setupReadingProgress() {
         if (state.readingProgress.active) return;
         
@@ -624,7 +692,7 @@
         utils.log('Reading progress initialized with dual ad integration');
     }
 
-    // Enhanced engagement tracking (unchanged)
+    // Enhanced engagement tracking
     function setupEngagementTracking() {
         window.addEventListener('scroll', utils.throttle(() => {
             const scrollPercent = Math.round(
@@ -646,7 +714,7 @@
         utils.log('Enhanced engagement tracking initialized with dual ad system');
     }
 
-    // Enhanced image lazy loading (unchanged)
+    // Enhanced image lazy loading
     function setupImageLazyLoading() {
         const images = document.querySelectorAll('img[loading="lazy"]');
         if (!images.length) return;
@@ -674,7 +742,7 @@
         utils.log('Enhanced image lazy loading initialized for', images.length, 'images');
     }
 
-    // Enhanced link tracking (unchanged)
+    // Enhanced link tracking
     function setupLinkTracking() {
         const links = document.querySelectorAll('.article-body a:not([data-ad-link]), .cta-button');
         
@@ -697,7 +765,7 @@
         utils.log('Enhanced link tracking initialized for', links.length, 'links');
     }
 
-    // Enhanced mobile optimizations (unchanged)
+    // Enhanced mobile optimizations
     function setupMobileOptimizations() {
         if (!state.isMobile) return;
 
@@ -777,7 +845,7 @@
         utils.log('Enhanced dual ad performance monitoring initialized');
     }
 
-    // Enhanced error handling (unchanged)
+    // Enhanced error handling
     function setupErrorHandling() {
         window.addEventListener('error', (event) => {
             utils.safeTrack('javascript_error', 'global', {
@@ -807,6 +875,8 @@
             // Initialize core systems first
             setupEngagementTracking();
             setupReadingProgress();
+            setupSharingSystem(); // For clean HTML
+            setupCTATracking(); // For clean HTML
             setupLinkTracking();
             setupMobileOptimizations();
             setupPerformanceMonitoring();
@@ -824,7 +894,7 @@
                 user_agent: navigator.userAgent.substring(0, 100)
             });
 
-            utils.log('Enhanced dual ad blog supplements initialized successfully', CONFIG.version);
+            console.log('📚 Blog: Enhanced dual ad blog supplements initialized successfully', CONFIG.version);
 
         } catch (error) {
             console.error('Blog supplements initialization failed:', error);
