@@ -1,5 +1,5 @@
-// CARAMBOLA GOLF CLUB BLOG SUPPLEMENTS - ENHANCED WITH STATIC ADS
-// Performance-optimized with static advertisement system - CONFLICT-FREE
+// CARAMBOLA GOLF CLUB BLOG SUPPLEMENTS - ENHANCED WITH DUAL STATIC ADS
+// Performance-optimized with dual advertisement system - ENTERPRISE READY
 
 (function() {
     'use strict';
@@ -10,38 +10,53 @@
         return;
     }
 
-    // Enhanced configuration with ad system
+    // Enhanced configuration with dual ad system
     const CONFIG = {
-        version: '2.2.0',
+        version: '2.3.0',
         debugMode: false,
         
-        // Static Advertisement Configuration
+        // Enhanced Static Advertisement Configuration - Two Different Ads
         staticAds: {
             enabled: true,
-            cobraGolfAd: {
+            
+            // Mid-article ad (existing Cobra irons)
+            cobraIronsAd: {
                 clickUrl: 'https://www.tkqlhce.com/click-101520211-16945650',
                 imageUrl: 'https://www.ftjcfx.com/image-101520211-16945650',
                 width: 970,
                 height: 250,
-                alt: 'Cobra KING Tour Black Irons - Premium Golf Equipment for Championship Performance'
+                alt: 'Cobra KING Tour Black Irons - Premium Golf Equipment for Championship Performance',
+                trackingId: 'cobra_king_tour_irons',
+                placement: 'mid'
+            },
+            
+            // Bottom ad (new Cobra vintage putters)
+            cobraPuttersAd: {
+                clickUrl: 'https://www.dpbolvw.net/click-101520211-15729104',
+                imageUrl: 'https://www.ftjcfx.com/image-101520211-15729104',
+                width: 728,
+                height: 90,
+                alt: '2024 COBRA Vintage Putters - Classic Style Meets Modern Performance',
+                trackingId: 'cobra_vintage_putters',
+                placement: 'bottom'
             }
         },
         
         // Engagement requirements for ads - Mobile optimized
         engagementRequirements: {
-            minTimeOnPage: 15000, // Reduced to 15 seconds for faster ad display
-            minScrollPercent: 15, // Reduced to 15% scroll for mobile
+            minTimeOnPage: 15000, // 15 seconds for faster ad display
+            minScrollPercent: 15, // 15% scroll for mobile
             minInteractions: 1 // At least 1 interaction
         },
         
         // Performance optimizations
-        trackingThrottle: 1200, // Faster throttling for better responsiveness
-        maxTrackingEvents: 35, // Increased limit for ad tracking
-        adLoadDelay: 2000, // Delay before loading ads (performance optimization)
-        adViewportThreshold: 0.3 // Ad viewability threshold
+        trackingThrottle: 1200,
+        maxTrackingEvents: 40, // Increased for dual ad tracking
+        adLoadDelay: 2000,
+        adViewportThreshold: 0.3
     };
 
-    // Enhanced state management with ad tracking
+    // Enhanced state management with dual ad tracking
     const state = {
         trackingEvents: 0,
         lastTrackingTime: 0,
@@ -67,7 +82,21 @@
                 placed: false,
                 visible: new Set(),
                 clicked: new Set(),
-                impressions: 0
+                impressions: 0,
+                
+                // Individual ad tracking
+                irons: {
+                    loaded: false,
+                    visible: false,
+                    clicked: false,
+                    impressions: 0
+                },
+                putters: {
+                    loaded: false,
+                    visible: false,
+                    clicked: false,
+                    impressions: 0
+                }
             },
             performance: {
                 loadTime: 0,
@@ -85,13 +114,11 @@
             }
         },
 
-        // Enhanced mobile detection
         isMobile: () => {
             return window.innerWidth <= 768 || 
                    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         },
 
-        // Safe tracking with enhanced mobile optimizations
         safeTrack: (action, category, details = {}) => {
             const now = Date.now();
             
@@ -106,16 +133,26 @@
             state.trackingEvents++;
             
             try {
-                // Enhanced tracking with ad context
+                // Enhanced tracking with dual ad context
                 if (typeof window.trackBlogInteraction === 'function') {
                     window.trackBlogInteraction(action, category, {
                         ...details,
                         blog_supplement: true,
                         is_mobile: state.isMobile,
                         viewport_width: window.innerWidth,
-                        ad_system: 'static_v2'
+                        ad_system: 'dual_static_v2',
+                        ads_loaded: {
+                            irons: state.ads.static.irons.loaded,
+                            putters: state.ads.static.putters.loaded
+                        }
                     });
                 }
+                
+                // Also try article-specific tracking
+                if (typeof window.trackArticleInteraction === 'function') {
+                    window.trackArticleInteraction(action, category, details);
+                }
+                
                 utils.log('Tracked:', action, category);
                 return true;
             } catch (error) {
@@ -128,15 +165,12 @@
             }
         },
 
-        // Enhanced engagement detection
         isUserEngaged: () => {
             const timeOnPage = Date.now() - state.engagement.startTime;
             const scrollPercent = state.engagement.maxScroll;
             const interactions = state.engagement.interactions;
             
             const req = CONFIG.engagementRequirements;
-            
-            // Mobile-optimized requirements
             const adjustedTimeReq = state.isMobile ? req.minTimeOnPage * 0.8 : req.minTimeOnPage;
             const adjustedScrollReq = state.isMobile ? req.minScrollPercent * 0.8 : req.minScrollPercent;
             
@@ -145,7 +179,6 @@
                    interactions >= req.minInteractions;
         },
 
-        // Performance-optimized throttle
         throttle: (func, delay) => {
             let timeoutId;
             let lastExecTime = 0;
@@ -166,7 +199,6 @@
             };
         },
 
-        // Enhanced intersection observer for ads
         createObserver: (callback, options = {}) => {
             const defaultOptions = {
                 rootMargin: state.isMobile ? '20px 0px' : '50px 0px',
@@ -180,7 +212,6 @@
             return null;
         },
 
-        // Image preloading utility for ads
         preloadImage: (src) => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -190,27 +221,38 @@
             });
         },
 
-        // Generate unique ad ID for tracking
         generateAdId: () => {
             return 'ad_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+        },
+
+        // Get ad config by type
+        getAdConfig: (adType) => {
+            switch(adType) {
+                case 'irons':
+                case 'mid':
+                    return CONFIG.staticAds.cobraIronsAd;
+                case 'putters':
+                case 'bottom':
+                    return CONFIG.staticAds.cobraPuttersAd;
+                default:
+                    return null;
+            }
         }
     };
 
-    // ENHANCED STATIC ADVERTISEMENT SYSTEM
+    // ENHANCED DUAL STATIC ADVERTISEMENT SYSTEM
     function setupStaticAdSystem() {
         if (!CONFIG.staticAds.enabled || state.ads.static.loaded) {
             utils.log('Static ads disabled or already loaded');
             return;
         }
 
-        utils.log('Initializing static advertisement system...');
+        utils.log('Initializing dual static advertisement system...');
         
-        // Wait for initial page load and engagement
         setTimeout(() => {
             if (utils.isUserEngaged()) {
                 loadStaticAdvertisements();
             } else {
-                // Check engagement periodically
                 const engagementCheck = setInterval(() => {
                     if (utils.isUserEngaged() && !state.ads.static.loaded) {
                         clearInterval(engagementCheck);
@@ -218,7 +260,6 @@
                     }
                 }, state.isMobile ? 3000 : 2000);
 
-                // Fallback: load ads after 30 seconds regardless
                 setTimeout(() => {
                     if (!state.ads.static.loaded) {
                         clearInterval(engagementCheck);
@@ -232,7 +273,7 @@
         }, CONFIG.adLoadDelay);
     }
 
-    // Load and place static advertisements
+    // Enhanced load and place static advertisements
     async function loadStaticAdvertisements() {
         if (state.ads.static.loaded) return;
         
@@ -240,101 +281,161 @@
         state.ads.static.loaded = true;
 
         try {
-            // Preload ad image for better performance
-            await utils.preloadImage(CONFIG.staticAds.cobraGolfAd.imageUrl);
+            // Preload both ad images for better performance
+            await Promise.all([
+                utils.preloadImage(CONFIG.staticAds.cobraIronsAd.imageUrl),
+                utils.preloadImage(CONFIG.staticAds.cobraPuttersAd.imageUrl)
+            ]);
             
-            // Find article content
             const article = document.querySelector('.article-body');
             if (!article) {
                 throw new Error('Article body not found');
             }
 
-            // Check if ads already exist (from static HTML)
+            // Check if ads already exist in HTML
             const existingAds = article.querySelectorAll('.static-advertisement');
             if (existingAds.length > 0) {
-                utils.log('Static ads already exist in HTML, enhancing...');
-                enhanceExistingAds(existingAds);
+                utils.log('Static ads already exist in HTML, enhancing with dual system...');
+                enhanceExistingAdsWithDualSystem(existingAds);
                 state.ads.static.placed = true;
                 return;
             }
 
             // Place new ads dynamically if none exist
-            placeNewStaticAdvertisements(article);
+            placeNewDualStaticAdvertisements(article);
             
             state.ads.performance.loadTime = performance.now() - startTime;
             
-            utils.safeTrack('static_ads_loaded', 'dynamic_placement', {
+            utils.safeTrack('dual_static_ads_loaded', 'dynamic_placement', {
                 load_time: Math.round(state.ads.performance.loadTime),
-                ad_count: article.querySelectorAll('.static-advertisement').length
+                ad_count: article.querySelectorAll('.static-advertisement').length,
+                irons_loaded: state.ads.static.irons.loaded,
+                putters_loaded: state.ads.static.putters.loaded
             });
 
         } catch (error) {
-            console.error('Static ad loading failed:', error);
+            console.error('Dual static ad loading failed:', error);
             state.ads.performance.errors++;
             
-            utils.safeTrack('static_ads_error', 'load_failed', {
+            utils.safeTrack('dual_static_ads_error', 'load_failed', {
                 error_message: error.message
             });
         }
     }
 
-    // Enhance existing static ads in HTML
-    function enhanceExistingAds(existingAds) {
+    // Enhanced function to handle existing ads in HTML with dual system
+    function enhanceExistingAdsWithDualSystem(existingAds) {
         existingAds.forEach((ad, index) => {
             const adId = utils.generateAdId();
             ad.setAttribute('data-ad-id', adId);
             
-            // Add performance tracking
+            // Determine ad type based on position or existing content
+            let adType, adConfig;
+            
+            if (ad.classList.contains('static-ad-mid')) {
+                adType = 'irons';
+                adConfig = CONFIG.staticAds.cobraIronsAd;
+                state.ads.static.irons.loaded = true;
+            } else if (ad.classList.contains('static-ad-bottom')) {
+                adType = 'putters';
+                adConfig = CONFIG.staticAds.cobraPuttersAd;
+                state.ads.static.putters.loaded = true;
+            } else {
+                // Fallback: assign based on index
+                adType = index === 0 ? 'irons' : 'putters';
+                adConfig = utils.getAdConfig(adType);
+                state.ads.static[adType].loaded = true;
+            }
+            
+            ad.setAttribute('data-ad-type', adType);
+
+            // Update existing ad content if needed
+            const existingLink = ad.querySelector('a');
+            const existingImg = ad.querySelector('img');
+            
+            if (existingLink && existingImg) {
+                // Update href if different
+                if (existingLink.href !== adConfig.clickUrl) {
+                    existingLink.href = adConfig.clickUrl;
+                }
+                
+                // Update image if different
+                if (existingImg.src !== adConfig.imageUrl) {
+                    existingImg.src = adConfig.imageUrl;
+                    existingImg.alt = adConfig.alt;
+                }
+            }
+
+            // Enhanced click tracking
             const link = ad.querySelector('a');
             if (link) {
-                link.addEventListener('click', () => {
-                    handleAdClick(adId, 'existing_html', index);
+                // Remove any existing click handlers
+                link.replaceWith(link.cloneNode(true));
+                const newLink = ad.querySelector('a');
+                
+                newLink.addEventListener('click', (event) => {
+                    handleEnhancedAdClick(adId, adType, index, adConfig.trackingId);
                 });
             }
 
-            // Setup viewability tracking
-            setupAdViewabilityTracking(ad, adId, index);
+            // Setup enhanced viewability tracking
+            setupEnhancedAdViewabilityTracking(ad, adId, adType, adConfig.trackingId);
             
             // Add fade-in animation
             ad.classList.add('blog-fade-in');
+            
+            utils.log(`Enhanced existing ${adType} ad with dual system:`, adId);
         });
 
-        utils.log('Enhanced', existingAds.length, 'existing static ads');
+        state.ads.static.placed = true;
+        utils.log('Enhanced', existingAds.length, 'existing ads with dual system');
     }
 
-    // Place new static advertisements dynamically
-    function placeNewStaticAdvertisements(article) {
+    // Place new dual static advertisements dynamically
+    function placeNewDualStaticAdvertisements(article) {
         const paragraphs = article.querySelectorAll('p');
         if (paragraphs.length < 4) {
             utils.log('Insufficient content for ad placement');
             return;
         }
 
-        // Calculate optimal ad positions
-        const adPositions = state.isMobile 
-            ? [Math.floor(paragraphs.length * 0.4)] // Single ad on mobile
-            : [Math.floor(paragraphs.length * 0.35), Math.floor(paragraphs.length * 0.75)]; // Two ads on desktop
+        // Create both ads for desktop, single ad for mobile
+        const adsToPlace = state.isMobile 
+            ? [{ type: 'irons', position: Math.floor(paragraphs.length * 0.4) }]
+            : [
+                { type: 'irons', position: Math.floor(paragraphs.length * 0.35) },
+                { type: 'putters', position: Math.floor(paragraphs.length * 0.75) }
+              ];
 
-        adPositions.forEach((position, index) => {
+        adsToPlace.forEach(({ type, position }) => {
             if (paragraphs[position]) {
-                const adElement = createStaticAdElement(index === 0 ? 'mid' : 'bottom');
+                const adElement = createDualStaticAdElement(type);
                 paragraphs[position].parentNode.insertBefore(adElement, paragraphs[position].nextSibling);
+                state.ads.static[type].loaded = true;
             }
         });
 
         state.ads.static.placed = true;
-        utils.log('Placed', adPositions.length, 'new static advertisements');
+        utils.log('Placed', adsToPlace.length, 'new dual static advertisements');
     }
 
-    // Create enhanced static advertisement element
-    function createStaticAdElement(position) {
+    // Create enhanced dual static advertisement element
+    function createDualStaticAdElement(adType) {
         const adId = utils.generateAdId();
-        const adConfig = CONFIG.staticAds.cobraGolfAd;
+        const adConfig = utils.getAdConfig(adType);
+        
+        if (!adConfig) {
+            console.error('Invalid ad type:', adType);
+            return document.createElement('div');
+        }
         
         const adContainer = document.createElement('div');
-        adContainer.className = `static-advertisement static-ad-${position} blog-fade-in`;
+        const placement = adConfig.placement;
+        
+        adContainer.className = `static-advertisement static-ad-${placement} blog-fade-in`;
         adContainer.setAttribute('data-ad-id', adId);
-        adContainer.setAttribute('data-ad-position', position);
+        adContainer.setAttribute('data-ad-type', adType);
+        adContainer.setAttribute('data-ad-position', placement);
         
         // Mobile-responsive dimensions
         const displayWidth = state.isMobile ? Math.min(adConfig.width, 320) : adConfig.width;
@@ -345,7 +446,6 @@
                 <a href="${adConfig.clickUrl}" 
                    target="_blank" 
                    rel="noopener sponsored"
-                   onclick="handleAdClick('${adId}', '${position}', ${state.ads.static.impressions})"
                    data-ad-link="${adId}">
                     <img src="${adConfig.imageUrl}" 
                          width="${displayWidth}" 
@@ -361,64 +461,78 @@
         // Setup enhanced tracking
         const link = adContainer.querySelector('a');
         link.addEventListener('click', (event) => {
-            handleAdClick(adId, position, state.ads.static.impressions);
+            handleEnhancedAdClick(adId, adType, state.ads.static.impressions, adConfig.trackingId);
         });
 
         // Setup viewability tracking
-        setupAdViewabilityTracking(adContainer, adId, state.ads.static.impressions);
+        setupEnhancedAdViewabilityTracking(adContainer, adId, adType, adConfig.trackingId);
         
         state.ads.static.impressions++;
+        state.ads.static[adType].impressions++;
+        
         return adContainer;
     }
 
-    // Enhanced ad click handling
-    function handleAdClick(adId, position, impressionId) {
+    // Enhanced ad click handling for dual system
+    function handleEnhancedAdClick(adId, adType, impressionId, trackingId) {
         if (state.ads.static.clicked.has(adId)) {
             return; // Prevent double-click tracking
         }
         
         state.ads.static.clicked.add(adId);
+        state.ads.static[adType].clicked = true;
         
-        utils.safeTrack('static_ad_click', 'cobra_golf_equipment', {
+        const adConfig = utils.getAdConfig(adType);
+        
+        utils.safeTrack('dual_static_ad_click', trackingId, {
             ad_id: adId,
-            ad_position: position,
+            ad_type: adType,
+            ad_position: adConfig.placement,
             impression_id: impressionId,
             time_on_page: Date.now() - state.engagement.startTime,
             scroll_progress: state.engagement.maxScroll,
             is_mobile: state.isMobile,
-            click_timestamp: Date.now()
+            click_timestamp: Date.now(),
+            destination_url: adConfig.clickUrl,
+            equipment_category: adType === 'irons' ? 'irons' : 'putters'
         });
 
-        // Enhanced performance tracking
+        // Enhanced conversion tracking
         if (typeof window.trackBlogInteraction === 'function') {
-            window.trackBlogInteraction('advertisement_conversion', 'cobra_click', {
+            window.trackBlogInteraction('advertisement_conversion', `${trackingId}_click`, {
                 conversion_type: 'external_click',
-                ad_system: 'static_v2',
-                position: position
+                ad_system: 'dual_static_v2',
+                position: adConfig.placement,
+                equipment_type: adType
             });
         }
 
-        utils.log('Ad click tracked:', adId, position);
+        utils.log('Enhanced ad click tracked:', adId, adType, trackingId);
     }
 
-    // Setup enhanced ad viewability tracking
-    function setupAdViewabilityTracking(adElement, adId, impressionId) {
+    // Enhanced ad viewability tracking for dual system
+    function setupEnhancedAdViewabilityTracking(adElement, adId, adType, trackingId) {
         const observer = utils.createObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting && entry.intersectionRatio >= CONFIG.adViewportThreshold) {
                     if (!state.ads.static.visible.has(adId)) {
                         state.ads.static.visible.add(adId);
+                        state.ads.static[adType].visible = true;
                         
-                        utils.safeTrack('static_ad_impression', 'cobra_golf_equipment', {
+                        const adConfig = utils.getAdConfig(adType);
+                        
+                        utils.safeTrack('dual_static_ad_impression', trackingId, {
                             ad_id: adId,
-                            impression_id: impressionId,
+                            ad_type: adType,
+                            impression_id: state.ads.static[adType].impressions,
                             visibility_ratio: entry.intersectionRatio,
                             viewport_height: window.innerHeight,
-                            ad_position: adElement.getAttribute('data-ad-position'),
-                            time_to_view: Date.now() - state.engagement.startTime
+                            ad_position: adConfig.placement,
+                            time_to_view: Date.now() - state.engagement.startTime,
+                            equipment_category: adType === 'irons' ? 'irons' : 'putters'
                         });
 
-                        utils.log('Ad impression tracked:', adId);
+                        utils.log('Enhanced ad impression tracked:', adId, adType, trackingId);
                         observer.unobserve(entry.target);
                     }
                 }
@@ -428,39 +542,31 @@
         if (observer) {
             observer.observe(adElement);
         }
-
-        // Fallback for browsers without Intersection Observer
-        if (!observer) {
-            setTimeout(() => {
-                if (!state.ads.static.visible.has(adId)) {
-                    handleAdClick(adId, adElement.getAttribute('data-ad-position'), impressionId);
-                }
-            }, 3000);
-        }
     }
 
-    // Make handleAdClick globally available for inline onclick handlers
+    // Global function for inline onclick handlers (backward compatibility)
     window.handleAdClick = function(adId, position, impressionId) {
-        if (state.ads.static.clicked.has(adId)) {
-            return;
+        // Determine ad type from position
+        const adType = position === 'mid' ? 'irons' : 'putters';
+        const adConfig = utils.getAdConfig(adType);
+        
+        if (adConfig) {
+            handleEnhancedAdClick(adId, adType, impressionId, adConfig.trackingId);
+        } else {
+            // Fallback to original system
+            if (state.ads.static.clicked.has(adId)) return;
+            
+            state.ads.static.clicked.add(adId);
+            utils.safeTrack('static_ad_click', 'cobra_golf_equipment', {
+                ad_id: adId,
+                ad_position: position,
+                impression_id: impressionId,
+                fallback_tracking: true
+            });
         }
-        
-        state.ads.static.clicked.add(adId);
-        
-        utils.safeTrack('static_ad_click', 'cobra_golf_equipment', {
-            ad_id: adId,
-            ad_position: position,
-            impression_id: impressionId,
-            time_on_page: Date.now() - state.engagement.startTime,
-            scroll_progress: state.engagement.maxScroll,
-            is_mobile: state.isMobile,
-            click_timestamp: Date.now()
-        });
-
-        utils.log('Global ad click tracked:', adId, position);
     };
 
-    // Enhanced reading progress tracker
+    // Enhanced reading progress tracker (unchanged but with dual ad context)
     function setupReadingProgress() {
         if (state.readingProgress.active) return;
         
@@ -469,7 +575,6 @@
 
         state.readingProgress.active = true;
 
-        // Create progress bar
         const progressBar = document.createElement('div');
         progressBar.className = 'reading-progress-bar';
         progressBar.innerHTML = '<div class="reading-progress-fill"></div>';
@@ -493,10 +598,8 @@
                 const roundedProgress = Math.round(progress);
                 progressFill.style.width = `${roundedProgress}%`;
 
-                // Update engagement
                 state.engagement.maxScroll = Math.max(state.engagement.maxScroll, roundedProgress);
 
-                // Track milestones
                 milestones.forEach(milestone => {
                     if (roundedProgress >= milestone && 
                         !state.readingProgress.reportedMilestones.has(milestone)) {
@@ -506,7 +609,9 @@
                             progress: milestone,
                             article_height: articleHeight,
                             viewport_height: windowHeight,
-                            has_ads: state.ads.static.placed
+                            dual_ads_present: state.ads.static.placed,
+                            irons_loaded: state.ads.static.irons.loaded,
+                            putters_loaded: state.ads.static.putters.loaded
                         });
                     }
                 });
@@ -516,12 +621,11 @@
         }, state.isMobile ? 1500 : 1000);
 
         window.addEventListener('scroll', updateProgress, { passive: true });
-        utils.log('Reading progress initialized with ad integration');
+        utils.log('Reading progress initialized with dual ad integration');
     }
 
-    // Enhanced engagement tracking
+    // Enhanced engagement tracking (unchanged)
     function setupEngagementTracking() {
-        // Track scroll engagement
         window.addEventListener('scroll', utils.throttle(() => {
             const scrollPercent = Math.round(
                 (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
@@ -529,7 +633,6 @@
             state.engagement.maxScroll = Math.max(state.engagement.maxScroll, scrollPercent);
         }, 1000), { passive: true });
 
-        // Track interaction engagement
         const interactionEvents = state.isMobile 
             ? ['touchstart', 'click']
             : ['click', 'keydown', 'mousemove'];
@@ -540,29 +643,26 @@
             }, 2000), { passive: true });
         });
 
-        utils.log('Enhanced engagement tracking initialized');
+        utils.log('Enhanced engagement tracking initialized with dual ad system');
     }
 
-    // Enhanced image lazy loading
+    // Enhanced image lazy loading (unchanged)
     function setupImageLazyLoading() {
         const images = document.querySelectorAll('img[loading="lazy"]');
-        
         if (!images.length) return;
 
         const imageObserver = utils.createObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const img = entry.target;
-                    
                     img.addEventListener('load', () => {
                         img.classList.add('blog-fade-in');
                     });
 
-                    // Track image views with ad context
                     utils.safeTrack('image_viewed', img.alt || 'unnamed_image', {
                         image_src: img.src,
                         viewport_height: window.innerHeight,
-                        ads_present: state.ads.static.placed
+                        dual_ads_present: state.ads.static.placed
                     });
 
                     imageObserver.unobserve(img);
@@ -574,7 +674,7 @@
         utils.log('Enhanced image lazy loading initialized for', images.length, 'images');
     }
 
-    // Enhanced link tracking
+    // Enhanced link tracking (unchanged)
     function setupLinkTracking() {
         const links = document.querySelectorAll('.article-body a:not([data-ad-link]), .cta-button');
         
@@ -589,7 +689,7 @@
                     text: text.substring(0, 50),
                     is_external: isExternal,
                     is_cta: link.classList.contains('cta-button'),
-                    ads_present: state.ads.static.placed
+                    dual_ads_present: state.ads.static.placed
                 });
             });
         });
@@ -597,28 +697,25 @@
         utils.log('Enhanced link tracking initialized for', links.length, 'links');
     }
 
-    // Enhanced mobile optimizations
+    // Enhanced mobile optimizations (unchanged)
     function setupMobileOptimizations() {
         if (!state.isMobile) return;
 
-        // Optimize touch interactions
         document.addEventListener('touchstart', () => {
             state.engagement.interactions++;
         }, { passive: true, once: true });
 
-        // Optimize viewport changes
         window.addEventListener('orientationchange', () => {
             setTimeout(() => {
                 state.isMobile = utils.isMobile();
                 utils.safeTrack('orientation_change', state.isMobile ? 'portrait' : 'landscape', {
                     new_width: window.innerWidth,
                     new_height: window.innerHeight,
-                    ads_loaded: state.ads.static.loaded
+                    dual_ads_loaded: state.ads.static.loaded
                 });
             }, 100);
         });
 
-        // Mobile-specific ad optimizations
         if ('requestIdleCallback' in window) {
             requestIdleCallback(() => {
                 setupImageLazyLoading();
@@ -627,7 +724,7 @@
             setTimeout(setupImageLazyLoading, 1000);
         }
 
-        utils.log('Enhanced mobile optimizations initialized');
+        utils.log('Enhanced mobile optimizations initialized with dual ad system');
     }
 
     // Enhanced performance monitoring
@@ -643,30 +740,44 @@
                         dom_ready: Math.round(perfData.domContentLoadedEventEnd - perfData.domContentLoadedEventStart),
                         first_byte: Math.round(perfData.responseStart - perfData.requestStart),
                         is_mobile: state.isMobile,
-                        ad_system: 'static_v2',
-                        ads_loaded: state.ads.static.loaded
+                        ad_system: 'dual_static_v2',
+                        dual_ads_loaded: state.ads.static.loaded,
+                        irons_loaded: state.ads.static.irons.loaded,
+                        putters_loaded: state.ads.static.putters.loaded
                     });
                 }
             }, 1000);
         });
 
-        // Monitor ad performance
+        // Enhanced dual ad performance monitoring
         setInterval(() => {
             if (state.ads.static.loaded) {
-                utils.safeTrack('ad_performance', 'periodic_check', {
-                    impressions: state.ads.static.impressions,
-                    clicks: state.ads.static.clicked.size,
-                    visible: state.ads.static.visible.size,
+                utils.safeTrack('dual_ad_performance', 'periodic_check', {
+                    total_impressions: state.ads.static.impressions,
+                    total_clicks: state.ads.static.clicked.size,
+                    total_visible: state.ads.static.visible.size,
+                    irons_stats: {
+                        loaded: state.ads.static.irons.loaded,
+                        visible: state.ads.static.irons.visible,
+                        clicked: state.ads.static.irons.clicked,
+                        impressions: state.ads.static.irons.impressions
+                    },
+                    putters_stats: {
+                        loaded: state.ads.static.putters.loaded,
+                        visible: state.ads.static.putters.visible,
+                        clicked: state.ads.static.putters.clicked,
+                        impressions: state.ads.static.putters.impressions
+                    },
                     errors: state.ads.performance.errors,
                     load_time: state.ads.performance.loadTime
                 });
             }
         }, 60000); // Every minute
 
-        utils.log('Enhanced performance monitoring initialized');
+        utils.log('Enhanced dual ad performance monitoring initialized');
     }
 
-    // Enhanced error handling
+    // Enhanced error handling (unchanged)
     function setupErrorHandling() {
         window.addEventListener('error', (event) => {
             utils.safeTrack('javascript_error', 'global', {
@@ -674,18 +785,18 @@
                 filename: event.filename,
                 line: event.lineno,
                 column: event.colno,
-                ads_loaded: state.ads.static.loaded
+                dual_ads_loaded: state.ads.static.loaded
             });
         });
 
         window.addEventListener('unhandledrejection', (event) => {
             utils.safeTrack('promise_rejection', 'unhandled', {
                 reason: event.reason?.toString() || 'unknown',
-                ads_loaded: state.ads.static.loaded
+                dual_ads_loaded: state.ads.static.loaded
             });
         });
 
-        utils.log('Enhanced error handling initialized');
+        utils.log('Enhanced error handling initialized with dual ad system');
     }
 
     // Main initialization function
@@ -701,7 +812,7 @@
             setupPerformanceMonitoring();
             setupErrorHandling();
             
-            // Initialize static advertisement system
+            // Initialize enhanced dual static advertisement system
             setupStaticAdSystem();
 
             // Track successful initialization
@@ -709,11 +820,11 @@
                 version: CONFIG.version,
                 is_mobile: state.isMobile,
                 viewport_width: window.innerWidth,
-                static_ads_enabled: CONFIG.staticAds.enabled,
+                dual_static_ads_enabled: CONFIG.staticAds.enabled,
                 user_agent: navigator.userAgent.substring(0, 100)
             });
 
-            utils.log('Enhanced blog supplements initialized successfully', CONFIG.version);
+            utils.log('Enhanced dual ad blog supplements initialized successfully', CONFIG.version);
 
         } catch (error) {
             console.error('Blog supplements initialization failed:', error);
@@ -744,9 +855,19 @@
             time_on_page: Date.now() - state.engagement.startTime,
             max_scroll: state.engagement.maxScroll,
             total_interactions: state.engagement.interactions,
-            ad_impressions: state.ads.static.impressions,
-            ad_clicks: state.ads.static.clicked.size,
-            ad_visible: state.ads.static.visible.size
+            dual_ad_impressions: state.ads.static.impressions,
+            dual_ad_clicks: state.ads.static.clicked.size,
+            dual_ad_visible: state.ads.static.visible.size,
+            irons_performance: {
+                loaded: state.ads.static.irons.loaded,
+                visible: state.ads.static.irons.visible,
+                clicked: state.ads.static.irons.clicked
+            },
+            putters_performance: {
+                loaded: state.ads.static.putters.loaded,
+                visible: state.ads.static.putters.visible,
+                clicked: state.ads.static.putters.clicked
+            }
         });
     });
 
@@ -759,7 +880,21 @@
             ads: {
                 forceLoad: () => loadStaticAdvertisements(),
                 getStats: () => state.ads,
-                testClick: (adId) => handleAdClick(adId, 'test', 0)
+                testClick: (adId, adType) => {
+                    const trackingId = utils.getAdConfig(adType)?.trackingId || 'test';
+                    handleEnhancedAdClick(adId, adType || 'irons', 0, trackingId);
+                },
+                getDualStats: () => ({
+                    irons: state.ads.static.irons,
+                    putters: state.ads.static.putters,
+                    overall: {
+                        loaded: state.ads.static.loaded,
+                        placed: state.ads.static.placed,
+                        total_impressions: state.ads.static.impressions,
+                        total_clicks: state.ads.static.clicked.size,
+                        total_visible: state.ads.static.visible.size
+                    }
+                })
             }
         };
     }
