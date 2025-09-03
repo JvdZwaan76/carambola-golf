@@ -59,7 +59,7 @@
     <link rel="preload" href="/styles.css" as="style">
     <link rel="preload" href="/blog/styles.css" as="style">
     <link rel="preload" href="/images/carambola-golf-blog-hero-background.webp" as="image" fetchpriority="high">
-    <link rel="preload" href="/images/Jasper-2022-Profile-Pic.jpg" as="image">
+    <link rel="preload" href="/images/carambola-blogs-jvdz-profile-img.jpg" as="image">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" as="style" crossorigin="anonymous">
     
     <!-- DNS Prefetch for Performance -->
@@ -196,7 +196,7 @@
                 "author": {
                     "@type": "Person",
                     "name": "Jasper van der Zwaan",
-                    "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
+                    "image": "https://carambola.golf/images/carambola-blogs-jvdz-profile-img.jpg"
                 },
                 "image": "https://carambola.golf/images/carambola-golf-featured-article-hero.webp",
                 "url": "https://carambola.golf/blog/ultimate-guide-carambola-golf-resort-2025.html"
@@ -210,7 +210,7 @@
                 "author": {
                     "@type": "Person",
                     "name": "Jasper van der Zwaan",
-                    "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
+                    "image": "https://carambola.golf/images/carambola-blogs-jvdz-profile-img.jpg"
                 },
                 "image": "https://carambola.golf/images/st-croix-vacation-planning-category.webp",
                 "url": "https://carambola.golf/blog/planning-perfect-st-croix-golf-vacation-2025.html"
@@ -224,7 +224,7 @@
                 "author": {
                     "@type": "Person",
                     "name": "Jasper van der Zwaan",
-                    "image": "https://carambola.golf/images/Jasper-2022-Profile-Pic.jpg"
+                    "image": "https://carambola.golf/images/carambola-blogs-jvdz-profile-img.jpg"
                 },
                 "image": "https://carambola.golf/images/st-croix-activities-category.webp",
                 "url": "https://carambola.golf/blog/st-croix-activities-dining-after-golf.html"
@@ -475,6 +475,21 @@
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATIC ADVERTISEMENT - BLOG INDEX PLACEMENT -->
+        <section class="static-advertisement-blog-index">
+            <div class="container">
+                <div class="ad-wrapper">
+                    <a href="https://www.dpbolvw.net/click-101520211-15729104" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-15729104" 
+                             width="728" 
+                             height="90" 
+                             alt="2024 COBRA Vintage Putters - Classic Performance for Modern Golfers" 
+                             loading="lazy">
+                    </a>
                 </div>
             </div>
         </section>
@@ -964,6 +979,20 @@
                         trackBlogInteraction('external_link_click', this.href, {
                             link_text: this.textContent.trim(),
                             source: 'blog-homepage'
+                        });
+                    }
+                });
+            });
+
+            // Track blog index advertisement clicks
+            document.querySelectorAll('.static-advertisement-blog-index a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (typeof trackBlogInteraction === 'function') {
+                        trackBlogInteraction('advertisement_click', 'cobra_vintage_putters', {
+                            ad_position: 'blog-index',
+                            destination_url: this.href,
+                            article_context: 'blog_homepage',
+                            user_intent: 'golf_equipment_shopping'
                         });
                     }
                 });
