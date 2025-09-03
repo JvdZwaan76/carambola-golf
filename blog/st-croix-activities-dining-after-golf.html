@@ -351,7 +351,7 @@
 
             <p><strong><a href="https://www.cheeseburgersinparadise.com/" target="_blank" rel="noopener">Cheeseburgers in Paradise</a> (Christiansted):</strong> For a more casual post-golf meal, this beachfront restaurant offers excellent burgers, fresh seafood, and tropical drinks with your toes in the sand. It's perfect for watching the sunset after an afternoon round.</p>
 
-            <!-- STATIC ADVERTISEMENT - MID ARTICLE -->
+            <!-- STATIC ADVERTISEMENT - MID ARTICLE (Cobra KING Tour Black Irons) -->
             <div class="static-advertisement static-ad-mid">
                 <div class="ad-wrapper">
                     <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
@@ -518,14 +518,14 @@
 
             <p>For the ultimate relaxation day, start with a leisurely breakfast, enjoy spa services at your resort, explore local markets, and finish with waterfront dining as you watch the Caribbean sunset paint the sky in brilliant colors.</p>
 
-            <!-- STATIC ADVERTISEMENT - BOTTOM -->
+            <!-- STATIC ADVERTISEMENT - BOTTOM (2024 COBRA Vintage Putters) -->
             <div class="static-advertisement static-ad-bottom">
                 <div class="ad-wrapper">
-                    <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
-                        <img src="https://www.ftjcfx.com/image-101520211-16945650" 
-                             width="970" 
-                             height="250" 
-                             alt="Cobra KING Tour Black Irons - Elevate Every Aspect of Your Caribbean Golf Adventure" 
+                    <a href="https://www.dpbolvw.net/click-101520211-15729104" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-15729104" 
+                             width="728" 
+                             height="90" 
+                             alt="2024 COBRA Vintage Putters - Elevate Every Aspect of Your Caribbean Golf Adventure" 
                              loading="lazy">
                     </a>
                 </div>
@@ -589,9 +589,7 @@
                              alt="Jasper van der Zwaan - Golf Tourism Expert and St. Croix Travel Specialist" 
                              loading="lazy"
                              width="120"
-                             height="120"
-                             onload="this.classList.add('loaded')"
-                             onerror="this.style.display='none';">
+                             height="120">
                     </div>
                     <div class="author-details">
                         <h4>Jasper van der Zwaan</h4>
@@ -605,22 +603,22 @@
             <div class="share-section">
                 <h3 class="share-title">Share This Guide</h3>
                 <div class="share-buttons">
-                    <a href="#" class="share-btn facebook" onclick="shareArticle('facebook'); return false;">
+                    <button class="share-btn facebook" data-share-platform="facebook">
                         <i class="fab fa-facebook-f"></i>
                         Share on Facebook
-                    </a>
-                    <a href="#" class="share-btn twitter" onclick="shareArticle('twitter'); return false;">
+                    </button>
+                    <button class="share-btn twitter" data-share-platform="twitter">
                         <i class="fab fa-twitter"></i>
                         Share on Twitter
-                    </a>
-                    <a href="#" class="share-btn linkedin" onclick="shareArticle('linkedin'); return false;">
+                    </button>
+                    <button class="share-btn linkedin" data-share-platform="linkedin">
                         <i class="fab fa-linkedin-in"></i>
                         Share on LinkedIn
-                    </a>
-                    <a href="#" class="share-btn email" onclick="shareArticle('email'); return false;">
+                    </button>
+                    <button class="share-btn email" data-share-platform="email">
                         <i class="fas fa-envelope"></i>
                         Share via Email
-                    </a>
+                    </button>
                 </div>
             </div>
         </article>
@@ -652,7 +650,7 @@
             <h2>Ready to Experience Golf and Island Life?</h2>
             <p>Combine championship golf at Carambola with the best of St. Croix's dining, culture, and adventures. Start planning your perfect Caribbean golf vacation today.</p>
             <div class="cta-buttons">
-                <a href="/contact.html" class="cta-button primary" onclick="trackArticleInteraction('cta_click', 'book-tee-time', {source: 'activities-dining-article'})">Book Your Tee Time</a>
+                <a href="/contact.html" class="cta-button primary" data-track-cta="book-tee-time">Book Your Tee Time</a>
                 <a href="/st-croix.html" class="cta-button secondary">Explore St. Croix</a>
             </div>
         </div>
@@ -714,86 +712,9 @@
         </div>
     </footer>
 
-    <!-- Scripts: Main site first, then blog supplements, then footer status -->
+    <!-- Scripts: Main site first, then enhanced blog supplements, then footer status -->
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/footer-status.js"></script>
-    
-    <!-- Article-specific JavaScript -->
-    <script>
-        // Share functionality
-        function shareArticle(platform) {
-            const url = encodeURIComponent(window.location.href);
-            const title = encodeURIComponent(document.title);
-            const description = encodeURIComponent("Discover the best activities and dining in St. Croix after your golf round at Carambola!");
-            
-            let shareUrl = '';
-            
-            switch(platform) {
-                case 'facebook':
-                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-                    break;
-                case 'twitter':
-                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-                    break;
-                case 'linkedin':
-                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-                    break;
-                case 'email':
-                    shareUrl = `mailto:?subject=${title}&body=Check out this guide to St. Croix activities and dining: ${url}`;
-                    break;
-            }
-            
-            if (platform === 'email') {
-                window.location.href = shareUrl;
-            } else {
-                window.open(shareUrl, '_blank', 'width=600,height=400');
-            }
-            
-            // Track sharing
-            if (typeof trackArticleInteraction === 'function') {
-                trackArticleInteraction('article_shared', platform, {
-                    article_title: 'St. Croix Activities Dining After Golf',
-                    share_method: platform
-                });
-            }
-        }
-
-        // Initialize article tracking
-        document.addEventListener('DOMContentLoaded', function() {
-            // Track article view
-            if (typeof trackArticleInteraction === 'function') {
-                trackArticleInteraction('article_view', 'full_article', {
-                    referrer: document.referrer,
-                    entry_point: 'direct'
-                });
-            }
-
-            // Track external link clicks
-            document.querySelectorAll('.article-body a[href^="http"]').forEach(link => {
-                link.addEventListener('click', function() {
-                    if (typeof trackArticleInteraction === 'function') {
-                        trackArticleInteraction('external_link_click', this.href, {
-                            link_text: this.textContent.trim()
-                        });
-                    }
-                });
-            });
-
-            // Track advertisement clicks with activity context
-            document.querySelectorAll('.static-advertisement a').forEach(link => {
-                link.addEventListener('click', function() {
-                    if (typeof trackArticleInteraction === 'function') {
-                        trackArticleInteraction('advertisement_click', 'cobra_golf_equipment', {
-                            ad_position: this.closest('.static-ad-mid') ? 'mid-article' : 'bottom-article',
-                            destination_url: this.href,
-                            article_context: 'activities_dining',
-                            user_intent: 'complement_vacation_activities'
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
