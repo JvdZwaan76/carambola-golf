@@ -271,7 +271,7 @@
         </div>
     </section>
 
-    <!-- CRITICAL FIX: Article Hero - Removed problematic inline styles, uses optimized CSS background -->
+    <!-- Article Hero -->
     <section class="article-hero">
         <div class="article-header">
             <div class="article-meta">
@@ -339,7 +339,7 @@
                 <p>Download our scorecard from the <a href="/course.html">Course Details page</a> to preview the layout. With multiple tee options, it's accessible for all skill levels—perfect for family outings or corporate events. For current rates, check our <a href="/pricing.html">pricing page</a>.</p>
             </div>
 
-            <!-- STATIC ADVERTISEMENT - MID ARTICLE -->
+            <!-- STATIC ADVERTISEMENT - MID ARTICLE (Cobra KING Tour Black Irons) -->
             <div class="static-advertisement static-ad-mid">
                 <div class="ad-wrapper">
                     <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
@@ -451,14 +451,14 @@
 
             <p>St. Croix's 340 acres of oceanfront playground make it ideal for multi-activity trips—golf in the morning, beach vibes in the afternoon.</p>
 
-            <!-- STATIC ADVERTISEMENT - BOTTOM -->
+            <!-- STATIC ADVERTISEMENT - BOTTOM (2024 COBRA Vintage Putters) -->
             <div class="static-advertisement static-ad-bottom">
                 <div class="ad-wrapper">
-                    <a href="https://www.tkqlhce.com/click-101520211-16945650" target="_blank" rel="noopener sponsored">
-                        <img src="https://www.ftjcfx.com/image-101520211-16945650" 
-                             width="970" 
-                             height="250" 
-                             alt="Cobra KING Tour Black Irons - Elevate Your Golf Game with Tour-Proven Equipment" 
+                    <a href="https://www.dpbolvw.net/click-101520211-15729104" target="_blank" rel="noopener sponsored">
+                        <img src="https://www.ftjcfx.com/image-101520211-15729104" 
+                             width="728" 
+                             height="90" 
+                             alt="2024 COBRA Vintage Putters - Classic Style Meets Modern Performance" 
                              loading="lazy">
                     </a>
                 </div>
@@ -504,9 +504,7 @@
                              alt="Jasper van der Zwaan - Golf Tourism Expert and Caribbean Travel Specialist" 
                              loading="lazy"
                              width="120"
-                             height="120"
-                             onload="this.classList.add('loaded')"
-                             onerror="this.style.display='none';">
+                             height="120">
                     </div>
                     <div class="author-details">
                         <h4>Jasper van der Zwaan</h4>
@@ -520,22 +518,22 @@
             <div class="share-section">
                 <h3 class="share-title">Share This Guide</h3>
                 <div class="share-buttons">
-                    <a href="#" class="share-btn facebook" onclick="shareArticle('facebook'); return false;">
+                    <button class="share-btn facebook" data-share-platform="facebook">
                         <i class="fab fa-facebook-f"></i>
                         Share on Facebook
-                    </a>
-                    <a href="#" class="share-btn twitter" onclick="shareArticle('twitter'); return false;">
+                    </button>
+                    <button class="share-btn twitter" data-share-platform="twitter">
                         <i class="fab fa-twitter"></i>
                         Share on Twitter
-                    </a>
-                    <a href="#" class="share-btn linkedin" onclick="shareArticle('linkedin'); return false;">
+                    </button>
+                    <button class="share-btn linkedin" data-share-platform="linkedin">
                         <i class="fab fa-linkedin-in"></i>
                         Share on LinkedIn
-                    </a>
-                    <a href="#" class="share-btn email" onclick="shareArticle('email'); return false;">
+                    </button>
+                    <button class="share-btn email" data-share-platform="email">
                         <i class="fas fa-envelope"></i>
                         Share via Email
-                    </a>
+                    </button>
                 </div>
             </div>
         </article>
@@ -567,7 +565,7 @@
             <h2>Ready to Experience Championship Golf in Paradise?</h2>
             <p>Let this guide help you plan the perfect golf vacation at Carambola Golf Club. From course strategy to island adventures, we're here to make your St. Croix experience unforgettable.</p>
             <div class="cta-buttons">
-                <a href="/contact.html" class="cta-button primary" onclick="trackArticleInteraction('cta_click', 'book-tee-time', {source: 'ultimate-guide-article'})">Book Your Tee Time</a>
+                <a href="/contact.html" class="cta-button primary" data-track-cta="book-tee-time">Book Your Tee Time</a>
                 <a href="/course.html" class="cta-button secondary">Explore Our Course</a>
             </div>
         </div>
@@ -629,88 +627,9 @@
         </div>
     </footer>
 
-    <!-- Scripts: Main site first, then blog supplements, then footer status -->
+    <!-- Scripts: Main site first, then enhanced blog supplements, then footer status -->
     <script src="/script.js"></script>
     <script src="/blog/script.js"></script>
     <script src="/footer-status.js"></script>
-    
-    <!-- Article-specific JavaScript for sharing -->
-    <script>
-        // Share functionality
-        function shareArticle(platform) {
-            const url = encodeURIComponent(window.location.href);
-            const title = encodeURIComponent(document.title);
-            const description = encodeURIComponent("Complete guide to Carambola Golf Resort and St. Croix golf vacations!");
-            
-            let shareUrl = '';
-            
-            switch(platform) {
-                case 'facebook':
-                    shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-                    break;
-                case 'twitter':
-                    shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-                    break;
-                case 'linkedin':
-                    shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-                    break;
-                case 'email':
-                    shareUrl = `mailto:?subject=${title}&body=Check out this comprehensive guide: ${url}`;
-                    break;
-            }
-            
-            if (platform === 'email') {
-                window.location.href = shareUrl;
-            } else {
-                window.open(shareUrl, '_blank', 'width=600,height=400');
-            }
-            
-            // Track sharing with improved error handling
-            try {
-                if (typeof trackArticleInteraction === 'function') {
-                    trackArticleInteraction('article_shared', platform, {
-                        article_title: 'Ultimate Guide Carambola Golf Resort 2025',
-                        share_method: platform
-                    });
-                }
-            } catch (error) {
-                console.warn('Share tracking error:', error);
-            }
-        }
-
-        // Initialize article tracking
-        document.addEventListener('DOMContentLoaded', function() {
-            // Track article view
-            if (typeof trackArticleInteraction === 'function') {
-                trackArticleInteraction('article_view', 'full_article', {
-                    referrer: document.referrer,
-                    entry_point: 'direct'
-                });
-            }
-
-            // Track external link clicks
-            document.querySelectorAll('.article-body a[href^="http"]').forEach(link => {
-                link.addEventListener('click', function() {
-                    if (typeof trackArticleInteraction === 'function') {
-                        trackArticleInteraction('external_link_click', this.href, {
-                            link_text: this.textContent.trim()
-                        });
-                    }
-                });
-            });
-
-            // Track advertisement clicks
-            document.querySelectorAll('.static-advertisement a').forEach(link => {
-                link.addEventListener('click', function() {
-                    if (typeof trackArticleInteraction === 'function') {
-                        trackArticleInteraction('advertisement_click', 'cobra_golf_equipment', {
-                            ad_position: this.closest('.static-ad-mid') ? 'mid-article' : 'bottom-article',
-                            destination_url: this.href
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>
